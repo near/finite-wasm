@@ -1,7 +1,3 @@
-
-
-
-
 // Custom test harness
 #[cfg(test)]
 mod tests;

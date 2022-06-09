@@ -33,7 +33,6 @@ fn write_error(mut to: impl io::Write, error: &impl error::Error) -> std::io::Re
     Ok(())
 }
 
-
 fn run() -> Result<(), Error> {
     let current_directory = std::env::current_dir().map_err(Error::CurrentDirectory)?;
     let tests_directory = current_directory.join("tests");
@@ -93,7 +92,10 @@ fn run() -> Result<(), Error> {
         if context.failed {
             failures += 1;
         }
-        std::io::stderr().lock().write_all(&context.output).map_err(Error::WriteTestOutput)?;
+        std::io::stderr()
+            .lock()
+            .write_all(&context.output)
+            .map_err(Error::WriteTestOutput)?;
     }
 
     if failures != 0 {
