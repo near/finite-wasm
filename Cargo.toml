@@ -1,0 +1,14 @@
+[package]
+name = "finite-wasm"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+harness = false
+
+[dependencies]
+
+[dev-dependencies]
+wast = "41.0.0"
+walkdir = "2.3.0"
+thiserror = "1.0.0"
