@@ -33,133 +33,6 @@ fn write_error(mut to: impl io::Write, error: &impl error::Error) -> std::io::Re
     Ok(())
 }
 
-struct TestContext<WastErrorBuilder> {
-    test_name: String,
-    test_path: PathBuf,
-    output: Vec<u8>,
-    failed: bool,
-    error_builder: WastErrorBuilder,
-}
-
-impl<WastErrorBuilder> TestContext<WastErrorBuilder>
-where
-    WastErrorBuilder: Fn(wast::token::Span, String) -> wast::Error,
-{
-    fn new(test_name: String, test_path: PathBuf, error_builder: WastErrorBuilder) -> Self {
-        Self {
-            test_name,
-            test_path,
-            output: vec![],
-            failed: false,
-            error_builder,
-        }
-    }
-
-    fn pass(&mut self) {
-        self.output.extend_from_slice(b"[PASS] ");
-        self.output.extend_from_slice(self.test_name.as_bytes());
-        self.output.extend_from_slice(b"\n");
-    }
-
-    fn fail(&mut self, error: &impl error::Error) {
-        self.output.extend_from_slice(b"[FAIL] ");
-        self.output.extend_from_slice(self.test_name.as_bytes());
-        self.output.extend_from_slice(b"\n");
-        write_error(&mut self.output, error).expect("this should be infallible");
-        self.failed = true;
-    }
-
-    fn fail_wast(&mut self, error: &mut wast::Error) {
-        error.set_path(&self.test_path);
-        self.fail(error)
-    }
-
-    fn fail_test_error(&mut self, error: &mut test::Error) {
-        error.set_path(&self.test_path);
-        self.fail(error)
-    }
-
-    fn fail_wast_msg(&mut self, span: wast::token::Span, message: impl Into<String>) {
-        let mut error = (self.error_builder)(span, message.into());
-        self.fail_wast(&mut error)
-    }
-
-    fn run(&mut self, parsed_waft: Result<&mut test::Waft, &mut test::Error>) {
-        let test = match parsed_waft {
-            Ok(waft) => waft,
-            Err(error) => return self.fail_test_error(error),
-        };
-
-        // First, collect and encode to wasm binary encoding all the input modules.
-        let mut modules = Vec::new();
-        for directive in &mut test.directives {
-            match directive {
-                test::WaftDirective::Module(module) => match module.encode() {
-                    Ok(encoded) => modules.push((module.id, encoded)),
-                    Err(error) => return self.fail(&error),
-                },
-                test::WaftDirective::AssertInstrumentedWat { .. }
-                | test::WaftDirective::AssertStackWat { .. }
-                | test::WaftDirective::AssertGasWat { .. } => {}
-            }
-        }
-
-        // Now, execute all the assertions
-        for directive in &test.directives {
-            let index = match directive {
-                test::WaftDirective::Module(_) => continue,
-                test::WaftDirective::AssertGasWat { index, .. } => index,
-                test::WaftDirective::AssertStackWat { index, .. } => index,
-                test::WaftDirective::AssertInstrumentedWat { index, .. } => index,
-            };
-            let module = match *index {
-                None => modules.get(0).ok_or_else(|| {
-                    let span = wast::token::Span::from_offset(0);
-                    self.fail_wast_msg(span, "this file defines no input modules")
-                }),
-                Some(wast::token::Index::Num(num, span)) => {
-                    modules.get(num as usize).ok_or_else(|| {
-                        self.fail_wast_msg(span, format!("module {} is not defined", num))
-                    })
-                }
-                Some(wast::token::Index::Id(id)) => {
-                    modules.iter().find(|m| m.0 == Some(id)).ok_or_else(|| {
-                        self.fail_wast_msg(
-                            id.span(),
-                            format!("module {} is not defined", id.name()),
-                        )
-                    })
-                }
-            }
-            .map(|m| &m.1);
-            let _module = match module {
-                Ok(m) => m,
-                Err(()) => return,
-            };
-
-            match directive {
-                test::WaftDirective::Module(_) => continue,
-                test::WaftDirective::AssertGasWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
-                }
-                test::WaftDirective::AssertStackWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
-                }
-                test::WaftDirective::AssertInstrumentedWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
-                }
-            };
-        }
-
-        return self.pass();
-    }
-}
 
 fn run() -> Result<(), Error> {
     let current_directory = std::env::current_dir().map_err(Error::CurrentDirectory)?;
@@ -207,7 +80,7 @@ fn run() -> Result<(), Error> {
             Ok(Ok(m)) => Ok(m),
         };
 
-        let mut context = TestContext::new(
+        let mut context = test::TestContext::new(
             test_name.display().to_string(),
             test_path.into(),
             |span, message| {
