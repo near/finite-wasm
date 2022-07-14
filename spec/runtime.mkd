@@ -1,0 +1,86 @@
+# [Execution](https://www.w3.org/TR/wasm-core-1/#execution%E2%91%A1)
+
+The specific mechanism to instrument a WebAssembly module is implementation-specific. This section
+describes the extensions to the [execution
+semantics](https://www.w3.org/TR/wasm-core-1/#execution%E2%91%A1) of an instrumented WebAssembly
+module.
+
+## [Runtime Structure](https://www.w3.org/TR/wasm-core-1/#runtime-structure%E2%91%A0)
+
+### [Module Instances](https://www.w3.org/TR/wasm-core-1/#module-instances%E2%91%A0)
+
+The `moduleinst` record is extended with the following entries:
+
+* An amount of gas available `u64 gas`;
+* Limit to the number of stack entries `u32 stacklimit`.
+
+### [Stack](https://www.w3.org/TR/wasm-core-1/#stack%E2%91%A0)
+
+<!--
+TODO: Do we need to keep track of labels? I don't believe this to be strictly necessary
+outside of e.g. interpreters, but I worry that if we don't keep track of them now, then we'd be in
+a world of pain when they start mattering more.
+
+TODO: currently the accounting allocates the same size for each slot, however at the ”machine”
+level these slots will have different sizes. e.g. i32 operand is going to be much smaller than
+activation frame entry or a v128 value.
+-->
+
+“Stack height” is the height of the implicit stack. Stack height is a sum of:
+
+1. The current number of `value` entries in the stack; and
+2. The current number of `label` entries in the stack; and
+3. The current number of function `activation` frame entries in the stack; and
+4. The lengths `|activation.frame.local|` of all function `activation` frame entries in the stack.
+
+## [Modules](https://www.w3.org/TR/wasm-core-1/#modules%E2%91%A5)
+
+### [Allocation](https://www.w3.org/TR/wasm-core-1/#allocation%E2%91%A0)
+
+#### [Modules](https://www.w3.org/TR/wasm-core-1/#modules%E2%91%A6)
+
+`module.gas` and `module.stacklimit` are initialized to their initial values during the module
+allocation.
+
+### [Invocation](https://www.w3.org/TR/wasm-core-1/#invocation%E2%91%A1)
+
+The external invocation of an exported function is augmented with the following operations:
+
+0. Assert: Stack height is 0, before any stack operations occur.
+9. Before function invocation:
+  * Charge gas for each local of `funcaddr` and execution of this `call` instruction;
+  * Require that the stack height required to execute `funcaddr` does not exceed `stacklimit`.
+
+**Note**: Instrumentation implements this via the export indirection mechanism, however
+implementations are required to _not_ use this mechanism if they implement this behaviour in some
+other manner.
+
+---
+
+**TODO**:
+
+## `gas(will_use: u64)`
+
+Indicates to the implementation that before the next call to `gas`, a sequence of instructions
+worth `will_use` units of gas will be executed.
+
+This function must subtract the specified `will_use` units of gas from the pool of gas available
+for this execution. In the instance the subtraction results in a negative (`pool < 0`) remaining
+gas, this function shall produce a trap, immediately aborting the execution of the WebAssembly
+module.
+
+## `stack(delta: s32)`
+
+Indicates to the implementation that a change to number of reserved [implicit WebAssembly
+stack][stack] entries should be applied. Where the reservation exceeds the maximum number of stack
+entries made available to the program, this function shall produce a trap, immediately aborting the
+execution of the WebAssembly module.
+
+**Invariant**: At no point during the execution `delta`s shall sum up to a negative number.
+
+[stack]: https://www.w3.org/TR/wasm-core-1/#stack%E2%91%A0
+
+## Security considerations
+
+It is critical that the user-provided code is unable to invoke these functions itself in the module
+that hasn't undergone instrumentation.
