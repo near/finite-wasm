@@ -1,0 +1,55 @@
+# Export indirection
+
+Export indirection is a pure-WASM mechansim for instrumentation to apply resource charges for
+invocations of exported and table functions before these functions are invoked. Consider the
+following motivating example:
+
+```wast
+(module
+  (func (export "main") (local i32 i32 i32 i32 i32))
+)
+```
+
+If an embedder were to externally invoke `main` of this module without any special handling, the
+resources required to initialize and store the local variables, as well as for the invocation of
+the function itself would remain unaccounted for.
+
+This problem could be solved by implementing the necessary accounting in the embedder, or by having
+the embedder expose hooks enabling execution of code before a Host-VM entry. However, where it is
+not be feasible to do so, export indirection can serve as a reasonable alternative.
+
+With export indirection the accounting is approximated by introducing a trampoline function for all
+exported functions and table elements. This trampoline is then able to execute the necessary
+accounting routines before transferring the control flow to the original function.
+
+```wast
+(assert_instrumented (module
+  (; ... ;)
+
+  (func $main (local i32 i32 i32 i32 i32)
+    (call $stack (i32.const -6))
+  )
+  (func (export "main")
+    (call $stack (i32.const 6))
+    (call $gas (i64.const 6))
+    (call $main) (; alternatively, return_call ;)
+  )
+))
+```
+
+This wrapper function must have the same function signature as the indirected function and not
+allocate any additional space for locals. If possible, prefer calling the original function using
+the `return_call` instruction.
+
+WebAssembly function definitions which are directly calling the function definitions affected by
+indirection should continue directly calling the original function definition and account for the
+resources of these calls the usual way.
+
+Export indirection must not be applied more than once for a given function definition.
+
+## Alternatives
+
+It is not strictly required for an implementation to utilize export indirection to implement
+accounting for the exported functions and table elements, if an equivalent form of accounting can
+be implemented by other means. This mechanism is intended to be transparent, unobservable from the
+host’s perspective.
