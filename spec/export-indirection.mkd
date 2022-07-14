@@ -1,8 +1,8 @@
 # Export indirection
 
 Export indirection is a pure-WASM mechansim for instrumentation to apply resource charges for
-invocations of exported and table functions before these functions are invoked. Consider the
-following motivating example:
+invocations of exported and start functions as well as table elements before these functions are
+invoked. Consider the following motivating example:
 
 ```wast
 (module
@@ -18,34 +18,35 @@ This problem could be solved by implementing the necessary accounting in the emb
 the embedder expose hooks enabling execution of code before a Host-VM entry. However, where it is
 not be feasible to do so, export indirection can serve as a reasonable alternative.
 
-With export indirection the accounting is approximated by introducing a trampoline function for all
-exported functions and table elements. This trampoline is then able to execute the necessary
-accounting routines before transferring the control flow to the original function.
+With export indirection the accounting is approximated by introducing a trampoline function for any
+function that isn’t otherwise possible to instrument. This trampoline is then able to execute the
+necessary accounting routines before transferring the control flow to the original function.
 
 ```wast
-(assert_instrumented (module
+(assert_indirected (module
   (; ... ;)
 
   (func $main (local i32 i32 i32 i32 i32)
     (call $stack (i32.const -6))
   )
   (func (export "main")
-    (call $stack (i32.const 6))
-    (call $gas (i64.const 6))
-    (call $main) (; alternatively, return_call ;)
+    (; can insert any instrumentation here ;)
+    (return_call $main) (; or regular `call` ;)
+
   )
 ))
 ```
 
-This wrapper function must have the same function signature as the indirected function and not
-allocate any additional space for locals. If possible, prefer calling the original function using
-the `return_call` instruction.
+This wrapper function must have the same type as the indirected function and must not allocate any
+additional space for locals. If possible, prefer calling the original function using the
+`return_call` instruction.
 
 WebAssembly function definitions which are directly calling the function definitions affected by
 indirection should continue directly calling the original function definition and account for the
 resources of these calls the usual way.
 
-Export indirection must not be applied more than once for a given function definition.
+Export indirection must not be applied more than once for any given function definition of the
+original WebAssembly module.
 
 ## Alternatives
 
