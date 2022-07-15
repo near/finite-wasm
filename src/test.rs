@@ -1,12 +1,16 @@
 use std::error;
 use std::path::{Path, PathBuf};
 use wast::parser::{self, Parse, ParseBuffer, Parser};
+use wast::token::Index;
 use wast::{kw, token};
+
+use crate::indirection::{self, indirect};
 
 mod waft_kw {
     wast::custom_keyword!(assert_instrumented_gas);
     wast::custom_keyword!(assert_instrumented_stack);
     wast::custom_keyword!(assert_instrumented);
+    wast::custom_keyword!(assert_indirected);
 }
 
 /// A wasm-finite-test description.
@@ -31,6 +35,12 @@ pub(crate) enum WaftDirective<'a> {
     },
     /// Instrument a specified module with all instrumentations and compare the result.
     AssertInstrumentedWat {
+        index: Option<token::Index<'a>>,
+        expected_result: wast::Wat<'a>,
+    },
+
+    /// Apply the indirection trasnformation and compare the output.
+    AssertIndirectedWat {
         index: Option<token::Index<'a>>,
         expected_result: wast::Wat<'a>,
     },
@@ -87,6 +97,18 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
                 index,
                 expected_result,
             })
+        } else if l.peek::<waft_kw::assert_indirected>() {
+            parser.parse::<waft_kw::assert_indirected>()?;
+            let index = if parser.lookahead1().peek::<token::Index>() {
+                Some(parser.parse::<token::Index>()?)
+            } else {
+                None
+            };
+            let expected_result = parser.parse()?;
+            Ok(WaftDirective::AssertIndirectedWat {
+                index,
+                expected_result,
+            })
         } else {
             Err(l.error())
         }
@@ -104,6 +126,10 @@ pub(crate) enum Error {
     NewParseBuffer(#[source] wast::Error),
     #[error("test file is not a valid wasm-finite test file")]
     ParseWaft(#[source] wast::Error),
+    #[error("input module is invalid {1}")]
+    InvalidModule(#[source] wasmparser::BinaryReaderError, wast::Error),
+    #[error("could not indirect the module {1}")]
+    Indirect(#[source] indirection::Error, wast::Error),
 }
 
 impl Error {
@@ -113,6 +139,8 @@ impl Error {
             Error::FromUtf8(_, _) => {}
             Error::NewParseBuffer(s) => s.set_path(path),
             Error::ParseWaft(s) => s.set_path(path),
+            Error::Indirect(_, s) => s.set_path(path),
+            Error::InvalidModule(_, s) => s.set_path(path),
         }
     }
 }
@@ -195,18 +223,32 @@ where
             Err(error) => return self.fail_test_error(error),
         };
 
-        // First, collect and encode to wasm binary encoding all the input modules.
+        // First, collect, encode to wasm binary encoding all the input modules. Then validate all
+        // inputs unconditionally (to ensure all invalid test cases are caught early.)
         let mut modules = Vec::new();
+        let mut errors = false;
         for directive in &mut test.directives {
-            match directive {
-                WaftDirective::Module(module) => match module.encode() {
-                    Ok(encoded) => modules.push((module.id, encoded)),
-                    Err(error) => return self.fail(&error),
-                },
-                WaftDirective::AssertInstrumentedWat { .. }
-                | WaftDirective::AssertStackWat { .. }
-                | WaftDirective::AssertGasWat { .. } => {}
+            if let WaftDirective::Module(module) = directive {
+                let id = module.id.clone();
+                match module.encode() {
+                    Ok(encoded) => modules.push((id, module.span, encoded)),
+                    Err(error) => {
+                        errors = true;
+                        self.fail_wast_msg(error.span(), error.message());
+                    }
+                }
             }
+        }
+        for (_, span, encoded) in &modules {
+            if let Err(e) = wasmparser::validate(&encoded) {
+                errors = true;
+                let wast = (self.error_builder)(*span, String::new());
+                self.fail_test_error(&mut Error::InvalidModule(e, wast))
+            }
+        }
+        if errors {
+            // Module indices are probably all invalid now. Don’t actually execute any directives.
+            return;
         }
 
         // Now, execute all the assertions
@@ -216,6 +258,7 @@ where
                 WaftDirective::AssertGasWat { index, .. } => index,
                 WaftDirective::AssertStackWat { index, .. } => index,
                 WaftDirective::AssertInstrumentedWat { index, .. } => index,
+                WaftDirective::AssertIndirectedWat { index, .. } => index,
             };
             let module = match *index {
                 None => modules.get(0).ok_or_else(|| {
@@ -235,11 +278,10 @@ where
                         )
                     })
                 }
-            }
-            .map(|m| &m.1);
-            let _module = match module {
+            };
+            let (_module_id, module_span, encoded) = match module {
                 Ok(m) => m,
-                Err(()) => return,
+                Err(()) => continue,
             };
 
             match directive {
@@ -259,6 +301,16 @@ where
                 } => {
                     drop(expected_result);
                 }
+
+                WaftDirective::AssertIndirectedWat {
+                    expected_result, ..
+                } => match indirect(&encoded) {
+                    Ok(_) => drop(expected_result),
+                    Err(e) => self.fail_test_error(&mut Error::Indirect(
+                        e,
+                        (self.error_builder)(*module_span, String::new()),
+                    )),
+                },
             };
         }
 
