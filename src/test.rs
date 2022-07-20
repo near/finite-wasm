@@ -4,7 +4,7 @@ use wast::parser::{self, Parse, ParseBuffer, Parser};
 use wast::token::Index;
 use wast::{kw, token};
 
-use crate::indirection::{self, indirect};
+use crate::indirection::{self, Indirector};
 
 mod waft_kw {
     wast::custom_keyword!(assert_instrumented_gas);
@@ -128,6 +128,8 @@ pub(crate) enum Error {
     ParseWaft(#[source] wast::Error),
     #[error("input module is invalid {1}")]
     InvalidModule(#[source] wasmparser::BinaryReaderError, wast::Error),
+    #[error("output module is invalid {1}")]
+    InvalidOutput(#[source] wasmparser::BinaryReaderError, wast::Error),
     #[error("could not indirect the module {1}")]
     Indirect(#[source] indirection::Error, wast::Error),
 }
@@ -141,6 +143,7 @@ impl Error {
             Error::ParseWaft(s) => s.set_path(path),
             Error::Indirect(_, s) => s.set_path(path),
             Error::InvalidModule(_, s) => s.set_path(path),
+            Error::InvalidOutput(_, s) => s.set_path(path),
         }
     }
 }
@@ -304,9 +307,14 @@ where
 
                 WaftDirective::AssertIndirectedWat {
                     expected_result, ..
-                } => match indirect(&encoded) {
-                    Ok(_) => drop(expected_result),
-                    Err(e) => self.fail_test_error(&mut Error::Indirect(
+                } => match Indirector::analyze(&encoded).and_then(|i| i.indirect()) {
+                    Ok(result) => {
+                        if let Err(e) = wasmparser::validate(&result) {
+                            let wast = (self.error_builder)(*module_span, String::new());
+                            return self.fail_test_error(&mut Error::InvalidOutput(e, wast));
+                        }
+                    },
+                    Err(e) => return self.fail_test_error(&mut Error::Indirect(
                         e,
                         (self.error_builder)(*module_span, String::new()),
                     )),

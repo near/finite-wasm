@@ -32,8 +32,9 @@
   (; indirects f3 ;)
   (table 1 funcref)
   (elem (i32.const 0) $f3)
+  (elem (i32.const 0) $f3)
   (elem (i32.const 0) funcref (item (ref.func $f3)))
-  (elem (i32.const 0) funcref (item (global.get 0)))
+  (; (elem (i32.const 0) funcref (item (global.get 0))) ;)
 )
 
 (assert_indirected (module
