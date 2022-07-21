@@ -1,7 +1,7 @@
 use std::error;
 use std::path::{Path, PathBuf};
-use wast::parser::{self, Parse, ParseBuffer, Parser};
-use wast::token::Index;
+use wast::parser::{self, Parse, ParseBuffer, Parser, Peek};
+use wast::token::Span;
 use wast::{kw, token};
 
 use crate::indirection::{self, Indirector};
@@ -10,40 +10,32 @@ mod waft_kw {
     wast::custom_keyword!(assert_instrumented_gas);
     wast::custom_keyword!(assert_instrumented_stack);
     wast::custom_keyword!(assert_instrumented);
-    wast::custom_keyword!(assert_indirected);
+
+    wast::custom_keyword!(snapshot_indirected);
+    wast::custom_keyword!(skip);
 }
 
 /// A wasm-finite-test description.
-#[derive(Debug)]
 pub(crate) struct Waft<'a> {
     pub(crate) directives: Vec<WaftDirective<'a>>,
 }
 
-#[derive(Debug)]
 pub(crate) enum WaftDirective<'a> {
     /// Define a module and make it available for instrumentation.
     Module(wast::core::Module<'a>),
     /// Instrument a specified module with gas only and compare the result.
-    AssertGasWat {
-        index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
-    },
+    AssertGasWat { index: Option<token::Index<'a>> },
     /// Instrument a specified module with stack only and compare the result.
-    AssertStackWat {
-        index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
-    },
+    AssertStackWat { index: Option<token::Index<'a>> },
     /// Instrument a specified module with all instrumentations and compare the result.
-    AssertInstrumentedWat {
-        index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
-    },
-
+    AssertInstrumentedWat { index: Option<token::Index<'a>> },
     /// Apply the indirection trasnformation and compare the output.
     AssertIndirectedWat {
         index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
+        span: Span,
     },
+    /// Ignore this wast file
+    Skip { span: Span },
 }
 
 impl<'a> Parse<'a> for Waft<'a> {
@@ -61,6 +53,10 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
         let mut l = parser.lookahead1();
         if l.peek::<kw::module>() {
             Ok(WaftDirective::Module(parser.parse()?))
+        } else if l.peek::<waft_kw::skip>() {
+            let kw = parser.parse::<waft_kw::skip>()?;
+            let _reason = parser.parse::<String>()?;
+            Ok(WaftDirective::Skip { span: kw.0 })
         } else if l.peek::<waft_kw::assert_instrumented_gas>() {
             parser.parse::<waft_kw::assert_instrumented_gas>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
@@ -68,11 +64,7 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertGasWat {
-                index,
-                expected_result,
-            })
+            Ok(WaftDirective::AssertGasWat { index })
         } else if l.peek::<waft_kw::assert_instrumented_stack>() {
             parser.parse::<waft_kw::assert_instrumented_stack>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
@@ -80,11 +72,7 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertStackWat {
-                index,
-                expected_result,
-            })
+            Ok(WaftDirective::AssertStackWat { index })
         } else if l.peek::<waft_kw::assert_instrumented>() {
             parser.parse::<waft_kw::assert_instrumented>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
@@ -92,26 +80,46 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertInstrumentedWat {
-                index,
-                expected_result,
-            })
-        } else if l.peek::<waft_kw::assert_indirected>() {
-            parser.parse::<waft_kw::assert_indirected>()?;
+            Ok(WaftDirective::AssertInstrumentedWat { index })
+        } else if l.peek::<waft_kw::snapshot_indirected>() {
+            let kw = parser.parse::<waft_kw::snapshot_indirected>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
                 Some(parser.parse::<token::Index>()?)
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertIndirectedWat {
-                index,
-                expected_result,
-            })
+            Ok(WaftDirective::AssertIndirectedWat { index, span: kw.0 })
         } else {
             Err(l.error())
         }
+    }
+}
+
+impl WaftDirective<'_> {
+    fn span(&self) -> Span {
+        match self {
+            WaftDirective::Module(m) => m.span,
+            WaftDirective::Skip { span } => *span,
+            WaftDirective::AssertGasWat { .. } => todo!(),
+            WaftDirective::AssertStackWat { .. } => todo!(),
+            WaftDirective::AssertInstrumentedWat { .. } => todo!(),
+            WaftDirective::AssertIndirectedWat { span, .. } => *span,
+        }
+    }
+
+    fn display(&self) -> &'static str {
+        let text = match self {
+            WaftDirective::Module(_) => kw::module::display(),
+            WaftDirective::Skip { .. } => waft_kw::skip::display(),
+            WaftDirective::AssertGasWat { .. } => waft_kw::assert_instrumented_gas::display(),
+            WaftDirective::AssertStackWat { .. } => waft_kw::assert_instrumented_stack::display(),
+            WaftDirective::AssertInstrumentedWat { .. } => waft_kw::assert_instrumented::display(),
+            WaftDirective::AssertIndirectedWat { .. } => waft_kw::snapshot_indirected::display(),
+        };
+        text.strip_prefix("`")
+            .unwrap_or(text)
+            .strip_suffix("`")
+            .unwrap_or(text)
     }
 }
 
@@ -132,6 +140,8 @@ pub(crate) enum Error {
     InvalidOutput(#[source] wasmparser::BinaryReaderError, wast::Error),
     #[error("could not indirect the module {1}")]
     Indirect(#[source] indirection::Error, wast::Error),
+    #[error("snapshot comparison failed")]
+    Insta,
 }
 
 impl Error {
@@ -144,6 +154,7 @@ impl Error {
             Error::Indirect(_, s) => s.set_path(path),
             Error::InvalidModule(_, s) => s.set_path(path),
             Error::InvalidOutput(_, s) => s.set_path(path),
+            Error::Insta => {}
         }
     }
 }
@@ -165,59 +176,72 @@ pub(crate) fn parse<'a>(buffer: &'a ParseBuffer) -> Result<Waft<'a>, Error> {
     Ok(parsed)
 }
 
-pub(crate) struct TestContext<WastErrorBuilder> {
-    test_name: String,
-    test_path: PathBuf,
-    pub(crate) output: Vec<u8>,
-    pub(crate) failed: bool,
-    error_builder: WastErrorBuilder,
+enum Status {
+    None,
+    Passed,
+    Failed,
 }
 
-impl<WastErrorBuilder> TestContext<WastErrorBuilder>
-where
-    WastErrorBuilder: Fn(wast::token::Span, String) -> wast::Error,
-{
-    pub(crate) fn new(
-        test_name: String,
-        test_path: PathBuf,
-        error_builder: WastErrorBuilder,
-    ) -> Self {
+pub(crate) struct TestContext<'a> {
+    test_name: String,
+    test_path: PathBuf,
+    wast_data: &'a str,
+    pub(crate) output: Vec<u8>,
+    status: Status,
+}
+
+impl<'a> TestContext<'a> {
+    pub(crate) fn new(test_name: String, test_path: PathBuf, wast_data: &'a str) -> Self {
         Self {
             test_name,
             test_path,
+            wast_data,
             output: vec![],
-            failed: false,
-            error_builder,
+            status: Status::None,
         }
     }
 
+    pub(crate) fn failed(&self) -> bool {
+        matches!(self.status, Status::Failed)
+    }
+
     fn pass(&mut self) {
+        assert!(matches!(self.status, Status::None));
+        self.status = Status::Passed;
         self.output.extend_from_slice(b"[PASS] ");
         self.output.extend_from_slice(self.test_name.as_bytes());
         self.output.extend_from_slice(b"\n");
     }
 
-    fn fail(&mut self, error: &impl error::Error) {
-        self.output.extend_from_slice(b"[FAIL] ");
-        self.output.extend_from_slice(self.test_name.as_bytes());
-        self.output.extend_from_slice(b"\n");
+    fn fail(&mut self, error: impl error::Error) {
+        assert!(matches!(self.status, Status::None | Status::Failed));
+        if let Status::None = self.status {
+            self.output.extend_from_slice(b"[FAIL] ");
+            self.output.extend_from_slice(self.test_name.as_bytes());
+            self.output.extend_from_slice(b"\n");
+            self.status = Status::Failed;
+        }
         super::write_error(&mut self.output, error).expect("this should be infallible");
-        self.failed = true;
     }
 
     fn fail_wast(&mut self, error: &mut wast::Error) {
         error.set_path(&self.test_path);
-        self.fail(error)
+        self.fail(&*error)
     }
 
     fn fail_test_error(&mut self, error: &mut Error) {
         error.set_path(&self.test_path);
-        self.fail(error)
+        self.fail(&*error)
     }
 
     fn fail_wast_msg(&mut self, span: wast::token::Span, message: impl Into<String>) {
-        let mut error = (self.error_builder)(span, message.into());
-        self.fail_wast(&mut error)
+        self.fail_wast(&mut self.wast_error(span, message))
+    }
+
+    fn wast_error(&self, span: wast::token::Span, message: impl Into<String>) -> wast::Error {
+        let mut error = wast::Error::new(span, message.into());
+        error.set_text(self.wast_data);
+        error
     }
 
     pub(crate) fn run(&mut self, parsed_waft: Result<&mut Waft, &mut Error>) {
@@ -245,7 +269,7 @@ where
         for (_, span, encoded) in &modules {
             if let Err(e) = wasmparser::validate(&encoded) {
                 errors = true;
-                let wast = (self.error_builder)(*span, String::new());
+                let wast = self.wast_error(*span, String::new());
                 self.fail_test_error(&mut Error::InvalidModule(e, wast))
             }
         }
@@ -258,6 +282,7 @@ where
         for directive in &test.directives {
             let index = match directive {
                 WaftDirective::Module(_) => continue,
+                WaftDirective::Skip { .. } => return self.pass(),
                 WaftDirective::AssertGasWat { index, .. } => index,
                 WaftDirective::AssertStackWat { index, .. } => index,
                 WaftDirective::AssertInstrumentedWat { index, .. } => index,
@@ -287,41 +312,76 @@ where
                 Err(()) => continue,
             };
 
-            match directive {
+            let output = match directive {
                 WaftDirective::Module(_) => continue,
-                WaftDirective::AssertGasWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
+                WaftDirective::Skip { .. } => return self.pass(),
+                WaftDirective::AssertGasWat { .. } => {
+                    todo!()
                 }
-                WaftDirective::AssertStackWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
+                WaftDirective::AssertStackWat { .. } => {
+                    todo!()
                 }
-                WaftDirective::AssertInstrumentedWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
+                WaftDirective::AssertInstrumentedWat { .. } => {
+                    todo!()
                 }
-
-                WaftDirective::AssertIndirectedWat {
-                    expected_result, ..
-                } => match Indirector::analyze(&encoded).and_then(|i| i.indirect()) {
-                    Ok(result) => {
-                        if let Err(e) = wasmparser::validate(&result) {
-                            let wast = (self.error_builder)(*module_span, String::new());
-                            return self.fail_test_error(&mut Error::InvalidOutput(e, wast));
+                WaftDirective::AssertIndirectedWat { .. } => {
+                    match Indirector::analyze(&encoded).and_then(|i| i.indirect()) {
+                        Ok(result) => {
+                            if let Err(e) = wasmparser::validate(&result) {
+                                let wast = self.wast_error(*module_span, String::new());
+                                return self.fail_test_error(&mut Error::InvalidOutput(e, wast));
+                            }
+                            wasmprinter::print_bytes(result).unwrap()
                         }
-                    },
-                    Err(e) => return self.fail_test_error(&mut Error::Indirect(
-                        e,
-                        (self.error_builder)(*module_span, String::new()),
-                    )),
-                },
+                        Err(e) => {
+                            return self.fail_test_error(&mut Error::Indirect(
+                                e,
+                                self.wast_error(*module_span, String::new()),
+                            ))
+                        }
+                    }
+                }
             };
+
+            let mut insta = insta::Settings::new();
+            insta.set_prepend_module_to_snapshot(false);
+            insta.set_snapshot_path(
+                self.test_path
+                    .canonicalize()
+                    .expect("unsable to canonicalize the test path")
+                    .parent()
+                    .expect("could not get the parent directory of the test path")
+                    .join("snaps")
+            );
+            insta.set_snapshot_suffix(directive.display());
+            let (line, _) = directive.span().linecol_in(self.wast_data);
+            insta.bind(|| {
+                let _hook = std::panic::set_hook(Box::new(|_| {}));
+                let result = std::panic::catch_unwind(|| {
+                    insta::_macro_support::assert_snapshot(
+                        // Creates a ReferenceValue::Named variant
+                        insta::_macro_support::ReferenceValue::Named(Some(
+                            self.test_name.clone().into(),
+                        )),
+                        &output,
+                        env!("CARGO_MANIFEST_DIR"),
+                        "",
+                        &self.test_name,
+                        &self.test_path.display().to_string(),
+                        line as u32 + 1, // lines are 0-indexed here
+                        directive.display(),
+                    )
+                });
+                let _ = std::panic::take_hook();
+                match result {
+                    Ok(Ok(_)) => self.pass(),
+                    Ok(Err(error)) => return self.fail(&*error),
+                    Err(_panic) => return self.fail(Error::Insta),
+                }
+            });
         }
 
-        self.pass()
+        // Ensure we reported some sort of status.
+        assert!(matches!(self.status, Status::Passed | Status::Failed));
     }
 }

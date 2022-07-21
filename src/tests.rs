@@ -23,7 +23,7 @@ struct Test {
     path: PathBuf,
 }
 
-fn write_error(mut to: impl io::Write, error: &impl error::Error) -> std::io::Result<()> {
+fn write_error(mut to: impl io::Write, error: impl error::Error) -> std::io::Result<()> {
     writeln!(to, "error: {}", error)?;
     let mut source = error.source();
     while let Some(error) = source {
@@ -82,14 +82,10 @@ fn run() -> Result<(), Error> {
         let mut context = test::TestContext::new(
             test_name.display().to_string(),
             test_path.into(),
-            |span, message| {
-                let mut error = wast::Error::new(span, message);
-                error.set_text(&test.contents);
-                error
-            },
+            &test.contents,
         );
         context.run(parse_result);
-        if context.failed {
+        if context.failed() {
             failures += 1;
         }
         std::io::stderr()

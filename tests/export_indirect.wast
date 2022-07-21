@@ -37,6 +37,4 @@
   (; (elem (i32.const 0) funcref (item (global.get 0))) ;)
 )
 
-(assert_indirected (module
-
-))
+(snapshot_indirected)

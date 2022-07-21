@@ -302,9 +302,8 @@ impl<'a> Indirector<'a> {
                             new_section.encode(&mut output);
                         }
                         wp::Payload::StartSection { func, range: _ } => {
-                            dbg!(&self.index_map);
                             let new_section = we::StartSection {
-                                function_index: dbg!(self.trampoline_idx(dbg!(func))),
+                                function_index: self.trampoline_idx(func),
                             };
                             output.push(new_section.id());
                             new_section.encode(&mut output);
