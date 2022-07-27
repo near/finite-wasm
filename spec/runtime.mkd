@@ -90,8 +90,12 @@ The external invocation of an exported function is augmented with the following 
 0. Assert: Stack height is 0, before any stack operations occur.
 9. Before function invocation:
   * Charge gas for each local of `funcaddr` and execution of this `call` instruction;
-  * Require that the stack height required to execute `funcaddr` does not exceed `stacklimit`.
 
 **Note**: Instrumentation may implement this via the export indirection mechanism specified in an
 appendix, however implementations are required to _not_ utilize stack indirection if they implement
 this behaviour in some other manner, as this may lead to double-charging.
+
+## Other
+
+Every time the implicit stack is modified by pushing to or popping from it, the runtime must ensure
+that the resulting stack’s height does not exceed the `stacklimit` specified in the `F.module`.
