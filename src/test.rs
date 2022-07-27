@@ -1,39 +1,40 @@
 use std::error;
+use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use wast::parser::{self, Parse, ParseBuffer, Parser};
+use wast::token::Span;
 use wast::{kw, token};
 
 mod waft_kw {
     wast::custom_keyword!(assert_instrumented_gas);
     wast::custom_keyword!(assert_instrumented_stack);
     wast::custom_keyword!(assert_instrumented);
+
+    wast::custom_keyword!(snapshot_indirected);
+    wast::custom_keyword!(skip);
 }
 
 /// A wasm-finite-test description.
-#[derive(Debug)]
 pub(crate) struct Waft<'a> {
     pub(crate) directives: Vec<WaftDirective<'a>>,
 }
 
-#[derive(Debug)]
 pub(crate) enum WaftDirective<'a> {
     /// Define a module and make it available for instrumentation.
     Module(wast::core::Module<'a>),
     /// Instrument a specified module with gas only and compare the result.
-    AssertGasWat {
-        index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
-    },
+    AssertGasWat { index: Option<token::Index<'a>> },
     /// Instrument a specified module with stack only and compare the result.
-    AssertStackWat {
-        index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
-    },
+    AssertStackWat { index: Option<token::Index<'a>> },
     /// Instrument a specified module with all instrumentations and compare the result.
-    AssertInstrumentedWat {
+    AssertInstrumentedWat { index: Option<token::Index<'a>> },
+    /// Apply the indirection trasnformation and compare the output.
+    AssertIndirectedWat {
         index: Option<token::Index<'a>>,
-        expected_result: wast::Wat<'a>,
+        span: Span,
     },
+    /// Ignore this wast file
+    Skip { span: Span },
 }
 
 impl<'a> Parse<'a> for Waft<'a> {
@@ -51,6 +52,10 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
         let mut l = parser.lookahead1();
         if l.peek::<kw::module>() {
             Ok(WaftDirective::Module(parser.parse()?))
+        } else if l.peek::<waft_kw::skip>() {
+            let kw = parser.parse::<waft_kw::skip>()?;
+            let _reason = parser.parse::<String>()?;
+            Ok(WaftDirective::Skip { span: kw.0 })
         } else if l.peek::<waft_kw::assert_instrumented_gas>() {
             parser.parse::<waft_kw::assert_instrumented_gas>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
@@ -58,11 +63,7 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertGasWat {
-                index,
-                expected_result,
-            })
+            Ok(WaftDirective::AssertGasWat { index })
         } else if l.peek::<waft_kw::assert_instrumented_stack>() {
             parser.parse::<waft_kw::assert_instrumented_stack>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
@@ -70,11 +71,7 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertStackWat {
-                index,
-                expected_result,
-            })
+            Ok(WaftDirective::AssertStackWat { index })
         } else if l.peek::<waft_kw::assert_instrumented>() {
             parser.parse::<waft_kw::assert_instrumented>()?;
             let index = if parser.lookahead1().peek::<token::Index>() {
@@ -82,14 +79,102 @@ impl<'a> Parse<'a> for WaftDirective<'a> {
             } else {
                 None
             };
-            let expected_result = parser.parse()?;
-            Ok(WaftDirective::AssertInstrumentedWat {
-                index,
-                expected_result,
-            })
+            Ok(WaftDirective::AssertInstrumentedWat { index })
+        } else if l.peek::<waft_kw::snapshot_indirected>() {
+            let kw = parser.parse::<waft_kw::snapshot_indirected>()?;
+            let index = if parser.lookahead1().peek::<token::Index>() {
+                Some(parser.parse::<token::Index>()?)
+            } else {
+                None
+            };
+            Ok(WaftDirective::AssertIndirectedWat { index, span: kw.0 })
         } else {
             Err(l.error())
         }
+    }
+}
+
+impl WaftDirective<'_> {
+    fn span(&self) -> Span {
+        match self {
+            WaftDirective::Module(m) => m.span,
+            WaftDirective::Skip { span } => *span,
+            WaftDirective::AssertGasWat { .. } => todo!(),
+            WaftDirective::AssertStackWat { .. } => todo!(),
+            WaftDirective::AssertInstrumentedWat { .. } => todo!(),
+            WaftDirective::AssertIndirectedWat { span, .. } => *span,
+        }
+    }
+}
+
+#[derive(Debug)]
+pub(crate) struct DiffError {
+    diff: Vec<diff::Result<String>>,
+    path: Option<PathBuf>,
+}
+
+impl DiffError {
+    fn diff(old: &str, new: &str) -> Option<Self> {
+        if old == new {
+            return None;
+        }
+        let result = diff::lines(old, new);
+        if result.is_empty() {
+            None
+        } else {
+            let diff = result
+                .into_iter()
+                .filter_map(|s| {
+                    Some(match s {
+                        diff::Result::Left(l) => diff::Result::Left(l.into()),
+                        diff::Result::Right(r) => diff::Result::Right(r.into()),
+                        diff::Result::Both(l, r) if l != r => {
+                            diff::Result::Both(l.into(), r.into())
+                        }
+                        diff::Result::Both(_, _) => return None,
+                    })
+                })
+                .collect();
+            Some(Self { diff, path: None })
+        }
+    }
+    fn with_path(self, path: PathBuf) -> Self {
+        Self {
+            diff: self.diff,
+            path: Some(path),
+        }
+    }
+}
+impl std::error::Error for DiffError {}
+impl std::fmt::Display for DiffError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        if let Some(path) = &self.path {
+            f.write_fmt(format_args!(
+                "non-empty differential against {}",
+                path.display()
+            ))?;
+        } else {
+            f.write_str("non-empty differential")?;
+        }
+        for line in &self.diff {
+            match line {
+                diff::Result::Left(l) => {
+                    f.write_str("\n      - ")?;
+                    f.write_str(&l)?;
+                }
+                diff::Result::Right(r) => {
+                    f.write_str("\n      + ")?;
+                    f.write_str(&r)?;
+                }
+                diff::Result::Both(l, r) => {
+                    f.write_str("\n      - ")?;
+                    f.write_str(&l)?;
+                    f.write_str("\n      + ")?;
+                    f.write_str(&r)?;
+                }
+            }
+        }
+        f.write_str("\n")
     }
 }
 
@@ -104,15 +189,40 @@ pub(crate) enum Error {
     NewParseBuffer(#[source] wast::Error),
     #[error("test file is not a valid wasm-finite test file")]
     ParseWaft(#[source] wast::Error),
+    #[error("input module is invalid {1}")]
+    InvalidModule(#[source] wasmparser::BinaryReaderError, wast::Error),
+    #[error("output module is invalid {1}")]
+    InvalidOutput(#[source] wasmparser::BinaryReaderError, wast::Error),
+
+    #[error("could not open the snapshot file {1:?}")]
+    OpenSnap(#[source] std::io::Error, PathBuf),
+    #[error("could not read the snapshot file {1:?}")]
+    ReadSnap(#[source] std::io::Error, PathBuf),
+    #[error("could not truncate the snapshot file {1:?}")]
+    TruncateSnap(#[source] std::io::Error, PathBuf),
+    #[error("could not seek the snapshot file {1:?}")]
+    SeekSnap(#[source] std::io::Error, PathBuf),
+    #[error("could not write the snapshot file {1:?}")]
+    WriteSnap(#[source] std::io::Error, PathBuf),
+    #[error("snapshot comparison failed {1}")]
+    DiffSnap(#[source] DiffError, wast::Error),
 }
 
 impl Error {
     pub(crate) fn set_path(&mut self, path: &Path) {
         match self {
-            Error::ReadTestContents(_, _) => {}
-            Error::FromUtf8(_, _) => {}
+            Error::ReadTestContents(_, _)
+            | Error::FromUtf8(_, _)
+            | Error::OpenSnap(_, _)
+            | Error::SeekSnap(_, _)
+            | Error::TruncateSnap(_, _)
+            | Error::ReadSnap(_, _)
+            | Error::WriteSnap(_, _) => {}
             Error::NewParseBuffer(s) => s.set_path(path),
             Error::ParseWaft(s) => s.set_path(path),
+            Error::InvalidModule(_, s) => s.set_path(path),
+            Error::InvalidOutput(_, s) => s.set_path(path),
+            Error::DiffSnap(_, s) => s.set_path(path),
         }
     }
 }
@@ -134,59 +244,73 @@ pub(crate) fn parse<'a>(buffer: &'a ParseBuffer) -> Result<Waft<'a>, Error> {
     Ok(parsed)
 }
 
-pub(crate) struct TestContext<WastErrorBuilder> {
-    test_name: String,
-    test_path: PathBuf,
-    pub(crate) output: Vec<u8>,
-    pub(crate) failed: bool,
-    error_builder: WastErrorBuilder,
+#[derive(PartialEq)]
+enum Status {
+    None,
+    Passed,
+    Failed,
 }
 
-impl<WastErrorBuilder> TestContext<WastErrorBuilder>
-where
-    WastErrorBuilder: Fn(wast::token::Span, String) -> wast::Error,
-{
-    pub(crate) fn new(
-        test_name: String,
-        test_path: PathBuf,
-        error_builder: WastErrorBuilder,
-    ) -> Self {
+pub(crate) struct TestContext<'a> {
+    test_name: String,
+    test_path: PathBuf,
+    wast_data: &'a str,
+    pub(crate) output: Vec<u8>,
+    status: Status,
+}
+
+impl<'a> TestContext<'a> {
+    pub(crate) fn new(test_name: String, test_path: PathBuf, wast_data: &'a str) -> Self {
         Self {
             test_name,
             test_path,
+            wast_data,
             output: vec![],
-            failed: false,
-            error_builder,
+            status: Status::None,
         }
     }
 
+    pub(crate) fn failed(&self) -> bool {
+        self.status == Status::Failed
+    }
+
     fn pass(&mut self) {
+        assert!(self.status == Status::None);
+        self.status = Status::Passed;
         self.output.extend_from_slice(b"[PASS] ");
         self.output.extend_from_slice(self.test_name.as_bytes());
         self.output.extend_from_slice(b"\n");
     }
 
-    fn fail(&mut self, error: &impl error::Error) {
-        self.output.extend_from_slice(b"[FAIL] ");
-        self.output.extend_from_slice(self.test_name.as_bytes());
-        self.output.extend_from_slice(b"\n");
+    fn fail(&mut self, error: impl error::Error) {
+        assert!([Status::None, Status::Failed].contains(&self.status));
+        if let Status::None = self.status {
+            self.output.extend_from_slice(b"[FAIL] ");
+            self.output.extend_from_slice(self.test_name.as_bytes());
+            self.output.extend_from_slice(b"\n");
+            self.status = Status::Failed;
+        }
         super::write_error(&mut self.output, error).expect("this should be infallible");
-        self.failed = true;
     }
 
     fn fail_wast(&mut self, error: &mut wast::Error) {
         error.set_path(&self.test_path);
-        self.fail(error)
+        self.fail(&*error)
     }
 
     fn fail_test_error(&mut self, error: &mut Error) {
         error.set_path(&self.test_path);
-        self.fail(error)
+        self.fail(&*error)
     }
 
     fn fail_wast_msg(&mut self, span: wast::token::Span, message: impl Into<String>) {
-        let mut error = (self.error_builder)(span, message.into());
-        self.fail_wast(&mut error)
+        self.fail_wast(&mut self.wast_error(span, message))
+    }
+
+    fn wast_error(&self, span: wast::token::Span, message: impl Into<String>) -> wast::Error {
+        let mut error = wast::Error::new(span, message.into());
+        error.set_text(self.wast_data);
+        error
     }
 
     pub(crate) fn run(&mut self, parsed_waft: Result<&mut Waft, &mut Error>) {
@@ -195,27 +319,43 @@ where
             Err(error) => return self.fail_test_error(error),
         };
 
-        // First, collect and encode to wasm binary encoding all the input modules.
+        // First, collect, encode to wasm binary encoding all the input modules. Then validate all
+        // inputs unconditionally (to ensure all invalid test cases are caught early.)
         let mut modules = Vec::new();
+        let mut errors = false;
         for directive in &mut test.directives {
-            match directive {
-                WaftDirective::Module(module) => match module.encode() {
-                    Ok(encoded) => modules.push((module.id, encoded)),
-                    Err(error) => return self.fail(&error),
-                },
-                WaftDirective::AssertInstrumentedWat { .. }
-                | WaftDirective::AssertStackWat { .. }
-                | WaftDirective::AssertGasWat { .. } => {}
+            if let WaftDirective::Module(module) = directive {
+                let id = module.id.clone();
+                match module.encode() {
+                    Ok(encoded) => modules.push((id, module.span, encoded)),
+                    Err(error) => {
+                        errors = true;
+                        self.fail_wast_msg(error.span(), error.message());
+                    }
+                }
             }
+        }
+        for (_, span, encoded) in &modules {
+            if let Err(e) = wasmparser::validate(&encoded) {
+                errors = true;
+                let wast = self.wast_error(*span, String::new());
+                self.fail_test_error(&mut Error::InvalidModule(e, wast))
+            }
+        }
+        if errors {
+            // Module indices are probably all invalid now. Don’t actually execute any directives.
+            return;
         }
 
         // Now, execute all the assertions
-        for directive in &test.directives {
+        for (directive_num, directive) in test.directives.iter().enumerate() {
             let index = match directive {
                 WaftDirective::Module(_) => continue,
+                WaftDirective::Skip { .. } => return self.pass(),
                 WaftDirective::AssertGasWat { index, .. } => index,
                 WaftDirective::AssertStackWat { index, .. } => index,
                 WaftDirective::AssertInstrumentedWat { index, .. } => index,
+                WaftDirective::AssertIndirectedWat { index, .. } => index,
             };
             let module = match *index {
                 None => modules.get(0).ok_or_else(|| {
@@ -235,33 +375,84 @@ where
                         )
                     })
                 }
-            }
-            .map(|m| &m.1);
-            let _module = match module {
+            };
+            let (_module_id, module_span, encoded) = match module {
                 Ok(m) => m,
-                Err(()) => return,
+                Err(()) => continue,
             };
 
-            match directive {
+            let output = match directive {
                 WaftDirective::Module(_) => continue,
-                WaftDirective::AssertGasWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
+                WaftDirective::Skip { .. } => return self.pass(),
+                WaftDirective::AssertGasWat { .. } => {
+                    todo!()
                 }
-                WaftDirective::AssertStackWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
+                WaftDirective::AssertStackWat { .. } => {
+                    todo!()
                 }
-                WaftDirective::AssertInstrumentedWat {
-                    expected_result, ..
-                } => {
-                    drop(expected_result);
+                WaftDirective::AssertInstrumentedWat { .. } => {
+                    todo!()
+                }
+                WaftDirective::AssertIndirectedWat { .. } => {
+                    todo!()
                 }
             };
+            match self.compare_snapshot(&directive, directive_num, output) {
+                Ok(()) => self.pass(),
+                Err(mut e) => self.fail_test_error(&mut e),
+            }
         }
 
-        self.pass()
+        // Ensure we reported some sort of status.
+        assert!(matches!(self.status, Status::Passed | Status::Failed));
+    }
+
+    fn compare_snapshot(
+        &mut self,
+        directive: &WaftDirective,
+        index: usize,
+        directive_output: String,
+    ) -> Result<(), Error> {
+        let should_update = std::env::var_os("SNAP_UPDATE").is_some();
+        let snaps_dir = self.test_path.parent().unwrap().join("snaps");
+        let snap_filename = format!("{}@{}.snap", self.test_name, index);
+        let snap_path = snaps_dir.join(snap_filename);
+        let mut snap_file = std::fs::OpenOptions::new()
+            .create(true)
+            .read(true)
+            .write(true)
+            .open(&snap_path)
+            .map_err(|e| Error::OpenSnap(e, snap_path.clone()))?;
+        let mut snap_contents = String::with_capacity(1024);
+        snap_file
+            .read_to_string(&mut snap_contents)
+            .map_err(|e| Error::ReadSnap(e, snap_path.clone()))?;
+        if let Some(error) = DiffError::diff(&snap_contents, &directive_output) {
+            if !should_update {
+                self.output.extend_from_slice(
+                    "note: run with SNAP_UPDATE environment variable to update".as_bytes(),
+                );
+                Err(Error::DiffSnap(
+                    error.with_path(snap_path),
+                    self.wast_error(directive.span(), String::new()),
+                ))
+            } else {
+                snap_file
+                    .set_len(0)
+                    .map_err(|e| Error::TruncateSnap(e, snap_path.clone()))?;
+                // TRICKY: If we don’t seek, the file will be filled with 0-bytes up to the
+                // current position (we read the file’s contents just now!) before the data is
+                // written...
+                snap_file
+                    .seek(SeekFrom::Start(0))
+                    .map_err(|e| Error::SeekSnap(e, snap_path.clone()))?;
+                snap_file
+                    .write_all(directive_output.as_bytes())
+                    .map_err(|e| Error::WriteSnap(e, snap_path))?;
+                Ok(())
+            }
+        } else {
+            Ok(())
+        }
     }
 }
