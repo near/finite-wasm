@@ -1,17 +1,15 @@
-# [Execution](https://www.w3.org/TR/wasm-core-1/#execution%E2%91%A1)
+# [Execution]()
 
 The specific mechanism to instrument a WebAssembly module is implementation-specific. This section
-describes the extensions to the [execution
-semantics](https://www.w3.org/TR/wasm-core-1/#execution%E2%91%A1) of an instrumented WebAssembly
-module.
+describes the extensions to the [execution semantics]() of an instrumented WebAssembly module.
 
 The specification extensions allow for various implementation strategies, including but not limited
 to: transforming the WASM code to VM agnostic instrumented WASM code; built-in accounting in the VM
 implementation itself; and others.
 
-## [Runtime Structure](https://www.w3.org/TR/wasm-core-1/#runtime-structure%E2%91%A0)
+## [Runtime Structure]()
 
-### [Module Instances](https://www.w3.org/TR/wasm-core-1/#module-instances%E2%91%A0)
+### [Module Instances]()
 
 The `moduleinst` record is extended with the following entries:
 
@@ -20,7 +18,7 @@ The `moduleinst` record is extended with the following entries:
 
 These additional entries may be emulated via instances of mutable global variables, if necessary.
 
-### [Stack](https://www.w3.org/TR/wasm-core-1/#stack%E2%91%A0)
+### [Stack]()
 
 “Stack height” is the height of the implicit stack. Stack height is a sum of:
 
@@ -38,33 +36,46 @@ some considerations to make when deciding on a function to compute the size of a
   `activation.frame.val` should be considered, as they may increase the size of the activation
   frames on the stack significantly.
 
+
 ## [Instructions]()
 
-Executing any individual instruction decreases the `F.module.gas` by a some predetermined amount
-`fee(insn)`. If subtracting the `fee(insn)` would cause `F.module.gas` to decrease below zero, or
-to overflow, `F.module.gas` is set to 0 and the execution `trap`s.
+At each step before the WebAssembly instructions are reduced, the embedder-provided `fee` function
+shall match a sequence of instructions and compute the gas price to execute the step. Each fee
+decreases the `F.module.gas`. If subtracting from `f.module.gas` would cause the remaining gas pool
+to decrease below zero, or to overflow, `F.module.gas` is set to 0 and the execution `trap`s.
 
-**Note:** Specifying the mapping between `insn` and `fee(insn)` is a responsibility of the embedder
-and is out of scope for this specification.
+For the given matched sequence of instructions, once the match occurs, the sequence is fully
+evaluated before the fee matching occurs again.
 
-**Note:** Instructions may decrease gas based on the operands the instruction would consume. This
-is particularly useful for bulk instructions such as `memory.grow`.
+**Note:** Specifying `fee` mapping is a responsibility of the embedder and is out of scope for this
+specification.
+
+**Note:** `fee` may match the operands the instruction would consume. This is particularly useful
+for bulk instructions such as `memory.fill`. For example `fee((i32.const d) val (i32.const n)
+memory.fill)` may take into the account that `n` bytes worth of memory would be written. Note that
+`memory.fill` produces another `memory.fill` with a shorter range as a result of the reduction:
+
+```
+𝑆; 𝐹 ; (i32.const 𝑑) val (i32.const 𝑛 + 1) memory.fill →
+𝑆; 𝐹 ; (i32.const 𝑑) val (i32.store8 {offset 0, align 0})
+(i32.const 𝑑 + 1) val (i32.const 𝑛) memory.fill
+```
+
+However, since the fee for the original `memory.fill` was applied already, the execution of this
+function and its reductions are not applied repeatedly until the entire sequence completes
+reducing and executing.
+
 
 ### [Function calls]()
 
 #### [Invocation of function address a]()
 
-Executing an instruction that invokes function instances must additionally:
+**Note**: Executing an instruction that invokes function instances must:
 
-* Decrease the `F.module.gas` by `fee(t.const 0)` for each function local in `f.code.locals`. This
-  charges the gas fees necessary to produce a list of 0-values and to push the function activation
-  frame `F` onto the stack. If subtracting the fee would cause `F.module.gas` to decrease below
+* Decrease the `F.module.gas` by `fee(frame𝑛 {frame} instr * end)`. This gives an opportunity to
+  charge the gas fees necessary to construct the frame with a list of 0-values and to push it onto
+  the native stack, if any. If subtracting the fee would cause `F.module.gas` to decrease below
   zero or to overflow, `F.module.gas` is set to 0 and the execution `trap`s.
-
-<!--
-TODO: should this have a separate pseudo-instruction for this instead of piggy-backing on
-`t.const`?
--->
 
 <!--
 TODO:
@@ -74,7 +85,7 @@ TODO:
 Should we charge fees before calling out to a host function? Should this be a part of the spec?
 -->
 
-## [Modules](https://www.w3.org/TR/wasm-core-1/#modules%E2%91%A5)
+## [Modules]()
 
 ### [Instantiation]()
 
@@ -82,7 +93,7 @@ Should we charge fees before calling out to a host function? Should this be a pa
 module allocation. This must occur before any instructions are evaluated as part of the
 instantiation process.
 
-### [Invocation](https://www.w3.org/TR/wasm-core-1/#invocation%E2%91%A1)
+### [Invocation]()
 
 The external invocation of an exported function is augmented with the following operations:
 
