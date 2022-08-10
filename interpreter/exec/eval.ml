@@ -57,6 +57,8 @@ type code = value stack * admin_instr list
 and admin_instr = admin_instr' phrase
 and admin_instr' =
   | Plain of instr'
+  (* A plain instruction that has been produced as a result of a reduction rule *)
+  | ReducedPlain of instr'
   | Refer of ref_
   | Invoke of func_inst
   | Trapping of string
@@ -150,7 +152,7 @@ let rec step (c : config) : config =
   let e = List.hd es in
   let vs', es' =
     match e.it, vs with
-    | Plain e', vs ->
+    | Plain e', vs | ReducedPlain e', vs ->
       (match e', vs with
       | Unreachable, vs ->
         vs, [Trapping "unreachable executed" @@ e.at]
@@ -173,9 +175,9 @@ let rec step (c : config) : config =
 
       | If (bt, es1, es2), Num (I32 i) :: vs' ->
         if i = 0l then
-          vs', [Plain (Block (bt, es2)) @@ e.at]
+          vs', [ReducedPlain (Block (bt, es2)) @@ e.at]
         else
-          vs', [Plain (Block (bt, es1)) @@ e.at]
+          vs', [ReducedPlain (Block (bt, es1)) @@ e.at]
 
       | Br x, vs ->
         [], [Breaking (x.it, vs) @@ e.at]
@@ -184,13 +186,13 @@ let rec step (c : config) : config =
         if i = 0l then
           vs', []
         else
-          vs', [Plain (Br x) @@ e.at]
+          vs', [ReducedPlain (Br x) @@ e.at]
 
       | BrTable (xs, x), Num (I32 i) :: vs' ->
         if I32.ge_u i (Lib.List32.length xs) then
-          vs', [Plain (Br x) @@ e.at]
+          vs', [ReducedPlain (Br x) @@ e.at]
         else
-          vs', [Plain (Br (Lib.List32.nth xs i)) @@ e.at]
+          vs', [ReducedPlain (Br (Lib.List32.nth xs i)) @@ e.at]
 
       | Return, vs ->
         [], [Returning vs @@ e.at]
@@ -260,13 +262,13 @@ let rec step (c : config) : config =
         else
           let _ = assert (I32.lt_u i 0xffff_ffffl) in
           vs', List.map (at e.at) [
-            Plain (Const (I32 i @@ e.at));
+            ReducedPlain (Const (I32 i @@ e.at));
             Refer r;
-            Plain (TableSet x);
-            Plain (Const (I32 (I32.add i 1l) @@ e.at));
+            ReducedPlain (TableSet x);
+            ReducedPlain (Const (I32 (I32.add i 1l) @@ e.at));
             Refer r;
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (TableFill x);
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (TableFill x);
           ]
 
       | TableCopy (x, y), Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
@@ -276,25 +278,25 @@ let rec step (c : config) : config =
           vs', []
         else if I32.le_u d s then
           vs', List.map (at e.at) [
-            Plain (Const (I32 d @@ e.at));
-            Plain (Const (I32 s @@ e.at));
-            Plain (TableGet y);
-            Plain (TableSet x);
-            Plain (Const (I32 (I32.add d 1l) @@ e.at));
-            Plain (Const (I32 (I32.add s 1l) @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (TableCopy (x, y));
+            ReducedPlain (Const (I32 d @@ e.at));
+            ReducedPlain (Const (I32 s @@ e.at));
+            ReducedPlain (TableGet y);
+            ReducedPlain (TableSet x);
+            ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (TableCopy (x, y));
           ]
         else (* d > s *)
           vs', List.map (at e.at) [
-            Plain (Const (I32 (I32.add d 1l) @@ e.at));
-            Plain (Const (I32 (I32.add s 1l) @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (TableCopy (x, y));
-            Plain (Const (I32 d @@ e.at));
-            Plain (Const (I32 s @@ e.at));
-            Plain (TableGet y);
-            Plain (TableSet x);
+            ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (TableCopy (x, y));
+            ReducedPlain (Const (I32 d @@ e.at));
+            ReducedPlain (Const (I32 s @@ e.at));
+            ReducedPlain (TableGet y);
+            ReducedPlain (TableSet x);
           ]
 
       | TableInit (x, y), Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
@@ -305,13 +307,13 @@ let rec step (c : config) : config =
         else
           let seg = elem frame.inst y in
           vs', List.map (at e.at) [
-            Plain (Const (I32 d @@ e.at));
+            ReducedPlain (Const (I32 d @@ e.at));
             Refer (Elem.load seg s);
-            Plain (TableSet x);
-            Plain (Const (I32 (I32.add d 1l) @@ e.at));
-            Plain (Const (I32 (I32.add s 1l) @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (TableInit (x, y));
+            ReducedPlain (TableSet x);
+            ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (TableInit (x, y));
           ]
 
       | ElemDrop x, vs ->
@@ -418,14 +420,14 @@ let rec step (c : config) : config =
           vs', []
         else
           vs', List.map (at e.at) [
-            Plain (Const (I32 i @@ e.at));
-            Plain (Const (k @@ e.at));
-            Plain (Store
+            ReducedPlain (Const (I32 i @@ e.at));
+            ReducedPlain (Const (k @@ e.at));
+            ReducedPlain (Store
               {ty = I32Type; align = 0; offset = 0l; pack = Some Pack8});
-            Plain (Const (I32 (I32.add i 1l) @@ e.at));
-            Plain (Const (k @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (MemoryFill);
+            ReducedPlain (Const (I32 (I32.add i 1l) @@ e.at));
+            ReducedPlain (Const (k @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (MemoryFill);
           ]
 
       | MemoryCopy, Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
@@ -435,28 +437,28 @@ let rec step (c : config) : config =
           vs', []
         else if I32.le_u d s then
           vs', List.map (at e.at) [
-            Plain (Const (I32 d @@ e.at));
-            Plain (Const (I32 s @@ e.at));
-            Plain (Load
+            ReducedPlain (Const (I32 d @@ e.at));
+            ReducedPlain (Const (I32 s @@ e.at));
+            ReducedPlain (Load
               {ty = I32Type; align = 0; offset = 0l; pack = Some (Pack8, ZX)});
-            Plain (Store
+            ReducedPlain (Store
               {ty = I32Type; align = 0; offset = 0l; pack = Some Pack8});
-            Plain (Const (I32 (I32.add d 1l) @@ e.at));
-            Plain (Const (I32 (I32.add s 1l) @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (MemoryCopy);
+            ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (MemoryCopy);
           ]
         else (* d > s *)
           vs', List.map (at e.at) [
-            Plain (Const (I32 (I32.add d 1l) @@ e.at));
-            Plain (Const (I32 (I32.add s 1l) @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (MemoryCopy);
-            Plain (Const (I32 d @@ e.at));
-            Plain (Const (I32 s @@ e.at));
-            Plain (Load
+            ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (MemoryCopy);
+            ReducedPlain (Const (I32 d @@ e.at));
+            ReducedPlain (Const (I32 s @@ e.at));
+            ReducedPlain (Load
               {ty = I32Type; align = 0; offset = 0l; pack = Some (Pack8, ZX)});
-            Plain (Store
+            ReducedPlain (Store
               {ty = I32Type; align = 0; offset = 0l; pack = Some Pack8});
           ]
 
@@ -470,14 +472,14 @@ let rec step (c : config) : config =
           let a = I64_convert.extend_i32_u s in
           let b = Data.load seg a in
           vs', List.map (at e.at) [
-            Plain (Const (I32 d @@ e.at));
-            Plain (Const (I32 (I32.of_int_u (Char.code b)) @@ e.at));
-            Plain (Store
+            ReducedPlain (Const (I32 d @@ e.at));
+            ReducedPlain (Const (I32 (I32.of_int_u (Char.code b)) @@ e.at));
+            ReducedPlain (Store
               {ty = I32Type; align = 0; offset = 0l; pack = Some Pack8});
-            Plain (Const (I32 (I32.add d 1l) @@ e.at));
-            Plain (Const (I32 (I32.add s 1l) @@ e.at));
-            Plain (Const (I32 (I32.sub n 1l) @@ e.at));
-            Plain (MemoryInit x);
+            ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
+            ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
+            ReducedPlain (MemoryInit x);
           ]
 
       | DataDrop x, vs ->
