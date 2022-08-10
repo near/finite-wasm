@@ -26,6 +26,10 @@ let argspec = Arg.align
     " write module to file";
   "-b", Arg.Int (fun n -> Flags.budget := n),
     " configure call depth budget (default is " ^ string_of_int !Flags.budget ^ ")";
+  "-g", Arg.String (fun n -> Flags.gas := Int64.of_string n),
+    " configure the gas pool size";
+  "-s", Arg.String (fun n -> Flags.stack_limit := Int32.of_string n),
+    " configure the stack limit";
   "-w", Arg.Int (fun n -> Flags.width := n),
     " configure output width (default is " ^ string_of_int !Flags.width ^ ")";
   "-s", Arg.Set Flags.print_sig, " show module signatures";

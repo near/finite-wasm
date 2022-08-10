@@ -669,13 +669,15 @@ let rec eval (c : config) : value stack =
 (* Functions & Constants *)
 
 let invoke (func : func_inst) (vs : value list) : value list =
-  let at = match func with Func.AstFunc (_, _, f) -> f.at | _ -> no_region in
+  let inst, at = match func with
+    | Func.AstFunc (_, inst, f) -> !inst, f.at
+    | _ -> (new_module_inst !Flags.gas !Flags.stack_limit), no_region in
   let FuncType (ins, out) = Func.type_of func in
   if List.length vs <> List.length ins then
     Crash.error at "wrong number of arguments";
   if not (List.for_all2 (fun v -> (=) (type_of_value v)) vs ins) then
     Crash.error at "wrong types of arguments";
-  let c = config empty_module_inst (List.rev vs) [Invoke func @@ at] in
+  let c = config inst (List.rev vs) [Invoke func @@ at] in
   try List.rev (eval c) with Stack_overflow ->
     Exhaustion.error at "call stack exhausted"
 
@@ -784,8 +786,9 @@ let init (m : module_) (exts : extern list) : module_inst =
   in
   if List.length exts <> List.length imports then
     Link.error m.at "wrong number of imports provided for initialisation";
+  let new_mod_inst = new_module_inst !Flags.gas !Flags.stack_limit in
   let inst0 =
-    { (List.fold_right2 (add_import m) exts imports empty_module_inst) with
+    { (List.fold_right2 (add_import m) exts imports new_mod_inst) with
       types = List.map (fun type_ -> type_.it) types }
   in
   let fs = List.map (create_func inst0) funcs in
