@@ -147,8 +147,50 @@ let elem_oob frame x i n =
   I64.gt_u (I64.add (I64_convert.extend_i32_u i) (I64_convert.extend_i32_u n))
     (I64_convert.extend_i32_u (Elem.size (elem frame.inst x)))
 
+let stack_instr_size (i : admin_instr) : int32 =
+  match i.it with
+    | Label _ -> 1l
+    | Frame _ -> 1l
+    | _ -> 0l
+
+let stack_value_size (v: value) : int32 = 1l
+
+let gas_fee (i: admin_instr) (vals: value list) : int64 =
+  match i.it with
+    | Plain _ -> 1L
+    | Invoke func -> (match func with
+      | Func.AstFunc (FuncType (args, _), _, fn) ->
+        let arg_count = Int64.of_int (List.length args) in
+        let local_count = Int64.of_int (List.length fn.it.locals) in
+        Int64.add arg_count local_count
+      | Func.HostFunc (_, _) -> 0L
+    )
+    (* Administrative or derived and already accounted for *)
+    | ReducedPlain _ -> 0L
+    | Refer _ -> 0L
+    | Trapping _ -> 0L
+    | Returning _ -> 0L
+    | Breaking _ -> 0L
+    | Label _ -> 0L
+    | Frame _ -> 0L
+
+let apply_fees (c: config) : config =
+  let {frame; code = vs, es; _} = c
+  in let { gas; stack_limit; _ } = frame.inst
+  in let e = List.hd es
+  in let stack_sizes = List.append (List.map stack_value_size vs) (List.map stack_instr_size es)
+  in let stack_height = List.fold_left (Int32.add) 0l stack_sizes
+  in let e_cost = gas_fee e vs
+  in if (Int64.unsigned_compare e_cost !gas) > 0 then
+    Exhaustion.error e.at "gas pool is empty"
+  else if (Int32.unsigned_compare stack_height !stack_limit) > 0 then
+    Exhaustion.error e.at "stack exhausted"
+  else if (Int64.unsigned_compare e_cost 0L) != 0 then
+    gas := Int64.sub !gas e_cost;
+    c
+
 let rec step (c : config) : config =
-  let {frame; code = vs, es; _} = c in
+  let {frame; code = vs, es; _} = apply_fees c in
   let e = List.hd es in
   let vs', es' =
     match e.it, vs with
