@@ -257,6 +257,8 @@ pub(crate) struct TestContext<'a> {
     wast_data: &'a str,
     pub(crate) output: Vec<u8>,
     status: Status,
+
+    modules: Vec<(Option<wast::token::Id<'a>>, Span, Vec<u8>)>,
 }
 
 impl<'a> TestContext<'a> {
@@ -267,6 +269,7 @@ impl<'a> TestContext<'a> {
             wast_data,
             output: vec![],
             status: Status::None,
+            modules: vec![],
         }
     }
 
@@ -313,21 +316,19 @@ impl<'a> TestContext<'a> {
         error
     }
 
-    pub(crate) fn run(&mut self, parsed_waft: Result<&mut Waft, &mut Error>) {
+    pub(crate) fn run(&mut self, parsed_waft: Result<&mut Waft<'a>, &mut Error>) {
         let test = match parsed_waft {
             Ok(waft) => waft,
             Err(error) => return self.fail_test_error(error),
         };
 
-        // First, collect, encode to wasm binary encoding all the input modules. Then validate all
-        // inputs unconditionally (to ensure all invalid test cases are caught early.)
-        let mut modules = Vec::new();
+        // Collect & encode to wasm binary encoding all the input modules.
         let mut errors = false;
         for directive in &mut test.directives {
             if let WaftDirective::Module(module) = directive {
                 let id = module.id.clone();
                 match module.encode() {
-                    Ok(encoded) => modules.push((id, module.span, encoded)),
+                    Ok(encoded) => self.modules.push((id, module.span, encoded)),
                     Err(error) => {
                         errors = true;
                         self.fail_wast_msg(error.span(), error.message());
@@ -335,76 +336,89 @@ impl<'a> TestContext<'a> {
                 }
             }
         }
-        for (_, span, encoded) in &modules {
-            if let Err(e) = wasmparser::validate(&encoded) {
-                errors = true;
-                let wast = self.wast_error(*span, String::new());
-                self.fail_test_error(&mut Error::InvalidModule(e, wast))
-            }
-        }
-        if errors {
-            // Module indices are probably all invalid now. Don’t actually execute any directives.
+
+        // Ensure all invalid test cases are caught early and don't become red-herrings.
+        if self.validate_modules().is_err() || errors {
+            // Module indices may be all invalid now. Don’t actually execute any directives.
             return;
         }
 
-        // Now, execute all the assertions
         for (directive_num, directive) in test.directives.iter().enumerate() {
-            let index = match directive {
-                WaftDirective::Module(_) => continue,
-                WaftDirective::Skip { .. } => return self.pass(),
-                WaftDirective::AssertGasWat { index, .. } => index,
-                WaftDirective::AssertStackWat { index, .. } => index,
-                WaftDirective::AssertInstrumentedWat { index, .. } => index,
-                WaftDirective::AssertIndirectedWat { index, .. } => index,
-            };
-            let module = match *index {
-                None => modules.get(0).ok_or_else(|| {
-                    let span = wast::token::Span::from_offset(0);
-                    self.fail_wast_msg(span, "this file defines no input modules")
-                }),
-                Some(wast::token::Index::Num(num, span)) => {
-                    modules.get(num as usize).ok_or_else(|| {
-                        self.fail_wast_msg(span, format!("module {} is not defined", num))
-                    })
-                }
-                Some(wast::token::Index::Id(id)) => {
-                    modules.iter().find(|m| m.0 == Some(id)).ok_or_else(|| {
-                        self.fail_wast_msg(
-                            id.span(),
-                            format!("module {} is not defined", id.name()),
-                        )
-                    })
-                }
-            };
-            let (_module_id, module_span, encoded) = match module {
-                Ok(m) => m,
-                Err(()) => continue,
-            };
-
-            let output = match directive {
-                WaftDirective::Module(_) => continue,
-                WaftDirective::Skip { .. } => return self.pass(),
-                WaftDirective::AssertGasWat { .. } => {
-                    todo!()
-                }
-                WaftDirective::AssertStackWat { .. } => {
-                    todo!()
-                }
-                WaftDirective::AssertInstrumentedWat { .. } => {
-                    todo!()
-                }
-                WaftDirective::AssertIndirectedWat { .. } => {
-                    todo!()
-                }
-            };
-            match self.compare_snapshot(&directive, directive_num, output) {
-                Ok(()) => self.pass(),
-                Err(mut e) => self.fail_test_error(&mut e),
-            }
+            self.evaluate_directive(directive_num, directive)
         }
-
         // Ensure we reported some sort of status.
         assert!(matches!(self.status, Status::Passed | Status::Failed));
+    }
+
+    fn validate_modules(&mut self) -> Result<(), ()> {
+        let mut validation_errors = vec![];
+        for (_, span, encoded) in &self.modules {
+            if let Err(e) = wasmparser::validate(&encoded) {
+                let wast = self.wast_error(*span, String::new());
+                validation_errors.push(Error::InvalidModule(e, wast));
+            }
+        }
+        if !validation_errors.is_empty() {
+            for error in &mut validation_errors {
+                self.fail_test_error(error);
+            }
+            return Err(());
+        }
+        Ok(())
+    }
+
+    #[allow(unreachable_code, unused_variables)]
+    fn evaluate_directive(&mut self, directive_num: usize, directive: &WaftDirective) {
+        let index = match directive {
+            WaftDirective::Module(_) => return,
+            WaftDirective::Skip { .. } => return self.pass(),
+            WaftDirective::AssertGasWat { index, .. } => index,
+            WaftDirective::AssertStackWat { index, .. } => index,
+            WaftDirective::AssertInstrumentedWat { index, .. } => index,
+            WaftDirective::AssertIndirectedWat { index, .. } => index,
+        };
+        let (_module_id, module_span, encoded) = match *index {
+            None => match self.modules.get(0) {
+                Some(m) => m,
+                None => {
+                    let span = wast::token::Span::from_offset(0);
+                    return self.fail_wast_msg(span, "this file defines no input modules");
+                }
+            },
+            Some(wast::token::Index::Num(num, span)) => match self.modules.get(num as usize) {
+                Some(m) => m,
+                None => return self.fail_wast_msg(span, format!("module {} is not defined", num)),
+            },
+            Some(wast::token::Index::Id(i)) => match self.modules.iter().find(|m| m.0 == Some(i)) {
+                Some(m) => m,
+                None => {
+                    return self
+                        .fail_wast_msg(i.span(), format!("module {} is not defined", i.name()));
+                }
+            },
+        };
+
+        let output = match directive {
+            WaftDirective::Module(_) => return,
+            WaftDirective::Skip { .. } => return self.pass(),
+            WaftDirective::AssertGasWat { .. } => {
+                todo!()
+            }
+            WaftDirective::AssertStackWat { .. } => {
+                todo!()
+            }
+            WaftDirective::AssertInstrumentedWat { .. } => {
+                todo!()
+            }
+            WaftDirective::AssertIndirectedWat { .. } => {
+                todo!()
+            }
+        };
+
+        match self.compare_snapshot(&directive, directive_num, output) {
+            Ok(()) => self.pass(),
+            Err(mut e) => self.fail_test_error(&mut e),
+        }
     }
 
     fn compare_snapshot(
