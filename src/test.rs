@@ -1,5 +1,6 @@
 use std::error;
 use std::io::{Read, Seek, SeekFrom, Write};
+use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
 use wast::parser::{self, Parse, ParseBuffer, Parser};
 use wast::token::Span;
@@ -107,9 +108,16 @@ impl WaftDirective<'_> {
     }
 }
 
+#[derive(Debug, PartialEq)]
+enum Line {
+    Equal(String),
+    Delete(String),
+    Insert(String),
+}
+
 #[derive(Debug)]
 pub(crate) struct DiffError {
-    diff: Vec<diff::Result<String>>,
+    diff: Vec<Line>,
     path: Option<PathBuf>,
 }
 
@@ -118,23 +126,18 @@ impl DiffError {
         if old == new {
             return None;
         }
-        let result = diff::lines(old, new);
-        if result.is_empty() {
+        let result = dissimilar::diff(old, new);
+        let diff = result
+            .into_iter()
+            .map(|s| match s {
+                dissimilar::Chunk::Delete(s) => Line::Delete(s.into()),
+                dissimilar::Chunk::Insert(s) => Line::Insert(s.into()),
+                dissimilar::Chunk::Equal(s) => Line::Equal(s.into()),
+            })
+            .collect::<Vec<_>>();
+        if diff.iter().all(|l| matches!(l, Line::Equal(_))) {
             None
         } else {
-            let diff = result
-                .into_iter()
-                .filter_map(|s| {
-                    Some(match s {
-                        diff::Result::Left(l) => diff::Result::Left(l.into()),
-                        diff::Result::Right(r) => diff::Result::Right(r.into()),
-                        diff::Result::Both(l, r) if l != r => {
-                            diff::Result::Both(l.into(), r.into())
-                        }
-                        diff::Result::Both(_, _) => return None,
-                    })
-                })
-                .collect();
             Some(Self { diff, path: None })
         }
     }
@@ -156,21 +159,19 @@ impl std::fmt::Display for DiffError {
         } else {
             f.write_str("non-empty differential")?;
         }
-        for line in &self.diff {
+        for (line) in self.diff.iter() {
             match line {
-                diff::Result::Left(l) => {
+                Line::Delete(s) => {
                     f.write_str("\n      - ")?;
-                    f.write_str(&l)?;
+                    f.write_str(&s)?;
                 }
-                diff::Result::Right(r) => {
+                Line::Insert(s) => {
                     f.write_str("\n      + ")?;
-                    f.write_str(&r)?;
+                    f.write_str(&s)?;
                 }
-                diff::Result::Both(l, r) => {
-                    f.write_str("\n      - ")?;
-                    f.write_str(&l)?;
-                    f.write_str("\n      + ")?;
-                    f.write_str(&r)?;
+                Line::Equal(s) => {
+                    f.write_str("\n        ")?;
+                    f.write_str(&s)?;
                 }
             }
         }
@@ -191,8 +192,6 @@ pub(crate) enum Error {
     ParseWaft(#[source] wast::Error),
     #[error("input module is invalid {1}")]
     InvalidModule(#[source] wasmparser::BinaryReaderError, wast::Error),
-    #[error("output module is invalid {1}")]
-    InvalidOutput(#[source] wasmparser::BinaryReaderError, wast::Error),
 
     #[error("could not open the snapshot file {1:?}")]
     OpenSnap(#[source] std::io::Error, PathBuf),
@@ -221,7 +220,6 @@ impl Error {
             Error::NewParseBuffer(s) => s.set_path(path),
             Error::ParseWaft(s) => s.set_path(path),
             Error::InvalidModule(_, s) => s.set_path(path),
-            Error::InvalidOutput(_, s) => s.set_path(path),
             Error::DiffSnap(_, s) => s.set_path(path),
         }
     }
@@ -344,7 +342,10 @@ impl<'a> TestContext<'a> {
         }
 
         for (directive_num, directive) in test.directives.iter().enumerate() {
-            self.evaluate_directive(directive_num, directive)
+            match self.evaluate_directive(directive_num, directive) {
+                ControlFlow::Continue(_) => continue,
+                ControlFlow::Break(_) => break,
+            }
         }
         // Ensure we reported some sort of status.
         assert!(matches!(self.status, Status::Passed | Status::Failed));
@@ -368,10 +369,14 @@ impl<'a> TestContext<'a> {
     }
 
     #[allow(unreachable_code, unused_variables)]
-    fn evaluate_directive(&mut self, directive_num: usize, directive: &WaftDirective) {
+    fn evaluate_directive(
+        &mut self,
+        directive_num: usize,
+        directive: &WaftDirective,
+    ) -> ControlFlow<()> {
         let index = match directive {
-            WaftDirective::Module(_) => return,
-            WaftDirective::Skip { .. } => return self.pass(),
+            WaftDirective::Module(_) => return ControlFlow::Continue(()),
+            WaftDirective::Skip { .. } => return ControlFlow::Break(self.pass()),
             WaftDirective::AssertGasWat { index, .. } => index,
             WaftDirective::AssertStackWat { index, .. } => index,
             WaftDirective::AssertInstrumentedWat { index, .. } => index,
@@ -382,25 +387,32 @@ impl<'a> TestContext<'a> {
                 Some(m) => m,
                 None => {
                     let span = wast::token::Span::from_offset(0);
-                    return self.fail_wast_msg(span, "this file defines no input modules");
+                    return ControlFlow::Break(
+                        self.fail_wast_msg(span, "this file defines no input modules"),
+                    );
                 }
             },
             Some(wast::token::Index::Num(num, span)) => match self.modules.get(num as usize) {
                 Some(m) => m,
-                None => return self.fail_wast_msg(span, format!("module {} is not defined", num)),
+                None => {
+                    return ControlFlow::Continue(
+                        self.fail_wast_msg(span, format!("module {} is not defined", num)),
+                    )
+                }
             },
             Some(wast::token::Index::Id(i)) => match self.modules.iter().find(|m| m.0 == Some(i)) {
                 Some(m) => m,
                 None => {
-                    return self
-                        .fail_wast_msg(i.span(), format!("module {} is not defined", i.name()));
+                    return ControlFlow::Continue(
+                        self.fail_wast_msg(i.span(), format!("module {} is not defined", i.name())),
+                    );
                 }
             },
         };
 
         let output = match directive {
-            WaftDirective::Module(_) => return,
-            WaftDirective::Skip { .. } => return self.pass(),
+            WaftDirective::Module(_) => return ControlFlow::Continue(()),
+            WaftDirective::Skip { .. } => return ControlFlow::Break(self.pass()),
             WaftDirective::AssertGasWat { .. } => {
                 todo!()
             }
@@ -414,11 +426,12 @@ impl<'a> TestContext<'a> {
                 todo!()
             }
         };
-
-        match self.compare_snapshot(&directive, directive_num, output) {
-            Ok(()) => self.pass(),
-            Err(mut e) => self.fail_test_error(&mut e),
-        }
+        ControlFlow::Continue(
+            match self.compare_snapshot(&directive, directive_num, output) {
+                Ok(()) => self.pass(),
+                Err(mut e) => self.fail_test_error(&mut e),
+            },
+        )
     }
 
     fn compare_snapshot(
