@@ -183,7 +183,7 @@ let apply_fees (c: config) : config =
   in let e_cost = gas_fee e vs
   in if (Int64.unsigned_compare e_cost !gas) > 0 then
     Exhaustion.error e.at "gas pool is empty"
-  else if (Int32.unsigned_compare stack_height !stack_limit) > 0 then
+  else if (Int32.unsigned_compare stack_height stack_limit) > 0 then
     Exhaustion.error e.at "stack exhausted"
   else if (Int64.unsigned_compare e_cost 0L) != 0 then
     gas := Int64.sub !gas e_cost;
