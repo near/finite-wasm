@@ -4,7 +4,7 @@ use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
 use wast::parser::{self, Parse, ParseBuffer, Parser};
 use wast::token::Span;
-use wast::{kw, token};
+use wast::{kw, token, WastDirective};
 
 mod waft_kw {
     wast::custom_keyword!(assert_instrumented_gas);
@@ -17,7 +17,7 @@ mod waft_kw {
 
 /// A wasm-finite-test description.
 pub(crate) struct Waft<'a> {
-    pub(crate) directives: Vec<WaftDirective<'a>>,
+    pub(crate) directives: Vec<wast::WastDirective<'a>>,
 }
 
 pub(crate) enum WaftDirective<'a> {
@@ -159,7 +159,7 @@ impl std::fmt::Display for DiffError {
         } else {
             f.write_str("non-empty differential")?;
         }
-        for (line) in self.diff.iter() {
+        for line in self.diff.iter() {
             match line {
                 Line::Delete(s) => {
                     f.write_str("\n      - ")?;
@@ -234,7 +234,9 @@ pub(crate) fn read(storage: &mut String, path: &Path) -> Result<(), Error> {
 }
 
 pub(crate) fn lex(storage: &str) -> Result<ParseBuffer, Error> {
-    parser::ParseBuffer::new(storage).map_err(Error::NewParseBuffer)
+    let mut lexer = wast::lexer::Lexer::new(storage);
+    lexer.allow_confusing_unicode(true);
+    parser::ParseBuffer::new_with_lexer(lexer).map_err(Error::NewParseBuffer)
 }
 
 pub(crate) fn parse<'a>(buffer: &'a ParseBuffer) -> Result<Waft<'a>, Error> {
@@ -242,13 +244,14 @@ pub(crate) fn parse<'a>(buffer: &'a ParseBuffer) -> Result<Waft<'a>, Error> {
     Ok(parsed)
 }
 
-#[derive(PartialEq)]
+#[derive(Debug, PartialEq)]
 enum Status {
     None,
     Passed,
     Failed,
 }
 
+#[derive(Debug)]
 pub(crate) struct TestContext<'a> {
     test_name: String,
     test_path: PathBuf,
@@ -323,7 +326,7 @@ impl<'a> TestContext<'a> {
         // Collect & encode to wasm binary encoding all the input modules.
         let mut errors = false;
         for directive in &mut test.directives {
-            if let WaftDirective::Module(module) = directive {
+            if let WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(module))) = directive {
                 let id = module.id.clone();
                 match module.encode() {
                     Ok(encoded) => self.modules.push((id, module.span, encoded)),
@@ -347,8 +350,10 @@ impl<'a> TestContext<'a> {
                 ControlFlow::Break(_) => break,
             }
         }
-        // Ensure we reported some sort of status.
-        assert!(matches!(self.status, Status::Passed | Status::Failed));
+
+        if !self.failed() {
+            self.pass()
+        }
     }
 
     fn validate_modules(&mut self) -> Result<(), ()> {
@@ -372,65 +377,65 @@ impl<'a> TestContext<'a> {
     fn evaluate_directive(
         &mut self,
         directive_num: usize,
-        directive: &WaftDirective,
+        directive: &WastDirective,
     ) -> ControlFlow<()> {
-        let index = match directive {
-            WaftDirective::Module(_) => return ControlFlow::Continue(()),
-            WaftDirective::Skip { .. } => return ControlFlow::Break(self.pass()),
-            WaftDirective::AssertGasWat { index, .. } => index,
-            WaftDirective::AssertStackWat { index, .. } => index,
-            WaftDirective::AssertInstrumentedWat { index, .. } => index,
-            WaftDirective::AssertIndirectedWat { index, .. } => index,
-        };
-        let (_module_id, module_span, encoded) = match *index {
-            None => match self.modules.get(0) {
-                Some(m) => m,
-                None => {
-                    let span = wast::token::Span::from_offset(0);
-                    return ControlFlow::Break(
-                        self.fail_wast_msg(span, "this file defines no input modules"),
-                    );
-                }
-            },
-            Some(wast::token::Index::Num(num, span)) => match self.modules.get(num as usize) {
-                Some(m) => m,
-                None => {
-                    return ControlFlow::Continue(
-                        self.fail_wast_msg(span, format!("module {} is not defined", num)),
-                    )
-                }
-            },
-            Some(wast::token::Index::Id(i)) => match self.modules.iter().find(|m| m.0 == Some(i)) {
-                Some(m) => m,
-                None => {
-                    return ControlFlow::Continue(
-                        self.fail_wast_msg(i.span(), format!("module {} is not defined", i.name())),
-                    );
-                }
-            },
-        };
+        // let index = match directive {
+        //     WaftDirective::Module(_) => return ControlFlow::Continue(()),
+        //     WaftDirective::Skip { .. } => return ControlFlow::Break(()),
+        //     WaftDirective::AssertGasWat { index, .. } => index,
+        //     WaftDirective::AssertStackWat { index, .. } => index,
+        //     WaftDirective::AssertInstrumentedWat { index, .. } => index,
+        //     WaftDirective::AssertIndirectedWat { index, .. } => index,
+        // };
+        // let (_module_id, module_span, encoded) = match *index {
+        //     None => match self.modules.get(0) {
+        //         Some(m) => m,
+        //         None => {
+        //             let span = wast::token::Span::from_offset(0);
+        //             return ControlFlow::Break(
+        //                 self.fail_wast_msg(span, "this file defines no input modules"),
+        //             );
+        //         }
+        //     },
+        //     Some(wast::token::Index::Num(num, span)) => match self.modules.get(num as usize) {
+        //         Some(m) => m,
+        //         None => {
+        //             return ControlFlow::Continue(
+        //                 self.fail_wast_msg(span, format!("module {} is not defined", num)),
+        //             )
+        //         }
+        //     },
+        //     Some(wast::token::Index::Id(i)) => match self.modules.iter().find(|m| m.0 == Some(i)) {
+        //         Some(m) => m,
+        //         None => {
+        //             return ControlFlow::Continue(
+        //                 self.fail_wast_msg(i.span(), format!("module {} is not defined", i.name())),
+        //             );
+        //         }
+        //     },
+        // };
 
-        let output = match directive {
-            WaftDirective::Module(_) => return ControlFlow::Continue(()),
-            WaftDirective::Skip { .. } => return ControlFlow::Break(self.pass()),
-            WaftDirective::AssertGasWat { .. } => {
-                todo!()
-            }
-            WaftDirective::AssertStackWat { .. } => {
-                todo!()
-            }
-            WaftDirective::AssertInstrumentedWat { .. } => {
-                todo!()
-            }
-            WaftDirective::AssertIndirectedWat { .. } => {
-                todo!()
-            }
-        };
-        ControlFlow::Continue(
-            match self.compare_snapshot(&directive, directive_num, output) {
-                Ok(()) => self.pass(),
-                Err(mut e) => self.fail_test_error(&mut e),
-            },
+        // let output = match directive {
+        //     WaftDirective::Module(_) => return ControlFlow::Continue(()),
+        //     WaftDirective::Skip { .. } => return ControlFlow::Break(()),
+        //     WaftDirective::AssertGasWat { .. } => {
+        //         todo!()
+        //     }
+        //     WaftDirective::AssertStackWat { .. } => {
+        //         todo!()
+        //     }
+        //     WaftDirective::AssertInstrumentedWat { .. } => {
+        //         todo!()
+        //     }
+        //     WaftDirective::AssertIndirectedWat { .. } => {
+        //         todo!()
+        //     }
+        // };
+        ControlFlow::Continue(()
+            // match self.compare_snapshot(&directive, directive_num, output) {
+            //     Ok(()) => (),
+            //     Err(mut e) => self.fail_test_error(&mut e),
+            // },
         )
     }
 
