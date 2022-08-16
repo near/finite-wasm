@@ -2,111 +2,7 @@ use std::error;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
-use wast::parser::{self, Parse, ParseBuffer, Parser};
 use wast::token::Span;
-use wast::{kw, token, WastDirective};
-
-mod waft_kw {
-    wast::custom_keyword!(assert_instrumented_gas);
-    wast::custom_keyword!(assert_instrumented_stack);
-    wast::custom_keyword!(assert_instrumented);
-
-    wast::custom_keyword!(snapshot_indirected);
-    wast::custom_keyword!(skip);
-}
-
-/// A wasm-finite-test description.
-pub(crate) struct Waft<'a> {
-    pub(crate) directives: Vec<wast::WastDirective<'a>>,
-}
-
-pub(crate) enum WaftDirective<'a> {
-    /// Define a module and make it available for instrumentation.
-    Module(wast::core::Module<'a>),
-    /// Instrument a specified module with gas only and compare the result.
-    AssertGasWat { index: Option<token::Index<'a>> },
-    /// Instrument a specified module with stack only and compare the result.
-    AssertStackWat { index: Option<token::Index<'a>> },
-    /// Instrument a specified module with all instrumentations and compare the result.
-    AssertInstrumentedWat { index: Option<token::Index<'a>> },
-    /// Apply the indirection trasnformation and compare the output.
-    AssertIndirectedWat {
-        index: Option<token::Index<'a>>,
-        span: Span,
-    },
-    /// Ignore this wast file
-    Skip { span: Span },
-}
-
-impl<'a> Parse<'a> for Waft<'a> {
-    fn parse(parser: Parser<'a>) -> wast::parser::Result<Self> {
-        let mut directives = Vec::new();
-        while !parser.is_empty() {
-            directives.push(parser.parens(|p| p.parse())?);
-        }
-        Ok(Waft { directives })
-    }
-}
-
-impl<'a> Parse<'a> for WaftDirective<'a> {
-    fn parse(parser: Parser<'a>) -> wast::parser::Result<Self> {
-        let mut l = parser.lookahead1();
-        if l.peek::<kw::module>() {
-            Ok(WaftDirective::Module(parser.parse()?))
-        } else if l.peek::<waft_kw::skip>() {
-            let kw = parser.parse::<waft_kw::skip>()?;
-            let _reason = parser.parse::<String>()?;
-            Ok(WaftDirective::Skip { span: kw.0 })
-        } else if l.peek::<waft_kw::assert_instrumented_gas>() {
-            parser.parse::<waft_kw::assert_instrumented_gas>()?;
-            let index = if parser.lookahead1().peek::<token::Index>() {
-                Some(parser.parse::<token::Index>()?)
-            } else {
-                None
-            };
-            Ok(WaftDirective::AssertGasWat { index })
-        } else if l.peek::<waft_kw::assert_instrumented_stack>() {
-            parser.parse::<waft_kw::assert_instrumented_stack>()?;
-            let index = if parser.lookahead1().peek::<token::Index>() {
-                Some(parser.parse::<token::Index>()?)
-            } else {
-                None
-            };
-            Ok(WaftDirective::AssertStackWat { index })
-        } else if l.peek::<waft_kw::assert_instrumented>() {
-            parser.parse::<waft_kw::assert_instrumented>()?;
-            let index = if parser.lookahead1().peek::<token::Index>() {
-                Some(parser.parse::<token::Index>()?)
-            } else {
-                None
-            };
-            Ok(WaftDirective::AssertInstrumentedWat { index })
-        } else if l.peek::<waft_kw::snapshot_indirected>() {
-            let kw = parser.parse::<waft_kw::snapshot_indirected>()?;
-            let index = if parser.lookahead1().peek::<token::Index>() {
-                Some(parser.parse::<token::Index>()?)
-            } else {
-                None
-            };
-            Ok(WaftDirective::AssertIndirectedWat { index, span: kw.0 })
-        } else {
-            Err(l.error())
-        }
-    }
-}
-
-impl WaftDirective<'_> {
-    fn span(&self) -> Span {
-        match self {
-            WaftDirective::Module(m) => m.span,
-            WaftDirective::Skip { span } => *span,
-            WaftDirective::AssertGasWat { .. } => todo!(),
-            WaftDirective::AssertStackWat { .. } => todo!(),
-            WaftDirective::AssertInstrumentedWat { .. } => todo!(),
-            WaftDirective::AssertIndirectedWat { span, .. } => *span,
-        }
-    }
-}
 
 #[derive(Debug, PartialEq)]
 enum Line {
@@ -317,131 +213,19 @@ impl<'a> TestContext<'a> {
         error
     }
 
-    pub(crate) fn run(&mut self, parsed_waft: Result<&mut Waft<'a>, &mut Error>) {
-        let test = match parsed_waft {
-            Ok(waft) => waft,
-            Err(error) => return self.fail_test_error(error),
-        };
-
-        // Collect & encode to wasm binary encoding all the input modules.
-        let mut errors = false;
-        for directive in &mut test.directives {
-            if let WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(module))) = directive {
-                let id = module.id.clone();
-                match module.encode() {
-                    Ok(encoded) => self.modules.push((id, module.span, encoded)),
-                    Err(error) => {
-                        errors = true;
-                        self.fail_wast_msg(error.span(), error.message());
-                    }
-                }
-            }
-        }
-
-        // Ensure all invalid test cases are caught early and don't become red-herrings.
-        if self.validate_modules().is_err() || errors {
-            // Module indices may be all invalid now. Don’t actually execute any directives.
-            return;
-        }
-
-        for (directive_num, directive) in test.directives.iter().enumerate() {
-            match self.evaluate_directive(directive_num, directive) {
-                ControlFlow::Continue(_) => continue,
-                ControlFlow::Break(_) => break,
-            }
-        }
-
-        if !self.failed() {
-            self.pass()
-        }
-    }
-
-    fn validate_modules(&mut self) -> Result<(), ()> {
-        let mut validation_errors = vec![];
-        for (_, span, encoded) in &self.modules {
-            if let Err(e) = wasmparser::validate(&encoded) {
-                let wast = self.wast_error(*span, String::new());
-                validation_errors.push(Error::InvalidModule(e, wast));
-            }
-        }
-        if !validation_errors.is_empty() {
-            for error in &mut validation_errors {
-                self.fail_test_error(error);
-            }
-            return Err(());
-        }
-        Ok(())
-    }
-
-    #[allow(unreachable_code, unused_variables)]
-    fn evaluate_directive(
-        &mut self,
-        directive_num: usize,
-        directive: &WastDirective,
-    ) -> ControlFlow<()> {
-        // let index = match directive {
-        //     WaftDirective::Module(_) => return ControlFlow::Continue(()),
-        //     WaftDirective::Skip { .. } => return ControlFlow::Break(()),
-        //     WaftDirective::AssertGasWat { index, .. } => index,
-        //     WaftDirective::AssertStackWat { index, .. } => index,
-        //     WaftDirective::AssertInstrumentedWat { index, .. } => index,
-        //     WaftDirective::AssertIndirectedWat { index, .. } => index,
-        // };
-        // let (_module_id, module_span, encoded) = match *index {
-        //     None => match self.modules.get(0) {
-        //         Some(m) => m,
-        //         None => {
-        //             let span = wast::token::Span::from_offset(0);
-        //             return ControlFlow::Break(
-        //                 self.fail_wast_msg(span, "this file defines no input modules"),
-        //             );
-        //         }
-        //     },
-        //     Some(wast::token::Index::Num(num, span)) => match self.modules.get(num as usize) {
-        //         Some(m) => m,
-        //         None => {
-        //             return ControlFlow::Continue(
-        //                 self.fail_wast_msg(span, format!("module {} is not defined", num)),
-        //             )
-        //         }
-        //     },
-        //     Some(wast::token::Index::Id(i)) => match self.modules.iter().find(|m| m.0 == Some(i)) {
-        //         Some(m) => m,
-        //         None => {
-        //             return ControlFlow::Continue(
-        //                 self.fail_wast_msg(i.span(), format!("module {} is not defined", i.name())),
-        //             );
-        //         }
-        //     },
-        // };
-
-        // let output = match directive {
-        //     WaftDirective::Module(_) => return ControlFlow::Continue(()),
-        //     WaftDirective::Skip { .. } => return ControlFlow::Break(()),
-        //     WaftDirective::AssertGasWat { .. } => {
-        //         todo!()
-        //     }
-        //     WaftDirective::AssertStackWat { .. } => {
-        //         todo!()
-        //     }
-        //     WaftDirective::AssertInstrumentedWat { .. } => {
-        //         todo!()
-        //     }
-        //     WaftDirective::AssertIndirectedWat { .. } => {
-        //         todo!()
-        //     }
-        // };
-        ControlFlow::Continue(()
-            // match self.compare_snapshot(&directive, directive_num, output) {
-            //     Ok(()) => (),
-            //     Err(mut e) => self.fail_test_error(&mut e),
-            // },
-        )
+    pub(crate) fn run(&mut self) {
+        // Run the interpreter here with the wast file in some sort of a tracing mode (needs to
+        // be implemented inside the interpreter). Use snapshots as a mechanism to store
+        // information about execution.
+        //
+        // The output is probably going to be extremely verbose, but hey, it doesn’t result in
+        // excessive effort at least, does it?
+        self.pass()
     }
 
     fn compare_snapshot(
         &mut self,
-        directive: &WaftDirective,
+        span: Span,
         index: usize,
         directive_output: String,
     ) -> Result<(), Error> {
@@ -466,7 +250,7 @@ impl<'a> TestContext<'a> {
                 );
                 Err(Error::DiffSnap(
                     error.with_path(snap_path),
-                    self.wast_error(directive.span(), String::new()),
+                    self.wast_error(span, String::new()),
                 ))
             } else {
                 snap_file

@@ -47,24 +47,9 @@ fn run() -> Result<(), Error> {
         }
     }
 
-    let mut lexed_tests = Vec::with_capacity(tests.len());
-    for test in &mut tests {
-        let result = test::read(&mut test.contents, &test.path);
-        lexed_tests.push((result.and_then(|_| test::lex(&test.contents)), &*test));
-    }
-
-    // Tricky: the `wast` library requires that both the `ParseBuffer` and the original input
-    // string are live before and while the test is being handled. We want all the test cases in a
-    // list for parallelization and reporting purposes, and that's why we need three distinct
-    // vectors that are built separately and awkardly like that.
-    let mut parsed_tests = Vec::with_capacity(lexed_tests.len());
-    for (lex, test) in &mut lexed_tests {
-        parsed_tests.push((lex.as_mut().map(|lex| test::parse(lex)), *test));
-    }
-
-    println!("running {} tests", parsed_tests.len());
+    println!("running {} tests", tests.len());
     let mut failures = 0;
-    for (parsed, test) in &mut parsed_tests {
+    for test in &mut tests {
         let test_path = test
             .path
             .strip_prefix(&current_directory)
@@ -73,18 +58,12 @@ fn run() -> Result<(), Error> {
             .path
             .strip_prefix(&tests_directory)
             .unwrap_or(&test.path);
-        let parse_result = match parsed.as_mut() {
-            Err(e) => Err(&mut **e),
-            Ok(Err(e)) => Err(&mut *e),
-            Ok(Ok(m)) => Ok(m),
-        };
-
         let mut context = test::TestContext::new(
             test_name.display().to_string(),
             test_path.into(),
             &test.contents,
         );
-        context.run(parse_result);
+        context.run();
         if context.failed() {
             failures += 1;
         }
