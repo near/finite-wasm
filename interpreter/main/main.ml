@@ -37,6 +37,8 @@ let argspec = Arg.align
   "-j", Arg.Clear Flags.harness, " exclude harness for JS conversion";
   "-d", Arg.Set Flags.dry, " dry, do not run program";
   "-t", Arg.Set Flags.trace, " trace execution";
+  "-tg", Arg.Set Flags.trace_gas, " trace gas charges";
+  "-ts", Arg.Set Flags.trace_stack, " trace stack depths";
   "-v", Arg.Unit banner, " show version"
 ]
 
