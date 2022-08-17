@@ -107,6 +107,11 @@ this behaviour in some other manner, as this may lead to double-charging.
 
 ## Other
 
-Every time the implicit stack is modified by pushing to or popping from it, the runtime must ensure
-that the resulting stack’s height does not exceed the `stacklimit` specified in the `F.module` and
-`trap` otherwise.
+Every time the implicit stack is pushed to by executing an instruction originally in the input
+WebAssembly, the runtime must ensure that the resulting stack’s height does not exceed the
+`stacklimit` specified in the `F.module` and `trap` otherwise.
+
+NOTE: Execution of an intermediate reduction of some aggregate instruction may require more stack
+space than occuppied strictly by the input operands to the instruction. The runtime is responsible
+for reserving sufficient space required by these aggregate instructions as they are not modelled by
+the stack limits imposed by this specification.
