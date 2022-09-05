@@ -1,7 +1,9 @@
 use std::error;
+use std::ffi::OsString;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
+use std::process::{Command, ExitStatus};
 use wast::token::Span;
 
 #[derive(Debug, PartialEq)]
@@ -15,6 +17,11 @@ enum Line {
 pub(crate) struct DiffError {
     diff: Vec<Line>,
     path: Option<PathBuf>,
+}
+
+pub enum InterpreterMode {
+    GasTrace,
+    StackTrace,
 }
 
 impl DiffError {
@@ -101,6 +108,19 @@ pub(crate) enum Error {
     WriteSnap(#[source] std::io::Error, PathBuf),
     #[error("snapshot comparison failed {1}")]
     DiffSnap(#[source] DiffError, wast::Error),
+
+    #[error("could not execute the interpreter with arguments: {1:?}")]
+    InterpreterLaunch(#[source] std::io::Error, Vec<OsString>),
+    #[error("could not wait on the interpreter")]
+    InterpreterWait(#[source] std::io::Error),
+    #[error("reference interpreter failed with exit code {1:?} (arguments: {2:?})")]
+    InterpreterExit(
+        #[source] Box<dyn std::error::Error + Send + Sync>,
+        ExitStatus,
+        Vec<OsString>,
+    ),
+    #[error("interpreter output wasn’t valid UTF-8")]
+    InterpreterOutput(#[source] std::string::FromUtf8Error),
 }
 
 impl Error {
@@ -112,7 +132,11 @@ impl Error {
             | Error::SeekSnap(_, _)
             | Error::TruncateSnap(_, _)
             | Error::ReadSnap(_, _)
-            | Error::WriteSnap(_, _) => {}
+            | Error::WriteSnap(_, _)
+            | Error::InterpreterLaunch(_, _)
+            | Error::InterpreterWait(_)
+            | Error::InterpreterExit(_, _, _)
+            | Error::InterpreterOutput(_) => {}
             Error::NewParseBuffer(s) => s.set_path(path),
             Error::ParseWaft(s) => s.set_path(path),
             Error::InvalidModule(_, s) => s.set_path(path),
@@ -127,17 +151,6 @@ pub(crate) fn read(storage: &mut String, path: &Path) -> Result<(), Error> {
         std::str::from_utf8(&test_contents).map_err(|e| Error::FromUtf8(e, path.into()))?;
     storage.push_str(test_string);
     Ok(())
-}
-
-pub(crate) fn lex(storage: &str) -> Result<ParseBuffer, Error> {
-    let mut lexer = wast::lexer::Lexer::new(storage);
-    lexer.allow_confusing_unicode(true);
-    parser::ParseBuffer::new_with_lexer(lexer).map_err(Error::NewParseBuffer)
-}
-
-pub(crate) fn parse<'a>(buffer: &'a ParseBuffer) -> Result<Waft<'a>, Error> {
-    let parsed = parser::parse(buffer).map_err(Error::ParseWaft)?;
-    Ok(parsed)
 }
 
 #[derive(Debug, PartialEq)]
@@ -215,12 +228,44 @@ impl<'a> TestContext<'a> {
 
     pub(crate) fn run(&mut self) {
         // Run the interpreter here with the wast file in some sort of a tracing mode (needs to
-        // be implemented inside the interpreter). Use snapshots as a mechanism to store
-        // information about execution.
+        // be implemented inside the interpreter).
         //
         // The output is probably going to be extremely verbose, but hey, it doesn’t result in
         // excessive effort at least, does it?
-        self.pass()
+        if let Err(mut e) = self.exec_interpreter(InterpreterMode::GasTrace) {
+            return self.fail_test_error(&mut e);
+        }
+
+        self.pass();
+    }
+
+    fn exec_interpreter(&mut self, mode: InterpreterMode) -> Result<String, Error> {
+        let mut args = vec!["-i".into(), self.test_path.as_os_str().into()];
+        match mode {
+            InterpreterMode::GasTrace => args.push("-tg".into()),
+            InterpreterMode::StackTrace => args.push("-ts".into()),
+        };
+
+        // TODO: basedir is this the project root, not cwd
+        let process = std::process::Command::new("interpreter/wasm")
+            .stdin(std::process::Stdio::null())
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .args(&args)
+            .spawn()
+            .map_err(|e| Error::InterpreterLaunch(e, args.clone()))?;
+        let output = process
+            .wait_with_output()
+            .map_err(|e| Error::InterpreterWait(e))?;
+        if !output.status.success() {
+            return Err(Error::InterpreterExit(
+                String::from_utf8_lossy(&output.stderr).into(),
+                output.status,
+                args,
+            ));
+        }
+        let output = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
+        Ok(output)
     }
 
     fn compare_snapshot(
