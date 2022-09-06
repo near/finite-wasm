@@ -17,12 +17,10 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v2
-      - name: Install Rust
-        uses: actions-rs/toolchain@v1
+      - uses: ocaml/setup-ocaml@v2
         with:
-          profile: minimal
-          default: true
-      - name: Build interpreter
-        run: make -Cinterpreter wasm
-      - name: Run tests
-        run: cargo test
+          ocaml-compiler: 4.13.1
+      - run: rustup update --no-self-update stable
+      - run: opam install ocamlbuild
+      - run: opam exec -- make -Cinterpreter wasm
+      - run: cargo test
