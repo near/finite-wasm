@@ -4,7 +4,6 @@ use std::io::{Read, Seek, SeekFrom, Write};
 use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
-use wast::token::Span;
 
 #[derive(Debug, PartialEq)]
 enum Line {
@@ -88,13 +87,6 @@ pub(crate) enum Error {
     ReadTestContents(#[source] std::io::Error, PathBuf),
     #[error("could not interpret test file `{1}` as UTF-8")]
     FromUtf8(#[source] std::str::Utf8Error, PathBuf),
-    // NB: these `wast::Error` are later augmented with a `Path` to the file by the caller.
-    #[error("could not construct a parse buffer")]
-    NewParseBuffer(#[source] wast::Error),
-    #[error("test file is not a valid wasm-finite test file")]
-    ParseWaft(#[source] wast::Error),
-    #[error("input module is invalid {1}")]
-    InvalidModule(#[source] wasmparser::BinaryReaderError, wast::Error),
 
     #[error("could not open the snapshot file {1:?}")]
     OpenSnap(#[source] std::io::Error, PathBuf),
@@ -106,8 +98,8 @@ pub(crate) enum Error {
     SeekSnap(#[source] std::io::Error, PathBuf),
     #[error("could not write the snapshot file {1:?}")]
     WriteSnap(#[source] std::io::Error, PathBuf),
-    #[error("snapshot comparison failed {1}")]
-    DiffSnap(#[source] DiffError, wast::Error),
+    #[error("snapshot comparison failed")]
+    DiffSnap(#[source] DiffError),
 
     #[error("could not execute the interpreter with arguments: {1:?}")]
     InterpreterLaunch(#[source] std::io::Error, Vec<OsString>),
@@ -121,28 +113,6 @@ pub(crate) enum Error {
     ),
     #[error("interpreter output wasn’t valid UTF-8")]
     InterpreterOutput(#[source] std::string::FromUtf8Error),
-}
-
-impl Error {
-    pub(crate) fn set_path(&mut self, path: &Path) {
-        match self {
-            Error::ReadTestContents(_, _)
-            | Error::FromUtf8(_, _)
-            | Error::OpenSnap(_, _)
-            | Error::SeekSnap(_, _)
-            | Error::TruncateSnap(_, _)
-            | Error::ReadSnap(_, _)
-            | Error::WriteSnap(_, _)
-            | Error::InterpreterLaunch(_, _)
-            | Error::InterpreterWait(_)
-            | Error::InterpreterExit(_, _, _)
-            | Error::InterpreterOutput(_) => {}
-            Error::NewParseBuffer(s) => s.set_path(path),
-            Error::ParseWaft(s) => s.set_path(path),
-            Error::InvalidModule(_, s) => s.set_path(path),
-            Error::DiffSnap(_, s) => s.set_path(path),
-        }
-    }
 }
 
 pub(crate) fn read(storage: &mut String, path: &Path) -> Result<(), Error> {
@@ -167,8 +137,6 @@ pub(crate) struct TestContext<'a> {
     wast_data: &'a str,
     pub(crate) output: Vec<u8>,
     status: Status,
-
-    modules: Vec<(Option<wast::token::Id<'a>>, Span, Vec<u8>)>,
 }
 
 impl<'a> TestContext<'a> {
@@ -179,7 +147,6 @@ impl<'a> TestContext<'a> {
             wast_data,
             output: vec![],
             status: Status::None,
-            modules: vec![],
         }
     }
 
@@ -206,24 +173,8 @@ impl<'a> TestContext<'a> {
         super::write_error(&mut self.output, error).expect("this should be infallible");
     }
 
-    fn fail_wast(&mut self, error: &mut wast::Error) {
-        error.set_path(&self.test_path);
-        self.fail(&*error)
-    }
-
     fn fail_test_error(&mut self, error: &mut Error) {
-        error.set_path(&self.test_path);
         self.fail(&*error)
-    }
-
-    fn fail_wast_msg(&mut self, span: wast::token::Span, message: impl Into<String>) {
-        self.fail_wast(&mut self.wast_error(span, message))
-    }
-
-    fn wast_error(&self, span: wast::token::Span, message: impl Into<String>) -> wast::Error {
-        let mut error = wast::Error::new(span, message.into());
-        error.set_text(self.wast_data);
-        error
     }
 
     pub(crate) fn run(&mut self) {
@@ -232,9 +183,19 @@ impl<'a> TestContext<'a> {
         //
         // The output is probably going to be extremely verbose, but hey, it doesn’t result in
         // excessive effort at least, does it?
-        if let Err(mut e) = self.exec_interpreter(InterpreterMode::GasTrace) {
-            return self.fail_test_error(&mut e);
-        }
+        let output = match self.exec_interpreter(InterpreterMode::GasTrace) {
+            Ok(o) => o,
+            Err(mut e) => return self.fail_test_error(&mut e),
+        };
+
+        // NB: some of the reference snapshots end up at upwards of 250M in size. We can’t
+        // reasonably store that in the repository, but we should still be good with storing
+        // snapshots of the actual implementation and running the reference interpreter every time.
+        //
+        // if let Err(mut e) = self.compare_snapshot(output, "interpreter-gas") {
+        //     return self.fail_test_error(&mut e);
+        // }
+        drop(output);
 
         self.pass();
     }
@@ -270,9 +231,8 @@ impl<'a> TestContext<'a> {
 
     fn compare_snapshot(
         &mut self,
-        span: Span,
-        index: usize,
         directive_output: String,
+        index: &'static str,
     ) -> Result<(), Error> {
         let should_update = std::env::var_os("SNAP_UPDATE").is_some();
         let snaps_dir = self.test_path.parent().unwrap().join("snaps");
@@ -293,10 +253,7 @@ impl<'a> TestContext<'a> {
                 self.output.extend_from_slice(
                     "note: run with SNAP_UPDATE environment variable to update".as_bytes(),
                 );
-                Err(Error::DiffSnap(
-                    error.with_path(snap_path),
-                    self.wast_error(span, String::new()),
-                ))
+                Err(Error::DiffSnap(error.with_path(snap_path)))
             } else {
                 snap_file
                     .set_len(0)
