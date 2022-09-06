@@ -174,7 +174,7 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
     | Label _ -> 0L
     | Frame _ -> 0L
 
-let admin_instr_to_string (e: admin_instr) : string = Sexpr.to_string 120 (match e.it with
+let string_of_admin_instr (e: admin_instr) : string = Sexpr.to_string 120 (match e.it with
   | Plain i -> Arrange.instr (i @@ e.at)
   | ReducedPlain i -> let iex = Arrange.instr (i @@ e.at) in Sexpr.Node ("admin.reducedplain", [iex])
   | Refer _ -> Sexpr.Atom "admin.ref"
@@ -192,14 +192,14 @@ let apply_fees (c: config) : config =
   let e = List.hd es in
   let stack_sizes = List.append (List.map stack_value_size vs) (List.map stack_instr_size es) in
   let stack_height = List.fold_left (Int32.add) 0l stack_sizes in
-  if !Flags.trace_stack then Printf.printf "[stk] %s = %lu\n" (admin_instr_to_string e) stack_height;
+  if !Flags.trace_stack then Printf.printf "[stk] %s = %lu\n" (string_of_admin_instr e) stack_height;
   let e_cost = gas_fee e vs in
   if (Int64.unsigned_compare e_cost !gas) > 0 then
     Exhaustion.error e.at "gas pool is empty"
   else if (Int32.unsigned_compare stack_height stack_limit) > 0 then
     Exhaustion.error e.at "stack exhausted"
   else if (Int64.unsigned_compare e_cost 0L) != 0 then
-    if !Flags.trace_gas then Printf.printf "[gas] %s = %Lu\n" (admin_instr_to_string e) e_cost;
+    if !Flags.trace_gas then Printf.printf "[gas] %s = %Lu\n" (string_of_admin_instr e) e_cost;
     (* ("[gas]" ^ (sexp_of_admin_instr' e |> to_string_hum)
     ^ (Int64.to_string e_cost)); *)
     gas := Int64.sub !gas e_cost;
