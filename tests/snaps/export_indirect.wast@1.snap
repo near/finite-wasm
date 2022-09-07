@@ -1,0 +1,53 @@
+(module
+  (type (;0;) (func (param i64)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param f32)))
+  (type (;3;) (func (param f64)))
+  (type (;4;) (func))
+  (import "env" "funcref" (global (;0;) funcref))
+  (func $f1 (;0;) (type 0) (param $p i64)
+    local.get $p
+    i32.wrap_i64
+    call $f2
+    return
+  )
+  (func $trampoline::f2 (;1;) (type 1) (param i32)
+    local.get 0
+    call $f2
+  )
+  (func $f2 (;2;) (type 1) (param $p i32)
+    local.get $p
+    f32.convert_i32_s
+    call $f3
+    return
+  )
+  (func $trampoline::f3 (;3;) (type 2) (param f32)
+    local.get 0
+    call $f3
+  )
+  (func $f3 (;4;) (type 2) (param $p f32)
+    local.get $p
+    f64.promote_f32
+    call $f4
+    return
+  )
+  (func $f4 (;5;) (type 3) (param $p f64)
+    local.get $p
+    i64.trunc_f64_s
+    call $f1
+    return
+  )
+  (func $trampoline::start (;6;) (type 4)
+    call $start
+  )
+  (func $start (;7;) (type 4)
+    i64.const 42
+    call $f1
+  )
+  (table (;0;) 1 funcref)
+  (export "f2" (func $trampoline::f2))
+  (start $trampoline::start)
+  (elem (;0;) (i32.const 0) func $trampoline::f3)
+  (elem (;1;) (i32.const 0) func $trampoline::f3)
+  (elem (;2;) (i32.const 0) funcref (ref.func $trampoline::f3))
+)
