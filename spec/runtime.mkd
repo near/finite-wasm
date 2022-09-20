@@ -76,6 +76,8 @@ reducing and executing.
   charge the gas fees necessary to construct the frame with a list of 0-values and to push it onto
   the native stack, if any. If subtracting the fee would cause `F.module.gas` to decrease below
   zero or to overflow, `F.module.gas` is set to 0 and the execution `trap`s.
+* Ensure the sum of the current stack height and the maximum stack height required to execute the
+  function do not exceed the `F.module.stacklimit`. Otherwise `trap`.
 
 <!--
 TODO:
@@ -106,10 +108,6 @@ appendix, however implementations are required to _not_ utilize stack indirectio
 this behaviour in some other manner, as this may lead to double-charging.
 
 ## Other
-
-Every time the implicit stack is pushed to by executing an instruction originally in the input
-WebAssembly, the runtime must ensure that the resulting stack’s height does not exceed the
-`stacklimit` specified in the `F.module` and `trap` otherwise.
 
 NOTE: Execution of an intermediate reduction of some aggregate instruction may require more stack
 space than occuppied strictly by the input operands to the instruction. The runtime is responsible
