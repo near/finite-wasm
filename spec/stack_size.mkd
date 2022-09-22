@@ -1,0 +1,20 @@
+# Appendix I: Computing the maximum stack size for a function
+
+The maximum stack size for a function is determined by modelling the stack operations of each
+operation as described in the section 4.4.
+
+When considering the instructions which enter a block (`block`, `if`, `else`, etc.), the stack
+capacity required to evaluate the enclosed instruction sequence should be considered part of the
+enclosing block’s stack size requirements (except for function invocation).
+
+Instructions made unreachable by an unconditional control flow operation (i.e. `unreachable`, `br`,
+`br_table`, `return`) shall not contribute to the maximum stack size computation. Conditional
+branching must pick the greatest size possible between all branches.
+
+## The reduction rule exception
+
+Execution of an intermediate reduction of the aggregate instructions (an example of an aggregate
+instruction is `table.fill`, which in turn may execute `table.fill` again) may require more stack
+space than occuppied by strictly the input/output operands to the instruction. The implementations
+are responsible for reserving sufficient red-zone stack space required by these aggregate
+instructions as they are not modelled by the maximum stack size computation.

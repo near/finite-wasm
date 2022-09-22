@@ -106,10 +106,3 @@ The external invocation of an exported function is augmented with the following 
 **Note**: Instrumentation may implement this via the export indirection mechanism specified in an
 appendix, however implementations are required to _not_ utilize stack indirection if they implement
 this behaviour in some other manner, as this may lead to double-charging.
-
-## Other
-
-NOTE: Execution of an intermediate reduction of some aggregate instruction may require more stack
-space than occuppied strictly by the input operands to the instruction. The runtime is responsible
-for reserving sufficient space required by these aggregate instructions as they are not modelled by
-the stack limits imposed by this specification.
