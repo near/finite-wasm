@@ -1,3 +1,5 @@
+pub mod instrument;
+
 // Custom test harness
 #[cfg(test)]
 mod tests;
