@@ -6,6 +6,8 @@
 
 use wasmparser::{BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, V128};
 
+use crate::partial_sum::PartialSumMap;
+
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("could not parse a part of the WASM payload")]
@@ -14,14 +16,16 @@ pub enum Error {
     LocalsReader(#[source] BinaryReaderError),
     #[error("could not create a function operators’ reader")]
     OperatorReader(#[source] BinaryReaderError),
-    #[error("could not read a function local")]
-    ReadLocal(#[source] BinaryReaderError),
     #[error("could not visit the function operators")]
     VisitOperators(#[source] BinaryReaderError),
     #[error("could not parse the type section entry")]
     ParseTypes(#[source] BinaryReaderError),
     #[error("could not parse the function section entry")]
     ParseFunctions(#[source] BinaryReaderError),
+    #[error("could not parse the global section entry")]
+    ParseGlobals(#[source] BinaryReaderError),
+    #[error("could not parsse function locals")]
+    ParseLocals(#[source] BinaryReaderError),
 }
 
 /// The results of parsing and analyzing the module.
@@ -39,6 +43,8 @@ impl Module {
         let mut function_stack_sizes = vec![];
         let mut types = vec![];
         let mut functions = vec![];
+        let mut globals = vec![];
+        let mut locals = PartialSumMap::new();
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
@@ -50,6 +56,13 @@ impl Module {
                         .collect::<Result<_, _>>()
                         .map_err(Error::ParseTypes)?;
                 }
+                wasmparser::Payload::GlobalSection(reader) => {
+                    globals = reader
+                        .into_iter()
+                        .map(|v| v.map(|v| v.ty.content_type))
+                        .collect::<Result<_, _>>()
+                        .map_err(Error::ParseGlobals)?;
+                }
                 wasmparser::Payload::FunctionSection(reader) => {
                     functions = reader
                         .into_iter()
@@ -57,33 +70,28 @@ impl Module {
                         .map_err(Error::ParseFunctions)?;
                 }
                 wasmparser::Payload::CodeSectionEntry(function) => {
+                    locals.clear();
+                    for local in function.get_locals_reader().map_err(Error::LocalsReader)? {
+                        let local = local.map_err(Error::ParseLocals)?;
+                        locals.push(local.0, local.1).expect("TODO");
+                    }
+
+                    let activation_size = configuration.size_of_function_activation(
+                        function
+                            .get_locals_reader()
+                            .unwrap()
+                            .into_iter()
+                            .map(|v| v.unwrap()),
+                    );
+
                     let mut visitor = StackSizeVisitor {
                         config: configuration,
                         functions: &functions,
                         types: &types,
+                        globals: &globals,
+                        locals: &locals,
                         frames: vec![],
                     };
-
-                    // FIXME: this is ugly, ew!
-                    let mut locals_error = None;
-                    let activation_size = configuration.size_of_function_activation(
-                        function
-                            .get_locals_reader()
-                            .map_err(Error::LocalsReader)?
-                            .into_iter()
-                            .take_while(|v| match v {
-                                Ok(_) => true,
-                                Err(e) => {
-                                    locals_error = Some(e.clone());
-                                    false
-                                }
-                            })
-                            .flatten(),
-                    );
-                    if let Some(e) = locals_error {
-                        return Err(Error::ReadLocal(e));
-                    }
-
                     // We use the length of `function_stack_sizes` to _also_ act as a counter for
                     // how many code section entries we have seen so far. This allows us to match
                     // up the function information with its type and such.
@@ -140,7 +148,7 @@ pub trait AnalysisConfig {
 /// maintained at all times.
 ///
 /// Fortunately, we don’t exactly need to maintain the _types_, only their sizes suffice.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Operands {
     stack: Vec<u64>,
     /// Sum of all values in the `stack` field above.
@@ -182,6 +190,7 @@ impl Operands {
 
 /// A regular frame produced by instructions such as `block`, `if` and such. One of these
 /// frames are also implicitly created on an entry to a function.
+#[derive(Debug)]
 struct BlockInfo {
     ty: BlockType,
     operands: Operands,
@@ -190,6 +199,7 @@ struct BlockInfo {
     complete: bool,
 }
 
+#[derive(Debug)]
 enum Frame {
     /// A frame produced by the `block` instruction.
     ///
@@ -211,6 +221,8 @@ struct StackSizeVisitor<'a, Cfg> {
     config: &'a Cfg,
     functions: &'a [u32],
     types: &'a [wasmparser::Type],
+    globals: &'a [wasmparser::ValType],
+    locals: &'a PartialSumMap<u32, wasmparser::ValType>,
 
     frames: Vec<Frame>,
 }
@@ -221,7 +233,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
     /// The frame at 0 depth is the “current” frame, the frame 1 levele deep is the current frame’s
     /// parent, etc.
     fn frame(&mut self, depth: usize) -> Option<&mut Frame> {
-        let index = self.frames.len() - 1 - depth;
+        let index = self.frames.len().checked_sub(1)?.checked_sub(depth)?;
         self.frames.get_mut(index)
     }
 
@@ -394,14 +406,16 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_v128_const(&mut self, _: usize, _: V128) -> Self::Output { self.push(ValType::V128) }
 
     // locals & globals
-    fn visit_local_get(&mut self, _: usize, _local_index: u32) -> Self::Output {
-        todo!("self.push the local type (found at local_index)")
+    fn visit_local_get(&mut self, _: usize, local_index: u32) -> Self::Output {
+        self.push(*self.locals.find(local_index).expect("TODO"));
     }
     fn visit_local_set(&mut self, _: usize, _: u32) -> Self::Output { self.pop() }
     fn visit_local_tee(&mut self, _: usize, _: u32) -> Self::Output { }
 
-    fn visit_global_get(&mut self, _: usize, _global_index: u32) -> Self::Output {
-        todo!("self.push the global type (found at global_index)")
+    fn visit_global_get(&mut self, _: usize, global_index: u32) -> Self::Output {
+        let global_index = usize::try_from(global_index).expect("TODO");
+        let global_ty = self.globals.get(global_index).expect("TODO");
+        self.push(*global_ty)
     }
     fn visit_global_set(&mut self, _: usize, _: u32) -> Self::Output { self.pop() }
 
@@ -1104,6 +1118,14 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
 
     fn visit_end(&mut self, _: usize) -> Self::Output {
         let current_frame = self.frames.pop().expect("TODO, malformed wasm...?");
+        if self.block_info(0).is_none() {
+            // This is the end of the function, and we want to push the current frame back on the
+            // stack to communicate back the information about the function, I guess.
+            //
+            // TODO: The more proper way to do this would be to use `Self::Output` here.
+            return self.frames.push(current_frame);
+        }
+
         let parent_bfi = self.current_block_info();
         if parent_bfi.complete {
             return; // This block was already complete.
