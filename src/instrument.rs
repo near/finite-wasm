@@ -4,6 +4,8 @@
 //! that measures gas fees and stack depth without any special support by the runtime executing the
 //! code in question.
 
+use std::num::TryFromIntError;
+
 use wasmparser::{BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, V128};
 
 use crate::partial_sum::PartialSumMap;
@@ -26,6 +28,38 @@ pub enum Error {
     ParseGlobals(#[source] BinaryReaderError),
     #[error("could not parsse function locals")]
     ParseLocals(#[source] BinaryReaderError),
+    #[error("could not parse the imports")]
+    ParseImports(#[source] BinaryReaderError),
+    #[error("too many functions in the module")]
+    TooManyFunctions,
+    #[error("could not parse the table section")]
+    ParseTable(#[source] BinaryReaderError),
+
+    // These are invariant violation bugs (e.g. validation has not been run)
+    #[error("could not process locals for function ${1}")]
+    TooManyLocals(#[source] crate::partial_sum::Error, u32),
+    #[error("module is malformed at offset {0}, if..else..end is not correctly constructed")]
+    MalformedIfElse(usize),
+    #[error("empty stack, module should not have passed validation")]
+    EmptyStack,
+    #[error("type index is out of range")]
+    TypeIndexRange(#[source] TryFromIntError),
+    #[error("type index refers to non-existent type")]
+    TypeIndex,
+    #[error("function index is out of range")]
+    FunctionIndexRange(#[source] TryFromIntError),
+    #[error("function index refers to non-existent type")]
+    FunctionIndex,
+    #[error("global index is out of range")]
+    GlobalIndexRange(#[source] TryFromIntError),
+    #[error("global index refers to non-existent type")]
+    GlobalIndex,
+    #[error("table index is out of range")]
+    TableIndexRange(#[source] TryFromIntError),
+    #[error("table index refers to non-existent type")]
+    TableIndex,
+    #[error("local type could not be looked up for local {0}")]
+    LocalIndex(u32),
 }
 
 /// The results of parsing and analyzing the module.
@@ -40,40 +74,89 @@ pub struct Module {
 
 impl Module {
     pub fn new(module: &[u8], configuration: &impl AnalysisConfig) -> Result<Self, Error> {
-        let mut function_stack_sizes = vec![];
         let mut types = vec![];
         let mut functions = vec![];
+        let mut function_stack_sizes = vec![];
         let mut globals = vec![];
+        let mut tables = vec![];
         let mut locals = PartialSumMap::new();
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
             let payload = payload.map_err(Error::ParsePayload)?;
             match payload {
+                wasmparser::Payload::ImportSection(reader) => {
+                    for import in reader.into_iter() {
+                        let import = import.map_err(Error::ParseImports)?;
+                        match import.ty {
+                            wasmparser::TypeRef::Func(f) => {
+                                functions.push(f);
+                                function_stack_sizes.push(0);
+                            }
+                            wasmparser::TypeRef::Global(g) => {
+                                globals.push(g.content_type);
+                            }
+                            wasmparser::TypeRef::Table(t) => {
+                                tables.push(t.element_type);
+                            }
+                            wasmparser::TypeRef::Memory(_) => continue,
+                            wasmparser::TypeRef::Tag(_) => continue,
+                        }
+                    }
+                }
                 wasmparser::Payload::TypeSection(reader) => {
-                    types = reader
-                        .into_iter()
-                        .collect::<Result<_, _>>()
-                        .map_err(Error::ParseTypes)?;
+                    for ty in reader {
+                        let ty = ty.map_err(Error::ParseTypes)?;
+                        types.push(ty);
+                    }
                 }
                 wasmparser::Payload::GlobalSection(reader) => {
-                    globals = reader
-                        .into_iter()
-                        .map(|v| v.map(|v| v.ty.content_type))
-                        .collect::<Result<_, _>>()
-                        .map_err(Error::ParseGlobals)?;
+                    for global in reader {
+                        let global = global.map_err(Error::ParseGlobals)?;
+                        globals.push(global.ty.content_type);
+                    }
+                }
+                wasmparser::Payload::TableSection(reader) => {
+                    for tbl in reader.into_iter() {
+                        let tbl = tbl.map_err(Error::ParseTable)?;
+                        tables.push(tbl.element_type);
+                    }
                 }
                 wasmparser::Payload::FunctionSection(reader) => {
-                    functions = reader
-                        .into_iter()
-                        .collect::<Result<_, _>>()
-                        .map_err(Error::ParseFunctions)?;
+                    for function in reader {
+                        let function = function.map_err(Error::ParseFunctions)?;
+                        functions.push(function);
+                    }
                 }
                 wasmparser::Payload::CodeSectionEntry(function) => {
+                    // We use the length of `function_stack_sizes` to _also_ act as a counter for
+                    // how many code section entries we have seen so far. This allows us to match
+                    // up the function information with its type and such.
+                    let function_id = function_stack_sizes.len();
+                    let type_id = functions
+                        .get(function_id)
+                        .ok_or(Error::FunctionIndex)
+                        .unwrap();
+                    let function_id =
+                        u32::try_from(function_id).map_err(|_| Error::TooManyFunctions)?;
+                    let type_id = usize::try_from(*type_id).map_err(Error::TypeIndexRange)?;
+                    let fn_type = types.get(type_id).ok_or(Error::TypeIndex)?;
+
                     locals.clear();
+                    match fn_type {
+                        wasmparser::Type::Func(fnty) => {
+                            for param in fnty.params() {
+                                locals
+                                    .push(1, *param)
+                                    .map_err(|e| Error::TooManyLocals(e, function_id))?;
+                            }
+                        }
+                    }
                     for local in function.get_locals_reader().map_err(Error::LocalsReader)? {
                         let local = local.map_err(Error::ParseLocals)?;
-                        locals.push(local.0, local.1).expect("TODO");
+                        locals
+                            .push(local.0, local.1)
+                            .map_err(|e| Error::TooManyLocals(e, function_id))?;
                     }
 
                     let activation_size = configuration.size_of_function_activation(
@@ -89,23 +172,18 @@ impl Module {
                         functions: &functions,
                         types: &types,
                         globals: &globals,
+                        tables: &tables,
                         locals: &locals,
                         frames: vec![],
                     };
-                    // We use the length of `function_stack_sizes` to _also_ act as a counter for
-                    // how many code section entries we have seen so far. This allows us to match
-                    // up the function information with its type and such.
-                    //
-                    // TODO: conversion, we use `function_stack_sizes
-                    // TODO: need to skip ahead by the number of function imports.
-                    visitor.visit_function_entry(function_stack_sizes.len() as u32);
+                    visitor.visit_function_entry(function_id)?;
                     let mut operators = function
                         .get_operators_reader()
                         .map_err(Error::OperatorReader)?;
                     while !operators.eof() {
                         operators
                             .visit_with_offset(&mut visitor)
-                            .map_err(Error::VisitOperators)?;
+                            .map_err(Error::VisitOperators)??;
                     }
                     function_stack_sizes
                         .push(activation_size + visitor.current_block_info().operands.max_size);
@@ -173,18 +251,21 @@ impl Operands {
         self
     }
 
-    fn pop(&mut self) -> &mut Self {
-        self.size -= self
-            .stack
-            .pop()
-            .expect("TODO, nice panic message, this is a invariant err");
-        self
+    fn pop(&mut self) -> Result<&mut Self, Error> {
+        self.size -= self.stack.pop().ok_or(Error::EmptyStack).unwrap();
+        Ok(self)
     }
 
-    fn pop_multiple(&mut self, count: usize) -> &mut Self {
-        let size: u64 = self.stack.drain((self.stack.len() - count)..).sum();
+    fn pop_multiple(&mut self, count: usize) -> Result<&mut Self, Error> {
+        let split_point = self
+            .stack
+            .len()
+            .checked_sub(count)
+            .ok_or(Error::EmptyStack)
+            .unwrap();
+        let size: u64 = self.stack.drain(split_point..).sum();
         self.size -= size;
-        self
+        Ok(self)
     }
 }
 
@@ -222,6 +303,7 @@ struct StackSizeVisitor<'a, Cfg> {
     functions: &'a [u32],
     types: &'a [wasmparser::Type],
     globals: &'a [wasmparser::ValType],
+    tables: &'a [wasmparser::ValType],
     locals: &'a PartialSumMap<u32, wasmparser::ValType>,
 
     frames: Vec<Frame>,
@@ -252,108 +334,122 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
             .expect("stack analysis must maintain at least one frame at all times")
     }
 
-    fn ty(&self, type_index: u32) -> &wasmparser::Type {
-        let type_index = usize::try_from(type_index).expect("TODO");
-        self.types.get(type_index).expect("TODO")
+    fn ty(&self, type_index: u32) -> Result<&wasmparser::Type, Error> {
+        let type_index = usize::try_from(type_index).map_err(Error::TypeIndexRange)?;
+        self.types.get(type_index).ok_or(Error::TypeIndex)
     }
 
-    fn function_type_index(&self, function_index: u32) -> u32 {
-        let function_index = usize::try_from(function_index).expect("TODO");
-        *self.functions.get(function_index).expect("TODO")
+    fn function_type_index(&self, function_index: u32) -> Result<u32, Error> {
+        let function_index = usize::try_from(function_index).map_err(Error::FunctionIndexRange)?;
+        self.functions
+            .get(function_index)
+            .copied()
+            .ok_or(Error::FunctionIndex)
     }
 
-    fn push(&mut self, val: ValType) {
-        let size = self.config.size_of_value(val);
-        self.current_block_info().operands.push(size);
+    fn push(&mut self, val: ValType) -> Result<(), Error> {
+        let bfi = self.current_block_info();
+        if !bfi.complete {
+            let size = self.config.size_of_value(val);
+            self.current_block_info().operands.push(size);
+        }
+        Ok(())
     }
-    fn pop(&mut self) {
-        self.current_block_info().operands.pop();
+    fn pop(&mut self) -> Result<(), Error> {
+        let bfi = self.current_block_info();
+        if bfi.complete {
+            Ok(())
+        } else {
+            bfi.operands.pop().map(|_| ())
+        }
     }
-    fn pop2(&mut self) {
-        self.pop_multiple(2)
+    fn pop2(&mut self) -> Result<(), Error> {
+        self.pop_multiple(2).map(|_| ())
     }
-    fn pop3(&mut self) {
-        self.pop_multiple(3)
+    fn pop3(&mut self) -> Result<(), Error> {
+        self.pop_multiple(3).map(|_| ())
     }
-    fn binop(&mut self, ty: ValType) {
-        self.pop2();
-        self.push(ty);
+    fn binop(&mut self, ty: ValType) -> Result<(), Error> {
+        self.pop2()?;
+        self.push(ty)
     }
-    fn testop(&mut self) {
-        self.pop();
-        self.push(ValType::I32); // Boolean integer result
-    }
-
-    fn relop(&mut self) {
-        self.pop2();
-        self.push(ValType::I32); // Boolean integer result
-    }
-
-    fn cvtop(&mut self, result: ValType) {
-        self.pop2();
-        self.push(result);
-    }
-
-    fn vrelop(&mut self) {
-        self.pop(); // [v128 v128] -> [v128]
+    fn testop(&mut self) -> Result<(), Error> {
+        self.pop()?;
+        self.push(ValType::I32) // Boolean integer result
     }
 
-    fn vcvtop(&mut self) {
+    fn relop(&mut self) -> Result<(), Error> {
+        self.pop2()?;
+        self.push(ValType::I32) // Boolean integer result
+    }
+
+    fn cvtop(&mut self, result: ValType) -> Result<(), Error> {
+        self.pop()?;
+        self.push(result)
+    }
+
+    fn vrelop(&mut self) -> Result<(), Error> {
+        self.pop() // [v128 v128] -> [v128]
+    }
+
+    fn vcvtop(&mut self) -> Result<(), Error> {
         /* [v128] -> [v128] */
+        Ok(())
     }
 
-    fn extract_lane(&mut self, ty: ValType) {
-        self.pop();
-        self.push(ty);
+    fn extract_lane(&mut self, ty: ValType) -> Result<(), Error> {
+        self.pop()?;
+        self.push(ty)
     }
 
-    fn splat(&mut self) {
-        self.pop();
+    fn splat(&mut self) -> Result<(), Error> {
+        self.pop()?;
         self.push(ValType::V128)
     }
 
-    fn bitmask(&mut self) {
-        self.pop();
+    fn bitmask(&mut self) -> Result<(), Error> {
+        self.pop()?;
         self.push(ValType::I32)
     }
 
-    fn atomic_rmw(&mut self, ty: ValType) {
-        self.pop2();
-        self.push(ty);
+    fn atomic_rmw(&mut self, ty: ValType) -> Result<(), Error> {
+        self.pop2()?;
+        self.push(ty)
     }
 
-    fn atomic_cmpxchg(&mut self, ty: ValType) {
-        self.pop3();
-        self.push(ty);
+    fn atomic_cmpxchg(&mut self, ty: ValType) -> Result<(), Error> {
+        self.pop3()?;
+        self.push(ty)
     }
 
-    fn atomic_load(&mut self, ty: ValType) {
-        self.pop();
-        self.push(ty);
+    fn atomic_load(&mut self, ty: ValType) -> Result<(), Error> {
+        self.pop()?;
+        self.push(ty)
     }
 
-    fn call_typed_function(&mut self, type_index: u32) {
-        let type_index = usize::try_from(type_index).expect("TODO");
-        match self.types.get(type_index).expect("TODO") {
+    fn call_typed_function(&mut self, type_index: u32) -> Result<(), Error> {
+        let type_index = usize::try_from(type_index).map_err(Error::TypeIndexRange)?;
+        match self.types.get(type_index).ok_or(Error::TypeIndex)? {
             wasmparser::Type::Func(fnty) => {
                 for _ in fnty.params() {
-                    self.pop();
+                    self.pop()?;
                 }
                 for result_ty in fnty.results() {
-                    self.push(*result_ty);
+                    self.push(*result_ty)?;
                 }
             }
         }
+        Ok(())
     }
 
-    fn block_operands_from_ty(&self, ty: &BlockType) -> Operands {
+    fn block_operands_from_ty(&self, ty: &BlockType) -> Result<Operands, Error> {
         match ty {
             // No input parameters, only a return.
-            BlockType::Empty | BlockType::Type(_) => Operands::new(),
+            BlockType::Empty | BlockType::Type(_) => Ok(Operands::new()),
             BlockType::FuncType(fn_type_idx) => {
                 // First, pop the appropriate number of operands from the current frame (inputs to
                 // the block)
-                match self.ty(*fn_type_idx) {
+                match self.ty(*fn_type_idx)? {
                     wasmparser::Type::Func(fnty) => {
                         let stack: Vec<u64> = fnty
                             .params()
@@ -361,42 +457,47 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
                             .map(|vty| self.config.size_of_value(*vty))
                             .collect();
                         let size = stack.iter().sum();
-                        Operands {
+                        Ok(Operands {
                             size,
                             stack,
                             max_size: size,
-                        }
+                        })
                     }
                 }
             }
         }
     }
 
-    fn pop_multiple(&mut self, len: usize) {
-        self.current_block_info().operands.pop_multiple(len);
+    fn pop_multiple(&mut self, len: usize) -> Result<(), Error> {
+        let bfi = self.current_block_info();
+        if bfi.complete {
+            Ok(())
+        } else {
+            bfi.operands.pop_multiple(len).map(|_| ())
+        }
     }
 
-    fn visit_function_entry(&mut self, function_index: u32) {
-        let type_index = self.function_type_index(function_index);
+    fn visit_function_entry(&mut self, function_index: u32) -> Result<(), Error> {
+        let type_index = self.function_type_index(function_index)?;
         let ty = BlockType::FuncType(type_index);
-        let operands = self.block_operands_from_ty(&ty);
         self.frames.push(Frame::Block(BlockInfo {
             ty,
-            operands,
+            operands: Operands::new(),
             complete: false,
-        }))
+        }));
+        Ok(())
     }
 }
 
 #[rustfmt::skip]
 impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
-    type Output = ();
+    type Output = Result<(), Error>;
 
     // Special cases (e.g. parametrics)
-    fn visit_nop(&mut self, _: usize) -> Self::Output { }
-    fn visit_drop(&mut self, _: usize) -> Self::Output { self.pop(); }
-    fn visit_select(&mut self, _: usize) -> Self::Output { self.pop2(); } // [t t i32] -> [t]
-    fn visit_typed_select(&mut self, _: usize, _: ValType) -> Self::Output { self.pop2(); }
+    fn visit_nop(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_drop(&mut self, _: usize) -> Self::Output { self.pop() }
+    fn visit_select(&mut self, _: usize) -> Self::Output { self.pop2() } // [t t i32] -> [t]
+    fn visit_typed_select(&mut self, _: usize, _: ValType) -> Self::Output { self.pop2() }
 
     // t.const
     fn visit_i32_const(&mut self, _: usize, _: i32) -> Self::Output { self.push(ValType::I32) }
@@ -407,14 +508,14 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
 
     // locals & globals
     fn visit_local_get(&mut self, _: usize, local_index: u32) -> Self::Output {
-        self.push(*self.locals.find(local_index).expect("TODO"));
+        self.push(*self.locals.find(local_index).ok_or(Error::LocalIndex(local_index))?)
     }
     fn visit_local_set(&mut self, _: usize, _: u32) -> Self::Output { self.pop() }
-    fn visit_local_tee(&mut self, _: usize, _: u32) -> Self::Output { }
+    fn visit_local_tee(&mut self, _: usize, _: u32) -> Self::Output { Ok(()) }
 
     fn visit_global_get(&mut self, _: usize, global_index: u32) -> Self::Output {
-        let global_index = usize::try_from(global_index).expect("TODO");
-        let global_ty = self.globals.get(global_index).expect("TODO");
+        let global_index = usize::try_from(global_index).map_err(Error::GlobalIndexRange)?;
+        let global_ty = self.globals.get(global_index).ok_or(Error::GlobalIndex)?;
         self.push(*global_ty)
     }
     fn visit_global_set(&mut self, _: usize, _: u32) -> Self::Output { self.pop() }
@@ -422,66 +523,66 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
 
     //  t.iunop | t.funop | t.vunop
     //  consume one operand and return an operand of the same type.
-    fn visit_i32_clz(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64_clz(&mut self, _: usize) -> Self::Output { }
+    fn visit_i32_clz(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64_clz(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_i32_ctz(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64_ctz(&mut self, _: usize) -> Self::Output { }
+    fn visit_i32_ctz(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64_ctz(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_i32_popcnt(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64_popcnt(&mut self, _: usize) -> Self::Output { }
-    fn visit_i8x16_popcnt(&mut self, _: usize) -> Self::Output { }
+    fn visit_i32_popcnt(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64_popcnt(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i8x16_popcnt(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_i16x8_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_i32x4_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64x2_abs(&mut self, _: usize) -> Self::Output { }
-    fn visit_i8x16_abs(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i16x8_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i32x4_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64x2_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i8x16_abs(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_i8x16_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_i16x8_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_i32x4_neg(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64x2_neg(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i8x16_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i16x8_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i32x4_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64x2_neg(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_v128_not(&mut self, _: usize) -> Self::Output { }
+    fn visit_v128_not(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_sqrt(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_sqrt(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_sqrt(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_sqrt(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_sqrt(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_sqrt(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_sqrt(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_sqrt(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_ceil(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_ceil(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_ceil(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_ceil(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_ceil(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_ceil(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_ceil(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_ceil(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_floor(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_floor(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_floor(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_floor(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_floor(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_floor(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_floor(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_floor(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_trunc(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_trunc(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_trunc(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_trunc(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_trunc(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_trunc(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_trunc(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_trunc(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_f32_nearest(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64_nearest(&mut self, _: usize) -> Self::Output { }
-    fn visit_f32x4_nearest(&mut self, _: usize) -> Self::Output { }
-    fn visit_f64x2_nearest(&mut self, _: usize) -> Self::Output { }
+    fn visit_f32_nearest(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64_nearest(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f32x4_nearest(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_f64x2_nearest(&mut self, _: usize) -> Self::Output { Ok(()) }
 
-    fn visit_i32_extend8_s(&mut self, _: usize) -> Self::Output { }
-    fn visit_i32_extend16_s(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64_extend8_s(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64_extend16_s(&mut self, _: usize) -> Self::Output { }
-    fn visit_i64_extend32_s(&mut self, _: usize) -> Self::Output { }
+    fn visit_i32_extend8_s(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i32_extend16_s(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64_extend8_s(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64_extend16_s(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i64_extend32_s(&mut self, _: usize) -> Self::Output { Ok(()) }
 
     // binop
     fn visit_i32_add(&mut self, _: usize) -> Self::Output { self.binop(ValType::I32) }
@@ -804,32 +905,32 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_f64x2_le(&mut self, _: usize) -> Self::Output { self.vrelop() }
     fn visit_f64x2_ge(&mut self, _: usize) -> Self::Output { self.vrelop() }
 
-    fn visit_i32x4_extend_low_i16x8_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_extend_high_i16x8_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_extend_low_i16x8_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_extend_high_i16x8_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i64x2_extend_low_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i64x2_extend_high_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i64x2_extend_low_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i64x2_extend_high_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i16x8_extend_low_i8x16_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i16x8_extend_high_i8x16_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i16x8_extend_low_i8x16_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i16x8_extend_high_i8x16_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_trunc_sat_f32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_trunc_sat_f32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_f32x4_convert_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_f32x4_convert_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_trunc_sat_f64x2_s_zero(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_trunc_sat_f64x2_u_zero(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_f64x2_convert_low_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_f64x2_convert_low_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_f32x4_demote_f64x2_zero(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_f64x2_promote_low_f32x4(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_relaxed_trunc_sat_f32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_relaxed_trunc_sat_f32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_relaxed_trunc_sat_f64x2_s_zero(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
-    fn visit_i32x4_relaxed_trunc_sat_f64x2_u_zero(&mut self, _: usize) -> Self::Output { self.vcvtop(); }
+    fn visit_i32x4_extend_low_i16x8_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_extend_high_i16x8_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_extend_low_i16x8_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_extend_high_i16x8_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i64x2_extend_low_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i64x2_extend_high_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i64x2_extend_low_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i64x2_extend_high_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i16x8_extend_low_i8x16_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i16x8_extend_high_i8x16_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i16x8_extend_low_i8x16_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i16x8_extend_high_i8x16_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_trunc_sat_f32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_trunc_sat_f32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_f32x4_convert_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_f32x4_convert_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_trunc_sat_f64x2_s_zero(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_trunc_sat_f64x2_u_zero(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_f64x2_convert_low_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_f64x2_convert_low_i32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_f32x4_demote_f64x2_zero(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_f64x2_promote_low_f32x4(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_relaxed_trunc_sat_f32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_relaxed_trunc_sat_f32x4_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_relaxed_trunc_sat_f64x2_s_zero(&mut self, _: usize) -> Self::Output { self.vcvtop() }
+    fn visit_i32x4_relaxed_trunc_sat_f64x2_u_zero(&mut self, _: usize) -> Self::Output { self.vcvtop() }
     fn visit_i8x16_narrow_i16x8_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
     fn visit_i8x16_narrow_i16x8_u(&mut self, _: usize) -> Self::Output { self.vcvtop() }
     fn visit_i16x8_narrow_i32x4_s(&mut self, _: usize) -> Self::Output { self.vcvtop() }
@@ -870,24 +971,26 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_i32x4_bitmask(&mut self, _: usize) -> Self::Output { self.bitmask() }
     fn visit_i64x2_bitmask(&mut self, _: usize) -> Self::Output { self.bitmask() }
 
-    fn visit_i16x8_extadd_pairwise_i8x16_s(&mut self, _: usize) -> Self::Output { }
-    fn visit_i16x8_extadd_pairwise_i8x16_u(&mut self, _: usize) -> Self::Output { }
-    fn visit_i32x4_extadd_pairwise_i16x8_s(&mut self, _: usize) -> Self::Output { }
-    fn visit_i32x4_extadd_pairwise_i16x8_u(&mut self, _: usize) -> Self::Output { }
+    fn visit_i16x8_extadd_pairwise_i8x16_s(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i16x8_extadd_pairwise_i8x16_u(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i32x4_extadd_pairwise_i16x8_s(&mut self, _: usize) -> Self::Output { Ok(()) }
+    fn visit_i32x4_extadd_pairwise_i16x8_u(&mut self, _: usize) -> Self::Output { Ok(()) }
 
     // memory
     // table
     fn visit_table_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output { self.pop3() }
-    fn visit_elem_drop(&mut self, _: usize, _: u32) -> Self::Output { }
+    fn visit_elem_drop(&mut self, _: usize, _: u32) -> Self::Output { Ok(()) }
     fn visit_table_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output { self.pop3() }
     fn visit_table_fill(&mut self, _: usize, _: u32) -> Self::Output { self.pop3() }
-    fn visit_table_get(&mut self, _: usize, _table: u32) -> Self::Output {
-        todo!("[i32] -> [t table type]")
+    fn visit_table_get(&mut self, _: usize, table: u32) -> Self::Output {
+        let table = usize::try_from(table).map_err(Error::TableIndexRange)?;
+        self.pop()?;
+        self.push(*self.tables.get(table).ok_or(Error::TableIndex)?)
     }
     fn visit_table_set(&mut self, _: usize, _: u32) -> Self::Output { self.pop2() }
     fn visit_table_grow(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop2();
-        self.push(ValType::I32);
+        self.pop2()?;
+        self.push(ValType::I32)
     }
     fn visit_table_size(&mut self, _: usize, _: u32) -> Self::Output { self.push(ValType::I32) }
 
@@ -895,7 +998,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_ref_null(&mut self, _: usize, ty: ValType) -> Self::Output { self.push(ty) }
     fn visit_ref_func(&mut self, _: usize, _: u32) -> Self::Output { self.push(ValType::FuncRef) }
     fn visit_ref_is_null(&mut self, _: usize) -> Self::Output {
-        self.pop();
+        self.pop()?;
         self.push(ValType::I32)
     }
 
@@ -954,9 +1057,9 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_v128_store64_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output { self.pop() }
 
     fn visit_memory_size(&mut self, _: usize, _: u32, _: u8) -> Self::Output { self.push(ValType::I32) }
-    fn visit_memory_grow(&mut self, _: usize, _: u32, _: u8) -> Self::Output { }
+    fn visit_memory_grow(&mut self, _: usize, _: u32, _: u8) -> Self::Output { Ok(()) }
     fn visit_memory_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output { self.pop3() }
-    fn visit_data_drop(&mut self, _: usize, _: u32) -> Self::Output { }
+    fn visit_data_drop(&mut self, _: usize, _: u32) -> Self::Output { Ok(()) }
     fn visit_memory_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output { self.pop3() }
     fn visit_memory_fill(&mut self, _: usize, _: u32) -> Self::Output { self.pop3() }
 
@@ -1036,10 +1139,6 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     }
 
     // Control-flow instructions
-    fn visit_unreachable(&mut self, _: usize) -> Self::Output {
-        todo!()
-    }
-
     fn visit_return(&mut self, offset: usize) -> Self::Output {
         // This behaves as-if a `br` to the outer-most block.
         self.visit_br(offset, self.frames.len() as u32)
@@ -1053,9 +1152,14 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_return_call_indirect(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
         self.visit_return(offset)
     }
+    fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
+        // TODO: Does this really behave as-if a return for the purposes of this analysis?
+        self.visit_return(offset)
+    }
+
 
     fn visit_call(&mut self, _: usize, function_index: u32) -> Self::Output {
-        self.call_typed_function(self.function_type_index(function_index))
+        self.call_typed_function(self.function_type_index(function_index)?)
     }
 
     fn visit_call_indirect(&mut self, _: usize, type_index: u32, _: u32, _: u8) -> Self::Output {
@@ -1063,40 +1167,43 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     }
 
     fn visit_block(&mut self, _: usize, ty: BlockType) -> Self::Output {
-        let operands = self.block_operands_from_ty(&ty);
-        self.pop_multiple(operands.stack.len());
+        let operands = self.block_operands_from_ty(&ty)?;
+        self.pop_multiple(operands.stack.len())?;
         let complete = self.current_block_info().complete;
         self.frames.push(Frame::Block(BlockInfo {
             ty,
             operands,
             complete,
         }));
+        Ok(())
     }
 
     fn visit_loop(&mut self, _: usize, ty: BlockType) -> Self::Output {
-        let operands = self.block_operands_from_ty(&ty);
-        self.pop_multiple(operands.stack.len());
+        let operands = self.block_operands_from_ty(&ty)?;
+        self.pop_multiple(operands.stack.len())?;
         let complete = self.current_block_info().complete;
         self.frames.push(Frame::Loop(BlockInfo {
             ty,
             operands,
             complete,
         }));
+        Ok(())
     }
 
     fn visit_if(&mut self, _: usize, ty: BlockType) -> Self::Output {
-        let operands = self.block_operands_from_ty(&ty);
+        let operands = self.block_operands_from_ty(&ty)?;
         // Block parameters and the condition.
-        self.pop_multiple(operands.stack.len() + 1);
+        self.pop_multiple(operands.stack.len() + 1)?;
         let complete = self.current_block_info().complete;
         self.frames.push(Frame::If(BlockInfo {
             ty,
             operands,
             complete,
         }));
+        Ok(())
     }
 
-    fn visit_else(&mut self, _: usize) -> Self::Output {
+    fn visit_else(&mut self, offset: usize) -> Self::Output {
         let current_frame = self.frames.pop()
             .expect("there must be at least one frame at all times");
         match current_frame {
@@ -1106,14 +1213,16 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                     if_max_depth: bfi.operands.max_size,
                     else_block: BlockInfo {
                         ty: bfi.ty,
-                        operands: self.block_operands_from_ty(&bfi.ty),
+                        operands: self.block_operands_from_ty(&bfi.ty)?,
                         complete,
                     }
                 });
             }
             // TODO: actually reachable in case of a malformed webassembly.
-            Frame::Else { .. } | Frame::Loop(..) | Frame::Block(..) => unreachable!(),
+            Frame::Else { .. } | Frame::Loop(..) | Frame::Block(..) =>
+                return Err(Error::MalformedIfElse(offset)),
         }
+        Ok(())
     }
 
     fn visit_end(&mut self, _: usize) -> Self::Output {
@@ -1122,32 +1231,45 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
             // This is the end of the function, and we want to push the current frame back on the
             // stack to communicate back the information about the function, I guess.
             //
-            // TODO: The more proper way to do this would be to use `Self::Output` here.
-            return self.frames.push(current_frame);
+            // FIXME: The more proper way to do this would be to use `Self::Output` to return the
+            // stack size for the function here…
+            return Ok(self.frames.push(current_frame));
         }
 
         let parent_bfi = self.current_block_info();
-        if parent_bfi.complete {
-            return; // This block was already complete.
-        }
-        let current_max_depth = match current_frame {
-            Frame::Block(bfi) => bfi.operands.max_size,
-            Frame::If(bfi) => {
-                // This is a malformed if-else construct. However, it is not our business to
-                // validate webassembly, so just “use” the maximum size we've seen so far.
-                bfi.operands.max_size
-            },
-            Frame::Else { if_max_depth, else_block } => std::cmp::max(if_max_depth, else_block.operands.max_size),
-            Frame::Loop(bfi) => bfi.operands.max_size,
+        let (max_height, current_bfi) = match current_frame {
+            Frame::Block(bfi) => (bfi.operands.max_size, bfi),
+            // This is a malformed wasm construct, but the behaviour is kinda reasonable if we
+            // just handle it as-is.
+            Frame::If(bfi) => (bfi.operands.max_size, bfi),
+            Frame::Else { if_max_depth, else_block } =>
+                (std::cmp::max(if_max_depth, else_block.operands.max_size), else_block),
+            Frame::Loop(bfi) => (bfi.operands.max_size, bfi),
         };
         parent_bfi.operands.max_size = std::cmp::max(
-            parent_bfi.operands.size + current_max_depth,
+            parent_bfi.operands.size + max_height,
             parent_bfi.operands.max_size
         );
+        match current_bfi.ty {
+            BlockType::Empty => Ok(()),
+            BlockType::Type(ret_ty) => self.push(ret_ty),
+            BlockType::FuncType(fn_type_idx) => {
+                let result_types = match self.ty(fn_type_idx)? {
+                    wasmparser::Type::Func(fnty) => {
+                        fnty.results().to_vec()
+                    }
+                };
+                for result in result_types {
+                    self.push(result)?;
+                }
+                Ok(())
+            },
+        }
     }
 
     fn visit_br(&mut self, _: usize, _: u32) -> Self::Output {
         self.current_block_info().complete = true;
+        Ok(())
     }
 
     fn visit_br_table(&mut self, _: usize, _: BrTable<'a>) -> Self::Output {
@@ -1157,6 +1279,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         // as for a regular `br` applies. In particular we don’t need to worry about evaluating
         // rest of the operations within the frame.
         self.current_block_info().complete = true;
+        Ok(())
     }
 
     fn visit_br_if(&mut self, _: usize, _: u32) -> Self::Output {

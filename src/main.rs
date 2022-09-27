@@ -29,9 +29,7 @@ impl finite_wasm::instrument::AnalysisConfig for Config {
 }
 
 fn main() {
-    let mut input = vec![];
-    std::io::stdin().read_to_end(&mut input).unwrap();
-
+    let input = std::fs::read(std::env::args().nth(1).unwrap()).unwrap();
     let module = finite_wasm::instrument::Module::new(&input, &Config).unwrap();
-    dbg!(module.function_stack_sizes);
+    // dbg!(module.function_stack_sizes);
 }
