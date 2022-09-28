@@ -3,18 +3,20 @@
 The maximum stack size for a function is determined by modelling the stack operations of each
 operation as described in the section 4.4.
 
-When considering the instructions which enter a block (`block`, `if`, `else`, etc.), the stack
-capacity required to evaluate the enclosed instruction sequence should be considered part of the
-enclosing block’s stack size requirements (except for function invocation).
+Computing the maximum stack size of instructions that enclose sequences of instructions to form a
+block (`block`, `if`, `else`, etc.) must additionally account for the following requirmements:
 
-Instructions made unreachable by an unconditional control flow operation (i.e. `unreachable`, `br`,
-`br_table`, `return`) shall not contribute to the maximum stack size computation. Conditional
-branching must pick the greatest size possible between all branches.
+1. `if..else..end` encloses two distinct instruction sequences with potentially different stack
+   capacity requirements. The greater of the two must be considered the stack requirement of the
+   entire `if..else..end` instruction.
+2. The instructions following an unconditional control flow instruction (`unreachable`, `br`,
+   `br_table`, `return`, etc.) must not contribute to the maximum stack size for the enclosing
+   block.
+3. When modelling conditional branches, the greater stack size requirement must always be chosen.
 
 ## The reduction rule exception
 
-Execution of an intermediate reduction of the aggregate instructions (an example of an aggregate
-instruction is `table.fill`, which in turn may execute `table.fill` again) may require more stack
-space than occuppied by strictly the input/output operands to the instruction. The implementations
-are responsible for reserving sufficient red-zone stack space required by these aggregate
-instructions as they are not modelled by the maximum stack size computation.
+Execution of an intermediate reduction of the aggregate instructions may require more stack space
+than occuppied by strictly the input/output operands to the instruction. The implementations are
+responsible for reserving sufficient red-zone stack space required by these aggregate instructions
+as they are not modelled by the maximum stack size computation.

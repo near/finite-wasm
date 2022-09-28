@@ -493,7 +493,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
 impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
     type Output = Result<(), Error>;
 
-    // Special cases (e.g. parametrics)
+    // Special cases (parametrics)
     fn visit_nop(&mut self, _: usize) -> Self::Output { Ok(()) }
     fn visit_drop(&mut self, _: usize) -> Self::Output { self.pop() }
     fn visit_select(&mut self, _: usize) -> Self::Output { self.pop2() } // [t t i32] -> [t]
