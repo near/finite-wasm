@@ -14,6 +14,8 @@
 //! The type of a given index can be quickly found with a binary search over the partial sum
 //! field.
 
+use std::{iter::Zip, vec::IntoIter, slice::Iter};
+
 /// A Map from keys to values that is able to efficiently store repeating occurences of the value.
 ///
 /// This map can only be appended to.
@@ -88,6 +90,22 @@ impl<K: Clone + Ord + num_traits::Unsigned + num_traits::CheckedAdd, V> PartialS
         self.keys.clear();
         self.values.clear();
         self.size = K::zero();
+    }
+}
+
+impl<K, V> IntoIterator for PartialSumMap<K, V> {
+    type Item = (K, V);
+    type IntoIter = Zip<IntoIter<K>, IntoIter<V>>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.keys.into_iter().zip(self.values.into_iter())
+    }
+}
+
+impl<'a, K, V> IntoIterator for &'a PartialSumMap<K, V> {
+    type Item = (&'a K, &'a V);
+    type IntoIter = Zip<Iter<'a, K>, Iter<'a, V>>;
+    fn into_iter(self) -> Self::IntoIter {
+        self.keys.iter().zip(self.values.iter())
     }
 }
 

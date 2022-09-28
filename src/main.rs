@@ -1,8 +1,8 @@
-use std::io::Read;
+use finite_wasm::{PartialSumMap, instrument::AnalysisConfig};
 
 struct Config;
 
-impl finite_wasm::instrument::AnalysisConfig for Config {
+impl AnalysisConfig for Config {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u64 {
         match ty {
             wasmparser::ValType::I32 => 4,
@@ -18,12 +18,9 @@ impl finite_wasm::instrument::AnalysisConfig for Config {
         0
     }
 
-    fn size_of_function_activation<Locals>(&self, locals: Locals) -> u64
-    where
-        Locals: Iterator<Item = (u32, wasmparser::ValType)>,
-    {
-        locals
-            .map(|(cnt, l)| u64::from(cnt) * self.size_of_value(l))
+    fn size_of_function_activation(&self, locals: &PartialSumMap<u32, wasmparser::ValType>) -> u64 {
+        locals.into_iter()
+            .map(|(cnt, l)| u64::from(*cnt) * self.size_of_value(*l))
             .sum()
     }
 }
