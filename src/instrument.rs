@@ -62,6 +62,8 @@ pub enum Error {
     LocalIndex(u32),
     #[error("missing top-most frame, webassembly input is malformed")]
     CurrentFrameMissing,
+    #[error("too many frames in the function")]
+    TooManyFrames,
 }
 
 /// The results of parsing and analyzing the module.
@@ -161,9 +163,9 @@ impl Module {
                             .map_err(|e| Error::TooManyLocals(e, function_id))?;
                     }
 
-                    // FIXME: this needs to estimate parameters too… right?
+                    // This includes accounting for any possible return pointer tracking,
+                    // parameters and locals (which all are considered locals in wasm).
                     let activation_size = configuration.size_of_function_activation(&locals);
-
                     let mut visitor = StackSizeVisitor {
                         config: configuration,
                         functions: &functions,
@@ -182,7 +184,8 @@ impl Module {
                             .visit_with_offset(&mut visitor)
                             .map_err(Error::VisitOperators)??;
                         if let Some(stack_size) = result {
-                            break function_stack_sizes.push(activation_size + stack_size);
+                            function_stack_sizes.push(activation_size + stack_size);
+                            break;
                         }
                     }
                 }
@@ -298,9 +301,12 @@ impl Frame {
     fn max_depth(&self) -> u64 {
         match self {
             Frame::Block(bfi) => bfi.operands.max_size,
-            // This is a malformed wasm construct, but the behaviour remains kinda reasonable if we
-            // just return `max_size` as-is.
-            Frame::If(bfi) => bfi.operands.max_size,
+            Frame::If(bfi) => {
+                // This is a malformed wasm construct, but the behaviour remains reasonable if we
+                // just return `max_size` as-is.
+                debug_assert!(false, "input wasm is malformed");
+                bfi.operands.max_size
+            }
             Frame::Else {
                 if_max_depth,
                 else_block,
@@ -510,6 +516,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         let ty = BlockType::FuncType(type_index);
         self.frames.push(Frame::Block(BlockInfo {
             ty,
+            // NB: Parameters and locals are counted separately in the activation frame size.
             operands: Operands::new(),
             complete: false,
         }));
@@ -2177,7 +2184,9 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     // Control-flow instructions
     fn visit_return(&mut self, offset: usize) -> Self::Output {
         // This behaves as-if a `br` to the outer-most block.
-        self.visit_br(offset, self.frames.len() as u32)
+        let branch_depth =
+            u32::try_from(self.frames.len().saturating_sub(1)).map_err(|_| Error::TooManyFrames)?;
+        self.visit_br(offset, branch_depth)
     }
     fn visit_return_call(&mut self, offset: usize, _: u32) -> Self::Output {
         // `return_call` behaves as-if a regular `return` followed by the `call`. For the purposes
@@ -2239,7 +2248,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     }
 
     fn visit_else(&mut self, offset: usize) -> Self::Output {
-        let current_frame = self.frames.pop().expect("invalid use of analysis");
+        let current_frame = self.frames.pop().ok_or(Error::CurrentFrameMissing)?;
         match current_frame {
             Frame::If(bfi) => {
                 let complete = self.current_frame()?.block_info().complete;
@@ -2252,8 +2261,10 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                     },
                 });
             }
-            // TODO: actually reachable in case of a malformed webassembly.
             Frame::Else { .. } | Frame::Loop(..) | Frame::Block(..) => {
+                // Actually reachable in case the input has not been validated, or has been
+                // corrupted.
+                debug_assert!(false, "malformed if-else construct");
                 return Err(Error::MalformedIfElse(offset))
             }
         }
@@ -2261,7 +2272,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     }
 
     fn visit_end(&mut self, _: usize) -> Self::Output {
-        let current_frame = self.frames.pop().expect("invalid use of analysis");
+        let current_frame = self.frames.pop().ok_or(Error::CurrentFrameMissing)?;
         let current_bfi = current_frame.block_info();
         let parent_frame = match self.frame(0) {
             // This is the end of the function and there are no more frames remaining to propagate
