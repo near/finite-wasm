@@ -1,4 +1,4 @@
-pub mod instrument;
+pub mod max_stack;
 mod partial_sum;
 pub use partial_sum::PartialSumMap;
 
