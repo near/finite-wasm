@@ -9,10 +9,9 @@ block (`block`, `if`, `else`, etc.) must additionally account for the following 
 1. `if..else..end` encloses two distinct instruction sequences with potentially different stack
    capacity requirements. The greater of the two must be considered the stack requirement of the
    entire `if..else..end` instruction.
-2. The instructions following an unconditional control flow instruction (`unreachable`, `br`,
-   `br_table`, `return`, etc.) must not contribute to the maximum stack size for the enclosing
-   block.
-3. When modelling conditional branches, the greater stack size requirement must always be chosen.
+2. When modelling conditional branches, the greater stack size requirement must always be chosen.
+3. After a stack-polymorphic instruction is executed, the maximum stack size for the enclosing
+   block is frozen and can no longer be affected by any of the instructions that follow.
 
 ## The reduction rule exception
 
