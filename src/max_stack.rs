@@ -8,7 +8,7 @@ use std::num::TryFromIntError;
 
 use wasmparser::{BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, V128};
 
-use crate::partial_sum::PartialSumMap;
+use prefix_sum_vec::PrefixSumVec;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -37,7 +37,7 @@ pub enum Error {
 
     // These are invariant violation bugs (e.g. validation has not been run)
     #[error("could not process locals for function ${1}")]
-    TooManyLocals(#[source] crate::partial_sum::Error, u32),
+    TooManyLocals(#[source] prefix_sum_vec::TryPushError, u32),
     #[error("module is malformed at offset {0}, if..else..end is not correctly constructed")]
     MalformedIfElse(usize),
     #[error("empty stack, module should not have passed validation")]
@@ -83,7 +83,7 @@ impl Module {
         let mut function_stack_sizes = vec![];
         let mut globals = vec![];
         let mut tables = vec![];
-        let mut locals = PartialSumMap::new();
+        let mut locals = PrefixSumVec::new();
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
@@ -151,7 +151,7 @@ impl Module {
                         wasmparser::Type::Func(fnty) => {
                             for param in fnty.params() {
                                 locals
-                                    .push(1, *param)
+                                    .try_push_more(1, *param)
                                     .map_err(|e| Error::TooManyLocals(e, function_id))?;
                             }
                         }
@@ -159,7 +159,7 @@ impl Module {
                     for local in function.get_locals_reader().map_err(Error::LocalsReader)? {
                         let local = local.map_err(Error::ParseLocals)?;
                         locals
-                            .push(local.0, local.1)
+                            .try_push_more(local.0, local.1)
                             .map_err(|e| Error::TooManyLocals(e, function_id))?;
                     }
 
@@ -201,7 +201,7 @@ impl Module {
 pub trait AnalysisConfig {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u64;
     fn size_of_label(&self) -> u64;
-    fn size_of_function_activation(&self, locals: &PartialSumMap<u32, ValType>) -> u64;
+    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
 }
 
 /// Sizes of the operands currently pushed to the operand stack within this frame.
@@ -340,7 +340,7 @@ struct StackSizeVisitor<'a, Cfg> {
     types: &'a [wasmparser::Type],
     globals: &'a [wasmparser::ValType],
     tables: &'a [wasmparser::ValType],
-    locals: &'a PartialSumMap<u32, wasmparser::ValType>,
+    locals: &'a PrefixSumVec<wasmparser::ValType, u32>,
 
     frames: Vec<Frame>,
 }
@@ -563,7 +563,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         self.push(
             *self
                 .locals
-                .find(local_index)
+                .get(&local_index)
                 .ok_or(Error::LocalIndex(local_index))?,
         )
     }
