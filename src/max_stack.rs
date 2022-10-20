@@ -301,12 +301,7 @@ impl Frame {
     fn max_depth(&self) -> u64 {
         match self {
             Frame::Block(bfi) => bfi.operands.max_size,
-            Frame::If(bfi) => {
-                // This is a malformed wasm construct, but the behaviour remains reasonable if we
-                // just return `max_size` as-is.
-                debug_assert!(false, "input wasm is malformed");
-                bfi.operands.max_size
-            }
+            Frame::If(bfi) => bfi.operands.max_size,
             Frame::Else {
                 if_max_depth,
                 else_block,
