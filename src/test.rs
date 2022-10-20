@@ -5,6 +5,8 @@ use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
 
+use crate::max_stack::AnalysisConfig;
+
 #[derive(Debug, PartialEq)]
 enum Line {
     Equal(String),
@@ -87,6 +89,12 @@ pub(crate) enum Error {
     ReadTestContents(#[source] std::io::Error, PathBuf),
     #[error("could not interpret test file `{1}` as UTF-8")]
     FromUtf8(#[source] std::str::Utf8Error, PathBuf),
+    #[error("could not create the parse buffer for the test file")]
+    ParseBuffer(#[source] wast::Error),
+    #[error("could not parse the test file")]
+    ParseWast(#[source] wast::Error),
+    #[error("could not encode the wast module `{1}`")]
+    EncodeModule(#[source] wast::Error, String),
 
     #[error("could not open the snapshot file {1:?}")]
     OpenSnap(#[source] std::io::Error, PathBuf),
@@ -113,6 +121,38 @@ pub(crate) enum Error {
     ),
     #[error("interpreter output wasn’t valid UTF-8")]
     InterpreterOutput(#[source] std::string::FromUtf8Error),
+    #[error("could not analyze the max stack for module {1} at {2:?}")]
+    AnalyseMaxStack(#[source] crate::max_stack::Error, String, PathBuf),
+}
+
+impl Error {
+    pub(crate) fn set_path(&mut self, path: &Path) {
+        match self {
+            Error::ReadTestContents(_, _)
+            | Error::FromUtf8(_, _)
+            | Error::OpenSnap(_, _)
+            | Error::SeekSnap(_, _)
+            | Error::TruncateSnap(_, _)
+            | Error::ReadSnap(_, _)
+            | Error::WriteSnap(_, _)
+            | Error::InterpreterLaunch(_, _)
+            | Error::InterpreterWait(_)
+            | Error::InterpreterExit(_, _, _)
+            | Error::InterpreterOutput(_)
+            | Error::DiffSnap(_)
+            | Error::AnalyseMaxStack(_, _, _) => {}
+            Error::ParseBuffer(s) => set_wast_path(s, path),
+            Error::ParseWast(s) => set_wast_path(s, path),
+            Error::EncodeModule(s, _) => set_wast_path(s, path),
+        }
+    }
+}
+
+fn set_wast_path(error: &mut wast::Error, path: &Path) {
+    error.set_path(path);
+    if let Ok(content) = std::fs::read_to_string(path) {
+        error.set_text(&content);
+    }
 }
 
 pub(crate) fn read(storage: &mut String, path: &Path) -> Result<(), Error> {
@@ -131,20 +171,20 @@ enum Status {
 }
 
 #[derive(Debug)]
-pub(crate) struct TestContext<'a> {
+pub(crate) struct TestContext {
     test_name: String,
     test_path: PathBuf,
-    wast_data: &'a str,
+    snap_base: PathBuf,
     pub(crate) output: Vec<u8>,
     status: Status,
 }
 
-impl<'a> TestContext<'a> {
-    pub(crate) fn new(test_name: String, test_path: PathBuf, wast_data: &'a str) -> Self {
+impl<'a> TestContext {
+    pub(crate) fn new(test_name: String, test_path: PathBuf, snap_base: PathBuf) -> Self {
         Self {
             test_name,
             test_path,
-            wast_data,
+            snap_base,
             output: vec![],
             status: Status::None,
         }
@@ -174,10 +214,15 @@ impl<'a> TestContext<'a> {
     }
 
     fn fail_test_error(&mut self, error: &mut Error) {
+        error.set_path(&self.test_path);
         self.fail(&*error)
     }
 
     pub(crate) fn run(&mut self) {
+        if let Err(mut e) = self.run_stack_analysis() {
+            return self.fail_test_error(&mut e);
+        }
+
         // Run the interpreter here with the wast file in some sort of a tracing mode (needs to
         // be implemented inside the interpreter).
         //
@@ -198,6 +243,80 @@ impl<'a> TestContext<'a> {
         drop(output);
 
         self.pass();
+    }
+
+    fn run_stack_analysis(&mut self) -> Result<(), Error> {
+        let mut test_contents = String::new();
+        read(&mut test_contents, &self.test_path)?;
+        let mut lexer = wast::lexer::Lexer::new(&test_contents);
+        lexer.allow_confusing_unicode(true);
+        let buf = wast::parser::ParseBuffer::new_with_lexer(lexer).map_err(Error::ParseBuffer)?;
+        let wast: wast::Wast = wast::parser::parse(&buf).map_err(Error::ParseWast)?;
+        for (directive_index, directive) in wast.directives.into_iter().enumerate() {
+            let (id, module) = match directive {
+                wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(mut module))) => {
+                    let id = module.id.map_or_else(
+                        || format!("[directive {directive_index}]"),
+                        |id| format!("{id:?}"),
+                    );
+                    let module = module
+                        .encode()
+                        .map_err(|e| Error::EncodeModule(e, id.clone()))?;
+                    (id, module)
+                }
+                wast::WastDirective::Wat(wast::QuoteWat::QuoteModule(_, _)) => {
+                    todo!("quote module");
+                }
+                wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Component(component))) => {
+                    // These are difficult and I would rather skip them for now...
+                    continue;
+                }
+                wast::WastDirective::Wat(wast::QuoteWat::QuoteComponent(_, _)) => {
+                    // Same
+                    continue;
+                }
+
+                // Ignore the “operations”, we only care about module analysis results.
+                wast::WastDirective::Register { .. } => continue,
+                wast::WastDirective::Invoke(_) => continue,
+                wast::WastDirective::AssertTrap { .. } => continue,
+                wast::WastDirective::AssertReturn { .. } => continue,
+                wast::WastDirective::AssertExhaustion { .. } => continue,
+                wast::WastDirective::AssertException { .. } => continue,
+                // Do not attempt to process invalid modules.
+                wast::WastDirective::AssertMalformed { .. } => continue,
+                wast::WastDirective::AssertInvalid { .. } => continue,
+                wast::WastDirective::AssertUnlinkable { .. } => continue,
+            };
+
+            struct DefaultConfig;
+            impl AnalysisConfig for DefaultConfig {
+                fn size_of_value(&self, ty: wasmparser::ValType) -> u64 {
+                    8
+                }
+
+                fn size_of_label(&self) -> u64 {
+                    5
+                }
+
+                fn size_of_function_activation(
+                    &self,
+                    locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
+                ) -> u64 {
+                    11 + u64::from(locals.max_index().copied().unwrap_or(0)) * 7
+                }
+            }
+
+            let results = crate::max_stack::Module::new(&module, &DefaultConfig)
+                .map_err(|e| Error::AnalyseMaxStack(e, id.clone(), self.test_path.clone()))?;
+            let output = results
+                .function_stack_sizes
+                .into_iter()
+                .map(|size| format!("{size}\n"))
+                .collect::<String>();
+            self.compare_snapshot(&output, &format!("max_stack.{id}"))?;
+        }
+        Ok(())
     }
 
     fn exec_interpreter(&mut self, mode: InterpreterMode) -> Result<String, Error> {
@@ -229,15 +348,13 @@ impl<'a> TestContext<'a> {
         Ok(output)
     }
 
-    fn compare_snapshot(
-        &mut self,
-        directive_output: String,
-        index: &'static str,
-    ) -> Result<(), Error> {
+    fn compare_snapshot(&mut self, directive_output: &str, index: &str) -> Result<(), Error> {
         let should_update = std::env::var_os("SNAP_UPDATE").is_some();
-        let snaps_dir = self.test_path.parent().unwrap().join("snaps");
         let snap_filename = format!("{}@{}.snap", self.test_name, index);
-        let snap_path = snaps_dir.join(snap_filename);
+        let snap_path = self.snap_base.join(snap_filename);
+        if let Some(parent) = snap_path.parent() {
+            let _ = std::fs::create_dir_all(parent);
+        }
         let mut snap_file = std::fs::OpenOptions::new()
             .create(true)
             .read(true)

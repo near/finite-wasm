@@ -16,10 +16,11 @@ enum Error {
     WriteTestOutput(#[source] std::io::Error),
     #[error("some tests failed")]
     TestsFailed,
+    #[error("could not read the test contents")]
+    ReadTest,
 }
 
 struct Test {
-    contents: String,
     path: PathBuf,
 }
 
@@ -36,12 +37,12 @@ fn write_error(mut to: impl io::Write, error: impl error::Error) -> std::io::Res
 fn run() -> Result<(), Error> {
     let current_directory = std::env::current_dir().map_err(Error::CurrentDirectory)?;
     let tests_directory = current_directory.join("tests");
+    let snaps_directory = tests_directory.join("snaps");
     let mut tests = Vec::new();
     for entry in walkdir::WalkDir::new(&tests_directory) {
         let entry = entry.map_err(Error::WalkDirEntry)?;
         if Some(OsStr::new("wast")) == entry.path().extension() {
             tests.push(Test {
-                contents: String::new(),
                 path: entry.path().into(),
             });
         }
@@ -61,7 +62,7 @@ fn run() -> Result<(), Error> {
         let mut context = test::TestContext::new(
             test_name.display().to_string(),
             test_path.into(),
-            &test.contents,
+            snaps_directory.clone(),
         );
         context.run();
         if context.failed() {
