@@ -4,11 +4,9 @@
 //! that measures gas fees and stack depth without any special support by the runtime executing the
 //! code in question.
 
-use std::num::TryFromIntError;
-
-use wasmparser::{BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, V128};
-
 use prefix_sum_vec::PrefixSumVec;
+use std::num::TryFromIntError;
+use wasmparser::{BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, V128};
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -143,8 +141,8 @@ impl Module {
                         .unwrap();
                     let function_id =
                         u32::try_from(function_id).map_err(|_| Error::TooManyFunctions)?;
-                    let type_id = usize::try_from(*type_id).map_err(Error::TypeIndexRange)?;
-                    let fn_type = types.get(type_id).ok_or(Error::TypeIndex)?;
+                    let type_id_usize = usize::try_from(*type_id).map_err(Error::TypeIndexRange)?;
+                    let fn_type = types.get(type_id_usize).ok_or(Error::TypeIndex)?;
 
                     locals.clear();
                     match fn_type {
@@ -173,9 +171,17 @@ impl Module {
                         globals: &globals,
                         tables: &tables,
                         locals: &locals,
+
+                        operands: Operands::new(),
                         frames: vec![],
+                        top_frame: Frame {
+                            height: 0,
+                            block_type: BlockType::FuncType(*type_id),
+                            stack_polymorphic: false,
+                        },
                     };
-                    visitor.visit_function_entry(function_id)?;
+                    visitor.push_block_params(visitor.top_frame.block_type)?;
+
                     let mut operators = function
                         .get_operators_reader()
                         .map_err(Error::OperatorReader)?;
@@ -200,7 +206,6 @@ impl Module {
 
 pub trait AnalysisConfig {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u64;
-    fn size_of_label(&self) -> u64;
     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
 }
 
@@ -251,82 +256,55 @@ impl Operands {
     }
 
     fn pop(&mut self) -> Result<&mut Self, Error> {
-        self.size -= self.stack.pop().ok_or(Error::EmptyStack).unwrap();
+        self.size -= self.stack.pop().ok_or(Error::EmptyStack)?;
         Ok(self)
     }
 
-    fn pop_multiple(&mut self, count: usize) -> Result<&mut Self, Error> {
+    fn pop_many(&mut self, count: usize) -> Result<&mut Self, Error> {
+        // TODO: wants a unit test.
         let split_point = self
             .stack
             .len()
             .checked_sub(count)
-            .ok_or(Error::EmptyStack)
-            .unwrap();
+            .ok_or(Error::EmptyStack)?;
         let size: u64 = self.stack.drain(split_point..).sum();
-        self.size -= size;
+        self.size = self.size.checked_sub(size).unwrap();
         Ok(self)
     }
+
+    fn len(&mut self) -> usize {
+        self.stack.len()
+    }
+
+    fn set_height(&mut self, height: usize) -> Result<(), Error> {
+        self.stack.truncate(height);
+        if self.stack.len() != height {
+            todo!("malformed input (set_height)");
+        } else {
+            Ok(())
+        }
+    }
 }
 
-/// A regular frame produced by instructions such as `block`, `if` and such. One of these
-/// frames are also implicitly created on an entry to a function.
 #[derive(Debug)]
-struct BlockInfo {
-    ty: BlockType,
-    operands: Operands,
-    /// This block has been “terminated” by an unconditonal control flow instruction
-    /// (`unreachable`, `br`, `br_table`, `return`, etc.)
-    complete: bool,
-}
-
-#[derive(Debug)]
-enum Frame {
-    /// A frame produced by the `block` instruction.
+struct Frame {
+    /// Operand stack height at the time this frame was entered.
     ///
-    /// One of these frames are also implicitly created on an entry to a function.
-    Block(BlockInfo),
-    /// A frame produced by the `if` instruction.
-    If(BlockInfo),
-    /// A frame produced by the `if` instruction, in the `else` branch.
-    Else {
-        if_max_depth: u64,
-        else_block: BlockInfo,
-    },
-    /// A frame produced by instructions such as `loop`. These differ from a regular block in that
-    /// branches target the beginning of the frame (i.e. looping), rather than exiting the frame.
-    Loop(BlockInfo),
-}
+    /// This way no matter how the operand stack is modified during the execution of this frame, we
+    /// can always reset the operand stack back to this specific height when the frame terminates.
+    height: usize,
 
-impl Frame {
-    fn max_depth(&self) -> u64 {
-        match self {
-            Frame::Block(bfi) => bfi.operands.max_size,
-            Frame::If(bfi) => bfi.operands.max_size,
-            Frame::Else {
-                if_max_depth,
-                else_block,
-            } => std::cmp::max(*if_max_depth, else_block.operands.max_size),
-            Frame::Loop(bfi) => bfi.operands.max_size,
-        }
-    }
+    /// Type of the block representing this frame.
+    ///
+    /// The parameters are below height and get popped when the frame terminates. Results get
+    /// pushed back onto the operand stack.
+    block_type: BlockType,
 
-    fn block_info(&self) -> &BlockInfo {
-        match self {
-            Frame::Block(bfi) => bfi,
-            Frame::If(bfi) => bfi,
-            Frame::Else { else_block, .. } => else_block,
-            Frame::Loop(bfi) => bfi,
-        }
-    }
-
-    fn block_info_mut(&mut self) -> &mut BlockInfo {
-        match self {
-            Frame::Block(bfi) => bfi,
-            Frame::If(bfi) => bfi,
-            Frame::Else { else_block, .. } => else_block,
-            Frame::Loop(bfi) => bfi,
-        }
-    }
+    /// Are the remaining instructions within this frame reachable?
+    ///
+    /// That is, is the operand stack part of this frame polymorphic? See `stack-polymorphic` in
+    /// the wasm-core specification for explanation.
+    stack_polymorphic: bool,
 }
 
 struct StackSizeVisitor<'a, Cfg> {
@@ -337,28 +315,13 @@ struct StackSizeVisitor<'a, Cfg> {
     tables: &'a [wasmparser::ValType],
     locals: &'a PrefixSumVec<wasmparser::ValType, u32>,
 
+    operands: Operands,
+
     frames: Vec<Frame>,
+    top_frame: Frame,
 }
 
 impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
-    /// Get the frame at the specified depth.
-    ///
-    /// The frame at 0 depth is the “current” frame, the frame 1 levele deep is the current frame’s
-    /// parent, etc.
-    fn frame(&mut self, depth: usize) -> Option<&mut Frame> {
-        let index = self.frames.len().checked_sub(1)?.checked_sub(depth)?;
-        self.frames.get_mut(index)
-    }
-
-    fn current_frame(&mut self) -> Result<&mut Frame, Error> {
-        self.frames.last_mut().ok_or(Error::CurrentFrameMissing)
-    }
-
-    fn ty(&self, type_index: u32) -> Result<&wasmparser::Type, Error> {
-        let type_index = usize::try_from(type_index).map_err(Error::TypeIndexRange)?;
-        self.types.get(type_index).ok_or(Error::TypeIndex)
-    }
-
     fn function_type_index(&self, function_index: u32) -> Result<u32, Error> {
         let function_index = usize::try_from(function_index).map_err(Error::FunctionIndexRange)?;
         self.functions
@@ -367,1953 +330,981 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
             .ok_or(Error::FunctionIndex)
     }
 
-    fn push(&mut self, val: ValType) -> Result<Option<u64>, Error> {
-        let Self { config, frames, .. } = self;
-        let bfi = frames
-            .last_mut()
-            .ok_or(Error::CurrentFrameMissing)?
-            .block_info_mut();
-        if !bfi.complete {
-            let size = config.size_of_value(val);
-            bfi.operands.push(size);
-        }
-        Ok(None)
-    }
-
-    fn pop(&mut self) -> Result<Option<u64>, Error> {
-        let bfi = self.current_frame()?.block_info_mut();
-        if bfi.complete {
-            Ok(None)
-        } else {
-            bfi.operands.pop().map(|_| None)
+    fn type_params_results(&self, type_idx: u32) -> Result<(&'a [ValType], &'a [ValType]), Error> {
+        let type_idx = usize::try_from(type_idx).map_err(Error::TypeIndexRange)?;
+        match self.types.get(type_idx).ok_or(Error::TypeIndex)? {
+            wasmparser::Type::Func(fnty) => Ok((fnty.params(), fnty.results())),
         }
     }
 
-    fn pop_multiple(&mut self, len: usize) -> Result<Option<u64>, Error> {
-        let bfi = self.current_frame()?.block_info_mut();
-        if bfi.complete {
-            Ok(None)
-        } else {
-            bfi.operands.pop_multiple(len).map(|_| None)
+    fn pop_block_params(&mut self, block_type: BlockType) -> Result<(), Error> {
+        match block_type {
+            BlockType::Empty => (),
+            BlockType::Type(_) => (),
+            BlockType::FuncType(type_index) => {
+                let (params, _) = self.type_params_results(type_index)?;
+                self.pop_many(params.len())?;
+            }
         }
+        Ok(())
     }
 
-    fn pop2(&mut self) -> Result<Option<u64>, Error> {
-        self.pop_multiple(2).map(|_| None)
-    }
-
-    fn pop3(&mut self) -> Result<Option<u64>, Error> {
-        self.pop_multiple(3).map(|_| None)
-    }
-
-    fn binop(&mut self, ty: ValType) -> Result<Option<u64>, Error> {
-        self.pop2()?;
-        self.push(ty)
-    }
-
-    fn testop(&mut self) -> Result<Option<u64>, Error> {
-        self.pop()?;
-        self.push(ValType::I32) // Boolean integer result
-    }
-
-    fn relop(&mut self) -> Result<Option<u64>, Error> {
-        self.pop2()?;
-        self.push(ValType::I32) // Boolean integer result
-    }
-
-    fn cvtop(&mut self, result: ValType) -> Result<Option<u64>, Error> {
-        self.pop()?;
-        self.push(result)
-    }
-
-    fn vrelop(&mut self) -> Result<Option<u64>, Error> {
-        self.pop() // [v128 v128] -> [v128]
-    }
-
-    fn vcvtop(&mut self) -> Result<Option<u64>, Error> {
-        /* [v128] -> [v128] */
-        Ok(None)
-    }
-
-    fn extract_lane(&mut self, ty: ValType) -> Result<Option<u64>, Error> {
-        self.pop()?;
-        self.push(ty)
-    }
-
-    fn splat(&mut self) -> Result<Option<u64>, Error> {
-        self.pop()?;
-        self.push(ValType::V128)
-    }
-
-    fn bitmask(&mut self) -> Result<Option<u64>, Error> {
-        self.pop()?;
-        self.push(ValType::I32)
-    }
-
-    fn atomic_rmw(&mut self, ty: ValType) -> Result<Option<u64>, Error> {
-        self.pop2()?;
-        self.push(ty)
-    }
-
-    fn atomic_cmpxchg(&mut self, ty: ValType) -> Result<Option<u64>, Error> {
-        self.pop3()?;
-        self.push(ty)
-    }
-
-    fn atomic_load(&mut self, ty: ValType) -> Result<Option<u64>, Error> {
-        self.pop()?;
-        self.push(ty)
-    }
-
-    fn call_typed_function(&mut self, type_index: u32) -> Result<Option<u64>, Error> {
-        let type_index = usize::try_from(type_index).map_err(Error::TypeIndexRange)?;
-        match self.types.get(type_index).ok_or(Error::TypeIndex)? {
-            wasmparser::Type::Func(fnty) => {
-                for _ in fnty.params() {
-                    self.pop()?;
-                }
-                for result_ty in fnty.results() {
-                    self.push(*result_ty)?;
+    fn push_block_params(&mut self, block_type: BlockType) -> Result<(), Error> {
+        match block_type {
+            BlockType::Empty => (),
+            BlockType::Type(_) => (),
+            BlockType::FuncType(type_index) => {
+                let (params, _) = self.type_params_results(type_index)?;
+                for param in params {
+                    self.push(*param);
                 }
             }
         }
-        Ok(None)
+        Ok(())
     }
 
-    fn block_operands_from_ty(&self, ty: &BlockType) -> Result<Operands, Error> {
-        match ty {
-            // No input parameters, only a return.
-            BlockType::Empty | BlockType::Type(_) => Ok(Operands::new()),
-            BlockType::FuncType(fn_type_idx) => {
-                // First, pop the appropriate number of operands from the current frame (inputs to
-                // the block)
-                match self.ty(*fn_type_idx)? {
-                    wasmparser::Type::Func(fnty) => {
-                        let stack: Vec<u64> = fnty
-                            .params()
-                            .into_iter()
-                            .map(|vty| self.config.size_of_value(*vty))
-                            .collect();
-                        let size = stack.iter().sum();
-                        Ok(Operands {
-                            size,
-                            stack,
-                            max_size: size,
-                        })
-                    }
+    fn push_block_results(&mut self, block_type: BlockType) -> Result<(), Error> {
+        match block_type {
+            BlockType::Empty => (),
+            BlockType::Type(result) => {
+                self.push(result);
+            }
+            BlockType::FuncType(type_index) => {
+                let (_, results) = self.type_params_results(type_index)?;
+                for result in results {
+                    self.push(*result);
                 }
             }
         }
+        Ok(())
     }
 
-    fn visit_function_entry(&mut self, function_index: u32) -> Result<Option<u64>, Error> {
-        let type_index = self.function_type_index(function_index)?;
-        let ty = BlockType::FuncType(type_index);
-        self.frames.push(Frame::Block(BlockInfo {
-            ty,
-            // NB: Parameters and locals are counted separately in the activation frame size.
-            operands: Operands::new(),
-            complete: false,
-        }));
+    fn new_frame(&mut self, block_type: BlockType) -> Result<(), Error> {
+        let stack_polymorphic = self.top_frame.stack_polymorphic;
+        let height = self.operands.len();
+        self.frames.push(std::mem::replace(
+            &mut self.top_frame,
+            Frame {
+                height,
+                block_type,
+                stack_polymorphic,
+            },
+        ));
+        self.push_block_params(block_type)
+    }
+
+    fn stack_polymorphic(&mut self) {
+        self.top_frame.stack_polymorphic = true;
+    }
+
+    fn push(&mut self, t: ValType) {
+        if !self.top_frame.stack_polymorphic {
+            self.operands.push(self.config.size_of_value(t));
+        }
+    }
+
+    fn pop(&mut self) -> Result<(), Error> {
+        if !self.top_frame.stack_polymorphic {
+            self.operands.pop()?;
+        }
+        Ok(())
+    }
+
+    fn pop_many(&mut self, count: usize) -> Result<(), Error> {
+        if count == 0 {
+            Ok(())
+        } else if !self.top_frame.stack_polymorphic {
+            self.operands.pop_many(count)?;
+            Ok(())
+        } else {
+            Ok(())
+        }
+    }
+
+    fn visit_const(&mut self, t: ValType) -> Result<Option<u64>, Error> {
+        // [] → [t]
+        self.push(t);
         Ok(None)
     }
+
+    fn visit_unop(&mut self) -> Result<Option<u64>, Error> {
+        // [t] -> [t]
+
+        // Function body intentionally left empty (pops and immediately pushes the same type back)
+        Ok(None)
+    }
+
+    fn visit_binop(&mut self) -> Result<Option<u64>, Error> {
+        // [t t] -> [t]
+        self.pop()?;
+        Ok(None)
+    }
+
+    fn visit_testop(&mut self) -> Result<Option<u64>, Error> {
+        // [t] -> [i32]
+        self.pop()?;
+        self.push(ValType::I32);
+        Ok(None)
+    }
+
+    fn visit_relop(&mut self) -> Result<Option<u64>, Error> {
+        // [t t] -> [i32]
+        self.pop_many(2)?;
+        self.push(ValType::I32);
+        Ok(None)
+    }
+
+    fn visit_cvtop(&mut self, result_ty: ValType) -> Result<Option<u64>, Error> {
+        // t2.cvtop_t1_sx? : [t1] -> [t2]
+        self.pop()?;
+        self.push(result_ty);
+        Ok(None)
+    }
+
+    fn visit_vternop(&mut self) -> Result<Option<u64>, Error> {
+        // [v128 v128 v128] → [v128]
+        self.pop_many(2)?;
+        Ok(None)
+    }
+
+    fn visit_vrelop(&mut self) -> Result<Option<u64>, Error> {
+        // [v128 v128] -> [v128]
+        self.visit_binop()
+    }
+
+    fn visit_vishiftop(&mut self) -> Result<Option<u64>, Error> {
+        // [v128 i32] -> [v128]
+        self.pop_many(2)?;
+        self.push(ValType::V128);
+        Ok(None)
+    }
+
+    fn visit_vinarrowop(&mut self) -> Result<Option<u64>, Error> {
+        // [v128 v128] -> [v128]
+        self.pop()?;
+        Ok(None)
+    }
+
+    fn visit_vbitmask(&mut self) -> Result<Option<u64>, Error> {
+        // [v128] -> [i32]
+        self.pop()?;
+        self.push(ValType::I32);
+        Ok(None)
+    }
+
+    fn visit_splat(&mut self) -> Result<Option<u64>, Error> {
+        // [unpacked(t)] -> [v128]
+        self.pop()?;
+        self.push(ValType::V128);
+        Ok(None)
+    }
+
+    fn visit_replace_lane(&mut self) -> Result<Option<u64>, Error> {
+        // shape.replace_lane laneidx : [v128 unpacked(shape)] → [v128]
+        self.pop_many(2)?;
+        self.push(ValType::V128);
+        Ok(None)
+    }
+
+    fn visit_extract_lane(&mut self, unpacked_shape: ValType) -> Result<Option<u64>, Error> {
+        // txN.extract_lane_sx ? laneidx : [v128] → [unpacked(shape)]
+        self.pop()?;
+        self.push(unpacked_shape);
+        Ok(None)
+    }
+
+    fn visit_load(&mut self, t: ValType) -> Result<Option<u64>, Error> {
+        // t.load memarg           : [i32] → [t]
+        // t.loadN_sx memarg       : [i32] → [t]
+        // v128.loadNxM_sx memarg  : [i32] → [v128]
+        // v128.loadN_splat memarg : [i32] → [v128]
+        // v128.loadN_zero memarg  : [i32] → [v128]
+        // t.atomic.load memarg    : [i32] → [t]
+        // t.atomic.load memargN_u : [i32] → [t]
+        self.pop()?;
+        self.push(t);
+        Ok(None)
+    }
+
+    fn visit_load_lane(&mut self) -> Result<Option<u64>, Error> {
+        // v128.loadN_lane memarg laneidx : [i32 v128] → [v128]
+        self.pop_many(2)?;
+        self.push(ValType::V128);
+        Ok(None)
+    }
+
+    fn visit_store(&mut self) -> Result<Option<u64>, Error> {
+        // t.store memarg           : [i32 t] → []
+        // t.storeN memarg          : [i32 t] → []
+        // t.atomic.store memarg    : [i32 t] → []
+        // t.atomic.store memargN_u : [i32 t] → []
+        self.pop_many(2)?;
+        Ok(None)
+    }
+
+    fn visit_store_lane(&mut self) -> Result<Option<u64>, Error> {
+        // v128.storeN_lane memarg laneidx : [i32 v128] → []
+        self.pop_many(2)?;
+        Ok(None)
+    }
+
+    fn visit_atomic_rmw(&mut self, t: ValType) -> Result<Option<u64>, Error> {
+        // t.atomic.rmw.atop memarg : [i32 t] → [t]
+        // t.atomic.rmwN.atop_u memarg : [i32 t] → [t]
+        self.pop_many(2)?;
+        self.push(t);
+        Ok(None)
+    }
+
+    fn visit_atomic_cmpxchg(&mut self, t: ValType) -> Result<Option<u64>, Error> {
+        // t.atomic.rmw.cmpxchg : [i32 t t] → [t]
+        // t.atomic.rmwN.cmpxchg_u : [i32 t t] → [t]
+        self.pop_many(3)?;
+        self.push(t);
+        Ok(None)
+    }
+
+    fn visit_function_call(&mut self, type_index: u32) -> Result<Option<u64>, Error> {
+        let (params, results) = self.type_params_results(type_index)?;
+        self.pop_many(params.len())?;
+        for result_ty in results {
+            self.push(*result_ty);
+        }
+        Ok(None)
+    }
+}
+
+macro_rules! instruction_category {
+    ($($type:ident . const = $($insn:ident, $param: ty)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: $param) -> Self::Output {
+            self.visit_const(ValType::$type)
+        })*)*
+    };
+    ($($type:ident . unop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_unop()
+        })*)*
+    };
+    ($($type:ident . binop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_binop()
+        })*)*
+    };
+    ($($type:ident . testop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_testop()
+        })*)*
+    };
+
+    ($($type:ident . relop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_relop()
+        })*)*
+    };
+
+    ($($type:ident . cvtop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_cvtop(ValType::$type)
+        })*)*
+    };
+
+    ($($type:ident . load = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_load(ValType::$type)
+        })*)*
+    };
+
+    ($($type:ident . store = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_store()
+        })*)*
+    };
+
+    ($($type:ident . loadlane = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
+            self.visit_load_lane()
+        })*)*
+    };
+
+    ($($type:ident . storelane = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
+            self.visit_store_lane()
+        })*)*
+    };
+
+    ($($type:ident . vternop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vternop()
+        })*)*
+    };
+
+    ($($type:ident . vrelop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vrelop()
+        })*)*
+    };
+
+    ($($type:ident . vishiftop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vishiftop()
+        })*)*
+    };
+
+    ($($type:ident . vinarrowop = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vinarrowop()
+        })*)*
+    };
+
+    ($($type:ident . vbitmask = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vbitmask()
+        })*)*
+    };
+
+    ($($type:ident . splat = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_splat()
+        })*)*
+    };
+
+    ($($type:ident . replacelane = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: u8) -> Self::Output {
+            self.visit_replace_lane()
+        })*)*
+    };
+
+    ($($type:ident . extractlane = $($insn:ident to $unpacked:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: u8) -> Self::Output {
+            self.visit_extract_lane(ValType::$unpacked)
+        })*)*
+    };
+
+    ($($type:ident . atomic.rmw = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_atomic_rmw(ValType::$type)
+        })*)*
+    };
+
+    ($($type:ident . atomic.cmpxchg = $($insn:ident)|* ;)*) => {
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_atomic_cmpxchg(ValType::$type)
+        })*)*
+    };
 }
 
 impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
     type Output = Result<Option<u64>, Error>;
 
-    // Special cases (parametrics)
-    fn visit_nop(&mut self, _: usize) -> Self::Output {
+    instruction_category! {
+        I32.const = visit_i32_const, i32;
+        I64.const = visit_i64_const, i64;
+        F32.const = visit_f32_const, Ieee32;
+        F64.const = visit_f64_const, Ieee64;
+        V128.const = visit_v128_const, V128;
+    }
+
+    fn visit_ref_null(&mut self, _: usize, t: ValType) -> Self::Output {
+        // [] -> [t]
+        self.push(t);
         Ok(None)
     }
-    fn visit_drop(&mut self, _: usize) -> Self::Output {
-        self.pop()
-    }
-    fn visit_select(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    } // [t t i32] -> [t]
-    fn visit_typed_select(&mut self, _: usize, _: ValType) -> Self::Output {
-        self.pop2()
+
+    fn visit_ref_func(&mut self, offset: usize, _: u32) -> Self::Output {
+        self.visit_ref_null(offset, ValType::FuncRef)
     }
 
-    // t.const
-    fn visit_i32_const(&mut self, _: usize, _: i32) -> Self::Output {
-        self.push(ValType::I32)
-    }
-    fn visit_i64_const(&mut self, _: usize, _: i64) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_f32_const(&mut self, _: usize, _: Ieee32) -> Self::Output {
-        self.push(ValType::F32)
-    }
-    fn visit_f64_const(&mut self, _: usize, _: Ieee64) -> Self::Output {
-        self.push(ValType::F64)
-    }
-    fn visit_v128_const(&mut self, _: usize, _: V128) -> Self::Output {
-        self.push(ValType::V128)
+    instruction_category! {
+        I32.unop = visit_i32_clz | visit_i32_ctz | visit_i32_popcnt;
+
+        I64.unop = visit_i64_clz | visit_i64_ctz | visit_i64_popcnt;
+
+        F32.unop = visit_f32_abs | visit_f32_neg | visit_f32_sqrt | visit_f32_ceil
+                 | visit_f32_floor | visit_f32_trunc |visit_f32_nearest;
+
+        F64.unop = visit_f64_abs | visit_f64_neg | visit_f64_sqrt | visit_f64_ceil
+                 | visit_f64_floor | visit_f64_trunc |visit_f64_nearest;
+
+        V128.unop = visit_v128_not;
+
+        V128.unop = visit_i8x16_abs | visit_i8x16_neg | visit_i8x16_popcnt;
+        V128.unop = visit_i16x8_abs | visit_i16x8_neg;
+        V128.unop = visit_i32x4_abs | visit_i32x4_neg;
+        V128.unop = visit_i64x2_abs | visit_i64x2_neg;
+
+        V128.unop = visit_f32x4_abs | visit_f32x4_neg | visit_f32x4_sqrt | visit_f32x4_ceil
+                  | visit_f32x4_floor | visit_f32x4_trunc | visit_f32x4_nearest;
+        V128.unop = visit_f64x2_abs | visit_f64x2_neg | visit_f64x2_sqrt | visit_f64x2_ceil
+                  | visit_f64x2_floor | visit_f64x2_trunc | visit_f64x2_nearest;
+
+        // ishape1.extadd_pairwise_ishape2_sx : [v128] → [v128]
+        V128.unop = visit_i16x8_extadd_pairwise_i8x16_s | visit_i16x8_extadd_pairwise_i8x16_u;
+        V128.unop = visit_i32x4_extadd_pairwise_i16x8_s | visit_i32x4_extadd_pairwise_i16x8_u;
     }
 
-    // locals & globals
+    instruction_category! {
+        I32.binop = visit_i32_add | visit_i32_sub | visit_i32_mul
+                  | visit_i32_div_s | visit_i32_div_u
+                  | visit_i32_rem_s | visit_i32_rem_u
+                  | visit_i32_and | visit_i32_or | visit_i32_xor | visit_i32_shl
+                  | visit_i32_shr_s | visit_i32_shr_u
+                  | visit_i32_rotl | visit_i32_rotr;
+        I64.binop = visit_i64_add | visit_i64_sub | visit_i64_mul
+                  | visit_i64_div_s | visit_i64_div_u
+                  | visit_i64_rem_s | visit_i64_rem_u
+                  | visit_i64_and | visit_i64_or | visit_i64_xor | visit_i64_shl
+                  | visit_i64_shr_s | visit_i64_shr_u
+                  | visit_i64_rotl | visit_i64_rotr;
+        F32.binop = visit_f32_add | visit_f32_sub | visit_f32_mul
+                  | visit_f32_div | visit_f32_min | visit_f32_max | visit_f32_copysign;
+        F64.binop = visit_f64_add | visit_f64_sub | visit_f64_mul
+                  | visit_f64_div | visit_f64_min | visit_f64_max | visit_f64_copysign;
+
+        V128.binop = visit_v128_and | visit_v128_andnot | visit_v128_or | visit_v128_xor;
+
+        V128.binop = visit_i8x16_add | visit_i8x16_sub;
+        V128.binop = visit_i16x8_add | visit_i16x8_sub | visit_i16x8_mul;
+        V128.binop = visit_i32x4_add | visit_i32x4_sub | visit_i32x4_mul;
+        V128.binop = visit_i64x2_add | visit_i64x2_sub | visit_i64x2_mul;
+
+        V128.binop = visit_f32x4_add | visit_f32x4_sub | visit_f32x4_mul | visit_f32x4_div
+                   | visit_f32x4_min | visit_f32x4_max | visit_f32x4_pmin | visit_f32x4_pmax
+                   | visit_f32x4_relaxed_min | visit_f32x4_relaxed_max;
+        V128.binop = visit_f64x2_add | visit_f64x2_sub | visit_f64x2_mul | visit_f64x2_div
+                   | visit_f64x2_min | visit_f64x2_max | visit_f64x2_pmin | visit_f64x2_pmax
+                   | visit_f64x2_relaxed_min | visit_f64x2_relaxed_max;
+
+        V128.binop = visit_i8x16_min_s | visit_i8x16_min_u | visit_i8x16_max_s | visit_i8x16_max_u;
+        V128.binop = visit_i16x8_min_s | visit_i16x8_min_u | visit_i16x8_max_s | visit_i16x8_max_u;
+        V128.binop = visit_i32x4_min_s | visit_i32x4_min_u | visit_i32x4_max_s | visit_i32x4_max_u;
+
+        V128.binop = visit_i8x16_add_sat_s | visit_i8x16_add_sat_u
+                   | visit_i8x16_sub_sat_s | visit_i8x16_sub_sat_u;
+        V128.binop = visit_i16x8_add_sat_s | visit_i16x8_add_sat_u
+                   | visit_i16x8_sub_sat_s | visit_i16x8_sub_sat_u;
+
+        V128.binop = visit_i8x16_avgr_u;
+        V128.binop = visit_i16x8_avgr_u | visit_i16x8_q15mulr_sat_s | visit_i16x8_relaxed_q15mulr_s;
+
+        // ishape1.dot_ishape2_s : [v128 v128] → [v128]
+        V128.binop = visit_i32x4_dot_i16x8_s;
+        // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-integer-dot-product
+        V128.binop = visit_i16x8_dot_i8x16_i7x16_s;
+
+
+        // ishape1.extmul_half_ishape2_sx : [v128 v128] → [v128]
+        V128.binop = visit_i16x8_extmul_low_i8x16_s | visit_i16x8_extmul_high_i8x16_s
+                   | visit_i16x8_extmul_low_i8x16_u | visit_i16x8_extmul_high_i8x16_u;
+        V128.binop = visit_i32x4_extmul_low_i16x8_s | visit_i32x4_extmul_high_i16x8_s
+                   | visit_i32x4_extmul_low_i16x8_u | visit_i32x4_extmul_high_i16x8_u;
+        V128.binop = visit_i64x2_extmul_low_i32x4_s | visit_i64x2_extmul_high_i32x4_s
+                   | visit_i64x2_extmul_low_i32x4_u | visit_i64x2_extmul_high_i32x4_u;
+
+        // i8x16.swizzle : [v128 v128] → [v128]
+        // i8x16.relaxed_swizzle : [v128 v128] → [v128]
+        // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-swizzle
+        V128.binop = visit_i8x16_swizzle | visit_i8x16_relaxed_swizzle;
+    }
+
+    instruction_category! {
+        V128.vishiftop = visit_i8x16_shl | visit_i8x16_shr_s | visit_i8x16_shr_u;
+        V128.vishiftop = visit_i16x8_shl | visit_i16x8_shr_s | visit_i16x8_shr_u;
+        V128.vishiftop = visit_i32x4_shl | visit_i32x4_shr_s | visit_i32x4_shr_u;
+        V128.vishiftop = visit_i64x2_shl | visit_i64x2_shr_s | visit_i64x2_shr_u;
+    }
+
+    instruction_category! {
+        I32.testop = visit_i32_eqz;
+        I64.testop = visit_i64_eqz;
+        V128.testop = visit_v128_any_true
+                    | visit_i8x16_all_true | visit_i16x8_all_true
+                    | visit_i32x4_all_true | visit_i64x2_all_true;
+        FuncRef.testop = visit_ref_is_null;
+    }
+
+    instruction_category! {
+        I32.relop = visit_i32_eq | visit_i32_ne
+                  | visit_i32_lt_s | visit_i32_lt_u | visit_i32_gt_s | visit_i32_gt_u
+                  | visit_i32_le_s | visit_i32_le_u | visit_i32_ge_s | visit_i32_ge_u;
+        I64.relop = visit_i64_eq | visit_i64_ne
+                  | visit_i64_lt_s | visit_i64_lt_u | visit_i64_gt_s | visit_i64_gt_u
+                  | visit_i64_le_s | visit_i64_le_u | visit_i64_ge_s | visit_i64_ge_u;
+        F32.relop = visit_f32_eq | visit_f32_ne
+                  | visit_f32_lt | visit_f32_gt | visit_f32_le | visit_f32_ge;
+        F64.relop = visit_f64_eq | visit_f64_ne
+                  | visit_f64_lt | visit_f64_gt | visit_f64_le | visit_f64_ge;
+    }
+
+    instruction_category! {
+        I32.cvtop = visit_i32_wrap_i64
+                  | visit_i32_extend8_s | visit_i32_extend16_s
+                  | visit_i32_trunc_f32_s | visit_i32_trunc_f32_u
+                  | visit_i32_trunc_f64_s | visit_i32_trunc_f64_u
+                  | visit_i32_trunc_sat_f32_s | visit_i32_trunc_sat_f32_u
+                  | visit_i32_trunc_sat_f64_s | visit_i32_trunc_sat_f64_u
+                  | visit_i32_reinterpret_f32;
+
+        I64.cvtop = visit_i64_extend8_s | visit_i64_extend16_s | visit_i64_extend32_s
+                  | visit_i64_extend_i32_s | visit_i64_extend_i32_u
+                  | visit_i64_trunc_f32_s | visit_i64_trunc_f32_u
+                  | visit_i64_trunc_f64_s | visit_i64_trunc_f64_u
+                  | visit_i64_trunc_sat_f32_s | visit_i64_trunc_sat_f32_u
+                  | visit_i64_trunc_sat_f64_s | visit_i64_trunc_sat_f64_u
+                  | visit_i64_reinterpret_f64;
+
+        F32.cvtop = visit_f32_demote_f64
+                  | visit_f32_convert_i32_s | visit_f32_convert_i32_u
+                  | visit_f32_convert_i64_s | visit_f32_convert_i64_u
+                  | visit_f32_reinterpret_i32;
+        F64.cvtop = visit_f64_promote_f32
+                  | visit_f64_convert_i32_s | visit_f64_convert_i32_u
+                  | visit_f64_convert_i64_s | visit_f64_convert_i64_u
+                  | visit_f64_reinterpret_i64;
+
+        V128.cvtop = visit_i16x8_extend_low_i8x16_s | visit_i16x8_extend_high_i8x16_s
+                   | visit_i16x8_extend_low_i8x16_u | visit_i16x8_extend_high_i8x16_u;
+
+        V128.cvtop = visit_i32x4_extend_low_i16x8_s | visit_i32x4_extend_high_i16x8_s
+                   | visit_i32x4_extend_low_i16x8_u | visit_i32x4_extend_high_i16x8_u
+                   | visit_i32x4_trunc_sat_f32x4_s | visit_i32x4_trunc_sat_f32x4_u
+                   | visit_i32x4_trunc_sat_f64x2_s_zero | visit_i32x4_trunc_sat_f64x2_u_zero
+                   | visit_i32x4_relaxed_trunc_sat_f32x4_s
+                   | visit_i32x4_relaxed_trunc_sat_f32x4_u
+                   | visit_i32x4_relaxed_trunc_sat_f64x2_s_zero
+                   | visit_i32x4_relaxed_trunc_sat_f64x2_u_zero;
+
+        V128.cvtop = visit_i64x2_extend_low_i32x4_s | visit_i64x2_extend_high_i32x4_s
+                   | visit_i64x2_extend_low_i32x4_u | visit_i64x2_extend_high_i32x4_u;
+
+        V128.cvtop = visit_f32x4_demote_f64x2_zero
+                   | visit_f32x4_convert_i32x4_s | visit_f32x4_convert_i32x4_u;
+
+        V128.cvtop = visit_f64x2_promote_low_f32x4
+                   | visit_f64x2_convert_low_i32x4_s | visit_f64x2_convert_low_i32x4_u;
+    }
+
+    instruction_category! {
+        I32.load = visit_i32_load
+                 | visit_i32_load8_s | visit_i32_load8_u
+                 | visit_i32_load16_s | visit_i32_load16_u
+                 | visit_i32_atomic_load
+                 | visit_i32_atomic_load8_u
+                 | visit_i32_atomic_load16_u;
+
+        I64.load = visit_i64_load
+                 | visit_i64_load8_s | visit_i64_load8_u
+                 | visit_i64_load16_s | visit_i64_load16_u
+                 | visit_i64_load32_s | visit_i64_load32_u
+                 | visit_i64_atomic_load
+                 | visit_i64_atomic_load8_u
+                 | visit_i64_atomic_load16_u
+                 | visit_i64_atomic_load32_u;
+
+        F32.load = visit_f32_load;
+
+        F64.load = visit_f64_load;
+
+        V128.load = visit_v128_load
+                  | visit_v128_load8x8_s | visit_v128_load8x8_u
+                  | visit_v128_load16x4_s | visit_v128_load16x4_u
+                  | visit_v128_load32x2_s | visit_v128_load32x2_u
+                  | visit_v128_load32_zero | visit_v128_load64_zero
+                  | visit_v128_load8_splat | visit_v128_load16_splat
+                  | visit_v128_load32_splat | visit_v128_load64_splat;
+    }
+
+    instruction_category! {
+        I32.store = visit_i32_store | visit_i32_store8 | visit_i32_store16
+                  | visit_i32_atomic_store | visit_i32_atomic_store8 | visit_i32_atomic_store16;
+
+        I64.store = visit_i64_store | visit_i64_store8 | visit_i64_store16 | visit_i64_store32
+                  | visit_i64_atomic_store
+                  | visit_i64_atomic_store8 | visit_i64_atomic_store16 | visit_i64_atomic_store32;
+
+        F32.store = visit_f32_store;
+
+        F64.store = visit_f64_store;
+
+        V128.store = visit_v128_store;
+    }
+
+    instruction_category! {
+        V128.loadlane = visit_v128_load8_lane | visit_v128_load16_lane
+                       | visit_v128_load32_lane | visit_v128_load64_lane;
+    }
+
+    instruction_category! {
+        V128.storelane = visit_v128_store8_lane | visit_v128_store16_lane
+                        | visit_v128_store32_lane | visit_v128_store64_lane;
+    }
+
+    instruction_category! {
+        V128.replacelane = visit_i8x16_replace_lane | visit_i16x8_replace_lane
+                         | visit_i32x4_replace_lane | visit_i64x2_replace_lane
+                         | visit_f32x4_replace_lane | visit_f64x2_replace_lane;
+    }
+
+    instruction_category! {
+        V128.extractlane = visit_i8x16_extract_lane_s to I32 | visit_i8x16_extract_lane_u to I32
+                         | visit_i16x8_extract_lane_s to I32 | visit_i16x8_extract_lane_u to I32
+                         | visit_i32x4_extract_lane to I32
+                         | visit_i64x2_extract_lane to I64
+                         | visit_f32x4_extract_lane to F32
+                         | visit_f64x2_extract_lane to F64;
+    }
+
+    instruction_category! {
+        V128.vternop = visit_v128_bitselect;
+
+        // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-laneselect
+        V128.vternop = visit_i8x16_relaxed_laneselect;
+        V128.vternop = visit_i16x8_relaxed_laneselect;
+        V128.vternop = visit_i32x4_relaxed_laneselect;
+        V128.vternop = visit_i64x2_relaxed_laneselect;
+
+        // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-fused-multiply-add-and-fused-negative-multiply-add
+        V128.vternop = visit_f32x4_relaxed_fma | visit_f32x4_relaxed_fnma;
+        V128.vternop = visit_f64x2_relaxed_fma | visit_f64x2_relaxed_fnma;
+
+        // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-integer-dot-product
+        V128.vternop = visit_i32x4_dot_i8x16_i7x16_add_s;
+
+        // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-bfloat16-dot-product
+        V128.vternop = visit_f32x4_relaxed_dot_bf16x8_add_f32x4;
+    }
+
+    instruction_category! {
+        V128.vrelop = visit_i8x16_eq | visit_i8x16_ne
+                    | visit_i8x16_lt_s | visit_i8x16_lt_u | visit_i8x16_gt_s | visit_i8x16_gt_u
+                    | visit_i8x16_le_s | visit_i8x16_le_u | visit_i8x16_ge_s | visit_i8x16_ge_u;
+        V128.vrelop = visit_i16x8_eq | visit_i16x8_ne
+                    | visit_i16x8_lt_s | visit_i16x8_lt_u | visit_i16x8_gt_s | visit_i16x8_gt_u
+                    | visit_i16x8_le_s | visit_i16x8_le_u | visit_i16x8_ge_s | visit_i16x8_ge_u;
+        V128.vrelop = visit_i32x4_eq | visit_i32x4_ne
+                    | visit_i32x4_lt_s | visit_i32x4_lt_u | visit_i32x4_gt_s | visit_i32x4_gt_u
+                    | visit_i32x4_le_s | visit_i32x4_le_u | visit_i32x4_ge_s | visit_i32x4_ge_u;
+        V128.vrelop = visit_i64x2_eq | visit_i64x2_ne
+                    | visit_i64x2_lt_s | visit_i64x2_gt_s | visit_i64x2_le_s | visit_i64x2_ge_s;
+        V128.vrelop = visit_f32x4_eq | visit_f32x4_ne
+                    | visit_f32x4_lt | visit_f32x4_gt | visit_f32x4_le | visit_f32x4_ge;
+        V128.vrelop = visit_f64x2_eq | visit_f64x2_ne
+                    | visit_f64x2_lt | visit_f64x2_gt | visit_f64x2_le | visit_f64x2_ge;
+    }
+
+    instruction_category! {
+        V128.vinarrowop = visit_i8x16_narrow_i16x8_s | visit_i8x16_narrow_i16x8_u;
+        V128.vinarrowop = visit_i16x8_narrow_i32x4_s | visit_i16x8_narrow_i32x4_u;
+    }
+
+    instruction_category! {
+        V128.vbitmask = visit_i8x16_bitmask | visit_i16x8_bitmask
+                      | visit_i32x4_bitmask | visit_i64x2_bitmask;
+    }
+
+    instruction_category! {
+        V128.splat = visit_i8x16_splat | visit_i16x8_splat | visit_i32x4_splat | visit_i64x2_splat
+                   | visit_f32x4_splat | visit_f64x2_splat;
+    }
+
+    fn visit_i8x16_shuffle(&mut self, _: usize, _: [u8; 16]) -> Self::Output {
+        // i8x16.shuffle laneidx^16 : [v128 v128] → [v128]
+        self.pop()?;
+        Ok(None)
+    }
+
+    instruction_category! {
+        I32.atomic.rmw = visit_i32_atomic_rmw_add | visit_i32_atomic_rmw_sub
+                       | visit_i32_atomic_rmw_and | visit_i32_atomic_rmw_or
+                       | visit_i32_atomic_rmw_xor | visit_i32_atomic_rmw_xchg
+                       | visit_i32_atomic_rmw8_add_u | visit_i32_atomic_rmw16_add_u
+                       | visit_i32_atomic_rmw8_sub_u | visit_i32_atomic_rmw16_sub_u
+                       | visit_i32_atomic_rmw8_and_u | visit_i32_atomic_rmw16_and_u
+                       | visit_i32_atomic_rmw8_or_u | visit_i32_atomic_rmw16_or_u
+                       | visit_i32_atomic_rmw8_xor_u | visit_i32_atomic_rmw16_xor_u
+                       | visit_i32_atomic_rmw8_xchg_u | visit_i32_atomic_rmw16_xchg_u;
+        I64.atomic.rmw = visit_i64_atomic_rmw_add | visit_i64_atomic_rmw_sub
+                       | visit_i64_atomic_rmw_and | visit_i64_atomic_rmw_or
+                       | visit_i64_atomic_rmw_xor | visit_i64_atomic_rmw_xchg
+                       | visit_i64_atomic_rmw8_add_u | visit_i64_atomic_rmw16_add_u
+                       | visit_i64_atomic_rmw32_add_u
+                       | visit_i64_atomic_rmw8_sub_u | visit_i64_atomic_rmw16_sub_u
+                       | visit_i64_atomic_rmw32_sub_u
+                       | visit_i64_atomic_rmw8_and_u | visit_i64_atomic_rmw16_and_u
+                       | visit_i64_atomic_rmw32_and_u
+                       | visit_i64_atomic_rmw8_or_u | visit_i64_atomic_rmw16_or_u
+                       | visit_i64_atomic_rmw32_or_u
+                       | visit_i64_atomic_rmw8_xor_u | visit_i64_atomic_rmw16_xor_u
+                       | visit_i64_atomic_rmw32_xor_u
+                       | visit_i64_atomic_rmw8_xchg_u | visit_i64_atomic_rmw16_xchg_u
+                       | visit_i64_atomic_rmw32_xchg_u;
+    }
+
+    instruction_category! {
+        I32.atomic.cmpxchg = visit_i32_atomic_rmw_cmpxchg | visit_i32_atomic_rmw8_cmpxchg_u
+                           | visit_i32_atomic_rmw16_cmpxchg_u;
+        I64.atomic.cmpxchg = visit_i64_atomic_rmw_cmpxchg | visit_i64_atomic_rmw8_cmpxchg_u
+                           | visit_i64_atomic_rmw16_cmpxchg_u | visit_i64_atomic_rmw32_cmpxchg_u;
+    }
+
+    fn visit_memory_atomic_notify(&mut self, _: usize, _: MemArg) -> Self::Output {
+        // [i32 i32] -> [i32]
+        self.pop()?;
+        Ok(None)
+    }
+
+    fn visit_memory_atomic_wait32(&mut self, _: usize, _: MemArg) -> Self::Output {
+        // [i32 i32 i64] -> [i32]
+        self.pop_many(3)?;
+        self.push(ValType::I32);
+        Ok(None)
+    }
+
+    fn visit_memory_atomic_wait64(&mut self, _: usize, _: MemArg) -> Self::Output {
+        // [i32 i64 i64] -> [i32]
+        self.pop_many(3)?;
+        self.push(ValType::I32);
+        Ok(None)
+    }
+
+    fn visit_atomic_fence(&mut self, _: usize) -> Self::Output {
+        // https://github.com/WebAssembly/threads/blob/main/proposals/threads/Overview.md#fence-operator
+        // [] -> []
+
+        // Function body intentionally left empty
+        Ok(None)
+    }
+
     fn visit_local_get(&mut self, _: usize, local_index: u32) -> Self::Output {
-        self.push(
-            *self
-                .locals
-                .get(&local_index)
-                .ok_or(Error::LocalIndex(local_index))?,
-        )
+        // [] → [t]
+        let local_type = self
+            .locals
+            .get(&local_index)
+            .ok_or(Error::LocalIndex(local_index))?;
+        self.push(*local_type);
+        Ok(None)
     }
+
     fn visit_local_set(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop()
+        // [] → [t]
+        self.pop()?;
+        Ok(None)
     }
+
     fn visit_local_tee(&mut self, _: usize, _: u32) -> Self::Output {
+        // [t] → [t]
         Ok(None)
     }
 
     fn visit_global_get(&mut self, _: usize, global_index: u32) -> Self::Output {
+        // [] → [t]
         let global_index = usize::try_from(global_index).map_err(Error::GlobalIndexRange)?;
         let global_ty = self.globals.get(global_index).ok_or(Error::GlobalIndex)?;
-        self.push(*global_ty)
+        self.push(*global_ty);
+        Ok(None)
     }
+
     fn visit_global_set(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop()
-    }
-
-    //  t.iunop | t.funop | t.vunop
-    //  consume one operand and return an operand of the same type.
-    fn visit_i32_clz(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64_clz(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_i32_ctz(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64_ctz(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_i32_popcnt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64_popcnt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i8x16_popcnt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i16x8_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i32x4_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64x2_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i8x16_abs(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i8x16_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i16x8_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i32x4_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64x2_neg(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_v128_not(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_sqrt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_sqrt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_sqrt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_sqrt(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_ceil(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_ceil(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_ceil(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_ceil(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_floor(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_floor(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_floor(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_floor(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_trunc(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_trunc(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_trunc(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_trunc(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_f32_nearest(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64_nearest(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f32x4_nearest(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_f64x2_nearest(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    fn visit_i32_extend8_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i32_extend16_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64_extend8_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64_extend16_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i64_extend32_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    // binop
-    fn visit_i32_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-    fn visit_f32_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    fn visit_i32_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-    fn visit_f32_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    fn visit_i32_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-    fn visit_f32_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    fn visit_i32_div_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_div_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_div_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_div_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_rem_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_rem_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_rem_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_rem_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_and(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_and(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_or(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_or(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_xor(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_xor(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_shl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_shl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_shr_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_shr_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_shr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_shr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_rotl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_rotl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_i32_rotr(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I32)
-    }
-    fn visit_i64_rotr(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::I64)
-    }
-
-    fn visit_f32_div(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_div(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    fn visit_f32_min(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_min(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    fn visit_f32_max(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_max(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    fn visit_f32_copysign(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F32)
-    }
-    fn visit_f64_copysign(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::F64)
-    }
-
-    // itestop
-    fn visit_i32_eqz(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-    fn visit_i64_eqz(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-    fn visit_v128_any_true(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-    fn visit_i8x16_all_true(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-    fn visit_i16x8_all_true(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-    fn visit_i32x4_all_true(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-    fn visit_i64x2_all_true(&mut self, _: usize) -> Self::Output {
-        self.testop()
-    }
-
-    // relop
-    fn visit_i32_eq(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_eq(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f32_eq(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f64_eq(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_ne(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_ne(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f32_ne(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f64_ne(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_lt_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_lt_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_lt_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_lt_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_f32_lt(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f64_lt(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_gt_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_gt_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_gt_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_gt_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_f32_gt(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f64_gt(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_le_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_le_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_le_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_le_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_f32_le(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f64_le(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_ge_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_ge_s(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_i32_ge_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_i64_ge_u(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    fn visit_f32_ge(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-    fn visit_f64_ge(&mut self, _: usize) -> Self::Output {
-        self.relop()
-    }
-
-    // cvtop
-    fn visit_i32_wrap_i64(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_f32s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_f32u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_f64s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_f64u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_reinterpret_f32(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_sat_f32_s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_sat_f32_u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_sat_f64_s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-    fn visit_i32_trunc_sat_f64_u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I32)
-    }
-
-    fn visit_i64_extend_i32s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_extend_i32u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_f32s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_f32u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_f64s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_f64u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_reinterpret_f64(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_sat_f32_s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_sat_f32_u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_sat_f64_s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-    fn visit_i64_trunc_sat_f64_u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::I64)
-    }
-
-    fn visit_f32_convert_i32s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F32)
-    }
-    fn visit_f32_convert_i32u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F32)
-    }
-    fn visit_f32_convert_i64s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F32)
-    }
-    fn visit_f32_convert_i64u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F32)
-    }
-    fn visit_f32_demote_f64(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F32)
-    }
-    fn visit_f32_reinterpret_i32(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F32)
-    }
-
-    fn visit_f64_convert_i32_s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F64)
-    }
-    fn visit_f64_convert_i32_u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F64)
-    }
-    fn visit_f64_convert_i64_s(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F64)
-    }
-    fn visit_f64_convert_i64_u(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F64)
-    }
-    fn visit_f64_promote_f32(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F64)
-    }
-    fn visit_f64_reinterpret_i64(&mut self, _: usize) -> Self::Output {
-        self.cvtop(ValType::F64)
-    }
-
-    // vbinary_op
-    fn visit_v128_and(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_v128_andnot(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_v128_or(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_v128_xor(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_add(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_sub(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_mul(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_div(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_div(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_min(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_min(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_max(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_max(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_pmin(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_pmin(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_pmax(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_pmax(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_add_sat_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_add_sat_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_add_sat_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_add_sat_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_sub_sat_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_sub_sat_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_sub_sat_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_sub_sat_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_min_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_min_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_min_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_min_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_min_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_min_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_max_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_max_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_max_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_max_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_max_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_max_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_relaxed_min(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f32x4_relaxed_max(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_relaxed_min(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_f64x2_relaxed_max(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_shl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_shl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_shl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_shl(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_shr_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i8x16_shr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_shr_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_shr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_shr_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_shr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_shr_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_shr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_f32x4_fma(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_f32x4_fms(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_f64x2_fma(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_f64x2_fms(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-
-    fn visit_i32x4_dot_i16x8_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i16x8_extmul_low_i8x16_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_extmul_high_i8x16_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_extmul_low_i8x16_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_extmul_high_i8x16_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_extmul_low_i16x8_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_extmul_high_i16x8_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_extmul_low_i16x8_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i32x4_extmul_high_i16x8_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_extmul_low_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_extmul_high_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_extmul_low_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i64x2_extmul_high_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_avgr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_avgr_u(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-    fn visit_i16x8_q15mulr_sat_s(&mut self, _: usize) -> Self::Output {
-        self.binop(ValType::V128)
-    }
-
-    fn visit_i8x16_laneselect(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i16x8_laneselect(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i32x4_laneselect(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i64x2_laneselect(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-
-    fn visit_i8x16_eq(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_ne(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_lt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_lt_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_gt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_gt_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_le_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_le_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_ge_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i8x16_ge_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_eq(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_ne(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_lt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_lt_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_gt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_gt_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_le_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_le_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_ge_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i16x8_ge_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_eq(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_ne(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_lt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_lt_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_gt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_gt_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_le_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_le_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_ge_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i32x4_ge_u(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i64x2_eq(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i64x2_ne(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i64x2_lt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i64x2_gt_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i64x2_le_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_i64x2_ge_s(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f32x4_eq(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f32x4_ne(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f32x4_lt(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f32x4_gt(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f32x4_le(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f32x4_ge(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f64x2_eq(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f64x2_ne(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f64x2_lt(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f64x2_gt(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f64x2_le(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-    fn visit_f64x2_ge(&mut self, _: usize) -> Self::Output {
-        self.vrelop()
-    }
-
-    fn visit_i32x4_extend_low_i16x8_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_extend_high_i16x8_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_extend_low_i16x8_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_extend_high_i16x8_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i64x2_extend_low_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i64x2_extend_high_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i64x2_extend_low_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i64x2_extend_high_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i16x8_extend_low_i8x16_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i16x8_extend_high_i8x16_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i16x8_extend_low_i8x16_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i16x8_extend_high_i8x16_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_trunc_sat_f32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_trunc_sat_f32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_f32x4_convert_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_f32x4_convert_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_trunc_sat_f64x2_s_zero(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_trunc_sat_f64x2_u_zero(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_f64x2_convert_low_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_f64x2_convert_low_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_f32x4_demote_f64x2_zero(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_f64x2_promote_low_f32x4(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_relaxed_trunc_sat_f32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_relaxed_trunc_sat_f32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_relaxed_trunc_sat_f64x2_s_zero(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i32x4_relaxed_trunc_sat_f64x2_u_zero(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i8x16_narrow_i16x8_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i8x16_narrow_i16x8_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i16x8_narrow_i32x4_s(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-    fn visit_i16x8_narrow_i32x4_u(&mut self, _: usize) -> Self::Output {
-        self.vcvtop()
-    }
-
-    fn visit_i8x16_shuffle(&mut self, _: usize, _: [u8; 16]) -> Self::Output {
-        self.pop()
-    }
-
-    fn visit_i8x16_extract_lane_s(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::I32)
-    }
-    fn visit_i8x16_extract_lane_u(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::I32)
-    }
-    fn visit_i16x8_extract_lane_s(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::I32)
-    }
-    fn visit_i16x8_extract_lane_u(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::I32)
-    }
-    fn visit_i32x4_extract_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::I32)
-    }
-    fn visit_i64x2_extract_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::I64)
-    }
-    fn visit_f32x4_extract_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::F32)
-    }
-    fn visit_f64x2_extract_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.extract_lane(ValType::F64)
-    }
-
-    fn visit_i8x16_replace_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i16x8_replace_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i32x4_replace_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i64x2_replace_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_f32x4_replace_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_f64x2_replace_lane(&mut self, _: usize, _: u8) -> Self::Output {
-        self.pop()
-    }
-
-    fn visit_i8x16_swizzle(&mut self, _: usize) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i8x16_relaxed_swizzle(&mut self, _: usize) -> Self::Output {
-        self.pop()
-    }
-
-    fn visit_i8x16_splat(&mut self, _: usize) -> Self::Output {
-        self.splat()
-    }
-    fn visit_i16x8_splat(&mut self, _: usize) -> Self::Output {
-        self.splat()
-    }
-    fn visit_i32x4_splat(&mut self, _: usize) -> Self::Output {
-        self.splat()
-    }
-    fn visit_i64x2_splat(&mut self, _: usize) -> Self::Output {
-        self.splat()
-    }
-    fn visit_f32x4_splat(&mut self, _: usize) -> Self::Output {
-        self.splat()
-    }
-    fn visit_f64x2_splat(&mut self, _: usize) -> Self::Output {
-        self.splat()
-    }
-
-    fn visit_v128_bitselect(&mut self, _: usize) -> Self::Output {
-        self.pop2()
-    }
-
-    fn visit_i8x16_bitmask(&mut self, _: usize) -> Self::Output {
-        self.bitmask()
-    }
-    fn visit_i16x8_bitmask(&mut self, _: usize) -> Self::Output {
-        self.bitmask()
-    }
-    fn visit_i32x4_bitmask(&mut self, _: usize) -> Self::Output {
-        self.bitmask()
-    }
-    fn visit_i64x2_bitmask(&mut self, _: usize) -> Self::Output {
-        self.bitmask()
-    }
-
-    fn visit_i16x8_extadd_pairwise_i8x16_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i16x8_extadd_pairwise_i8x16_u(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i32x4_extadd_pairwise_i16x8_s(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_i32x4_extadd_pairwise_i16x8_u(&mut self, _: usize) -> Self::Output {
-        Ok(None)
-    }
-
-    // memory
-    // table
-    fn visit_table_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
-        self.pop3()
-    }
-    fn visit_elem_drop(&mut self, _: usize, _: u32) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_table_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
-        self.pop3()
-    }
-    fn visit_table_fill(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop3()
-    }
-    fn visit_table_get(&mut self, _: usize, table: u32) -> Self::Output {
-        let table = usize::try_from(table).map_err(Error::TableIndexRange)?;
+        // [t] → []
         self.pop()?;
-        self.push(*self.tables.get(table).ok_or(Error::TableIndex)?)
-    }
-    fn visit_table_set(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_table_grow(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop2()?;
-        self.push(ValType::I32)
-    }
-    fn visit_table_size(&mut self, _: usize, _: u32) -> Self::Output {
-        self.push(ValType::I32)
-    }
-
-    // references
-    fn visit_ref_null(&mut self, _: usize, ty: ValType) -> Self::Output {
-        self.push(ty)
-    }
-    fn visit_ref_func(&mut self, _: usize, _: u32) -> Self::Output {
-        self.push(ValType::FuncRef)
-    }
-    fn visit_ref_is_null(&mut self, _: usize) -> Self::Output {
-        self.pop()?;
-        self.push(ValType::I32)
-    }
-
-    // memory
-    fn visit_i32_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I32)
-    }
-    fn visit_i32_load8_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I32)
-    }
-    fn visit_i32_load8_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I32)
-    }
-    fn visit_i32_load16_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I32)
-    }
-    fn visit_i32_load16_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I32)
-    }
-
-    fn visit_i32_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i32_store8(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i32_store16(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-
-    fn visit_i64_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_i64_load8_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_i64_load8_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_i64_load16_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_i64_load16_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_i64_load32_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-    fn visit_i64_load32_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::I64)
-    }
-
-    fn visit_i64_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i64_store8(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i64_store16(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_i64_store32(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-
-    fn visit_f32_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::F32)
-    }
-    fn visit_f64_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::F64)
-    }
-
-    fn visit_f32_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_f64_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-
-    fn visit_v128_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load8x8_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load8x8_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load16x4_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load16x4_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load32x2_s(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load32x2_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load8_splat(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load16_splat(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load32_splat(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load64_splat(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load32_zero(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load64_zero(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load8_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load16_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load32_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.push(ValType::V128)
-    }
-    fn visit_v128_load64_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.push(ValType::V128)
-    }
-
-    fn visit_v128_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_v128_store8_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_v128_store16_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_v128_store32_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.pop()
-    }
-    fn visit_v128_store64_lane(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
-        self.pop()
+        Ok(None)
     }
 
     fn visit_memory_size(&mut self, _: usize, _: u32, _: u8) -> Self::Output {
-        self.push(ValType::I32)
+        // [] → [i32]
+        self.push(ValType::I32);
+        Ok(None)
     }
+
     fn visit_memory_grow(&mut self, _: usize, _: u32, _: u8) -> Self::Output {
+        // [i32] → [i32]
+
+        // Function body intentionally left empty.
         Ok(None)
     }
-    fn visit_memory_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
-        self.pop3()
-    }
-    fn visit_data_drop(&mut self, _: usize, _: u32) -> Self::Output {
-        Ok(None)
-    }
-    fn visit_memory_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
-        self.pop3()
-    }
+
     fn visit_memory_fill(&mut self, _: usize, _: u32) -> Self::Output {
-        self.pop3()
+        // [i32 i32 i32] → []
+        self.pop_many(3)?;
+        Ok(None)
     }
 
-    // atomic
-    fn visit_i32_atomic_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I32)
-    }
-    fn visit_i32_atomic_load8_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I32)
-    }
-    fn visit_i32_atomic_load16_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I32)
-    }
-    fn visit_i64_atomic_load(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I64)
-    }
-    fn visit_i64_atomic_load8_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I64)
-    }
-    fn visit_i64_atomic_load16_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I64)
-    }
-    fn visit_i64_atomic_load32_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_load(ValType::I64)
+    fn visit_memory_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+        // [i32 i32 i32] → []
+        self.pop_many(3)?;
+        Ok(None)
     }
 
-    fn visit_i32_atomic_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i32_atomic_store8(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i32_atomic_store16(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i64_atomic_store(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i64_atomic_store8(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i64_atomic_store16(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_i64_atomic_store32(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
+    fn visit_memory_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+        // [i32 i32 i32] → []
+        self.pop_many(3)?;
+        Ok(None)
     }
 
-    fn visit_i32_atomic_rmw_cmpxchg(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_cmpxchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_cmpxchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I32)
-    }
-    fn visit_i64_atomic_rmw_cmpxchg(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_cmpxchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_cmpxchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_cmpxchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_cmpxchg(ValType::I64)
+    fn visit_data_drop(&mut self, _: usize, _: u32) -> Self::Output {
+        // [] → []
+        Ok(None)
     }
 
-    fn visit_i32_atomic_rmw_add(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_add_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_add_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw_sub(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_sub_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_sub_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw_and(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_and_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_and_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw_or(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_or_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_or_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw_xor(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_xor_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_xor_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw_xchg(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw8_xchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i32_atomic_rmw16_xchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I32)
-    }
-    fn visit_i64_atomic_rmw_add(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_add_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_add_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_add_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw_sub(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_sub_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_sub_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_sub_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw_and(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_and_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_and_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_and_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw_or(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_or_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_or_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_or_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw_xor(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_xor_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_xor_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_xor_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw_xchg(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw8_xchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw16_xchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
-    }
-    fn visit_i64_atomic_rmw32_xchg_u(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.atomic_rmw(ValType::I64)
+    fn visit_table_get(&mut self, _: usize, table: u32) -> Self::Output {
+        // [i32] → [t]
+        let table = usize::try_from(table).map_err(Error::TableIndexRange)?;
+        let table_ty = *self.tables.get(table).ok_or(Error::TableIndex)?;
+        self.pop()?;
+        self.push(table_ty);
+        Ok(None)
     }
 
-    fn visit_memory_atomic_notify(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop()
-    }
-    fn visit_memory_atomic_wait32(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_memory_atomic_wait64(&mut self, _: usize, _: MemArg) -> Self::Output {
-        self.pop2()
-    }
-    fn visit_atomic_fence(&mut self, _: usize, _: u8) -> Self::Output {
-        todo!("missing in spec?")
+    fn visit_table_set(&mut self, _: usize, _: u32) -> Self::Output {
+        // [i32 t] → []
+        self.pop_many(2)?;
+        Ok(None)
     }
 
-    // Control-flow instructions
-    fn visit_return(&mut self, offset: usize) -> Self::Output {
-        // This behaves as-if a `br` to the outer-most block.
-        let branch_depth =
-            u32::try_from(self.frames.len().saturating_sub(1)).map_err(|_| Error::TooManyFrames)?;
-        self.visit_br(offset, branch_depth)
+    fn visit_table_size(&mut self, _: usize, _: u32) -> Self::Output {
+        // [] → [i32]
+        self.push(ValType::I32);
+        Ok(None)
     }
-    fn visit_return_call(&mut self, offset: usize, _: u32) -> Self::Output {
-        // `return_call` behaves as-if a regular `return` followed by the `call`. For the purposes
-        // of modelling the frame size of the _current_ function, only the `return` portion of this
-        // computation is relevant.
-        self.visit_return(offset)
+
+    fn visit_table_grow(&mut self, _: usize, _: u32) -> Self::Output {
+        // [t i32] → [i32]
+        self.pop_many(2)?;
+        self.push(ValType::I32);
+        Ok(None)
     }
-    fn visit_return_call_indirect(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
-        self.visit_return(offset)
+
+    fn visit_table_fill(&mut self, _: usize, _: u32) -> Self::Output {
+        // [i32 t i32] → []
+        self.pop_many(3)?;
+        Ok(None)
     }
-    fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
-        // TODO: Does this really behave as-if a return for the purposes of this analysis?
-        self.visit_return(offset)
+
+    fn visit_table_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+        // [i32 i32 i32] → []
+        self.pop_many(3)?;
+        Ok(None)
+    }
+
+    fn visit_table_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+        // [i32 i32 i32] → []
+        self.pop_many(3)?;
+        Ok(None)
+    }
+
+    fn visit_elem_drop(&mut self, _: usize, _: u32) -> Self::Output {
+        // [] → []
+        Ok(None)
+    }
+
+    fn visit_select(&mut self, _: usize) -> Self::Output {
+        // [t t i32] -> [t]
+        self.pop_many(2)?;
+        Ok(None)
+    }
+
+    fn visit_typed_select(&mut self, _: usize, t: ValType) -> Self::Output {
+        // [t t i32] -> [t]
+        self.pop_many(3)?;
+        self.push(t);
+        Ok(None)
+    }
+
+    fn visit_drop(&mut self, _: usize) -> Self::Output {
+        // [t] → []
+        self.pop()?;
+        Ok(None)
+    }
+
+    fn visit_nop(&mut self, _: usize) -> Self::Output {
+        // [] → []
+        Ok(None)
     }
 
     fn visit_call(&mut self, _: usize, function_index: u32) -> Self::Output {
-        self.call_typed_function(self.function_type_index(function_index)?)
+        self.visit_function_call(self.function_type_index(function_index)?)
     }
 
     fn visit_call_indirect(&mut self, _: usize, type_index: u32, _: u32, _: u8) -> Self::Output {
-        self.call_typed_function(type_index)
+        self.visit_function_call(type_index)
     }
 
-    fn visit_block(&mut self, _: usize, ty: BlockType) -> Self::Output {
-        let operands = self.block_operands_from_ty(&ty)?;
-        self.pop_multiple(operands.stack.len())?;
-        let complete = self.current_frame()?.block_info().complete;
-        self.frames.push(Frame::Block(BlockInfo {
-            ty,
-            operands,
-            complete,
-        }));
+    fn visit_return_call(&mut self, offset: usize, _: u32) -> Self::Output {
+        // `return_call` behaves as-if a regular `return` followed by the `call`. For the purposes
+        // of modelling the frame size of the _current_ function, only the `return` portion of this
+        // computation is relevant (as it makes the stack polymorphic)
+        self.visit_return(offset)
+    }
+
+    fn visit_return_call_indirect(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
+        self.visit_return(offset)
+    }
+
+    fn visit_unreachable(&mut self, _: usize) -> Self::Output {
+        // [*] → [*]  (stack-polymorphic)
+        self.stack_polymorphic();
         Ok(None)
     }
 
-    fn visit_loop(&mut self, _: usize, ty: BlockType) -> Self::Output {
-        let operands = self.block_operands_from_ty(&ty)?;
-        self.pop_multiple(operands.stack.len())?;
-        let complete = self.current_frame()?.block_info().complete;
-        self.frames.push(Frame::Loop(BlockInfo {
-            ty,
-            operands,
-            complete,
-        }));
+    fn visit_block(&mut self, _: usize, blockty: BlockType) -> Self::Output {
+        // block blocktype instr* end : [t1*] → [t2*]
+        self.new_frame(blockty)?;
         Ok(None)
     }
 
-    fn visit_if(&mut self, _: usize, ty: BlockType) -> Self::Output {
-        let operands = self.block_operands_from_ty(&ty)?;
-        // Block parameters and the condition.
-        self.pop_multiple(operands.stack.len() + 1)?;
-        let complete = self.current_frame()?.block_info().complete;
-        self.frames.push(Frame::If(BlockInfo {
-            ty,
-            operands,
-            complete,
-        }));
+    fn visit_loop(&mut self, _: usize, blockty: BlockType) -> Self::Output {
+        // loop blocktype instr* end : [t1*] → [t2*]
+        self.new_frame(blockty)?;
         Ok(None)
     }
 
-    fn visit_else(&mut self, offset: usize) -> Self::Output {
-        let current_frame = self.frames.pop().ok_or(Error::CurrentFrameMissing)?;
-        match current_frame {
-            Frame::If(bfi) => {
-                let complete = self.current_frame()?.block_info().complete;
-                self.frames.push(Frame::Else {
-                    if_max_depth: bfi.operands.max_size,
-                    else_block: BlockInfo {
-                        ty: bfi.ty,
-                        operands: self.block_operands_from_ty(&bfi.ty)?,
-                        complete,
-                    },
-                });
-            }
-            Frame::Else { .. } | Frame::Loop(..) | Frame::Block(..) => {
-                // Actually reachable in case the input has not been validated, or has been
-                // corrupted.
-                debug_assert!(false, "malformed if-else construct");
-                return Err(Error::MalformedIfElse(offset))
-            }
+    fn visit_if(&mut self, _: usize, blockty: BlockType) -> Self::Output {
+        // if blocktype instr* else instr* end : [t1* i32] → [t2*]
+        self.pop()?;
+        self.pop_block_params(blockty)?;
+        self.new_frame(blockty)?;
+        Ok(None)
+    }
+
+    fn visit_else(&mut self, _: usize) -> Self::Output {
+        if let Some(frame) = self.frames.pop() {
+            let frame = std::mem::replace(&mut self.top_frame, frame);
+            self.operands.set_height(frame.height)?;
+            self.new_frame(frame.block_type)?;
+            Ok(None)
+        } else {
+            todo!("malformed wasm (else)");
         }
-        Ok(None)
     }
 
     fn visit_end(&mut self, _: usize) -> Self::Output {
-        let current_frame = self.frames.pop().ok_or(Error::CurrentFrameMissing)?;
-        let current_bfi = current_frame.block_info();
-        let parent_frame = match self.frame(0) {
-            // This is the end of the function and there are no more frames remaining to propagate
-            // our computations into.
-            None => return Ok(Some(current_bfi.operands.max_size)),
-            Some(parent_frame) => parent_frame,
-        };
-        let parent_bfi = parent_frame.block_info_mut();
-        if !parent_bfi.complete {
-            let max_height = current_frame.max_depth();
-            parent_bfi.operands.max_size = std::cmp::max(
-                parent_bfi.operands.size + max_height,
-                parent_bfi.operands.max_size,
-            );
-        }
-        match current_bfi.ty {
-            BlockType::Empty => Ok(None),
-            BlockType::Type(ret_ty) => self.push(ret_ty),
-            BlockType::FuncType(fn_type_idx) => {
-                let result_types = match self.ty(fn_type_idx)? {
-                    wasmparser::Type::Func(fnty) => fnty.results().to_vec(),
-                };
-                for result in result_types {
-                    self.push(result)?;
-                }
-                Ok(None)
-            }
+        if let Some(frame) = self.frames.pop() {
+            let frame = std::mem::replace(&mut self.top_frame, frame);
+            self.operands.set_height(frame.height)?;
+            self.push_block_results(frame.block_type)?;
+            Ok(None)
+        } else {
+            // Returning from the function. Malformed WASM modules may have trailing instructions,
+            // but we do ignore processing them in the operand feed loop. For that reason,
+            // replacing `top_stack` with some sentinel value would work okay.
+            self.top_frame = Frame {
+                height: !0,
+                block_type: BlockType::Empty,
+                stack_polymorphic: true,
+            };
+            self.operands.set_height(0)?;
+            Ok(Some(self.operands.max_size))
         }
     }
 
     fn visit_br(&mut self, _: usize, _: u32) -> Self::Output {
-        self.current_frame()?.block_info_mut().complete = true;
-        Ok(None)
-    }
-
-    fn visit_br_table(&mut self, _: usize, _: BrTable<'a>) -> Self::Output {
-        // br_table is an unconditional branch to one of the specified branch targets.
-        //
-        // This is somewhat more complicated than `br_if` but overall the similar line of thinking
-        // as for a regular `br` applies. In particular we don’t need to worry about evaluating
-        // rest of the operations within the frame.
-        self.current_frame()?.block_info_mut().complete = true;
+        // [t1* t*] → [t2*]  (stack-polymorphic)
+        self.stack_polymorphic();
         Ok(None)
     }
 
     fn visit_br_if(&mut self, _: usize, _: u32) -> Self::Output {
+        // [t* i32] → [t*]
+
         // There are two things that could happen here.
         //
         // First is when the condition operand is true. This instruction executed as-if it was a
@@ -2328,31 +1319,46 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         // Second is if the condition was actually false and the rest of this block is executed,
         // which can potentially later increase the size of this current frame. We’re largely
         // interested in this second case, so we don’t really need to do anything much more than…
-        self.pop()
+        self.pop()?;
         // …the condition.
+        Ok(None)
     }
 
-    fn visit_delegate(&mut self, _: usize, _: u32) -> Self::Output {
-        todo!("exceptions")
+    fn visit_br_table(&mut self, _: usize, _: BrTable) -> Self::Output {
+        // [t1* t* i32] → [t2*]  (stack-polymorphic)
+        self.pop()?; // table index
+        self.stack_polymorphic();
+        Ok(None)
+    }
+
+    fn visit_return(&mut self, offset: usize) -> Self::Output {
+        // This behaves as-if a `br` to the outer-most block.
+        let branch_depth =
+            u32::try_from(self.frames.len().saturating_sub(1)).map_err(|_| Error::TooManyFrames)?;
+        self.visit_br(offset, branch_depth)
     }
 
     fn visit_try(&mut self, _: usize, _: BlockType) -> Self::Output {
-        todo!("exceptions")
-    }
-
-    fn visit_catch(&mut self, _: usize, _: u32) -> Self::Output {
-        todo!("exceptions")
-    }
-
-    fn visit_throw(&mut self, _: usize, _: u32) -> Self::Output {
-        todo!("exceptions")
+        todo!("exception handling has not been implemented");
     }
 
     fn visit_rethrow(&mut self, _: usize, _: u32) -> Self::Output {
-        todo!("exceptions")
+        todo!("exception handling has not been implemented");
+    }
+
+    fn visit_throw(&mut self, _: usize, _: u32) -> Self::Output {
+        todo!("exception handling has not been implemented");
+    }
+
+    fn visit_delegate(&mut self, _: usize, _: u32) -> Self::Output {
+        todo!("exception handling has not been implemented");
+    }
+
+    fn visit_catch(&mut self, _: usize, _: u32) -> Self::Output {
+        todo!("exception handling has not been implemented");
     }
 
     fn visit_catch_all(&mut self, _: usize) -> Self::Output {
-        todo!("exceptions")
+        todo!("exception handling has not been implemented");
     }
 }

@@ -1,5 +1,5 @@
 use std::error;
-use std::ffi::OsStr;
+use std::ffi::{OsStr, OsString};
 use std::io::{self, Write};
 use std::path::PathBuf;
 
@@ -41,7 +41,8 @@ fn run() -> Result<(), Error> {
     let mut tests = Vec::new();
     for entry in walkdir::WalkDir::new(&tests_directory) {
         let entry = entry.map_err(Error::WalkDirEntry)?;
-        if Some(OsStr::new("wast")) == entry.path().extension() {
+        let entry_path = entry.path();
+        if Some(OsStr::new("wast")) == entry_path.extension() {
             tests.push(Test {
                 path: entry.path().into(),
             });

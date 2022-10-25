@@ -123,6 +123,8 @@ pub(crate) enum Error {
     InterpreterOutput(#[source] std::string::FromUtf8Error),
     #[error("could not analyze the max stack for module {1} at {2:?}")]
     AnalyseMaxStack(#[source] crate::max_stack::Error, String, PathBuf),
+    #[error("could not analyze the max stack for module {0} at {1:?}, analysis panicked")]
+    AnalyseMaxStackPanic(String, PathBuf),
 }
 
 impl Error {
@@ -140,7 +142,8 @@ impl Error {
             | Error::InterpreterExit(_, _, _)
             | Error::InterpreterOutput(_)
             | Error::DiffSnap(_)
-            | Error::AnalyseMaxStack(_, _, _) => {}
+            | Error::AnalyseMaxStack(_, _, _)
+            | Error::AnalyseMaxStackPanic(_, _) => {}
             Error::ParseBuffer(s) => set_wast_path(s, path),
             Error::ParseWast(s) => set_wast_path(s, path),
             Error::EncodeModule(s, _) => set_wast_path(s, path),
@@ -295,10 +298,6 @@ impl<'a> TestContext {
                     8
                 }
 
-                fn size_of_label(&self) -> u64 {
-                    5
-                }
-
                 fn size_of_function_activation(
                     &self,
                     locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
@@ -307,8 +306,10 @@ impl<'a> TestContext {
                 }
             }
 
-            let results = crate::max_stack::Module::new(&module, &DefaultConfig)
-                .map_err(|e| Error::AnalyseMaxStack(e, id.clone(), self.test_path.clone()))?;
+            let results =
+                std::panic::catch_unwind(|| crate::max_stack::Module::new(&module, &DefaultConfig))
+                    .map_err(|_| Error::AnalyseMaxStackPanic(id.clone(), self.test_path.clone()))?
+                    .map_err(|e| Error::AnalyseMaxStack(e, id.clone(), self.test_path.clone()))?;
             let output = results
                 .function_stack_sizes
                 .into_iter()
@@ -368,7 +369,7 @@ impl<'a> TestContext {
         if let Some(error) = DiffError::diff(&snap_contents, &directive_output) {
             if !should_update {
                 self.output.extend_from_slice(
-                    "note: run with SNAP_UPDATE environment variable to update".as_bytes(),
+                    "note: run with SNAP_UPDATE environment variable to update\n".as_bytes(),
                 );
                 Err(Error::DiffSnap(error.with_path(snap_path)))
             } else {
