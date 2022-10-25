@@ -1270,10 +1270,12 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_else(&mut self, offset: usize) -> Self::Output {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
-            self.operands.truncate(frame.height);
-            if self.operands.len() != frame.height {
-                return Err(Error::MalformedModule(offset, "operand stack is too short"));
-            }
+            let to_pop = self
+                .operands
+                .len()
+                .checked_sub(frame.height)
+                .ok_or(Error::MalformedModule(offset, "operand stack is too short"))?;
+            self.pop_many(offset, to_pop)?;
             self.new_frame(frame.block_type)?;
             Ok(None)
         } else {
@@ -1284,10 +1286,12 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_end(&mut self, offset: usize) -> Self::Output {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
-            self.operands.truncate(frame.height);
-            if self.operands.len() != frame.height {
-                return Err(Error::MalformedModule(offset, "operand stack is too short"));
-            }
+            let to_pop = self
+                .operands
+                .len()
+                .checked_sub(frame.height)
+                .ok_or(Error::MalformedModule(offset, "operand stack is too short"))?;
+            self.pop_many(offset, to_pop)?;
             self.push_block_results(frame.block_type)?;
             Ok(None)
         } else {
@@ -1300,6 +1304,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                 stack_polymorphic: true,
             };
             self.operands.clear();
+            self.size = 0;
             Ok(Some(self.max_size))
         }
     }
