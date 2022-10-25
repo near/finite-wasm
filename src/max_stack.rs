@@ -80,6 +80,9 @@ impl Module {
         let mut globals = vec![];
         let mut tables = vec![];
         let mut locals = PrefixSumVec::new();
+        // Reused between functions for speeds.
+        let mut operand_stack = vec![];
+        let mut frame_stack = vec![];
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
@@ -171,11 +174,11 @@ impl Module {
                         tables: &tables,
                         locals: &locals,
 
-                        operands: vec![],
+                        operands: std::mem::replace(&mut operand_stack, vec![]),
                         size: 0,
                         max_size: 0,
 
-                        frames: vec![],
+                        frames: std::mem::replace(&mut frame_stack, vec![]),
                         top_frame: Frame {
                             height: 0,
                             block_type: BlockType::FuncType(type_id),
@@ -193,6 +196,10 @@ impl Module {
                             .map_err(Error::VisitOperators)??;
                         if let Some(stack_size) = result {
                             function_stack_sizes.push(activation_size + stack_size);
+                            visitor.operands.clear();
+                            visitor.frames.clear();
+                            operand_stack = visitor.operands;
+                            frame_stack = visitor.frames;
                             break;
                         }
                     }
