@@ -140,8 +140,7 @@ impl Module {
                         u32::try_from(function_id_usize).map_err(|_| Error::TooManyFunctions)?;
                     let type_id = *functions
                         .get(function_id_usize)
-                        .ok_or(Error::FunctionIndex(function_id))
-                        .unwrap();
+                        .ok_or(Error::FunctionIndex(function_id))?;
                     let type_id_usize =
                         usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
                     let fn_type = types.get(type_id_usize).ok_or(Error::TypeIndex(type_id))?;
@@ -375,7 +374,10 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
 
     fn pop(&mut self, offset: usize) -> Result<(), Error> {
         if !self.top_frame.stack_polymorphic {
-            self.size -= self.operands.pop().ok_or(Error::EmptyStack(offset))?;
+            self.size = self
+                .size
+                .checked_sub(self.operands.pop().ok_or(Error::EmptyStack(offset))?)
+                .expect("stack size is going negative");
         }
         Ok(())
     }
@@ -390,7 +392,10 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
                 .checked_sub(count)
                 .ok_or(Error::EmptyStack(offset))?;
             let size: u64 = self.operands.drain(split_point..).sum();
-            self.size = self.size.checked_sub(size).unwrap();
+            self.size = self
+                .size
+                .checked_sub(size)
+                .expect("stack size is going negative");
             Ok(())
         } else {
             Ok(())
@@ -1262,26 +1267,26 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_else(&mut self, _: usize) -> Self::Output {
+    fn visit_else(&mut self, offset: usize) -> Self::Output {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
             self.operands.truncate(frame.height);
             if self.operands.len() != frame.height {
-                todo!("malformed wasm");
+                return Err(Error::MalformedModule(offset, "operand stack is too short"));
             }
             self.new_frame(frame.block_type)?;
             Ok(None)
         } else {
-            todo!("malformed wasm (else)");
+            return Err(Error::MalformedModule(offset, "frame stack is too short"));
         }
     }
 
-    fn visit_end(&mut self, _: usize) -> Self::Output {
+    fn visit_end(&mut self, offset: usize) -> Self::Output {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
             self.operands.truncate(frame.height);
             if self.operands.len() != frame.height {
-                todo!("malformed wasm");
+                return Err(Error::MalformedModule(offset, "operand stack is too short"));
             }
             self.push_block_results(frame.block_type)?;
             Ok(None)
