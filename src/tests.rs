@@ -1,5 +1,5 @@
 use std::error;
-use std::ffi::{OsStr, OsString};
+use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::PathBuf;
 
@@ -16,8 +16,6 @@ enum Error {
     WriteTestOutput(#[source] std::io::Error),
     #[error("some tests failed")]
     TestsFailed,
-    #[error("could not read the test contents")]
-    ReadTest,
 }
 
 struct Test {

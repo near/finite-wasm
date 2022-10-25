@@ -1,9 +1,8 @@
 use std::error;
 use std::ffi::OsString;
 use std::io::{Read, Seek, SeekFrom, Write};
-use std::ops::ControlFlow;
 use std::path::{Path, PathBuf};
-use std::process::{Command, ExitStatus};
+use std::process::ExitStatus;
 
 use crate::max_stack::AnalysisConfig;
 
@@ -295,14 +294,26 @@ impl<'a> TestContext {
             struct DefaultConfig;
             impl AnalysisConfig for DefaultConfig {
                 fn size_of_value(&self, ty: wasmparser::ValType) -> u64 {
-                    8
+                    use wasmparser::ValType::*;
+                    match ty {
+                        I32 => 4,
+                        I64 => 8,
+                        F32 => 4,
+                        F64 => 8,
+                        V128 => 16,
+                        FuncRef => 32,
+                        ExternRef => 32,
+                    }
                 }
 
                 fn size_of_function_activation(
                     &self,
                     locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
                 ) -> u64 {
-                    11 + u64::from(locals.max_index().copied().unwrap_or(0)) * 7
+                    // NB: These sizes have been chosen to make it easier to tell what contributes
+                    // to locals and what contributes to the operand stack.
+                    let locals = u64::from(locals.max_index().copied().unwrap_or(0)) * 1_000_000;
+                    1_000_000_000_000 + locals
                 }
             }
 
