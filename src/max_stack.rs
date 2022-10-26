@@ -304,46 +304,18 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         }
     }
 
-    fn pop_block_params(&mut self, offset: usize, block_type: BlockType) -> Result<(), Error> {
+    fn with_block_types<F>(&mut self, block_type: BlockType, cb: F) -> Result<(), Error>
+    where
+        F: FnOnce(&mut Self, &[ValType], &[ValType]) -> Result<(), Error>,
+    {
         match block_type {
-            BlockType::Empty => (),
-            BlockType::Type(_) => (),
+            BlockType::Empty => cb(self, &[], &[]),
+            BlockType::Type(result) => cb(self, &[], &[result]),
             BlockType::FuncType(type_index) => {
-                let (params, _) = self.type_params_results(type_index)?;
-                self.pop_many(offset, params.len())?;
+                let (params, results) = self.type_params_results(type_index)?;
+                cb(self, params, results)
             }
         }
-        Ok(())
-    }
-
-    fn push_block_params(&mut self, block_type: BlockType) -> Result<(), Error> {
-        match block_type {
-            BlockType::Empty => (),
-            BlockType::Type(_) => (),
-            BlockType::FuncType(type_index) => {
-                let (params, _) = self.type_params_results(type_index)?;
-                for param in params {
-                    self.push(*param);
-                }
-            }
-        }
-        Ok(())
-    }
-
-    fn push_block_results(&mut self, block_type: BlockType) -> Result<(), Error> {
-        match block_type {
-            BlockType::Empty => (),
-            BlockType::Type(result) => {
-                self.push(result);
-            }
-            BlockType::FuncType(type_index) => {
-                let (_, results) = self.type_params_results(type_index)?;
-                for result in results {
-                    self.push(*result);
-                }
-            }
-        }
-        Ok(())
     }
 
     fn new_frame(&mut self, block_type: BlockType) -> Result<(), Error> {
@@ -357,7 +329,11 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
                 stack_polymorphic,
             },
         ));
-        self.push_block_params(block_type)
+        self.with_block_types(block_type, |this, params, _| {
+            Ok(for param in params {
+                this.push(*param);
+            })
+        })
     }
 
     fn stack_polymorphic(&mut self) {
@@ -1263,7 +1239,9 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     fn visit_if(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
         // if blocktype instr* else instr* end : [t1* i32] → [t2*]
         self.pop(offset)?;
-        self.pop_block_params(offset, blockty)?;
+        self.with_block_types(blockty, |this, params, _| {
+            this.pop_many(offset, params.len())
+        })?;
         self.new_frame(blockty)?;
         Ok(None)
     }
@@ -1293,7 +1271,11 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                 .checked_sub(frame.height)
                 .ok_or(Error::TruncatedOperandStack(offset))?;
             self.pop_many(offset, to_pop)?;
-            self.push_block_results(frame.block_type)?;
+            self.with_block_types(frame.block_type, |this, _, results| {
+                Ok(for result in results {
+                    this.push(*result);
+                })
+            })?;
             Ok(None)
         } else {
             // Returning from the function. Malformed WASM modules may have trailing instructions,
