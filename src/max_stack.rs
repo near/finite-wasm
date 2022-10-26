@@ -81,8 +81,8 @@ impl Module {
         let mut function_stack_sizes = vec![];
         let mut globals = vec![];
         let mut tables = vec![];
-        let mut locals = PrefixSumVec::new();
         // Reused between functions for speeds.
+        let mut locals = PrefixSumVec::new();
         let mut operand_stack = vec![];
         let mut frame_stack = vec![];
 
@@ -134,6 +134,10 @@ impl Module {
                     }
                 }
                 wasmparser::Payload::CodeSectionEntry(function) => {
+                    locals.clear();
+                    operand_stack.clear();
+                    frame_stack.clear();
+
                     // We use the length of `function_stack_sizes` to _also_ act as a counter for
                     // how many code section entries we have seen so far. This allows us to match
                     // up the function information with its type and such.
@@ -147,7 +151,6 @@ impl Module {
                         usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
                     let fn_type = types.get(type_id_usize).ok_or(Error::TypeIndex(type_id))?;
 
-                    locals.clear();
                     match fn_type {
                         wasmparser::Type::Func(fnty) => {
                             for param in fnty.params() {
@@ -175,11 +178,11 @@ impl Module {
                         tables: &tables,
                         locals: &locals,
 
-                        operands: std::mem::replace(&mut operand_stack, vec![]),
+                        operands: &mut operand_stack,
                         size: 0,
                         max_size: 0,
 
-                        frames: std::mem::replace(&mut frame_stack, vec![]),
+                        frames: &mut frame_stack,
                         top_frame: Frame {
                             height: 0,
                             block_type: BlockType::FuncType(type_id),
@@ -197,10 +200,6 @@ impl Module {
                             .map_err(Error::VisitOperators)??;
                         if let Some(stack_size) = result {
                             function_stack_sizes.push(activation_size + stack_size);
-                            visitor.operands.clear();
-                            visitor.frames.clear();
-                            operand_stack = visitor.operands;
-                            frame_stack = visitor.frames;
                             break;
                         }
                     }
@@ -269,14 +268,14 @@ struct StackSizeVisitor<'a, Cfg> {
     /// maintained at all times.
     ///
     /// Fortunately, we don’t exactly need to maintain the _types_, only their sizes suffice.
-    operands: Vec<u64>,
+    operands: &'a mut Vec<u64>,
     /// Sum of all values in the `operands` field above.
     size: u64,
     /// Maximum observed value for the `size` field above.
     max_size: u64,
 
     /// The stack of frames (as created by operations such as `block`).
-    frames: Vec<Frame>,
+    frames: &'a mut Vec<Frame>,
     /// The top-most frame.
     ///
     /// This aids quicker access at a cost of some special-casing for the very last `end` operator.
