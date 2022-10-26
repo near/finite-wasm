@@ -6,7 +6,9 @@
 
 use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
-use wasmparser::{BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, V128};
+use wasmparser::{
+    BinaryReaderError, BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, VisitOperator, V128,
+};
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -171,6 +173,8 @@ impl Module {
                     // parameters and locals (which all are considered locals in wasm).
                     let activation_size = configuration.size_of_function_activation(&locals);
                     let mut visitor = StackSizeVisitor {
+                        offset: 0,
+
                         config: configuration,
                         functions: &functions,
                         types: &types,
@@ -195,6 +199,7 @@ impl Module {
                         .get_operators_reader()
                         .map_err(Error::OperatorReader)?;
                     loop {
+                        visitor.offset = operators.original_position();
                         let result = operators
                             .visit_with_offset(&mut visitor)
                             .map_err(Error::VisitOperators)??;
@@ -240,6 +245,8 @@ struct Frame {
 }
 
 struct StackSizeVisitor<'a, Cfg> {
+    offset: usize,
+
     config: &'a Cfg,
     functions: &'a [u32],
     types: &'a [wasmparser::Type],
@@ -281,6 +288,8 @@ struct StackSizeVisitor<'a, Cfg> {
     /// This aids quicker access at a cost of some special-casing for the very last `end` operator.
     top_frame: Frame,
 }
+
+type Output<'a, V> = <V as VisitOperator<'a>>::Output;
 
 impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
     fn function_type_index(&self, function_index: u32) -> Result<u32, Error> {
@@ -349,17 +358,19 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         }
     }
 
-    fn pop(&mut self, offset: usize) -> Result<(), Error> {
+    fn pop(&mut self) -> Result<(), Error> {
         if !self.top_frame.stack_polymorphic {
+            let operand_size =
+                u64::from(self.operands.pop().ok_or(Error::EmptyStack(self.offset))?);
             self.size = self
                 .size
-                .checked_sub(self.operands.pop().ok_or(Error::EmptyStack(offset))?.into())
+                .checked_sub(operand_size)
                 .expect("stack size is going negative");
         }
         Ok(())
     }
 
-    fn pop_many(&mut self, offset: usize, count: usize) -> Result<(), Error> {
+    fn pop_many(&mut self, count: usize) -> Result<(), Error> {
         if count == 0 {
             Ok(())
         } else if !self.top_frame.stack_polymorphic {
@@ -367,7 +378,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
             let operand_count = self.operands.len();
             let split_point = operand_count
                 .checked_sub(count)
-                .ok_or(Error::EmptyStack(offset))?;
+                .ok_or(Error::EmptyStack(self.offset))?;
             let size: u64 = self.operands.drain(split_point..).map(u64::from).sum();
             self.size = self
                 .size
@@ -379,103 +390,97 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         }
     }
 
-    fn visit_const(&mut self, t: ValType) -> Result<Option<u64>, Error> {
+    fn visit_const(&mut self, t: ValType) -> Output<Self> {
         // [] → [t]
         self.push(t);
         Ok(None)
     }
 
-    fn visit_unop(&mut self) -> Result<Option<u64>, Error> {
+    fn visit_unop(&mut self) -> Output<Self> {
         // [t] -> [t]
 
         // Function body intentionally left empty (pops and immediately pushes the same type back)
         Ok(None)
     }
 
-    fn visit_binop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_binop(&mut self) -> Output<Self> {
         // [t t] -> [t]
-        self.pop(offset)?;
+        self.pop()?;
         Ok(None)
     }
 
-    fn visit_testop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_testop(&mut self) -> Output<Self> {
         // [t] -> [i32]
-        self.pop(offset)?;
+        self.pop()?;
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_relop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_relop(&mut self) -> Output<Self> {
         // [t t] -> [i32]
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_cvtop(&mut self, offset: usize, result_ty: ValType) -> Result<Option<u64>, Error> {
+    fn visit_cvtop(&mut self, result_ty: ValType) -> Output<Self> {
         // t2.cvtop_t1_sx? : [t1] -> [t2]
-        self.pop(offset)?;
+        self.pop()?;
         self.push(result_ty);
         Ok(None)
     }
 
-    fn visit_vternop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_vternop(&mut self) -> Output<Self> {
         // [v128 v128 v128] → [v128]
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_vrelop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_vrelop(&mut self) -> Output<Self> {
         // [v128 v128] -> [v128]
-        self.visit_binop(offset)
+        self.visit_binop()
     }
 
-    fn visit_vishiftop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_vishiftop(&mut self) -> Output<Self> {
         // [v128 i32] -> [v128]
-        self.pop_many(offset, 2)?;
-        self.push(ValType::V128);
+        self.pop()?;
         Ok(None)
     }
 
-    fn visit_vinarrowop(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_vinarrowop(&mut self) -> Output<Self> {
         // [v128 v128] -> [v128]
-        self.pop(offset)?;
+        self.pop()?;
         Ok(None)
     }
 
-    fn visit_vbitmask(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_vbitmask(&mut self) -> Output<Self> {
         // [v128] -> [i32]
-        self.pop(offset)?;
+        self.pop()?;
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_splat(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_splat(&mut self) -> Output<Self> {
         // [unpacked(t)] -> [v128]
-        self.pop(offset)?;
+        self.pop()?;
         self.push(ValType::V128);
         Ok(None)
     }
 
-    fn visit_replace_lane(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_replace_lane(&mut self) -> Output<Self> {
         // shape.replace_lane laneidx : [v128 unpacked(shape)] → [v128]
-        self.pop_many(offset, 2)?;
-        self.push(ValType::V128);
+        self.pop()?;
         Ok(None)
     }
 
-    fn visit_extract_lane(
-        &mut self,
-        offset: usize,
-        unpacked_shape: ValType,
-    ) -> Result<Option<u64>, Error> {
+    fn visit_extract_lane(&mut self, unpacked_shape: ValType) -> Output<Self> {
         // txN.extract_lane_sx ? laneidx : [v128] → [unpacked(shape)]
-        self.pop(offset)?;
+        self.pop()?;
         self.push(unpacked_shape);
         Ok(None)
     }
 
-    fn visit_load(&mut self, offset: usize, t: ValType) -> Result<Option<u64>, Error> {
+    fn visit_load(&mut self, t: ValType) -> Output<Self> {
         // t.load memarg           : [i32] → [t]
         // t.loadN_sx memarg       : [i32] → [t]
         // v128.loadNxM_sx memarg  : [i32] → [v128]
@@ -483,56 +488,52 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         // v128.loadN_zero memarg  : [i32] → [v128]
         // t.atomic.load memarg    : [i32] → [t]
         // t.atomic.load memargN_u : [i32] → [t]
-        self.pop(offset)?;
+        self.pop()?;
         self.push(t);
         Ok(None)
     }
 
-    fn visit_load_lane(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_load_lane(&mut self) -> Output<Self> {
         // v128.loadN_lane memarg laneidx : [i32 v128] → [v128]
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         self.push(ValType::V128);
         Ok(None)
     }
 
-    fn visit_store(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_store(&mut self) -> Output<Self> {
         // t.store memarg           : [i32 t] → []
         // t.storeN memarg          : [i32 t] → []
         // t.atomic.store memarg    : [i32 t] → []
         // t.atomic.store memargN_u : [i32 t] → []
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_store_lane(&mut self, offset: usize) -> Result<Option<u64>, Error> {
+    fn visit_store_lane(&mut self) -> Output<Self> {
         // v128.storeN_lane memarg laneidx : [i32 v128] → []
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_atomic_rmw(&mut self, offset: usize, t: ValType) -> Result<Option<u64>, Error> {
+    fn visit_atomic_rmw(&mut self, t: ValType) -> Output<Self> {
         // t.atomic.rmw.atop memarg : [i32 t] → [t]
         // t.atomic.rmwN.atop_u memarg : [i32 t] → [t]
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         self.push(t);
         Ok(None)
     }
 
-    fn visit_atomic_cmpxchg(&mut self, offset: usize, t: ValType) -> Result<Option<u64>, Error> {
+    fn visit_atomic_cmpxchg(&mut self, t: ValType) -> Output<Self> {
         // t.atomic.rmw.cmpxchg : [i32 t t] → [t]
         // t.atomic.rmwN.cmpxchg_u : [i32 t t] → [t]
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         self.push(t);
         Ok(None)
     }
 
-    fn visit_function_call(
-        &mut self,
-        offset: usize,
-        type_index: u32,
-    ) -> Result<Option<u64>, Error> {
+    fn visit_function_call(&mut self, type_index: u32) -> Output<Self> {
         let (params, results) = self.type_params_results(type_index)?;
-        self.pop_many(offset, params.len())?;
+        self.pop_many(params.len())?;
         for result_ty in results {
             self.push(*result_ty);
         }
@@ -552,109 +553,109 @@ macro_rules! instruction_category {
         })*)*
     };
     ($($type:ident . binop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_binop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_binop()
         })*)*
     };
     ($($type:ident . testop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_testop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_testop()
         })*)*
     };
 
     ($($type:ident . relop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_relop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_relop()
         })*)*
     };
 
     ($($type:ident . cvtop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_cvtop(offset, ValType::$type)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_cvtop(ValType::$type)
         })*)*
     };
 
     ($($type:ident . load = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: MemArg) -> Self::Output {
-            self.visit_load(offset, ValType::$type)
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_load(ValType::$type)
         })*)*
     };
 
     ($($type:ident . store = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: MemArg) -> Self::Output {
-            self.visit_store(offset)
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_store()
         })*)*
     };
 
     ($($type:ident . loadlane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: MemArg, _: u8) -> Self::Output {
-            self.visit_load_lane(offset)
+        $($(fn $insn(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
+            self.visit_load_lane()
         })*)*
     };
 
     ($($type:ident . storelane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: MemArg, _: u8) -> Self::Output {
-            self.visit_store_lane(offset)
+        $($(fn $insn(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
+            self.visit_store_lane()
         })*)*
     };
 
     ($($type:ident . vternop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_vternop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vternop()
         })*)*
     };
 
     ($($type:ident . vrelop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_vrelop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vrelop()
         })*)*
     };
 
     ($($type:ident . vishiftop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_vishiftop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vishiftop()
         })*)*
     };
 
     ($($type:ident . vinarrowop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_vinarrowop(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vinarrowop()
         })*)*
     };
 
     ($($type:ident . vbitmask = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_vbitmask(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_vbitmask()
         })*)*
     };
 
     ($($type:ident . splat = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize) -> Self::Output {
-            self.visit_splat(offset)
+        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+            self.visit_splat()
         })*)*
     };
 
     ($($type:ident . replacelane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: u8) -> Self::Output {
-            self.visit_replace_lane(offset)
+        $($(fn $insn(&mut self, _: usize, _: u8) -> Self::Output {
+            self.visit_replace_lane()
         })*)*
     };
 
     ($($type:ident . extractlane = $($insn:ident to $unpacked:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: u8) -> Self::Output {
-            self.visit_extract_lane(offset, ValType::$unpacked)
+        $($(fn $insn(&mut self, _: usize, _: u8) -> Self::Output {
+            self.visit_extract_lane(ValType::$unpacked)
         })*)*
     };
 
     ($($type:ident . atomic.rmw = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: MemArg) -> Self::Output {
-            self.visit_atomic_rmw(offset, ValType::$type)
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_atomic_rmw(ValType::$type)
         })*)*
     };
 
     ($($type:ident . atomic.cmpxchg = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, offset: usize, _: MemArg) -> Self::Output {
-            self.visit_atomic_cmpxchg(offset, ValType::$type)
+        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+            self.visit_atomic_cmpxchg(ValType::$type)
         })*)*
     };
 }
@@ -686,10 +687,10 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         I64.unop = visit_i64_clz | visit_i64_ctz | visit_i64_popcnt;
 
         F32.unop = visit_f32_abs | visit_f32_neg | visit_f32_sqrt | visit_f32_ceil
-                 | visit_f32_floor | visit_f32_trunc |visit_f32_nearest;
+                 | visit_f32_floor | visit_f32_trunc | visit_f32_nearest;
 
         F64.unop = visit_f64_abs | visit_f64_neg | visit_f64_sqrt | visit_f64_ceil
-                 | visit_f64_floor | visit_f64_trunc |visit_f64_nearest;
+                 | visit_f64_floor | visit_f64_trunc | visit_f64_nearest;
 
         V128.unop = visit_v128_not;
 
@@ -972,9 +973,9 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                    | visit_f32x4_splat | visit_f64x2_splat;
     }
 
-    fn visit_i8x16_shuffle(&mut self, offset: usize, _: [u8; 16]) -> Self::Output {
+    fn visit_i8x16_shuffle(&mut self, _: usize, _: [u8; 16]) -> Self::Output {
         // i8x16.shuffle laneidx^16 : [v128 v128] → [v128]
-        self.pop(offset)?;
+        self.pop()?;
         Ok(None)
     }
 
@@ -1012,23 +1013,21 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                            | visit_i64_atomic_rmw16_cmpxchg_u | visit_i64_atomic_rmw32_cmpxchg_u;
     }
 
-    fn visit_memory_atomic_notify(&mut self, offset: usize, _: MemArg) -> Self::Output {
+    fn visit_memory_atomic_notify(&mut self, _: usize, _: MemArg) -> Self::Output {
         // [i32 i32] -> [i32]
-        self.pop(offset)?;
+        self.pop()?;
         Ok(None)
     }
 
-    fn visit_memory_atomic_wait32(&mut self, offset: usize, _: MemArg) -> Self::Output {
+    fn visit_memory_atomic_wait32(&mut self, _: usize, _: MemArg) -> Self::Output {
         // [i32 i32 i64] -> [i32]
-        self.pop_many(offset, 3)?;
-        self.push(ValType::I32);
+        self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_memory_atomic_wait64(&mut self, offset: usize, _: MemArg) -> Self::Output {
+    fn visit_memory_atomic_wait64(&mut self, _: usize, _: MemArg) -> Self::Output {
         // [i32 i64 i64] -> [i32]
-        self.pop_many(offset, 3)?;
-        self.push(ValType::I32);
+        self.pop_many(2)?;
         Ok(None)
     }
 
@@ -1050,9 +1049,9 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_local_set(&mut self, offset: usize, _: u32) -> Self::Output {
-        // [] → [t]
-        self.pop(offset)?;
+    fn visit_local_set(&mut self, _: usize, _: u32) -> Self::Output {
+        // [t] → []
+        self.pop()?;
         Ok(None)
     }
 
@@ -1073,9 +1072,9 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_global_set(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_global_set(&mut self, _: usize, _: u32) -> Self::Output {
         // [t] → []
-        self.pop(offset)?;
+        self.pop()?;
         Ok(None)
     }
 
@@ -1092,21 +1091,21 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_memory_fill(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_memory_fill(&mut self, _: usize, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_memory_init(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_memory_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_memory_copy(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_memory_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         Ok(None)
     }
 
@@ -1115,21 +1114,21 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_table_get(&mut self, offset: usize, table: u32) -> Self::Output {
+    fn visit_table_get(&mut self, _: usize, table: u32) -> Self::Output {
         // [i32] → [t]
         let table_usize = usize::try_from(table).map_err(|e| Error::TableIndexRange(table, e))?;
         let table_ty = *self
             .tables
             .get(table_usize)
             .ok_or(Error::TableIndex(table))?;
-        self.pop(offset)?;
+        self.pop()?;
         self.push(table_ty);
         Ok(None)
     }
 
-    fn visit_table_set(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_table_set(&mut self, _: usize, _: u32) -> Self::Output {
         // [i32 t] → []
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         Ok(None)
     }
 
@@ -1139,28 +1138,28 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_table_grow(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_table_grow(&mut self, _: usize, _: u32) -> Self::Output {
         // [t i32] → [i32]
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_table_fill(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_table_fill(&mut self, _: usize, _: u32) -> Self::Output {
         // [i32 t i32] → []
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_table_copy(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_table_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_table_init(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_table_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         Ok(None)
     }
 
@@ -1169,22 +1168,22 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_select(&mut self, offset: usize) -> Self::Output {
+    fn visit_select(&mut self, _: usize) -> Self::Output {
         // [t t i32] -> [t]
-        self.pop_many(offset, 2)?;
+        self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_typed_select(&mut self, offset: usize, t: ValType) -> Self::Output {
+    fn visit_typed_select(&mut self, _: usize, t: ValType) -> Self::Output {
         // [t t i32] -> [t]
-        self.pop_many(offset, 3)?;
+        self.pop_many(3)?;
         self.push(t);
         Ok(None)
     }
 
-    fn visit_drop(&mut self, offset: usize) -> Self::Output {
+    fn visit_drop(&mut self, _: usize) -> Self::Output {
         // [t] → []
-        self.pop(offset)?;
+        self.pop()?;
         Ok(None)
     }
 
@@ -1193,18 +1192,18 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_call(&mut self, offset: usize, function_index: u32) -> Self::Output {
-        self.visit_function_call(offset, self.function_type_index(function_index)?)
+    fn visit_call(&mut self, _: usize, function_index: u32) -> Self::Output {
+        self.visit_function_call(self.function_type_index(function_index)?)
     }
 
     fn visit_call_indirect(
         &mut self,
-        offset: usize,
+        _: usize,
         type_index: u32,
         _: u32,
         _: u8,
     ) -> Self::Output {
-        self.visit_function_call(offset, type_index)
+        self.visit_function_call(type_index)
     }
 
     fn visit_return_call(&mut self, offset: usize, _: u32) -> Self::Output {
@@ -1236,41 +1235,41 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_if(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
+    fn visit_if(&mut self, _: usize, blockty: BlockType) -> Self::Output {
         // if blocktype instr* else instr* end : [t1* i32] → [t2*]
-        self.pop(offset)?;
+        self.pop()?;
         self.with_block_types(blockty, |this, params, _| {
-            this.pop_many(offset, params.len())
+            this.pop_many(params.len())
         })?;
         self.new_frame(blockty)?;
         Ok(None)
     }
 
-    fn visit_else(&mut self, offset: usize) -> Self::Output {
+    fn visit_else(&mut self, _: usize) -> Self::Output {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
             let to_pop = self
                 .operands
                 .len()
                 .checked_sub(frame.height)
-                .ok_or(Error::TruncatedOperandStack(offset))?;
-            self.pop_many(offset, to_pop)?;
+                .ok_or(Error::TruncatedOperandStack(self.offset))?;
+            self.pop_many(to_pop)?;
             self.new_frame(frame.block_type)?;
             Ok(None)
         } else {
-            return Err(Error::TruncatedFrameStack(offset));
+            return Err(Error::TruncatedFrameStack(self.offset));
         }
     }
 
-    fn visit_end(&mut self, offset: usize) -> Self::Output {
+    fn visit_end(&mut self, _: usize) -> Self::Output {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
             let to_pop = self
                 .operands
                 .len()
                 .checked_sub(frame.height)
-                .ok_or(Error::TruncatedOperandStack(offset))?;
-            self.pop_many(offset, to_pop)?;
+                .ok_or(Error::TruncatedOperandStack(self.offset))?;
+            self.pop_many(to_pop)?;
             self.with_block_types(frame.block_type, |this, _, results| {
                 Ok(for result in results {
                     this.push(*result);
@@ -1298,7 +1297,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         Ok(None)
     }
 
-    fn visit_br_if(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_br_if(&mut self, _: usize, _: u32) -> Self::Output {
         // [t* i32] → [t*]
 
         // There are two things that could happen here.
@@ -1315,14 +1314,14 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         // Second is if the condition was actually false and the rest of this block is executed,
         // which can potentially later increase the size of this current frame. We’re largely
         // interested in this second case, so we don’t really need to do anything much more than…
-        self.pop(offset)?;
+        self.pop()?;
         // …the condition.
         Ok(None)
     }
 
-    fn visit_br_table(&mut self, offset: usize, _: BrTable) -> Self::Output {
+    fn visit_br_table(&mut self, _: usize, _: BrTable) -> Self::Output {
         // [t1* t* i32] → [t2*]  (stack-polymorphic)
-        self.pop(offset)?; // table index
+        self.pop()?; // table index
         self.stack_polymorphic();
         Ok(None)
     }
