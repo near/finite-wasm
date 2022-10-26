@@ -267,9 +267,9 @@ impl<'a> TestContext {
                     (id, module)
                 }
                 wast::WastDirective::Wat(wast::QuoteWat::QuoteModule(_, _)) => {
-                    todo!("quote module");
+                    unreachable!("doesn’t actually occur in our test suite");
                 }
-                wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Component(component))) => {
+                wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Component(_))) => {
                     // These are difficult and I would rather skip them for now...
                     continue;
                 }
