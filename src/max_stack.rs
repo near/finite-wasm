@@ -182,14 +182,14 @@ impl Module {
                         size: 0,
                         max_size: 0,
 
+                        // Future optimization opportunity: Struct-of-Arrays representation.
                         frames: &mut frame_stack,
                         top_frame: Frame {
                             height: 0,
-                            block_type: BlockType::FuncType(type_id),
+                            block_type: BlockType::Empty,
                             stack_polymorphic: false,
                         },
                     };
-                    visitor.push_block_params(visitor.top_frame.block_type)?;
 
                     let mut operators = function
                         .get_operators_reader()
