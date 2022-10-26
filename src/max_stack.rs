@@ -214,7 +214,7 @@ impl Module {
 }
 
 pub trait AnalysisConfig {
-    fn size_of_value(&self, ty: wasmparser::ValType) -> u64;
+    fn size_of_value(&self, ty: wasmparser::ValType) -> u8;
     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
 }
 
@@ -268,7 +268,7 @@ struct StackSizeVisitor<'a, Cfg> {
     /// maintained at all times.
     ///
     /// Fortunately, we don’t exactly need to maintain the _types_, only their sizes suffice.
-    operands: &'a mut Vec<u64>,
+    operands: &'a mut Vec<u8>,
     /// Sum of all values in the `operands` field above.
     size: u64,
     /// Maximum observed value for the `size` field above.
@@ -368,7 +368,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         if !self.top_frame.stack_polymorphic {
             let value_size = self.config.size_of_value(t);
             self.operands.push(value_size);
-            self.size += value_size;
+            self.size += u64::from(value_size);
             self.max_size = std::cmp::max(self.size, self.max_size);
         }
     }
@@ -377,7 +377,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         if !self.top_frame.stack_polymorphic {
             self.size = self
                 .size
-                .checked_sub(self.operands.pop().ok_or(Error::EmptyStack(offset))?)
+                .checked_sub(self.operands.pop().ok_or(Error::EmptyStack(offset))?.into())
                 .expect("stack size is going negative");
         }
         Ok(())
@@ -392,7 +392,7 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
             let split_point = operand_count
                 .checked_sub(count)
                 .ok_or(Error::EmptyStack(offset))?;
-            let size: u64 = self.operands.drain(split_point..).sum();
+            let size: u64 = self.operands.drain(split_point..).map(u64::from).sum();
             self.size = self
                 .size
                 .checked_sub(size)

@@ -293,7 +293,7 @@ impl<'a> TestContext {
 
             struct DefaultConfig;
             impl AnalysisConfig for DefaultConfig {
-                fn size_of_value(&self, ty: wasmparser::ValType) -> u64 {
+                fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
                     use wasmparser::ValType::*;
                     match ty {
                         I32 => 4,
