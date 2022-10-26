@@ -36,8 +36,10 @@ pub enum Error {
     // These codes are a result of a malformed input (e.g. validation has not been run)
     #[error("could not process locals for function ${1}")]
     TooManyLocals(#[source] prefix_sum_vec::TryPushError, u32),
-    #[error("module is malformed at offset {0}: {}")]
-    MalformedModule(usize, &'static str),
+    #[error("frame stack is too short at offset {0}")]
+    TruncatedFrameStack(usize),
+    #[error("operand stack is too short at offset {0}")]
+    TruncatedOperandStack(usize),
     #[error("empty stack at offset {0}")]
     EmptyStack(usize),
     #[error("type index {0} is out of range")]
@@ -1274,12 +1276,12 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                 .operands
                 .len()
                 .checked_sub(frame.height)
-                .ok_or(Error::MalformedModule(offset, "operand stack is too short"))?;
+                .ok_or(Error::TruncatedOperandStack(offset))?;
             self.pop_many(offset, to_pop)?;
             self.new_frame(frame.block_type)?;
             Ok(None)
         } else {
-            return Err(Error::MalformedModule(offset, "frame stack is too short"));
+            return Err(Error::TruncatedFrameStack(offset));
         }
     }
 
@@ -1290,7 +1292,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
                 .operands
                 .len()
                 .checked_sub(frame.height)
-                .ok_or(Error::MalformedModule(offset, "operand stack is too short"))?;
+                .ok_or(Error::TruncatedOperandStack(offset))?;
             self.pop_many(offset, to_pop)?;
             self.push_block_results(frame.block_type)?;
             Ok(None)
