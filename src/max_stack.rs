@@ -327,9 +327,13 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         }
     }
 
-    fn new_frame(&mut self, block_type: BlockType) -> Result<(), Error> {
+    fn new_frame(&mut self, block_type: BlockType, param_count: usize) -> Result<(), Error> {
         let stack_polymorphic = self.top_frame.stack_polymorphic;
-        let height = self.operands.len();
+        let height = self
+            .operands
+            .len()
+            .checked_sub(param_count)
+            .ok_or(Error::EmptyStack(self.offset))?;
         self.frames.push(std::mem::replace(
             &mut self.top_frame,
             Frame {
@@ -338,11 +342,22 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
                 stack_polymorphic,
             },
         ));
-        self.with_block_types(block_type, |this, params, _| {
-            Ok(for param in params {
-                this.push(*param);
-            })
-        })
+        Ok(())
+    }
+
+    fn end_frame(&mut self) -> Result<Option<Frame>, Error> {
+        if let Some(frame) = self.frames.pop() {
+            let frame = std::mem::replace(&mut self.top_frame, frame);
+            let to_pop = self
+                .operands
+                .len()
+                .checked_sub(frame.height)
+                .ok_or(Error::TruncatedOperandStack(self.offset))?;
+            self.pop_many(to_pop)?;
+            Ok(Some(frame))
+        } else {
+            Ok(None)
+        }
     }
 
     fn stack_polymorphic(&mut self) {
@@ -1196,13 +1211,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         self.visit_function_call(self.function_type_index(function_index)?)
     }
 
-    fn visit_call_indirect(
-        &mut self,
-        _: usize,
-        type_index: u32,
-        _: u32,
-        _: u8,
-    ) -> Self::Output {
+    fn visit_call_indirect(&mut self, _: usize, type_index: u32, _: u32, _: u8) -> Self::Output {
         self.visit_function_call(type_index)
     }
 
@@ -1225,13 +1234,17 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
 
     fn visit_block(&mut self, _: usize, blockty: BlockType) -> Self::Output {
         // block blocktype instr* end : [t1*] → [t2*]
-        self.new_frame(blockty)?;
+        self.with_block_types(blockty, |this, params, _| {
+            this.new_frame(blockty, params.len())
+        })?;
         Ok(None)
     }
 
     fn visit_loop(&mut self, _: usize, blockty: BlockType) -> Self::Output {
         // loop blocktype instr* end : [t1*] → [t2*]
-        self.new_frame(blockty)?;
+        self.with_block_types(blockty, |this, params, _| {
+            this.new_frame(blockty, params.len())
+        })?;
         Ok(None)
     }
 
@@ -1239,22 +1252,20 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
         // if blocktype instr* else instr* end : [t1* i32] → [t2*]
         self.pop()?;
         self.with_block_types(blockty, |this, params, _| {
-            this.pop_many(params.len())
+            this.new_frame(blockty, params.len())
         })?;
-        self.new_frame(blockty)?;
         Ok(None)
     }
 
     fn visit_else(&mut self, _: usize) -> Self::Output {
-        if let Some(frame) = self.frames.pop() {
-            let frame = std::mem::replace(&mut self.top_frame, frame);
-            let to_pop = self
-                .operands
-                .len()
-                .checked_sub(frame.height)
-                .ok_or(Error::TruncatedOperandStack(self.offset))?;
-            self.pop_many(to_pop)?;
-            self.new_frame(frame.block_type)?;
+        if let Some(frame) = self.end_frame()? {
+            self.with_block_types(frame.block_type, |this, params, _| {
+                this.new_frame(frame.block_type, 0)?;
+                for param in params {
+                    this.push(*param);
+                }
+                Ok(())
+            })?;
             Ok(None)
         } else {
             return Err(Error::TruncatedFrameStack(self.offset));
@@ -1262,14 +1273,7 @@ impl<'a, 'cfg, Cfg: AnalysisConfig> wasmparser::VisitOperator<'a> for StackSizeV
     }
 
     fn visit_end(&mut self, _: usize) -> Self::Output {
-        if let Some(frame) = self.frames.pop() {
-            let frame = std::mem::replace(&mut self.top_frame, frame);
-            let to_pop = self
-                .operands
-                .len()
-                .checked_sub(frame.height)
-                .ok_or(Error::TruncatedOperandStack(self.offset))?;
-            self.pop_many(to_pop)?;
+        if let Some(frame) = self.end_frame()? {
             self.with_block_types(frame.block_type, |this, _, results| {
                 Ok(for result in results {
                     this.push(*result);
