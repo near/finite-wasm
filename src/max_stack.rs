@@ -327,12 +327,19 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         }
     }
 
-    fn new_frame(&mut self, block_type: BlockType, param_count: usize) -> Result<(), Error> {
+
+    /// Create a new frame on the frame stack.
+    ///
+    /// `shift_operands` will take the provided number of operands off the operand stack and place
+    /// them into the newly created frame. This is useful for various block instructions with
+    /// parameters, where the naive approach would be to pop the parameters, push the frame, and
+    /// push the same parameters that have been just pooped back onto the operand stack.
+    fn new_frame(&mut self, block_type: BlockType, shift_operands: usize) -> Result<(), Error> {
         let stack_polymorphic = self.top_frame.stack_polymorphic;
         let height = self
             .operands
             .len()
-            .checked_sub(param_count)
+            .checked_sub(shift_operands)
             .ok_or(Error::EmptyStack(self.offset))?;
         self.frames.push(std::mem::replace(
             &mut self.top_frame,
@@ -345,6 +352,14 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         Ok(())
     }
 
+    /// Terminate the current frame.
+    ///
+    /// If the frame is not the function-level frame, it will be returned.
+    ///
+    /// As part of this procedure, the operand stack will be reset to the same height at which the
+    /// frame was created.
+    ///
+    /// Callers are responsible for pushing the block results themselves.
     fn end_frame(&mut self) -> Result<Option<Frame>, Error> {
         if let Some(frame) = self.frames.pop() {
             let frame = std::mem::replace(&mut self.top_frame, frame);
@@ -360,6 +375,10 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         }
     }
 
+    /// Mark the current frame as polymorphic.
+    ///
+    /// This means that any operand stack push and pop operations will do nothing and uncontionally
+    /// succeed, while this frame is still active.
     fn stack_polymorphic(&mut self) {
         self.top_frame.stack_polymorphic = true;
     }
