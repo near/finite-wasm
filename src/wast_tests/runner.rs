@@ -3,7 +3,6 @@ use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::PathBuf;
 
-#[path = "test.rs"]
 mod test;
 
 #[derive(thiserror::Error, Debug)]
@@ -80,9 +79,7 @@ fn run() -> Result<(), Error> {
     }
 }
 
-// Custom test harness
-#[cfg(test)]
-pub(crate) fn main() {
+fn main() {
     std::process::exit(match run() {
         Ok(()) => 0,
         Err(error) => {

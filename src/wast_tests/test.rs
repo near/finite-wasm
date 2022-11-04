@@ -3,8 +3,7 @@ use std::ffi::OsString;
 use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitStatus;
-
-use crate::max_stack::AnalysisConfig;
+use finite_wasm::max_stack;
 
 #[derive(Debug, PartialEq)]
 enum Line {
@@ -121,7 +120,7 @@ pub(crate) enum Error {
     #[error("interpreter output wasn’t valid UTF-8")]
     InterpreterOutput(#[source] std::string::FromUtf8Error),
     #[error("could not analyze the max stack for module {1} at {2:?}")]
-    AnalyseMaxStack(#[source] crate::max_stack::Error, String, PathBuf),
+    AnalyseMaxStack(#[source] max_stack::Error, String, PathBuf),
     #[error("could not analyze the max stack for module {0} at {1:?}, analysis panicked")]
     AnalyseMaxStackPanic(String, PathBuf),
 }
@@ -292,7 +291,7 @@ impl<'a> TestContext {
             };
 
             struct DefaultConfig;
-            impl AnalysisConfig for DefaultConfig {
+            impl max_stack::AnalysisConfig for DefaultConfig {
                 fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
                     use wasmparser::ValType::*;
                     match ty {
@@ -318,7 +317,7 @@ impl<'a> TestContext {
             }
 
             let results =
-                std::panic::catch_unwind(|| crate::max_stack::Module::new(&module, &DefaultConfig))
+                std::panic::catch_unwind(|| max_stack::Module::new(&module, &DefaultConfig))
                     .map_err(|_| Error::AnalyseMaxStackPanic(id.clone(), self.test_path.clone()))?
                     .map_err(|e| Error::AnalyseMaxStack(e, id.clone(), self.test_path.clone()))?;
             let output = results

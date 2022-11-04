@@ -13,7 +13,9 @@ Transform your WebAssembly modules to guarantee deterministic limits on time and
 made available to the programs.
 """
 
-[lib]
+[[test]]
+name = "wast"
+path = "src/wast_tests/runner.rs"
 harness = false
 
 [dependencies]
