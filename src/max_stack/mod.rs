@@ -10,6 +10,8 @@ use wasmparser::{BlockType, ValType, VisitOperator};
 
 mod error;
 mod instruction_visit;
+#[cfg(test)]
+mod test;
 
 /// The results of parsing and analyzing the module.
 ///
@@ -352,7 +354,6 @@ impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
         if count == 0 {
             Ok(())
         } else if !self.top_frame.stack_polymorphic {
-            // TODO: would love a unit test for this.
             let operand_count = self.operands.len();
             let split_point = operand_count
                 .checked_sub(count)
