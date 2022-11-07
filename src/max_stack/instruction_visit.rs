@@ -1,4 +1,4 @@
-use super::{AnalysisConfig, Error, Frame, StackSizeVisitor};
+use super::{Config, Error, Frame, StackSizeVisitor};
 use wasmparser::{BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, VisitOperator, V128};
 
 macro_rules! instruction_category {
@@ -120,7 +120,7 @@ macro_rules! instruction_category {
     };
 }
 
-impl<'a, 'cfg, Cfg: AnalysisConfig> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
+impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
     type Output = Result<Option<u64>, Error>;
 
     instruction_category! {

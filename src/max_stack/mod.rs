@@ -13,193 +13,41 @@ mod instruction_visit;
 #[cfg(test)]
 mod test;
 
-/// The results of parsing and analyzing the module.
-///
-/// This analysis collects information necessary to implement all of the transformations in one go,
-/// so that re-parsing the module multiple times is not necessary.
-pub struct Module {
-    /// The sizes of the stack frame (the maximum amount of stack used at any given time during the
-    /// execution of the function) for each function.
-    pub function_stack_sizes: Vec<u64>,
-}
-
-impl Module {
-    pub fn new(module: &[u8], configuration: &impl AnalysisConfig) -> Result<Self, Error> {
-        let mut types = vec![];
-        let mut functions = vec![];
-        let mut function_stack_sizes = vec![];
-        let mut globals = vec![];
-        let mut tables = vec![];
-        // Reused between functions for speeds.
-        let mut locals = PrefixSumVec::new();
-        let mut operand_stack = vec![];
-        let mut frame_stack = vec![];
-
-        let parser = wasmparser::Parser::new(0);
-        for payload in parser.parse_all(module) {
-            let payload = payload.map_err(Error::ParsePayload)?;
-            match payload {
-                wasmparser::Payload::ImportSection(reader) => {
-                    for import in reader.into_iter() {
-                        let import = import.map_err(Error::ParseImports)?;
-                        match import.ty {
-                            wasmparser::TypeRef::Func(f) => {
-                                functions.push(f);
-                                function_stack_sizes.push(0);
-                            }
-                            wasmparser::TypeRef::Global(g) => {
-                                globals.push(g.content_type);
-                            }
-                            wasmparser::TypeRef::Table(t) => {
-                                tables.push(t.element_type);
-                            }
-                            wasmparser::TypeRef::Memory(_) => continue,
-                            wasmparser::TypeRef::Tag(_) => continue,
-                        }
-                    }
-                }
-                wasmparser::Payload::TypeSection(reader) => {
-                    for ty in reader {
-                        let ty = ty.map_err(Error::ParseTypes)?;
-                        types.push(ty);
-                    }
-                }
-                wasmparser::Payload::GlobalSection(reader) => {
-                    for global in reader {
-                        let global = global.map_err(Error::ParseGlobals)?;
-                        globals.push(global.ty.content_type);
-                    }
-                }
-                wasmparser::Payload::TableSection(reader) => {
-                    for tbl in reader.into_iter() {
-                        let tbl = tbl.map_err(Error::ParseTable)?;
-                        tables.push(tbl.element_type);
-                    }
-                }
-                wasmparser::Payload::FunctionSection(reader) => {
-                    for function in reader {
-                        let function = function.map_err(Error::ParseFunctions)?;
-                        functions.push(function);
-                    }
-                }
-                wasmparser::Payload::CodeSectionEntry(function) => {
-                    locals.clear();
-                    operand_stack.clear();
-                    frame_stack.clear();
-
-                    // We use the length of `function_stack_sizes` to _also_ act as a counter for
-                    // how many code section entries we have seen so far. This allows us to match
-                    // up the function information with its type and such.
-                    let function_id_usize = function_stack_sizes.len();
-                    let function_id =
-                        u32::try_from(function_id_usize).map_err(|_| Error::TooManyFunctions)?;
-                    let type_id = *functions
-                        .get(function_id_usize)
-                        .ok_or(Error::FunctionIndex(function_id))?;
-                    let type_id_usize =
-                        usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
-                    let fn_type = types.get(type_id_usize).ok_or(Error::TypeIndex(type_id))?;
-
-                    match fn_type {
-                        wasmparser::Type::Func(fnty) => {
-                            for param in fnty.params() {
-                                locals
-                                    .try_push_more(1, *param)
-                                    .map_err(|e| Error::TooManyLocals(e, function_id))?;
-                            }
-                        }
-                    }
-                    for local in function.get_locals_reader().map_err(Error::LocalsReader)? {
-                        let local = local.map_err(Error::ParseLocals)?;
-                        locals
-                            .try_push_more(local.0, local.1)
-                            .map_err(|e| Error::TooManyLocals(e, function_id))?;
-                    }
-
-                    // This includes accounting for any possible return pointer tracking,
-                    // parameters and locals (which all are considered locals in wasm).
-                    let activation_size = configuration.size_of_function_activation(&locals);
-                    let mut visitor = StackSizeVisitor {
-                        offset: 0,
-
-                        config: configuration,
-                        functions: &functions,
-                        types: &types,
-                        globals: &globals,
-                        tables: &tables,
-                        locals: &locals,
-
-                        operands: &mut operand_stack,
-                        size: 0,
-                        max_size: 0,
-
-                        // Future optimization opportunity: Struct-of-Arrays representation.
-                        frames: &mut frame_stack,
-                        top_frame: Frame {
-                            height: 0,
-                            block_type: BlockType::Empty,
-                            stack_polymorphic: false,
-                        },
-                    };
-
-                    let mut operators = function
-                        .get_operators_reader()
-                        .map_err(Error::OperatorReader)?;
-                    loop {
-                        visitor.offset = operators.original_position();
-                        let result = operators
-                            .visit_with_offset(&mut visitor)
-                            .map_err(Error::VisitOperators)??;
-                        if let Some(stack_size) = result {
-                            function_stack_sizes.push(activation_size + stack_size);
-                            break;
-                        }
-                    }
-                }
-                _ => (),
-            }
-        }
-        Ok(Self {
-            function_stack_sizes,
-        })
-    }
-}
-
-pub trait AnalysisConfig {
+pub trait Config {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u8;
     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
 }
 
 #[derive(Debug)]
-struct Frame {
+pub(crate) struct Frame {
     /// Operand stack height at the time this frame was entered.
     ///
     /// This way no matter how the operand stack is modified during the execution of this frame, we
     /// can always reset the operand stack back to this specific height when the frame terminates.
-    height: usize,
+    pub(crate) height: usize,
 
     /// Type of the block representing this frame.
     ///
     /// The parameters are below height and get popped when the frame terminates. Results get
     /// pushed back onto the operand stack.
-    block_type: BlockType,
+    pub(crate) block_type: BlockType,
 
     /// Are the remaining instructions within this frame reachable?
     ///
     /// That is, is the operand stack part of this frame polymorphic? See `stack-polymorphic` in
     /// the wasm-core specification for explanation.
-    stack_polymorphic: bool,
+    pub(crate) stack_polymorphic: bool,
 }
 
-struct StackSizeVisitor<'a, Cfg> {
-    offset: usize,
+pub(crate) struct StackSizeVisitor<'a, Cfg> {
+    pub(crate) offset: usize,
 
-    config: &'a Cfg,
-    functions: &'a [u32],
-    types: &'a [wasmparser::Type],
-    globals: &'a [wasmparser::ValType],
-    tables: &'a [wasmparser::ValType],
-    locals: &'a PrefixSumVec<wasmparser::ValType, u32>,
+    pub(crate) config: &'a Cfg,
+    pub(crate) functions: &'a [u32],
+    pub(crate) types: &'a [wasmparser::Type],
+    pub(crate) globals: &'a [wasmparser::ValType],
+    pub(crate) tables: &'a [wasmparser::ValType],
+    pub(crate) locals: &'a PrefixSumVec<wasmparser::ValType, u32>,
 
     /// Sizes of the operands currently pushed to the operand stack within this function.
     ///
@@ -222,23 +70,23 @@ struct StackSizeVisitor<'a, Cfg> {
     /// maintained at all times.
     ///
     /// Fortunately, we don’t exactly need to maintain the _types_, only their sizes suffice.
-    operands: &'a mut Vec<u8>,
+    pub(crate) operands: &'a mut Vec<u8>,
     /// Sum of all values in the `operands` field above.
-    size: u64,
+    pub(crate) size: u64,
     /// Maximum observed value for the `size` field above.
-    max_size: u64,
+    pub(crate) max_size: u64,
 
     /// The stack of frames (as created by operations such as `block`).
-    frames: &'a mut Vec<Frame>,
+    pub(crate) frames: &'a mut Vec<Frame>,
     /// The top-most frame.
     ///
     /// This aids quicker access at a cost of some special-casing for the very last `end` operator.
-    top_frame: Frame,
+    pub(crate) top_frame: Frame,
 }
 
 type Output<'a, V> = <V as VisitOperator<'a>>::Output;
 
-impl<'a, Cfg: AnalysisConfig> StackSizeVisitor<'a, Cfg> {
+impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     fn function_type_index(&self, function_index: u32) -> Result<u32, Error> {
         let function_index_usize = usize::try_from(function_index)
             .map_err(|e| Error::FunctionIndexRange(function_index, e))?;
