@@ -636,8 +636,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_typed_select(&mut self, _: usize, t: ValType) -> Self::Output {
         // [t t i32] -> [t]
-        self.pop_many(3)?;
-        self.push(t);
+        self.pop_many(2)?;
         Ok(None)
     }
 
@@ -770,7 +769,6 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_br_table(&mut self, _: usize, _: BrTable) -> Self::Output {
         // [t1* t* i32] → [t2*]  (stack-polymorphic)
-        self.pop()?; // table index
         self.stack_polymorphic();
         Ok(None)
     }

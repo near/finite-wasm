@@ -32,10 +32,15 @@ pub(crate) struct Frame {
     /// pushed back onto the operand stack.
     pub(crate) block_type: BlockType,
 
-    /// Are the remaining instructions within this frame reachable?
+    /// Is the operand stack for the remainder of this frame considered polymorphic?
     ///
-    /// That is, is the operand stack part of this frame polymorphic? See `stack-polymorphic` in
-    /// the wasm-core specification for explanation.
+    /// As a short summary, stack becoming polymorphic means that any instructions
+    /// will no longer interact with the stack and are considered unconditionally valid, while this
+    /// frame remains active. The stack becomes polymorphic when a trap is raised, or an
+    /// unconditional control flow occurs, making the remainder of the instructions within the
+    /// frame (including any nested frames) effectively unreachable.
+    ///
+    /// See `stack-polymorphic` in the wasm-core specification for an extended explanation.
     pub(crate) stack_polymorphic: bool,
 }
 
@@ -170,9 +175,6 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     }
 
     /// Mark the current frame as polymorphic.
-    ///
-    /// This means that any operand stack push and pop operations will do nothing and uncontionally
-    /// succeed, while this frame is still active.
     fn stack_polymorphic(&mut self) {
         self.current_frame.stack_polymorphic = true;
     }
@@ -199,9 +201,9 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     }
 
     fn pop_many(&mut self, count: usize) -> Result<(), Error> {
-        if count == 0 {
+        if count == 0 || self.current_frame.stack_polymorphic {
             Ok(())
-        } else if !self.current_frame.stack_polymorphic {
+        } else {
             let operand_count = self.operands.len();
             let split_point = operand_count
                 .checked_sub(count)
@@ -211,8 +213,6 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
                 .size
                 .checked_sub(size)
                 .expect("stack size is going negative");
-            Ok(())
-        } else {
             Ok(())
         }
     }
