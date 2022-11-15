@@ -167,7 +167,7 @@ impl Module {
 
                             // Future optimization opportunity: Struct-of-Arrays representation.
                             frames: &mut frame_stack,
-                            top_frame: max_stack::Frame {
+                            current_frame: max_stack::Frame {
                                 height: 0,
                                 block_type: BlockType::Empty,
                                 stack_polymorphic: false,

@@ -73,7 +73,7 @@ macro_rules! visitor {
             size: 0,
             max_size: 0,
             frames: &mut frames,
-            top_frame: Frame {
+            current_frame: Frame {
                 height: 0,
                 block_type: wasmparser::BlockType::Empty,
                 stack_polymorphic: false,
@@ -207,7 +207,7 @@ fn test_nested_polymorphic_frames_2() {
                 have made this frame polymorphic too");
     };
 
-    assert!(!visitor.top_frame.stack_polymorphic);
+    assert!(!visitor.current_frame.stack_polymorphic);
     let Err(Error::EmptyStack(_)) = visitor.pop() else {
         panic!("setting frame polymorphic should not affect the parent frames");
     };

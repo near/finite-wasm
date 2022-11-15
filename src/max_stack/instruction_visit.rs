@@ -729,7 +729,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
             // Returning from the function. Malformed WASM modules may have trailing instructions,
             // but we do ignore processing them in the operand feed loop. For that reason,
             // replacing `top_stack` with some sentinel value would work okay.
-            self.top_frame = Frame {
+            self.current_frame = Frame {
                 height: !0,
                 block_type: BlockType::Empty,
                 stack_polymorphic: true,

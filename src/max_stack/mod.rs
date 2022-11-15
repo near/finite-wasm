@@ -81,7 +81,7 @@ pub(crate) struct StackSizeVisitor<'a, Cfg> {
     /// The top-most frame.
     ///
     /// This aids quicker access at a cost of some special-casing for the very last `end` operator.
-    pub(crate) top_frame: Frame,
+    pub(crate) current_frame: Frame,
 }
 
 type Output<'a, V> = <V as VisitOperator<'a>>::Output;
@@ -129,14 +129,14 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     /// parameters, where the naive approach would be to pop the parameters, push the frame, and
     /// push the same parameters that have been just pooped back onto the operand stack.
     fn new_frame(&mut self, block_type: BlockType, shift_operands: usize) -> Result<(), Error> {
-        let stack_polymorphic = self.top_frame.stack_polymorphic;
+        let stack_polymorphic = self.current_frame.stack_polymorphic;
         let height = self
             .operands
             .len()
             .checked_sub(shift_operands)
             .ok_or(Error::EmptyStack(self.offset))?;
         self.frames.push(std::mem::replace(
-            &mut self.top_frame,
+            &mut self.current_frame,
             Frame {
                 height,
                 block_type,
@@ -156,7 +156,7 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     /// Callers are responsible for pushing the block results themselves.
     fn end_frame(&mut self) -> Result<Option<Frame>, Error> {
         if let Some(frame) = self.frames.pop() {
-            let frame = std::mem::replace(&mut self.top_frame, frame);
+            let frame = std::mem::replace(&mut self.current_frame, frame);
             let to_pop = self
                 .operands
                 .len()
@@ -174,11 +174,11 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     /// This means that any operand stack push and pop operations will do nothing and uncontionally
     /// succeed, while this frame is still active.
     fn stack_polymorphic(&mut self) {
-        self.top_frame.stack_polymorphic = true;
+        self.current_frame.stack_polymorphic = true;
     }
 
     fn push(&mut self, t: ValType) {
-        if !self.top_frame.stack_polymorphic {
+        if !self.current_frame.stack_polymorphic {
             let value_size = self.config.size_of_value(t);
             self.operands.push(value_size);
             self.size += u64::from(value_size);
@@ -187,7 +187,7 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     }
 
     fn pop(&mut self) -> Result<(), Error> {
-        if !self.top_frame.stack_polymorphic {
+        if !self.current_frame.stack_polymorphic {
             let operand_size =
                 u64::from(self.operands.pop().ok_or(Error::EmptyStack(self.offset))?);
             self.size = self
@@ -201,7 +201,7 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     fn pop_many(&mut self, count: usize) -> Result<(), Error> {
         if count == 0 {
             Ok(())
-        } else if !self.top_frame.stack_polymorphic {
+        } else if !self.current_frame.stack_polymorphic {
             let operand_count = self.operands.len();
             let split_point = operand_count
                 .checked_sub(count)
