@@ -3,6 +3,7 @@ use std::num::TryFromIntError;
 use wasmparser::{BinaryReaderError, BlockType};
 
 pub mod max_stack;
+pub mod gas;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
