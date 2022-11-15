@@ -777,8 +777,10 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_return(&mut self, offset: usize) -> Self::Output {
         // This behaves as-if a `br` to the outer-most block.
-        let branch_depth =
-            u32::try_from(self.frames.len().saturating_sub(1)).map_err(|_| Error::TooManyFrames)?;
+
+        // NB: self.frames.len() is actually 1 less than a number of frames, due to our maintaining
+        // a `self.current_frame`.
+        let branch_depth = u32::try_from(self.frames.len()).map_err(|_| Error::TooManyFrames)?;
         self.visit_br(offset, branch_depth)
     }
 
