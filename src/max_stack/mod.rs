@@ -34,11 +34,18 @@ pub(crate) struct Frame {
 
     /// Is the operand stack for the remainder of this frame considered polymorphic?
     ///
-    /// As a short summary, stack becoming polymorphic means that any instructions
-    /// will no longer interact with the stack and are considered unconditionally valid, while this
-    /// frame remains active. The stack becomes polymorphic when a trap is raised, or an
-    /// unconditional control flow occurs, making the remainder of the instructions within the
-    /// frame (including any nested frames) effectively unreachable.
+    /// Once the stack becomes polymorphic, the only way for it to stop being polymorphic is to pop
+    /// the frames within which the stack is polymorphic.
+    ///
+    /// Note, that unlike validation, for the purposes of this analysis stack polymorphism is
+    /// somewhat more lax. For example, validation algorithm will readly reject a function like
+    /// `(func (unreachable) (i64.const 0) (i32.add))`, because at the time `i32.add` is evaluated
+    /// the stack is `[t* i64]`, which does not unify with `[i32 i32] -> [i32]` expected by
+    /// `i32.add`, despite being polymorphic. For the purposes of this analysis we do not keep
+    /// track of the stack contents to that level of detail – all we care about is whether the
+    /// stack is polymorphic at all. We then skip any tracking of stack operations for any
+    /// instruction interacting with a polymorphic stack, as those instructions are effectively
+    /// unreachable.
     ///
     /// See `stack-polymorphic` in the wasm-core specification for an extended explanation.
     pub(crate) stack_polymorphic: bool,
