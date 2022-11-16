@@ -41,6 +41,7 @@ pub enum Error {
     InvalidBrTarget(usize),
 }
 
+#[derive(Clone, Copy)]
 pub(crate) enum InstructionKind {
     /// This instruction is largely uninteresting for the purposes of gas analysis, besides its
     /// inherent cost.
@@ -139,7 +140,7 @@ pub(crate) struct GasVisitor<'a, CostModel> {
     /// Table of instruction ranges, and the total gas cost of executing the range.
     pub(crate) offsets: &'a mut Vec<usize>,
     pub(crate) costs: &'a mut Vec<u64>,
-    pub(crate) types: &'a mut Vec<InstructionKind>,
+    pub(crate) kinds: &'a mut Vec<InstructionKind>,
 
     /// Information about the analyzed function’s frame stack.
     pub(crate) frame_stack: &'a mut Vec<Frame>,
@@ -200,10 +201,39 @@ macro_rules! generate_visitor {
 }
 
 impl<'a, CostModel> GasVisitor<'a, CostModel> {
+    /// Optimize the instruction tables.
+    pub(crate) fn finalize(&mut self) {
+        let mut output_idx = 0;
+        let mut previous_kind = InstructionKind::SideEffect;
+        for input_idx in 0..self.kinds.len() {
+            let kind = self.kinds[input_idx];
+            let merge_to_previous = match (kind, previous_kind) {
+                (InstructionKind::Pure, InstructionKind::Pure) => true,
+                (InstructionKind::Unreachable, InstructionKind::Unreachable) => true,
+                // TODO: we can likely merge 1 `branch` into a prior sequence of `Pure`
+                // instructions. Lets do that once we have tests in so we can actually check the
+                // results :)
+                // (InstructionKind::Branch, InstructionKind::Pure) => true,
+                _ => false,
+            };
+            previous_kind = kind;
+            if merge_to_previous {
+                self.kinds[output_idx] = kind;
+                self.costs[output_idx] += self.costs[input_idx];
+            } else {
+                output_idx += 1;
+                self.kinds[output_idx] = kind;
+                self.costs[output_idx] = self.costs[input_idx];
+                self.offsets[output_idx] = self.offsets[input_idx];
+            }
+        }
+    }
+
+
     /// Visit an instruction, populating information about it within the internal tables.
     fn visit_instruction(&mut self, kind: InstructionKind, cost: u64) {
         self.offsets.push(self.offset);
-        self.types.push(if self.current_frame.stack_polymorphic {
+        self.kinds.push(if self.current_frame.stack_polymorphic {
             InstructionKind::Unreachable
         } else {
             kind
@@ -256,7 +286,7 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
             BranchKind::Forward => (),
             BranchKind::UntakenForward => frame.kind = BranchKind::Forward,
             BranchKind::Backward(instruction_index) => {
-                self.types[instruction_index] = InstructionKind::BranchTarget
+                self.kinds[instruction_index] = InstructionKind::BranchTarget
             }
         }
         Ok(())
@@ -279,7 +309,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
 
     fn visit_loop(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
         let cost = self.model.visit_loop(offset, blockty);
-        let insn_type_index = self.types.len();
+        let insn_type_index = self.kinds.len();
         // For the time being this instruction is not a branch target, and therefore is pure.
         self.visit_instruction(InstructionKind::Pure, cost);
         // However, it will become a branch target if there is a branching instruction targetting
@@ -298,8 +328,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
             BranchKind::Backward(_) => InstructionKind::Pure,
             BranchKind::UntakenForward => InstructionKind::Pure,
         };
-        self.visit_instruction(kind, cost);
         self.end_frame();
+        self.visit_instruction(kind, cost);
         Ok(())
     }
 
