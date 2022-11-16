@@ -1,3 +1,34 @@
+//! # Gas analysis
+//!
+//! The gas analysis is a two-pass linear algorithm. This algorithm first constructs a table along
+//! the lines of
+//!
+//! | Instructions | Cost | [Kind] |
+//! | ============ | ==== | ====== |
+//! | i32.const 0  | 1    | Pure   |
+//! | i32.const 1  | 1    | Pure   |
+//! | i32.add      | 1    | Pure   |
+//!
+//! [Kind]: InstructionKind
+//!
+//! In this table the instructions with certain instruction kind combinations can then be coalesced
+//! in order to reduce the number of gas instrumentation points. For example all instructions
+//! considered `Pure` can be merged together to produce a table like this:
+//!
+//! | Instructions                           | Cost | [Kind] |
+//! | ====================================== | ==== | ====== |
+//! | (i32.add (i32.const 0) (i32.const 1))  | 3    | Pure   |
+//!
+//! Instrumentation can then, instead of inserting a gas charge before each of the 3 instructions,
+//! insert a charge for 3 gas before the entire sequence, all without any observable difference in
+//! execution semantics.
+//!
+//! **Why two passes?** A short answer is – branching. As the algorithm goes through the function
+//! code for the first time, it can mark certain instructions as being a branch or a branch target.
+//! For example `end` in `block…end` can be either pure or a branch target. Table entries for the
+//! instructions that participate in control flow cannot be merged together if an eventually
+//! accurate gas count is desired.
+
 use wasmparser::{BlockType, BrTable, VisitOperator};
 
 #[derive(thiserror::Error, Debug)]
@@ -17,6 +48,21 @@ pub(crate) enum InstructionKind {
     /// These do not participate in branching, trapping or any other kind of data flow. Simple
     /// operations such as an addition or subtraction will typically fall under this kind.
     Pure,
+
+    /// This instruction is unreachable (usually because the stack is polymorphic at this point.)
+    ///
+    /// For example,
+    ///
+    /// ```wast
+    /// block
+    ///   br 0                                ;; the stack becomes polymorphic
+    ///   i32.add (i32.const 0) (i32.const 1) ;; these instructions are unreachable
+    /// end                                   ;; reachable again
+    /// ```
+    ///
+    /// We could remove these instructions entirely when instrumenting code based on gas analysis
+    /// results.
+    Unreachable,
 
     /// This instruction is a definite branch target.
     ///
@@ -40,11 +86,6 @@ pub(crate) enum InstructionKind {
     ///
     /// TODO: a variant for each such instruction may be warranted?
     Aggregate,
-
-    /// This instruction is unreachable (usually because the stack is polymorphic at this point.)
-    ///
-    /// We could remove these instructions entirely in our instrumentation code.
-    Unreachable,
 }
 
 #[derive(Debug)]
@@ -57,23 +98,35 @@ pub(crate) enum BranchKind {
     //
     // If a frame is popped while in this state, the surrounding structure that created this frame
     // in the first place is dead code.
+    //
+    // For example, `block (BODY…) end` without any branches to the frame created by `block`, can
+    // be replaced with just `BODY…`.
     UntakenForward,
     // There is a branch instruction within this frame that branches to the `End` (or `Else` in the
-    // case of `if..else..end`) instruction.
+    // case of `if…else…end`) instruction.
     Forward,
 }
 
 #[derive(Debug)]
 pub(crate) struct Frame {
-    /// Are the remaining instructions within this frame reachable?
+    /// Is the operand stack for the remainder of this frame considered polymorphic?
     ///
-    /// That is, is the operand stack part of this frame polymorphic? See `stack-polymorphic` in
-    /// the wasm-core specification for explanation.
+    /// Once the stack becomes polymorphic, the only way for it to stop being polymorphic is to pop
+    /// the frames within which the stack is polymorphic.
+    ///
+    /// Note, that unlike validation, for the purposes of this analysis stack polymorphism is
+    /// somewhat more lax. For example, validation algorithm will readly reject a function like
+    /// `(func (unreachable) (i64.const 0) (i32.add))`, because at the time `i32.add` is evaluated
+    /// the stack is `[t* i64]`, which does not unify with `[i32 i32] -> [i32]` expected by
+    /// `i32.add`, despite being polymorphic. For the purposes of this analysis we do not keep
+    /// track of the stack contents to that level of detail – all we care about is whether the
+    /// stack is polymorphic at all.
+    ///
+    /// Search for `stack-polymorphic` in the wasm-core specification for further description and
+    /// the list of instructions that make the stack polymorphic.
     pub(crate) stack_polymorphic: bool,
 
-    /// Index to the instruction which a backwards branch would target.
-    ///
-    /// This is _only_ relevant (and `Some`) for frames created by the `loop` instruction).
+    /// How does a branch instruction behaves when targetting this frame?
     pub(crate) kind: BranchKind,
 }
 
