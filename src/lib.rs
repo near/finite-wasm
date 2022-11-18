@@ -2,6 +2,7 @@ use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
 use wasmparser::{BinaryReaderError, BlockType};
 
+mod instruction_categories;
 pub mod max_stack;
 pub mod gas;
 
