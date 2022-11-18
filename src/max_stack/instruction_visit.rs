@@ -1,5 +1,5 @@
 use super::{Config, Error, Frame, StackSizeVisitor};
-use wasmparser::{BlockType, BrTable, Ieee32, Ieee64, MemArg, ValType, VisitOperator, V128};
+use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator};
 use crate::instruction_categories as gen;
 
 macro_rules! instruction_category {
@@ -323,7 +323,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_typed_select(&mut self, _: usize, t: ValType) -> Self::Output {
+    fn visit_typed_select(&mut self, _: usize, _: ValType) -> Self::Output {
         // [t t i32] -> [t]
         self.pop_many(2)?;
         Ok(None)

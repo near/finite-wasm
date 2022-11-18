@@ -30,6 +30,7 @@
 //! accurate gas count is desired.
 
 use wasmparser::{BlockType, BrTable, VisitOperator};
+use crate::instruction_categories as gen;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -147,59 +148,6 @@ pub(crate) struct GasVisitor<'a, CostModel> {
     pub(crate) current_frame: Frame,
 }
 
-macro_rules! generate_visitor {
-    // Special cases. For the purposes of readability, and resilience to future changes in
-    // wasmparser those are implemented in the trait definition below.
-    (visit_unreachable $($_:tt)*) => {};
-    (visit_end $($_:tt)*) => {};
-    (visit_loop $($_:tt)*) => {};
-    (visit_if $($_:tt)*) => {};
-    (visit_else $($_:tt)*) => {};
-    (visit_block $($_:tt)*) => {};
-
-    (visit_br $($_:tt)*) => {};
-    (visit_br_if $($_:tt)*) => {};
-    (visit_br_table $($_:tt)*) => {};
-    (visit_return $($_:tt)*) => {};
-    (visit_call $($_:tt)*) => {};
-    (visit_call_indirect $($_:tt)*) => {};
-    (visit_return_call $($_:tt)*) => {};
-    (visit_return_call_indirect $($_:tt)*) => {};
-
-    (visit_try $($_:tt)*) => {};
-    (visit_rethrow $($_:tt)*) => {};
-    (visit_throw $($_:tt)*) => {};
-    (visit_delegate $($_:tt)*) => {};
-    (visit_catch $($_:tt)*) => {};
-    (visit_catch_all $($_:tt)*) => {};
-
-    (visit_memory_copy $($_:tt)*) => {};
-    (visit_memory_fill $($_:tt)*) => {};
-    (visit_memory_grow $($_:tt)*) => {};
-    (visit_memory_init $($_:tt)*) => {};
-    (visit_data_drop $($_:tt)*) => {};
-
-    (visit_table_copy $($_:tt)*) => {};
-    (visit_table_fill $($_:tt)*) => {};
-    (visit_table_grow $($_:tt)*) => {};
-    (visit_table_init $($_:tt)*) => {};
-    (visit_elem_drop $($_:tt)*) => {};
-
-    ($visit:ident( $($arg:ident: $argty:ty),* )) => {
-        fn $visit(&mut self, offset: usize $(,$arg: $argty)*) -> Self::Output {
-            let cost = self.model.$visit(offset, $($arg),*);
-            self.visit_instruction(InstructionKind::Pure, cost);
-            Ok(())
-        }
-    };
-
-    ($( @$_a:ident $_b:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
-        $(generate_visitor!{ $visit(
-            $($($arg: $argty),*)?
-        ) })*
-    }
-}
-
 impl<'a, CostModel> GasVisitor<'a, CostModel> {
     /// Optimize the instruction tables.
     pub(crate) fn finalize(&mut self) {
@@ -293,12 +241,90 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     }
 }
 
+macro_rules! trapping_insn {
+    (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
+        fn $visit(&mut self, offset: usize, $($arg: $ty),*) -> Self::Output {
+            let cost = self.model.$visit(offset, $($arg),*);
+            self.visit_instruction(InstructionKind::SideEffect, cost);
+            Ok(())
+        }
+    };
+    ($($_t:ident .
+        $(atomic.rmw)?
+        $(atomic.cmpxchg)?
+        $(load)?
+        $(store)?
+    = $($insn:ident)|* ;)*) => {
+        $($(trapping_insn!(fn $insn(mem: wasmparser::MemArg));)*)*
+    };
+    ($($_t:ident . $(loadlane)? $(storelane)? = $($insn:ident)|* ;)*) => {
+        $($(trapping_insn!(fn $insn(mem: wasmparser::MemArg, lane: u8));)*)*
+    };
+    ($($_t:ident . $(binop)? $(cvtop)? = $($insn:ident)|* ;)*) => {
+        $($(trapping_insn!(fn $insn());)*)*
+    };
+}
+
+macro_rules! pure_insn {
+    (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
+        fn $visit(&mut self, offset: usize, $($arg: $ty),*) -> Self::Output {
+            let cost = self.model.$visit(offset, $($arg),*);
+            self.visit_instruction(InstructionKind::Pure, cost);
+            Ok(())
+        }
+    };
+    ($($_t:ident .
+        // This sequence below "matches" any of these categories.
+        $(unop)?
+        $(binop)?
+        $(cvtop)?
+        $(relop)?
+        $(testop)?
+        $(vbitmask)?
+        $(vinarrowop)?
+        $(vrelop)?
+        $(vternop)?
+        $(vishiftop)?
+        $(splat)?
+    = $($insn:ident)|* ;)*) => {
+        $($(pure_insn!(fn $insn());)*)*
+    };
+    ($($_t:ident . const = $($insn:ident, $param:ty)|* ;)*) => {
+        $($(pure_insn!(fn $insn(val: $param));)*)*
+    };
+    ($($_t:ident . $(extractlane)? $(replacelane)? = $($insn:ident)|* ;)*) => {
+        $($(pure_insn!(fn $insn(lane: u8));)*)*
+    };
+    ($($_t:ident . localsglobals = $($insn:ident)|* ;)*) => {
+        $($(pure_insn!(fn $insn(index: u32));)*)*
+    };
+}
+
 impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     for GasVisitor<'a, CostModel>
 {
     type Output = Result<(), Error>;
 
-    wasmparser::for_each_operator!(generate_visitor);
+    gen::atomic_cmpxchg!(trapping_insn);
+    gen::atomic_rmw!(trapping_insn);
+    gen::load!(trapping_insn);
+    gen::store!(trapping_insn);
+    gen::loadlane!(trapping_insn);
+    gen::storelane!(trapping_insn);
+    gen::binop_partial!(trapping_insn);
+    gen::cvtop_partial!(trapping_insn);
+
+    // Functions can inspect the remaining gas, or initiate other side effects (e.g. trap) so
+    // we must be conservative with its handling. Inlining is a transformation which would
+    // allow us to be less conservative, but it will already have been done during the
+    // compilation from the source language to wasm, or wasm-opt, most of the time.
+    trapping_insn!(fn visit_call(index: u32));
+    trapping_insn!(fn visit_call_indirect(ty_index: u32, table_index: u32, table_byte: u8));
+    // TODO: double check if these may actually trap
+    trapping_insn!(fn visit_memory_atomic_notify(mem: wasmparser::MemArg));
+    trapping_insn!(fn visit_memory_atomic_wait32(mem: wasmparser::MemArg));
+    trapping_insn!(fn visit_memory_atomic_wait64(mem: wasmparser::MemArg));
+
 
     fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
         let cost = self.model.visit_unreachable(offset);
@@ -306,6 +332,41 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         self.stack_polymorphic();
         Ok(())
     }
+
+
+    gen::binop_!(pure_insn);
+    gen::cvtop_!(pure_insn);
+    gen::unop!(pure_insn);
+    gen::relop!(pure_insn);
+    gen::vrelop!(pure_insn);
+    gen::vishiftop!(pure_insn);
+    gen::vternop!(pure_insn);
+    gen::vbitmask!(pure_insn);
+    gen::vinarrowop!(pure_insn);
+    gen::splat!(pure_insn);
+    gen::r#const!(pure_insn);
+    gen::extractlane!(pure_insn);
+    gen::replacelane!(pure_insn);
+    gen::testop!(pure_insn);
+
+    pure_insn!(fn visit_ref_null(t: wasmparser::ValType));
+    pure_insn!(fn visit_ref_func(index: u32));
+    pure_insn!(fn visit_i8x16_shuffle(pattern: [u8; 16]));
+    pure_insn!(fn visit_atomic_fence());
+    pure_insn!(fn visit_select());
+    pure_insn!(fn visit_typed_select(t: wasmparser::ValType));
+    pure_insn!(fn visit_drop());
+    pure_insn!(fn visit_nop());
+    pure_insn!(fn visit_table_size(table: u32));
+    pure_insn!(fn visit_memory_size(mem: u32, idk: u8));
+    pure_insn!(fn visit_table_set(table: u32));
+    pure_insn!(fn visit_table_get(table: u32));
+    pure_insn!(fn visit_global_set(global: u32));
+    pure_insn!(fn visit_global_get(global: u32));
+    pure_insn!(fn visit_local_set(local: u32));
+    pure_insn!(fn visit_local_get(local: u32));
+    pure_insn!(fn visit_local_tee(local: u32));
+
 
     fn visit_loop(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
         let cost = self.model.visit_loop(offset, blockty);
@@ -406,30 +467,6 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         self.visit_instruction(InstructionKind::Branch, cost);
         let root_frame_index = self.frame_stack.len();
         self.branch(root_frame_index)?;
-        Ok(())
-    }
-
-    fn visit_call(&mut self, offset: usize, function_index: u32) -> Self::Output {
-        let cost = self.model.visit_call(offset, function_index);
-        // Functions can inspect the remaining gas, or initiate other side effects (e.g. trap) so
-        // we must be conservative with its handling. Inlining is a transformation which would
-        // allow us to be less conservative, but it will already have been done during the
-        // compilation from the source language to wasm, or wasm-opt, most of the time.
-        self.visit_instruction(InstructionKind::SideEffect, cost);
-        Ok(())
-    }
-
-    fn visit_call_indirect(
-        &mut self,
-        offset: usize,
-        type_index: u32,
-        table_index: u32,
-        table_byte: u8,
-    ) -> Self::Output {
-        let cost = self
-            .model
-            .visit_call_indirect(offset, type_index, table_index, table_byte);
-        self.visit_instruction(InstructionKind::SideEffect, cost);
         Ok(())
     }
 
