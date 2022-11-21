@@ -214,11 +214,15 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     }
 
     /// Mark the current frame as polymorphic.
-    ///
-    /// This means that any operand stack push and pop operations will do nothing and uncontionally
-    /// succeed, while this frame is still active.
-    fn stack_polymorphic(&mut self) {
+    fn make_polymorphic(&mut self) {
         self.current_frame.stack_polymorphic = true;
+    }
+
+    /// The index of the root frame (that is the one representing the function entry.)
+    fn root_frame_index(&self) -> usize {
+        // NB: this implicitly is 1-less than the number of frames due to us maintaining a
+        // `current_frame` field.
+        self.frame_stack.len()
     }
 
     fn branch(&mut self, depth: usize) -> Result<(), Error> {
@@ -329,7 +333,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
         let cost = self.model.visit_unreachable(offset);
         self.visit_instruction(InstructionKind::SideEffect, cost);
-        self.stack_polymorphic();
+        self.make_polymorphic();
         Ok(())
     }
 
@@ -438,6 +442,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         self.branch(frame_idx)?;
         let cost = self.model.visit_br(offset, relative_depth);
         self.visit_instruction(InstructionKind::Branch, cost);
+        self.make_polymorphic();
         Ok(())
     }
 
@@ -459,14 +464,15 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         }
         let cost = self.model.visit_br_table(offset, targets);
         self.visit_instruction(InstructionKind::Branch, cost);
+        self.make_polymorphic();
         Ok(())
     }
 
     fn visit_return(&mut self, offset: usize) -> Self::Output {
+        self.branch(self.root_frame_index())?;
         let cost = self.model.visit_return(offset);
         self.visit_instruction(InstructionKind::Branch, cost);
-        let root_frame_index = self.frame_stack.len();
-        self.branch(root_frame_index)?;
+        self.make_polymorphic();
         Ok(())
     }
 
@@ -475,10 +481,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // This is both a side-effect _and_ a branch. Side effects are more general, so we pick
         // that.
         self.visit_instruction(InstructionKind::SideEffect, cost);
-        // NB: this implicitly is 1-less than the number of frames due to us maintaining a
-        // `current_frame` field.
-        let root_frame_index = self.frame_stack.len();
-        self.branch(root_frame_index)?;
+        self.branch(self.root_frame_index())?;
         Ok(())
     }
 
@@ -492,10 +495,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
             .model
             .visit_return_call_indirect(offset, type_index, table_index);
         self.visit_instruction(InstructionKind::SideEffect, cost);
-        // NB: this implicitly is 1-less than the number of frames due to us maintaining a
-        // `current_frame` field.
-        let root_frame_index = self.frame_stack.len();
-        self.branch(root_frame_index)?;
+        self.branch(self.root_frame_index())?;
         Ok(())
     }
 

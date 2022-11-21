@@ -182,7 +182,7 @@ impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
     }
 
     /// Mark the current frame as polymorphic.
-    fn stack_polymorphic(&mut self) {
+    fn make_polymorphic(&mut self) {
         self.current_frame.stack_polymorphic = true;
     }
 

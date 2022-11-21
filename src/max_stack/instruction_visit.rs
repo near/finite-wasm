@@ -361,7 +361,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_unreachable(&mut self, _: usize) -> Self::Output {
         // [*] → [*]  (stack-polymorphic)
-        self.stack_polymorphic();
+        self.make_polymorphic();
         Ok(None)
     }
 
@@ -430,7 +430,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_br(&mut self, _: usize, _: u32) -> Self::Output {
         // [t1* t*] → [t2*]  (stack-polymorphic)
-        self.stack_polymorphic();
+        self.make_polymorphic();
         Ok(None)
     }
 
@@ -458,7 +458,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_br_table(&mut self, _: usize, _: BrTable) -> Self::Output {
         // [t1* t* i32] → [t2*]  (stack-polymorphic)
-        self.stack_polymorphic();
+        self.make_polymorphic();
         Ok(None)
     }
 

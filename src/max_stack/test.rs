@@ -167,7 +167,7 @@ fn test_nested_polymorphic_frames() {
     visitor! { let visitor = StackSizeVisitor {} };
 
     assert_eq!(0, visitor.size);
-    visitor.stack_polymorphic();
+    visitor.make_polymorphic();
     visitor
         .pop()
         .expect("pops from polymorphic frames should never fail, even with empty stack");
@@ -198,7 +198,7 @@ fn test_nested_polymorphic_frames_2() {
     visitor
         .new_frame(BlockType::Empty, 0)
         .expect("pushing a new frame should succeed");
-    visitor.stack_polymorphic();
+    visitor.make_polymorphic();
     visitor
         .pop()
         .expect("pops from polymorphic frames should never fail, even with empty stack");
