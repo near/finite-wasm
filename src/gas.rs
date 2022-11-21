@@ -66,20 +66,12 @@ pub(crate) enum InstructionKind {
     /// results.
     Unreachable,
 
-    /// This instruction is a definite branch target.
+    /// This instruction is a branch target, branch, side effect, potential trap or similar
+    /// construct.
     ///
-    /// As a result the gas charge cannot be consolidated across this instruction.
-    BranchTarget,
-
-    /// This instruction is a branch.
-    Branch,
-
-    /// This instruction is a side effect.
-    ///
-    /// An example of such a side-effect could be a trap, or a host function call.
-    ///
-    /// At the time this instruction is executed the gas counter must be exact.
-    SideEffect,
+    /// As a result the gas charge cannot be consolidated across this instruction. At the time this
+    /// instruction is executed the gas count must be precise and inclusive of this instruction.
+    ControlFlow,
 
     /// This instruction is an aggregate operation.
     ///
@@ -91,7 +83,7 @@ pub(crate) enum InstructionKind {
 }
 
 #[derive(Debug)]
-pub(crate) enum BranchKind {
+pub(crate) enum BranchTargetKind {
     // A branch instruction in this frame branches backwards in the instruction stream to the
     // instruction at the provided index.
     Backward(usize),
@@ -129,7 +121,7 @@ pub(crate) struct Frame {
     pub(crate) stack_polymorphic: bool,
 
     /// How does a branch instruction behaves when targetting this frame?
-    pub(crate) kind: BranchKind,
+    pub(crate) kind: BranchTargetKind,
 }
 
 pub(crate) struct GasVisitor<'a, CostModel> {
@@ -152,16 +144,16 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     /// Optimize the instruction tables.
     pub(crate) fn finalize(&mut self) {
         let mut output_idx = 0;
-        let mut previous_kind = InstructionKind::SideEffect;
+        let mut previous_kind = InstructionKind::ControlFlow;
         for input_idx in 0..self.kinds.len() {
             let kind = self.kinds[input_idx];
             let merge_to_previous = match (kind, previous_kind) {
                 (InstructionKind::Pure, InstructionKind::Pure) => true,
                 (InstructionKind::Unreachable, InstructionKind::Unreachable) => true,
-                // TODO: we can likely merge 1 `branch` into a prior sequence of `Pure`
+                // TODO: we can likely merge 1 control flow into a prior sequence of `Pure`
                 // instructions. Lets do that once we have tests in so we can actually check the
                 // results :)
-                // (InstructionKind::Branch, InstructionKind::Pure) => true,
+                // (InstructionKind::ControlFlow, InstructionKind::Pure) => true,
                 _ => false,
             };
             previous_kind = kind;
@@ -193,7 +185,7 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     ///
     /// The caller is responsible for specifying how the branches behave when branched to this
     /// frame.
-    fn new_frame(&mut self, kind: BranchKind) {
+    fn new_frame(&mut self, kind: BranchTargetKind) {
         let stack_polymorphic = self.current_frame.stack_polymorphic;
         self.frame_stack.push(std::mem::replace(
             &mut self.current_frame,
@@ -235,10 +227,10 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
             &mut self.current_frame
         };
         match frame.kind {
-            BranchKind::Forward => (),
-            BranchKind::UntakenForward => frame.kind = BranchKind::Forward,
-            BranchKind::Backward(instruction_index) => {
-                self.kinds[instruction_index] = InstructionKind::BranchTarget
+            BranchTargetKind::Forward => (),
+            BranchTargetKind::UntakenForward => frame.kind = BranchTargetKind::Forward,
+            BranchTargetKind::Backward(instruction_index) => {
+                self.kinds[instruction_index] = InstructionKind::ControlFlow
             }
         }
         Ok(())
@@ -249,7 +241,7 @@ macro_rules! trapping_insn {
     (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
         fn $visit(&mut self, offset: usize, $($arg: $ty),*) -> Self::Output {
             let cost = self.model.$visit(offset, $($arg),*);
-            self.visit_instruction(InstructionKind::SideEffect, cost);
+            self.visit_instruction(InstructionKind::ControlFlow, cost);
             Ok(())
         }
     };
@@ -332,7 +324,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
 
     fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
         let cost = self.model.visit_unreachable(offset);
-        self.visit_instruction(InstructionKind::SideEffect, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -380,7 +372,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // However, it will become a branch target if there is a branching instruction targetting
         // the frame created by this instruction. At that point we will make a point of adjusting
         // the instruction kind to a `InstructionKind::BranchTarget`.
-        self.new_frame(BranchKind::Backward(insn_type_index));
+        self.new_frame(BranchTargetKind::Backward(insn_type_index));
         Ok(())
     }
 
@@ -389,9 +381,9 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     fn visit_end(&mut self, offset: usize) -> Self::Output {
         let cost = self.model.visit_end(offset);
         let kind = match self.current_frame.kind {
-            BranchKind::Forward => InstructionKind::BranchTarget,
-            BranchKind::Backward(_) => InstructionKind::Pure,
-            BranchKind::UntakenForward => InstructionKind::Pure,
+            BranchTargetKind::Forward => InstructionKind::ControlFlow,
+            BranchTargetKind::Backward(_) => InstructionKind::Pure,
+            BranchTargetKind::UntakenForward => InstructionKind::Pure,
         };
         self.end_frame();
         self.visit_instruction(kind, cost);
@@ -403,8 +395,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self.model.visit_if(offset, blockty);
         // `if` is already a branch instruction, it can execute the instruction that follows, or it
         // could jump to the `else` or `end` associated with this frame.
-        self.visit_instruction(InstructionKind::Branch, cost);
-        self.new_frame(BranchKind::Forward);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.new_frame(BranchTargetKind::Forward);
         Ok(())
     }
 
@@ -422,17 +414,15 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // false, `if` can be considered to be a branch to either this `else` or to the first
         // instruction of its body. Which interpretation makes sense here depends really on how
         // frames are handled.
-        //
-        // We’ll use the first interpretation, but in practice either would work equally well.
-        self.visit_instruction(InstructionKind::Branch, cost);
-        self.new_frame(BranchKind::Forward);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.new_frame(BranchTargetKind::Forward);
         Ok(())
     }
 
     fn visit_block(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
         let cost = self.model.visit_block(offset, blockty);
         self.visit_instruction(InstructionKind::Pure, cost);
-        self.new_frame(BranchKind::UntakenForward);
+        self.new_frame(BranchTargetKind::UntakenForward);
         Ok(())
     }
 
@@ -441,7 +431,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
             usize::try_from(relative_depth).map_err(|_| Error::BranchDepthTooLarge(self.offset))?;
         self.branch(frame_idx)?;
         let cost = self.model.visit_br(offset, relative_depth);
-        self.visit_instruction(InstructionKind::Branch, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -451,7 +441,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
             usize::try_from(relative_depth).map_err(|_| Error::BranchDepthTooLarge(self.offset))?;
         self.branch(frame_idx)?;
         let cost = self.model.visit_br_if(offset, relative_depth);
-        self.visit_instruction(InstructionKind::Branch, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         Ok(())
     }
 
@@ -463,7 +453,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
             self.branch(frame_idx)?;
         }
         let cost = self.model.visit_br_table(offset, targets);
-        self.visit_instruction(InstructionKind::Branch, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -471,7 +461,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     fn visit_return(&mut self, offset: usize) -> Self::Output {
         self.branch(self.root_frame_index())?;
         let cost = self.model.visit_return(offset);
-        self.visit_instruction(InstructionKind::Branch, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -480,7 +470,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self.model.visit_return_call(offset, function_index);
         // This is both a side-effect _and_ a branch. Side effects are more general, so we pick
         // that.
-        self.visit_instruction(InstructionKind::SideEffect, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.branch(self.root_frame_index())?;
         Ok(())
     }
@@ -494,7 +484,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self
             .model
             .visit_return_call_indirect(offset, type_index, table_index);
-        self.visit_instruction(InstructionKind::SideEffect, cost);
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.branch(self.root_frame_index())?;
         Ok(())
     }
