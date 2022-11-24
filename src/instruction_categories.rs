@@ -53,7 +53,7 @@ macro_rules! binop_partial {
     };
 }
 
-macro_rules! binop_ {
+macro_rules! binop_complete {
     ($generator:ident) => {
         $generator! {
             I32.binop = visit_i32_add | visit_i32_sub | visit_i32_mul
@@ -120,7 +120,7 @@ macro_rules! binop_ {
 macro_rules! binop {
     ($generator:ident) => {
         $crate::instruction_categories::binop_partial!($generator);
-        $crate::instruction_categories::binop_!($generator);
+        $crate::instruction_categories::binop_complete!($generator);
     };
 }
 
@@ -176,7 +176,7 @@ macro_rules! cvtop_partial {
     };
 }
 
-macro_rules! cvtop_ {
+macro_rules! cvtop_complete {
     ($generator:ident) => {
         $generator! {
             I32.cvtop = visit_i32_wrap_i64
@@ -227,7 +227,7 @@ macro_rules! cvtop_ {
 macro_rules! cvtop {
     ($generator:ident) => {
         $crate::instruction_categories::cvtop_partial!($generator);
-        $crate::instruction_categories::cvtop_!($generator);
+        $crate::instruction_categories::cvtop_complete!($generator);
     };
 }
 
@@ -449,7 +449,7 @@ macro_rules! atomic_cmpxchg {
 }
 
 pub(crate) use {
-    atomic_cmpxchg, atomic_rmw, binop, binop_, binop_partial, cvtop, cvtop_, cvtop_partial,
-    extractlane, load, loadlane, r#const, relop, replacelane, splat, store, storelane, testop,
-    unop, vbitmask, vinarrowop, vishiftop, vrelop, vternop
+    atomic_cmpxchg, atomic_rmw, binop, binop_complete, binop_partial, cvtop, cvtop_complete,
+    cvtop_partial, extractlane, load, loadlane, r#const, relop, replacelane, splat, store,
+    storelane, testop, unop, vbitmask, vinarrowop, vishiftop, vrelop, vternop,
 };

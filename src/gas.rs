@@ -217,7 +217,11 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
         self.frame_stack.len()
     }
 
-    fn branch(&mut self, depth: usize) -> Result<(), Error> {
+    fn frame_index(&self, relative_depth: u32) -> Result<usize, Error> {
+        usize::try_from(relative_depth).map_err(|_| Error::BranchDepthTooLarge(self.offset))
+    }
+
+    fn visit_branch(&mut self, depth: usize) -> Result<(), Error> {
         let frame = if let Some(frame_stack_index) = depth.checked_sub(1) {
             self.frame_stack
                 .iter_mut()
@@ -233,6 +237,13 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
                 self.kinds[instruction_index] = InstructionKind::ControlFlow
             }
         }
+        Ok(())
+    }
+
+    fn visit_unconditional_branch(&mut self, depth: usize, cost: u64) -> Result<(), Error> {
+        self.visit_branch(depth)?;
+        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.make_polymorphic();
         Ok(())
     }
 }
@@ -321,7 +332,6 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     trapping_insn!(fn visit_memory_atomic_wait32(mem: wasmparser::MemArg));
     trapping_insn!(fn visit_memory_atomic_wait64(mem: wasmparser::MemArg));
 
-
     fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
         let cost = self.model.visit_unreachable(offset);
         self.visit_instruction(InstructionKind::ControlFlow, cost);
@@ -329,9 +339,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         Ok(())
     }
 
-
-    gen::binop_!(pure_insn);
-    gen::cvtop_!(pure_insn);
+    gen::binop_complete!(pure_insn);
+    gen::cvtop_complete!(pure_insn);
     gen::unop!(pure_insn);
     gen::relop!(pure_insn);
     gen::vrelop!(pure_insn);
@@ -362,7 +371,6 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     pure_insn!(fn visit_local_set(local: u32));
     pure_insn!(fn visit_local_get(local: u32));
     pure_insn!(fn visit_local_tee(local: u32));
-
 
     fn visit_loop(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
         let cost = self.model.visit_loop(offset, blockty);
@@ -427,31 +435,25 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     }
 
     fn visit_br(&mut self, offset: usize, relative_depth: u32) -> Self::Output {
-        let frame_idx =
-            usize::try_from(relative_depth).map_err(|_| Error::BranchDepthTooLarge(self.offset))?;
-        self.branch(frame_idx)?;
+        let frame_idx = self.frame_index(relative_depth)?;
         let cost = self.model.visit_br(offset, relative_depth);
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
-        self.make_polymorphic();
-        Ok(())
+        self.visit_unconditional_branch(frame_idx, cost)
     }
 
     fn visit_br_if(&mut self, offset: usize, relative_depth: u32) -> Self::Output {
-        let frame_idx =
-            usize::try_from(relative_depth).map_err(|_| Error::BranchDepthTooLarge(self.offset))?;
-        self.branch(frame_idx)?;
+        let frame_idx = self.frame_index(relative_depth)?;
         let cost = self.model.visit_br_if(offset, relative_depth);
         self.visit_instruction(InstructionKind::ControlFlow, cost);
-        Ok(())
+        self.visit_branch(frame_idx)
     }
 
     fn visit_br_table(&mut self, offset: usize, targets: BrTable<'a>) -> Self::Output {
         for target in targets.targets() {
             let target = target.map_err(Error::ParseBrTable)?;
-            let frame_idx =
-                usize::try_from(target).map_err(|_| Error::BranchDepthTooLarge(self.offset))?;
-            self.branch(frame_idx)?;
+            self.visit_branch(self.frame_index(target)?)?;
         }
+        self.visit_branch(self.frame_index(targets.default())?)?;
+
         let cost = self.model.visit_br_table(offset, targets);
         self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
@@ -459,20 +461,13 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     }
 
     fn visit_return(&mut self, offset: usize) -> Self::Output {
-        self.branch(self.root_frame_index())?;
         let cost = self.model.visit_return(offset);
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
-        self.make_polymorphic();
-        Ok(())
+        self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
     fn visit_return_call(&mut self, offset: usize, function_index: u32) -> Self::Output {
         let cost = self.model.visit_return_call(offset, function_index);
-        // This is both a side-effect _and_ a branch. Side effects are more general, so we pick
-        // that.
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
-        self.branch(self.root_frame_index())?;
-        Ok(())
+        self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
     fn visit_return_call_indirect(
@@ -484,9 +479,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self
             .model
             .visit_return_call_indirect(offset, type_index, table_index);
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
-        self.branch(self.root_frame_index())?;
-        Ok(())
+        self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
     fn visit_memory_grow(&mut self, offset: usize, mem: u32, mem_byte: u8) -> Self::Output {
