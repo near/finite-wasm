@@ -1,4 +1,4 @@
-use finite_wasm::max_stack;
+use finite_wasm::{max_stack, Module};
 use std::error;
 use std::ffi::OsString;
 use std::io::{Read, Seek, SeekFrom, Write};
@@ -119,10 +119,12 @@ pub(crate) enum Error {
     ),
     #[error("interpreter output wasn’t valid UTF-8")]
     InterpreterOutput(#[source] std::string::FromUtf8Error),
-    #[error("could not analyze the max stack for module {1} at {2:?}")]
-    AnalyseMaxStack(#[source] finite_wasm::Error, String, PathBuf),
-    #[error("could not analyze the max stack for module {0} at {1:?}, analysis panicked")]
-    AnalyseMaxStackPanic(String, PathBuf),
+    #[error("could not analyze the module {1} at {2:?}")]
+    AnalyseModule(#[source] finite_wasm::Error, String, PathBuf),
+    #[error("could not analyze the module {0} at {1:?}, analysis panicked")]
+    AnalyseModulePanic(String, PathBuf),
+    #[error("could not instrument the test module")]
+    Instrument(#[source] instrument::Error),
 }
 
 impl Error {
@@ -140,8 +142,9 @@ impl Error {
             | Error::InterpreterExit(_, _, _)
             | Error::InterpreterOutput(_)
             | Error::DiffSnap(_)
-            | Error::AnalyseMaxStack(_, _, _)
-            | Error::AnalyseMaxStackPanic(_, _) => {}
+            | Error::AnalyseModule(_, _, _)
+            | Error::AnalyseModulePanic(_, _)
+            | Error::Instrument(_) => {}
             Error::ParseBuffer(s) => set_wast_path(s, path),
             Error::ParseWast(s) => set_wast_path(s, path),
             Error::EncodeModule(s, _) => set_wast_path(s, path),
@@ -220,7 +223,7 @@ impl<'a> TestContext {
     }
 
     pub(crate) fn run(&mut self) {
-        if let Err(mut e) = self.run_stack_analysis() {
+        if let Err(mut e) = self.run_analysis() {
             return self.fail_test_error(&mut e);
         }
 
@@ -246,7 +249,7 @@ impl<'a> TestContext {
         self.pass();
     }
 
-    fn run_stack_analysis(&mut self) -> Result<(), Error> {
+    fn run_analysis(&mut self) -> Result<(), Error> {
         let mut test_contents = String::new();
         read(&mut test_contents, &self.test_path)?;
         let mut lexer = wast::lexer::Lexer::new(&test_contents);
@@ -290,43 +293,15 @@ impl<'a> TestContext {
                 wast::WastDirective::AssertUnlinkable { .. } => continue,
             };
 
-            struct DefaultConfig;
-            impl max_stack::Config for DefaultConfig {
-                fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
-                    use wasmparser::ValType::*;
-                    match ty {
-                        I32 => 4,
-                        I64 => 8,
-                        F32 => 4,
-                        F64 => 8,
-                        V128 => 16,
-                        FuncRef => 32,
-                        ExternRef => 32,
-                    }
-                }
-
-                fn size_of_function_activation(
-                    &self,
-                    locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
-                ) -> u64 {
-                    // NB: These sizes have been chosen to make it easier to tell what contributes
-                    // to locals and what contributes to the operand stack.
-                    let locals = u64::from(locals.max_index().copied().unwrap_or(0)) * 1_000_000;
-                    1_000_000_000_000 + locals
-                }
-            }
-
             let results = std::panic::catch_unwind(|| {
-                finite_wasm::Module::new(&module, Some(&DefaultConfig))
+                finite_wasm::Module::new(&module, Some(&DefaultStackConfig), Some(DefaultGasConfig))
             })
-            .map_err(|_| Error::AnalyseMaxStackPanic(id.clone(), self.test_path.clone()))?
-            .map_err(|e| Error::AnalyseMaxStack(e, id.clone(), self.test_path.clone()))?;
-            let output = results
-                .function_stack_sizes
-                .into_iter()
-                .map(|size| format!("{size}\n"))
-                .collect::<String>();
-            self.compare_snapshot(&output, &format!("max_stack.{id}"))?;
+            .map_err(|_| Error::AnalyseModulePanic(id.clone(), self.test_path.clone()))?
+            .map_err(|e| Error::AnalyseModule(e, id.clone(), self.test_path.clone()))?;
+            let instrumented = module;
+            // self.instrument(&module, results).map_err(Error::Instrument)?;
+            let print = wasmprinter::print_bytes(&instrumented).expect("print");
+            self.compare_snapshot(&print, &format!("instrumented.{id}"))?;
         }
         Ok(())
     }
@@ -402,4 +377,45 @@ impl<'a> TestContext {
             Ok(())
         }
     }
+}
+
+struct DefaultStackConfig;
+impl max_stack::Config for DefaultStackConfig {
+    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
+        use wasmparser::ValType::*;
+        match ty {
+            I32 => 4,
+            I64 => 8,
+            F32 => 4,
+            F64 => 8,
+            V128 => 16,
+            FuncRef => 32,
+            ExternRef => 32,
+        }
+    }
+
+    fn size_of_function_activation(
+        &self,
+        locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
+    ) -> u64 {
+        // NB: These sizes have been chosen to make it easier to tell what contributes
+        // to locals and what contributes to the operand stack.
+        let locals = u64::from(locals.max_index().copied().unwrap_or(0)) * 1_000_000;
+        1_000_000_000_000 + locals
+    }
+}
+
+pub(crate) struct DefaultGasConfig;
+
+macro_rules! gas_visit {
+    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+        $(fn $visit(&mut self, _: usize $($(,$arg: $argty)*)?) -> Self::Output {
+            1u64
+        })*
+    }
+}
+
+impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
+    type Output = u64;
+    wasmparser::for_each_operator!(gas_visit);
 }

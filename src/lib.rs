@@ -1,10 +1,13 @@
+use gas::InstructionKind;
 use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
-use wasmparser::{BinaryReaderError, BlockType};
+use visitors::VisitOperatorWithOffset;
+use wasmparser::{BinaryReaderError, BlockType, VisitOperator};
 
+pub mod gas;
 mod instruction_categories;
 pub mod max_stack;
-pub mod gas;
+mod visitors;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -39,8 +42,10 @@ pub enum Error {
     #[error("function index {0} refers to a non-existent type")]
     FunctionIndex(u32),
 
-    #[error("could not process operator for max_stack analysis at offset {0}")]
-    MaxxStack(#[source] max_stack::Error),
+    #[error("could not process operator for max_stack analysis")]
+    MaxStack(#[source] max_stack::Error),
+    #[error("could not process operator for gas analysis")]
+    Gas(#[source] gas::Error),
 }
 
 /// The results of parsing and analyzing the module.
@@ -51,12 +56,18 @@ pub struct Module {
     /// The sizes of the stack frame (the maximum amount of stack used at any given time during the
     /// execution of the function) for each function.
     pub function_stack_sizes: Vec<u64>,
+
+    /// The table of offsets for gas instrumentation points
+    pub gas_offsets: Vec<Box<[usize]>>,
+    pub gas_costs: Vec<Box<[u64]>>,
+    pub gas_kinds: Vec<Box<[InstructionKind]>>,
 }
 
 impl Module {
     pub fn new(
         module: &[u8],
         max_stack_cfg: Option<&impl max_stack::Config>,
+        mut gas_cfg: Option<impl for<'a> VisitOperator<'a, Output = u64>>,
     ) -> Result<Self, Error> {
         let mut types = vec![];
         let mut functions = vec![];
@@ -66,7 +77,14 @@ impl Module {
         // Reused between functions for speeds.
         let mut locals = PrefixSumVec::new();
         let mut operand_stack = vec![];
-        let mut frame_stack = vec![];
+        let mut max_stack_frame_stack = vec![];
+        let mut gas_frame_stack = vec![];
+        let mut offsets = vec![];
+        let mut costs = vec![];
+        let mut kinds = vec![];
+        let mut gas_offsets = vec![];
+        let mut gas_costs = vec![];
+        let mut gas_kinds = vec![];
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
@@ -118,7 +136,10 @@ impl Module {
                 wasmparser::Payload::CodeSectionEntry(function) => {
                     locals.clear();
                     operand_stack.clear();
-                    frame_stack.clear();
+                    max_stack_frame_stack.clear();
+                    offsets.clear();
+                    kinds.clear();
+                    costs.clear();
 
                     // We use the length of `function_stack_sizes` to _also_ act as a counter for
                     // how many code section entries we have seen so far. This allows us to match
@@ -149,11 +170,24 @@ impl Module {
                             .map_err(|e| Error::TooManyLocals(e, function_id))?;
                     }
 
-                    if let Some(config) = max_stack_cfg {
+                    let mut gas_visitor = gas_cfg.as_mut().map(|config| gas::GasVisitor {
+                        offset: 0,
+                        model: config,
+                        offsets: &mut offsets,
+                        costs: &mut costs,
+                        kinds: &mut kinds,
+                        frame_stack: &mut gas_frame_stack,
+                        current_frame: gas::Frame {
+                            stack_polymorphic: false,
+                            kind: gas::BranchTargetKind::UntakenForward,
+                        },
+                    });
+
+                    let mut stack_visitor = max_stack_cfg.map(|config| {
                         // This includes accounting for any possible return pointer tracking,
                         // parameters and locals (which all are considered locals in wasm).
-                        let activation_size = config.size_of_function_activation(&locals);
-                        let mut visitor = max_stack::StackSizeVisitor {
+                        function_stack_sizes.push(config.size_of_function_activation(&locals));
+                        max_stack::StackSizeVisitor {
                             offset: 0,
 
                             config,
@@ -168,28 +202,61 @@ impl Module {
                             max_size: 0,
 
                             // Future optimization opportunity: Struct-of-Arrays representation.
-                            frames: &mut frame_stack,
+                            frames: &mut max_stack_frame_stack,
                             current_frame: max_stack::Frame {
                                 height: 0,
                                 block_type: BlockType::Empty,
                                 stack_polymorphic: false,
                             },
-                        };
-
-                        let mut operators = function
-                            .get_operators_reader()
-                            .map_err(Error::OperatorReader)?;
-                        loop {
-                            visitor.offset = operators.original_position();
-                            let result = operators
-                                .visit_with_offset(&mut visitor)
-                                .map_err(Error::VisitOperators)?
-                                .map_err(Error::MaxxStack)?;
-                            if let Some(stack_size) = result {
-                                function_stack_sizes.push(activation_size + stack_size);
-                                break;
-                            }
                         }
+                    });
+                    let mut nop_gas_visitor = visitors::NoOpVisitor(Ok(()));
+                    let mut nop_stack_visitor = visitors::NoOpVisitor(Ok(None));
+
+                    let mut combined_visitor = match (&mut gas_visitor, &mut stack_visitor) {
+                        (Some(ref mut g), Some(ref mut s)) => visitors::JoinVisitor(
+                            g as &mut dyn VisitOperatorWithOffset<Output = Result<(), gas::Error>>,
+                            s as &mut dyn VisitOperatorWithOffset<
+                                Output = Result<Option<u64>, max_stack::Error>,
+                            >,
+                        ),
+                        (None, None) => visitors::JoinVisitor(
+                            &mut nop_gas_visitor as &mut _,
+                            &mut nop_stack_visitor as &mut _,
+                        ),
+                        (None, Some(ref mut s)) => {
+                            visitors::JoinVisitor(&mut nop_gas_visitor as &mut _, s as &mut _)
+                        }
+                        (Some(ref mut g), None) => {
+                            visitors::JoinVisitor(g as &mut _, &mut nop_stack_visitor as &mut _)
+                        }
+                    };
+                    let mut operators = function
+                        .get_operators_reader()
+                        .map_err(Error::OperatorReader)?;
+                    while !operators.eof() {
+                        combined_visitor.set_offset(operators.original_position());
+                        let (gas_result, stack_result) = operators
+                            .visit_with_offset(&mut combined_visitor)
+                            .map_err(Error::VisitOperators)?;
+                        let stack_result = stack_result.map_err(Error::MaxStack)?;
+                        gas_result.map_err(Error::Gas)?;
+                        if let Some(stack_size) = stack_result {
+                            let size = function_stack_sizes
+                                .last_mut()
+                                .expect("should have frame size already pushed if analyzing stack");
+                            *size += stack_size;
+                        }
+                    }
+
+                    if !kinds.is_empty() {
+                        gas::optimize(&mut offsets, &mut costs, &mut kinds);
+                        // FIXME(nagisa): this may have a much better representation… We might be
+                        // able to avoid storing all the analysis results if we instrumented
+                        // on-the-fly too...
+                        gas_offsets.push(offsets.drain(..).collect());
+                        gas_kinds.push(kinds.drain(..).collect());
+                        gas_costs.push(costs.drain(..).collect());
                     }
                 }
                 _ => (),
@@ -197,6 +264,9 @@ impl Module {
         }
         Ok(Self {
             function_stack_sizes,
+            gas_costs,
+            gas_kinds,
+            gas_offsets,
         })
     }
 }

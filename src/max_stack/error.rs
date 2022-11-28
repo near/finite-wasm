@@ -1,6 +1,6 @@
 use std::num::TryFromIntError;
 
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, Clone)]
 pub enum Error {
     // These codes are a result of a malformed input (e.g. validation has not been run)
     #[error("frame stack is too short at offset {0}")]
