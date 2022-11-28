@@ -4,6 +4,7 @@ use std::io::{self, Write};
 use std::path::PathBuf;
 
 mod test;
+mod instrument;
 
 #[derive(thiserror::Error, Debug)]
 enum Error {

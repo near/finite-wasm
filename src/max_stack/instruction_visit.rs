@@ -1,6 +1,6 @@
 use super::{Config, Error, Frame, StackSizeVisitor};
-use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator};
 use crate::instruction_categories as gen;
+use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator};
 
 macro_rules! instruction_category {
     ($($type:ident . const = $($insn:ident, $param: ty)|* ;)*) => {
@@ -493,5 +493,13 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     fn visit_catch_all(&mut self, _: usize) -> Self::Output {
         todo!("exception handling has not been implemented");
+    }
+}
+
+impl<'a, 'cfg, Cfg: Config> crate::visitors::VisitOperatorWithOffset<'a>
+    for StackSizeVisitor<'cfg, Cfg>
+{
+    fn set_offset(&mut self, offset: usize) {
+        self.offset = offset;
     }
 }

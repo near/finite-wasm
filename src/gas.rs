@@ -29,10 +29,10 @@
 //! instructions that participate in control flow cannot be merged together if an eventually
 //! accurate gas count is desired.
 
-use wasmparser::{BlockType, BrTable, VisitOperator};
 use crate::instruction_categories as gen;
+use wasmparser::{BlockType, BrTable, VisitOperator};
 
-#[derive(thiserror::Error, Debug)]
+#[derive(thiserror::Error, Debug, Clone)]
 pub enum Error {
     #[error("branch depth is too large at offset {0}")]
     BranchDepthTooLarge(usize),
@@ -42,8 +42,8 @@ pub enum Error {
     InvalidBrTarget(usize),
 }
 
-#[derive(Clone, Copy)]
-pub(crate) enum InstructionKind {
+#[derive(Clone, Copy, Debug)]
+pub enum InstructionKind {
     /// This instruction is largely uninteresting for the purposes of gas analysis, besides its
     /// inherent cost.
     ///
@@ -141,35 +141,6 @@ pub(crate) struct GasVisitor<'a, CostModel> {
 }
 
 impl<'a, CostModel> GasVisitor<'a, CostModel> {
-    /// Optimize the instruction tables.
-    pub(crate) fn finalize(&mut self) {
-        let mut output_idx = 0;
-        let mut previous_kind = InstructionKind::ControlFlow;
-        for input_idx in 0..self.kinds.len() {
-            let kind = self.kinds[input_idx];
-            let merge_to_previous = match (kind, previous_kind) {
-                (InstructionKind::Pure, InstructionKind::Pure) => true,
-                (InstructionKind::Unreachable, InstructionKind::Unreachable) => true,
-                // TODO: we can likely merge 1 control flow into a prior sequence of `Pure`
-                // instructions. Lets do that once we have tests in so we can actually check the
-                // results :)
-                // (InstructionKind::ControlFlow, InstructionKind::Pure) => true,
-                _ => false,
-            };
-            previous_kind = kind;
-            if merge_to_previous {
-                self.kinds[output_idx] = kind;
-                self.costs[output_idx] += self.costs[input_idx];
-            } else {
-                output_idx += 1;
-                self.kinds[output_idx] = kind;
-                self.costs[output_idx] = self.costs[input_idx];
-                self.offsets[output_idx] = self.offsets[input_idx];
-            }
-        }
-    }
-
-
     /// Visit an instruction, populating information about it within the internal tables.
     fn visit_instruction(&mut self, kind: InstructionKind, cost: u64) {
         self.offsets.push(self.offset);
@@ -571,4 +542,50 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     fn visit_catch_all(&mut self, _: usize) -> Self::Output {
         todo!("exception handling extension")
     }
+}
+
+impl<'a, CostModel: VisitOperator<'a, Output = u64>> crate::visitors::VisitOperatorWithOffset<'a>
+    for GasVisitor<'a, CostModel>
+{
+    fn set_offset(&mut self, offset: usize) {
+        self.offset = offset;
+    }
+}
+
+/// Optimize the instruction tables.
+pub(crate) fn optimize(
+    offsets: &mut Vec<usize>,
+    costs: &mut Vec<u64>,
+    kinds: &mut Vec<InstructionKind>,
+) {
+    let mut previous_kind = kinds
+        .first()
+        .copied()
+        .unwrap_or(InstructionKind::ControlFlow);
+    let mut output_idx = 0;
+    for input_idx in 1..kinds.len() {
+        let kind = kinds[input_idx];
+        let merge_to_previous = match (kind, previous_kind) {
+            (InstructionKind::Pure, InstructionKind::Pure) => true,
+            (InstructionKind::Unreachable, InstructionKind::Unreachable) => true,
+            // TODO: we can likely merge 1 control flow into a prior sequence of `Pure`
+            // instructions. Lets do that once we have tests in so we can actually check the
+            // results :)
+            // (InstructionKind::ControlFlow, InstructionKind::Pure) => true,
+            _ => false,
+        };
+        previous_kind = kind;
+        if merge_to_previous {
+            kinds[output_idx] = kind;
+            costs[output_idx] += costs[input_idx];
+        } else {
+            output_idx += 1;
+            kinds[output_idx] = kind;
+            costs[output_idx] = costs[input_idx];
+            offsets[output_idx] = offsets[input_idx];
+        }
+    }
+    kinds.truncate(output_idx + 1);
+    costs.truncate(output_idx + 1);
+    offsets.truncate(output_idx + 1);
 }
