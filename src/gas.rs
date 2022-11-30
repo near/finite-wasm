@@ -221,8 +221,8 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
 
 macro_rules! trapping_insn {
     (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
-        fn $visit(&mut self, offset: usize, $($arg: $ty),*) -> Self::Output {
-            let cost = self.model.$visit(offset, $($arg),*);
+        fn $visit(&mut self, $($arg: $ty),*) -> Self::Output {
+            let cost = self.model.$visit($($arg),*);
             self.visit_instruction(InstructionKind::ControlFlow, cost);
             Ok(())
         }
@@ -245,8 +245,8 @@ macro_rules! trapping_insn {
 
 macro_rules! pure_insn {
     (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
-        fn $visit(&mut self, offset: usize, $($arg: $ty),*) -> Self::Output {
-            let cost = self.model.$visit(offset, $($arg),*);
+        fn $visit(&mut self, $($arg: $ty),*) -> Self::Output {
+            let cost = self.model.$visit($($arg),*);
             self.visit_instruction(InstructionKind::Pure, cost);
             Ok(())
         }
@@ -303,8 +303,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     trapping_insn!(fn visit_memory_atomic_wait32(mem: wasmparser::MemArg));
     trapping_insn!(fn visit_memory_atomic_wait64(mem: wasmparser::MemArg));
 
-    fn visit_unreachable(&mut self, offset: usize) -> Self::Output {
-        let cost = self.model.visit_unreachable(offset);
+    fn visit_unreachable(&mut self) -> Self::Output {
+        let cost = self.model.visit_unreachable();
         self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
@@ -343,8 +343,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     pure_insn!(fn visit_local_get(local: u32));
     pure_insn!(fn visit_local_tee(local: u32));
 
-    fn visit_loop(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
-        let cost = self.model.visit_loop(offset, blockty);
+    fn visit_loop(&mut self, blockty: BlockType) -> Self::Output {
+        let cost = self.model.visit_loop(blockty);
         let insn_type_index = self.kinds.len();
         // For the time being this instruction is not a branch target, and therefore is pure.
         self.visit_instruction(InstructionKind::Pure, cost);
@@ -357,8 +357,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
 
     // Branch Target (for if, block, else), only if there is a `br`/`br_if`/`br_table` to exactly
     // the frame created by the matching insn.
-    fn visit_end(&mut self, offset: usize) -> Self::Output {
-        let cost = self.model.visit_end(offset);
+    fn visit_end(&mut self) -> Self::Output {
+        let cost = self.model.visit_end();
         let kind = match self.current_frame.kind {
             BranchTargetKind::Forward => InstructionKind::ControlFlow,
             BranchTargetKind::Backward(_) => InstructionKind::Pure,
@@ -370,8 +370,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     }
 
     // Branch
-    fn visit_if(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
-        let cost = self.model.visit_if(offset, blockty);
+    fn visit_if(&mut self, blockty: BlockType) -> Self::Output {
+        let cost = self.model.visit_if(blockty);
         // `if` is already a branch instruction, it can execute the instruction that follows, or it
         // could jump to the `else` or `end` associated with this frame.
         self.visit_instruction(InstructionKind::ControlFlow, cost);
@@ -380,8 +380,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     }
 
     // Branch Target (unconditionally)
-    fn visit_else(&mut self, offset: usize) -> Self::Output {
-        let cost = self.model.visit_else(offset);
+    fn visit_else(&mut self) -> Self::Output {
+        let cost = self.model.visit_else();
         // `else` is already a taken branch target from `if` (if the condition is false).
         self.end_frame();
         // `else` is both a branch and a branch target, depending on how it was reached.
@@ -398,148 +398,143 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         Ok(())
     }
 
-    fn visit_block(&mut self, offset: usize, blockty: BlockType) -> Self::Output {
-        let cost = self.model.visit_block(offset, blockty);
+    fn visit_block(&mut self, blockty: BlockType) -> Self::Output {
+        let cost = self.model.visit_block(blockty);
         self.visit_instruction(InstructionKind::Pure, cost);
         self.new_frame(BranchTargetKind::UntakenForward);
         Ok(())
     }
 
-    fn visit_br(&mut self, offset: usize, relative_depth: u32) -> Self::Output {
+    fn visit_br(&mut self, relative_depth: u32) -> Self::Output {
         let frame_idx = self.frame_index(relative_depth)?;
-        let cost = self.model.visit_br(offset, relative_depth);
+        let cost = self.model.visit_br(relative_depth);
         self.visit_unconditional_branch(frame_idx, cost)
     }
 
-    fn visit_br_if(&mut self, offset: usize, relative_depth: u32) -> Self::Output {
+    fn visit_br_if(&mut self, relative_depth: u32) -> Self::Output {
         let frame_idx = self.frame_index(relative_depth)?;
-        let cost = self.model.visit_br_if(offset, relative_depth);
+        let cost = self.model.visit_br_if(relative_depth);
         self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.visit_branch(frame_idx)
     }
 
-    fn visit_br_table(&mut self, offset: usize, targets: BrTable<'a>) -> Self::Output {
+    fn visit_br_table(&mut self, targets: BrTable<'a>) -> Self::Output {
         for target in targets.targets() {
             let target = target.map_err(Error::ParseBrTable)?;
             self.visit_branch(self.frame_index(target)?)?;
         }
         self.visit_branch(self.frame_index(targets.default())?)?;
 
-        let cost = self.model.visit_br_table(offset, targets);
+        let cost = self.model.visit_br_table(targets);
         self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
 
-    fn visit_return(&mut self, offset: usize) -> Self::Output {
-        let cost = self.model.visit_return(offset);
+    fn visit_return(&mut self) -> Self::Output {
+        let cost = self.model.visit_return();
         self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
-    fn visit_return_call(&mut self, offset: usize, function_index: u32) -> Self::Output {
-        let cost = self.model.visit_return_call(offset, function_index);
+    fn visit_return_call(&mut self, function_index: u32) -> Self::Output {
+        let cost = self.model.visit_return_call(function_index);
         self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
-    fn visit_return_call_indirect(
-        &mut self,
-        offset: usize,
-        type_index: u32,
-        table_index: u32,
-    ) -> Self::Output {
+    fn visit_return_call_indirect(&mut self, type_index: u32, table_index: u32) -> Self::Output {
         let cost = self
             .model
-            .visit_return_call_indirect(offset, type_index, table_index);
+            .visit_return_call_indirect(type_index, table_index);
         self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
-    fn visit_memory_grow(&mut self, offset: usize, mem: u32, mem_byte: u8) -> Self::Output {
-        let cost = self.model.visit_memory_grow(offset, mem, mem_byte);
+    fn visit_memory_grow(&mut self, mem: u32, mem_byte: u8) -> Self::Output {
+        let cost = self.model.visit_memory_grow(mem, mem_byte);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_memory_init(&mut self, offset: usize, data_index: u32, mem: u32) -> Self::Output {
-        let cost = self.model.visit_memory_init(offset, data_index, mem);
+    fn visit_memory_init(&mut self, data_index: u32, mem: u32) -> Self::Output {
+        let cost = self.model.visit_memory_init(data_index, mem);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_data_drop(&mut self, offset: usize, data_index: u32) -> Self::Output {
+    fn visit_data_drop(&mut self, data_index: u32) -> Self::Output {
         // TODO: [] -> []; does not interact with the operand stack, so isn’t really an aggregate
         // instruction. In practice, though, it may involve non-trivial amount of work in the
         // runtime anyway? Validate.
-        let cost = self.model.visit_data_drop(offset, data_index);
+        let cost = self.model.visit_data_drop(data_index);
         self.visit_instruction(InstructionKind::Pure, cost);
         Ok(())
     }
 
-    fn visit_memory_copy(&mut self, offset: usize, dst_mem: u32, src_mem: u32) -> Self::Output {
-        let cost = self.model.visit_memory_copy(offset, dst_mem, src_mem);
+    fn visit_memory_copy(&mut self, dst_mem: u32, src_mem: u32) -> Self::Output {
+        let cost = self.model.visit_memory_copy(dst_mem, src_mem);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_memory_fill(&mut self, offset: usize, mem: u32) -> Self::Output {
-        let cost = self.model.visit_memory_fill(offset, mem);
+    fn visit_memory_fill(&mut self, mem: u32) -> Self::Output {
+        let cost = self.model.visit_memory_fill(mem);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_table_init(&mut self, offset: usize, elem_index: u32, table: u32) -> Self::Output {
-        let cost = self.model.visit_table_init(offset, elem_index, table);
+    fn visit_table_init(&mut self, elem_index: u32, table: u32) -> Self::Output {
+        let cost = self.model.visit_table_init(elem_index, table);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_elem_drop(&mut self, offset: usize, elem_index: u32) -> Self::Output {
+    fn visit_elem_drop(&mut self, elem_index: u32) -> Self::Output {
         // TODO: [] -> []; does not interact with the operand stack, so isn’t really an aggregate
         // instruction. In practice, though, it may involve non-trivial amount of work in the
         // runtime anyway? Validate.
-        let cost = self.model.visit_elem_drop(offset, elem_index);
+        let cost = self.model.visit_elem_drop(elem_index);
         self.visit_instruction(InstructionKind::Pure, cost);
         Ok(())
     }
 
-    fn visit_table_copy(&mut self, offset: usize, dst_table: u32, src_table: u32) -> Self::Output {
-        let cost = self.model.visit_table_copy(offset, dst_table, src_table);
+    fn visit_table_copy(&mut self, dst_table: u32, src_table: u32) -> Self::Output {
+        let cost = self.model.visit_table_copy(dst_table, src_table);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_table_fill(&mut self, offset: usize, table: u32) -> Self::Output {
-        let cost = self.model.visit_table_fill(offset, table);
+    fn visit_table_fill(&mut self, table: u32) -> Self::Output {
+        let cost = self.model.visit_table_fill(table);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_table_grow(&mut self, offset: usize, table: u32) -> Self::Output {
-        let cost = self.model.visit_table_grow(offset, table);
+    fn visit_table_grow(&mut self, table: u32) -> Self::Output {
+        let cost = self.model.visit_table_grow(table);
         self.visit_instruction(InstructionKind::Aggregate, cost);
         Ok(())
     }
 
-    fn visit_try(&mut self, _: usize, _: BlockType) -> Self::Output {
+    fn visit_try(&mut self, _: BlockType) -> Self::Output {
         todo!("exception handling extension")
     }
 
-    fn visit_catch(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_catch(&mut self, _: u32) -> Self::Output {
         todo!("exception handling extension")
     }
 
-    fn visit_throw(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_throw(&mut self, _: u32) -> Self::Output {
         todo!("exception handling extension")
     }
 
-    fn visit_rethrow(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_rethrow(&mut self, _: u32) -> Self::Output {
         todo!("exception handling extension")
     }
 
-    fn visit_delegate(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_delegate(&mut self, _: u32) -> Self::Output {
         todo!("exception handling extension")
     }
 
-    fn visit_catch_all(&mut self, _: usize) -> Self::Output {
+    fn visit_catch_all(&mut self) -> Self::Output {
         todo!("exception handling extension")
     }
 }
