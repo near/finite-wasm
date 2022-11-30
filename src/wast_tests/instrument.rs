@@ -17,6 +17,7 @@ impl<'a> crate::test::TestContext {
         let mut new_element_section = we::ElementSection::new();
         let mut new_export_section = we::ExportSection::new();
         let mut new_name_section = we::NameSection::new();
+        let mut new_global_section = we::GlobalSection::new();
         let mut raw_sections = vec![];
         let section_placeholder = |id: u8| -> we::RawSection { we::RawSection { id, data: &[] } };
         let maybe_add_imports = |ts: &mut we::TypeSection, is: &mut we::ImportSection| {
@@ -189,6 +190,19 @@ impl<'a> crate::test::TestContext {
                     }
                     raw_sections.push(section_placeholder(new_export_section.id()));
                 }
+                wp::Payload::GlobalSection(reader) => {
+                    for global in reader {
+                        let global = global.expect("TODO");
+                        new_global_section.global(
+                            we::GlobalType {
+                                val_type: valtype(global.ty.content_type),
+                                mutable: global.ty.mutable,
+                            },
+                            &constexpr(global.init_expr),
+                        );
+                    }
+                    raw_sections.push(section_placeholder(new_global_section.id()));
+                }
                 wp::Payload::CustomSection(reader) if reader.name() == "name" => {
                     let names = wp::NameSectionReader::new(reader.data(), reader.data_offset())
                         .expect("TODO");
@@ -201,7 +215,6 @@ impl<'a> crate::test::TestContext {
                                 new_name_map.append(0, "finite_wasm_gas");
                                 new_name_map.append(1, "finite_wasm_stack");
                                 new_name_section.functions(&new_name_map)
-
                             }
                             wp::Name::Local(map) => new_name_section.locals(&indirectnamemap(map)),
                             wp::Name::Label(map) => new_name_section.labels(&indirectnamemap(map)),
@@ -246,6 +259,7 @@ impl<'a> crate::test::TestContext {
                 id if id == new_code_section.id() => output.section(&new_code_section),
                 id if id == new_element_section.id() => output.section(&new_element_section),
                 id if id == new_export_section.id() => output.section(&new_export_section),
+                id if id == new_global_section.id() => output.section(&new_global_section),
                 PLACEHOLDER_FOR_NAMES => output.section(&new_name_section),
                 _ => output.section(&section),
             };

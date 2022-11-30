@@ -19,7 +19,7 @@
     return
   )
   (table $t (;0;) 1 funcref)
-  (global (;0;) funcref ref.func $finite_wasm_gas)
+  (global (;0;) funcref ref.func $f1)
   (export "f" (func $f2))
   (elem (;0;) (i32.const 0) func)
   (elem (;1;) (i32.const 0) func)
