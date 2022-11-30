@@ -1,4 +1,7 @@
 (module $Mref_im
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
   (import "Mref_ex" "g-const-func" (global (;0;) funcref))
   (import "Mref_ex" "g-const-extern" (global (;1;) externref))
   (import "Mref_ex" "g-var-func" (global (;2;) (mut funcref)))

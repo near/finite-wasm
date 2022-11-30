@@ -1,7 +1,10 @@
 (module
   (type (;0;) (func (param i32 i32 i32) (result i32)))
   (type (;1;) (func (param i32 i32)))
-  (func (;0;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     loop $cont ;; label = @1
       local.get $from
       local.get $to
@@ -25,14 +28,14 @@
     local.get $from
     return
   )
-  (func (;1;) (type 1) (param $offs i32) (param $len i32)
+  (func (;3;) (type 1) (param $offs i32) (param $len i32)
     local.get $offs
     i32.const 0
     local.get $len
     memory.init 0
   )
   (memory (;0;) 1 1)
-  (export "checkRange" (func 0))
-  (export "run" (func 1))
+  (export "checkRange" (func 2))
+  (export "run" (func 3))
   (data (;0;) "BBBBBBBBBBBBBBBB")
 )

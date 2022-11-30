@@ -1,8 +1,11 @@
 (module $Mgim2
   (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (import "grown-imported-memory" "memory" (memory (;0;) 3))
-  (func (;0;) (type 0) (result i32)
+  (func (;2;) (type 0) (result i32)
     memory.size
   )
-  (export "size" (func 0))
+  (export "size" (func 2))
 )

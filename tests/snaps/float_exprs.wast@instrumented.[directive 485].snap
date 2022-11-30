@@ -1,7 +1,10 @@
 (module
   (type (;0;) (func (param f32) (result f32)))
   (type (;1;) (func (param f64) (result f64)))
-  (func (;0;) (type 0) (param $x f32) (result f32)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x f32) (result f32)
     local.get $x
     f32.neg
     local.get $x
@@ -10,7 +13,7 @@
     f32.lt
     select
   )
-  (func (;1;) (type 0) (param $x f32) (result f32)
+  (func (;3;) (type 0) (param $x f32) (result f32)
     local.get $x
     f32.neg
     local.get $x
@@ -19,7 +22,7 @@
     f32.le
     select
   )
-  (func (;2;) (type 0) (param $x f32) (result f32)
+  (func (;4;) (type 0) (param $x f32) (result f32)
     local.get $x
     local.get $x
     f32.neg
@@ -28,7 +31,7 @@
     f32.gt
     select
   )
-  (func (;3;) (type 0) (param $x f32) (result f32)
+  (func (;5;) (type 0) (param $x f32) (result f32)
     local.get $x
     local.get $x
     f32.neg
@@ -37,7 +40,7 @@
     f32.ge
     select
   )
-  (func (;4;) (type 1) (param $x f64) (result f64)
+  (func (;6;) (type 1) (param $x f64) (result f64)
     local.get $x
     f64.neg
     local.get $x
@@ -46,7 +49,7 @@
     f64.lt
     select
   )
-  (func (;5;) (type 1) (param $x f64) (result f64)
+  (func (;7;) (type 1) (param $x f64) (result f64)
     local.get $x
     f64.neg
     local.get $x
@@ -55,7 +58,7 @@
     f64.le
     select
   )
-  (func (;6;) (type 1) (param $x f64) (result f64)
+  (func (;8;) (type 1) (param $x f64) (result f64)
     local.get $x
     local.get $x
     f64.neg
@@ -64,7 +67,7 @@
     f64.gt
     select
   )
-  (func (;7;) (type 1) (param $x f64) (result f64)
+  (func (;9;) (type 1) (param $x f64) (result f64)
     local.get $x
     local.get $x
     f64.neg
@@ -73,12 +76,12 @@
     f64.ge
     select
   )
-  (export "f32.no_fold_lt_select_to_abs" (func 0))
-  (export "f32.no_fold_le_select_to_abs" (func 1))
-  (export "f32.no_fold_gt_select_to_abs" (func 2))
-  (export "f32.no_fold_ge_select_to_abs" (func 3))
-  (export "f64.no_fold_lt_select_to_abs" (func 4))
-  (export "f64.no_fold_le_select_to_abs" (func 5))
-  (export "f64.no_fold_gt_select_to_abs" (func 6))
-  (export "f64.no_fold_ge_select_to_abs" (func 7))
+  (export "f32.no_fold_lt_select_to_abs" (func 2))
+  (export "f32.no_fold_le_select_to_abs" (func 3))
+  (export "f32.no_fold_gt_select_to_abs" (func 4))
+  (export "f32.no_fold_ge_select_to_abs" (func 5))
+  (export "f64.no_fold_lt_select_to_abs" (func 6))
+  (export "f64.no_fold_le_select_to_abs" (func 7))
+  (export "f64.no_fold_gt_select_to_abs" (func 8))
+  (export "f64.no_fold_ge_select_to_abs" (func 9))
 )

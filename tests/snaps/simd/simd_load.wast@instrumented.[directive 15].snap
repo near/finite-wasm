@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (result v128)))
-  (func (;0;) (type 0) (result v128)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result v128)
     i32.const 0
     v128.load
     i32.const 16
@@ -11,7 +14,7 @@
     i8x16.sub
   )
   (memory (;0;) 1)
-  (export "as-add/sub-operand" (func 0))
+  (export "as-add/sub-operand" (func 2))
   (data (;0;) (i32.const 0) "\02\00\00\00\02\00\00\00\02\00\00\00\02\00\00\00")
   (data (;1;) (i32.const 16) "\03\00\00\00\03\00\00\00\03\00\00\00\03\00\00\00")
 )

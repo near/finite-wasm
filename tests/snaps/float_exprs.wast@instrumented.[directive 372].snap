@@ -1,12 +1,15 @@
 (module
   (type (;0;) (func (param i32 f64)))
   (type (;1;) (func (param i32) (result f64)))
-  (func (;0;) (type 0) (param $i i32) (param $x f64)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $i i32) (param $x f64)
     local.get $i
     local.get $x
     f64.store
   )
-  (func (;1;) (type 0) (param $n i32) (param $z f64)
+  (func (;3;) (type 0) (param $n i32) (param $z f64)
     (local $i i32)
     block $exit ;; label = @1
       loop $cont ;; label = @2
@@ -27,12 +30,12 @@
       end
     end
   )
-  (func (;2;) (type 1) (param $i i32) (result f64)
+  (func (;4;) (type 1) (param $i i32) (result f64)
     local.get $i
     f64.load
   )
   (memory (;0;) 1 1)
-  (export "init" (func 0))
-  (export "run" (func 1))
-  (export "check" (func 2))
+  (export "init" (func 2))
+  (export "run" (func 3))
+  (export "check" (func 4))
 )

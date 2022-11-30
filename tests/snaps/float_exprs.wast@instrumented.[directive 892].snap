@@ -1,11 +1,14 @@
 (module
   (type (;0;) (func (param f64 f64) (result i32)))
-  (func (;0;) (type 0) (param $four f64) (param $ten f64) (result i32)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param $four f64) (param $ten f64) (result i32)
     local.get $four
     local.get $ten
     f64.div
     f64.const 0x1.999999999999ap-2 (;=0.4;)
     f64.lt
   )
-  (export "point_four" (func 0))
+  (export "point_four" (func 2))
 )

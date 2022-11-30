@@ -1,7 +1,10 @@
 (module
   (type (;0;) (func (param f32 f32) (result f32)))
   (type (;1;) (func (param f64 f64) (result f64)))
-  (func (;0;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
     local.get $x
     local.get $y
     f32.sqrt
@@ -9,7 +12,7 @@
     local.get $y
     f32.div
   )
-  (func (;1;) (type 1) (param $x f64) (param $y f64) (result f64)
+  (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
     local.get $x
     local.get $y
     f64.sqrt
@@ -17,6 +20,6 @@
     local.get $y
     f64.div
   )
-  (export "f32.no_fold_mul_sqrt_div" (func 0))
-  (export "f64.no_fold_mul_sqrt_div" (func 1))
+  (export "f32.no_fold_mul_sqrt_div" (func 2))
+  (export "f64.no_fold_mul_sqrt_div" (func 3))
 )

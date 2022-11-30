@@ -1,16 +1,19 @@
 (module
   (type (;0;) (func (param i32) (result v128)))
   (type (;1;) (func (param i32 v128)))
-  (func (;0;) (type 0) (param $address i32) (result v128)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $address i32) (result v128)
     local.get $address
     v128.load
   )
-  (func (;1;) (type 1) (param $address i32) (param $value v128)
+  (func (;3;) (type 1) (param $address i32) (param $value v128)
     local.get $address
     local.get $value
     v128.store
   )
   (memory (;0;) 1 1)
-  (export "v128.load align=16" (func 0))
-  (export "v128.store align=16" (func 1))
+  (export "v128.load align=16" (func 2))
+  (export "v128.store align=16" (func 3))
 )

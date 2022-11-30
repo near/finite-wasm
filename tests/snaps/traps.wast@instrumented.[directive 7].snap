@@ -1,32 +1,35 @@
 (module
   (type (;0;) (func (param i32 i32)))
   (type (;1;) (func (param i64 i64)))
-  (func (;0;) (type 0) (param $x i32) (param $y i32)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (param $y i32)
     local.get $x
     local.get $y
     i32.rem_s
     drop
   )
-  (func (;1;) (type 0) (param $x i32) (param $y i32)
+  (func (;3;) (type 0) (param $x i32) (param $y i32)
     local.get $x
     local.get $y
     i32.rem_u
     drop
   )
-  (func (;2;) (type 1) (param $x i64) (param $y i64)
+  (func (;4;) (type 1) (param $x i64) (param $y i64)
     local.get $x
     local.get $y
     i64.rem_s
     drop
   )
-  (func (;3;) (type 1) (param $x i64) (param $y i64)
+  (func (;5;) (type 1) (param $x i64) (param $y i64)
     local.get $x
     local.get $y
     i64.rem_u
     drop
   )
-  (export "no_dce.i32.rem_s" (func 0))
-  (export "no_dce.i32.rem_u" (func 1))
-  (export "no_dce.i64.rem_s" (func 2))
-  (export "no_dce.i64.rem_u" (func 3))
+  (export "no_dce.i32.rem_s" (func 2))
+  (export "no_dce.i32.rem_u" (func 3))
+  (export "no_dce.i64.rem_s" (func 4))
+  (export "no_dce.i64.rem_u" (func 5))
 )

@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (param i32) (result f32)))
-  (func (;0;) (type 0) (param $x i32) (result f32)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param $x i32) (result f32)
     local.get $x
     i32.const 268435455
     i32.and
@@ -8,5 +11,5 @@
     f32.const -0x1p+23 (;=-8388608;)
     f32.add
   )
-  (export "llvm_pr27153" (func 0))
+  (export "llvm_pr27153" (func 2))
 )

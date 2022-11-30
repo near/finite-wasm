@@ -1,16 +1,19 @@
 (module $Nf
   (type (;0;) (func (result i32)))
-  (import "Mf" "call" (func $f (;0;) (type 0)))
-  (func (;1;) (type 0) (result i32)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "Mf" "call" (func $f (;2;) (type 0)))
+  (func (;3;) (type 0) (result i32)
     call $f
   )
-  (func (;2;) (type 0) (result i32)
+  (func (;4;) (type 0) (result i32)
     call $g
   )
-  (func $g (;3;) (type 0) (result i32)
+  (func $g (;5;) (type 0) (result i32)
     i32.const 3
   )
   (export "Mf.call" (func $f))
-  (export "call Mf.call" (func 1))
-  (export "call" (func 2))
+  (export "call Mf.call" (func 3))
+  (export "call" (func 4))
 )

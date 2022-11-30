@@ -1,23 +1,26 @@
 (module
   (type (;0;) (func (param v128) (result v128)))
-  (func (;0;) (type 0) (param v128) (result v128)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param v128) (result v128)
     local.get 0
     f32x4.ceil
   )
-  (func (;1;) (type 0) (param v128) (result v128)
+  (func (;3;) (type 0) (param v128) (result v128)
     local.get 0
     f32x4.floor
   )
-  (func (;2;) (type 0) (param v128) (result v128)
+  (func (;4;) (type 0) (param v128) (result v128)
     local.get 0
     f32x4.trunc
   )
-  (func (;3;) (type 0) (param v128) (result v128)
+  (func (;5;) (type 0) (param v128) (result v128)
     local.get 0
     f32x4.nearest
   )
-  (export "f32x4.ceil" (func 0))
-  (export "f32x4.floor" (func 1))
-  (export "f32x4.trunc" (func 2))
-  (export "f32x4.nearest" (func 3))
+  (export "f32x4.ceil" (func 2))
+  (export "f32x4.floor" (func 3))
+  (export "f32x4.trunc" (func 4))
+  (export "f32x4.nearest" (func 5))
 )

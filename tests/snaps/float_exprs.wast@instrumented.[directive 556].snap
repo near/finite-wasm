@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (result f64)))
-  (func (;0;) (type 0) (result f64)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result f64)
     (local $x f64) (local $r f64) (local $q f64) (local $z0 f64) (local $z1 f64)
     f64.const 0x1.388p+7 (;=156.25;)
     local.set $x
@@ -39,5 +42,5 @@
     end
     local.get $z1
   )
-  (export "calculate" (func 0))
+  (export "calculate" (func 2))
 )

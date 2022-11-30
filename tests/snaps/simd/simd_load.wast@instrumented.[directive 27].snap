@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (result v128)))
-  (func (;0;) (type 0) (result v128)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result v128)
     i32.const 0
     v128.load
     i32.const 1
@@ -8,7 +11,7 @@
     i8x16.swizzle
   )
   (memory (;0;) 1)
-  (export "as-i8x16.swizzle-operand" (func 0))
+  (export "as-i8x16.swizzle-operand" (func 2))
   (data (;0;) (i32.const 0) "defghijklmnopqrs")
   (data (;1;) (i32.const 16) "\0f\0e\0d\0c\0b\0a\09\08\07\06\05\04\03\02\01\00")
 )

@@ -1,4 +1,7 @@
 (module $G2
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
   (import "G1" "g" (global (;0;) i32))
   (global (;1;) i32 global.get 0)
   (export "g" (global 1))

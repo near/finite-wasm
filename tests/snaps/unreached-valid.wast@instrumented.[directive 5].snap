@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func))
-  (func (;0;) (type 0)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
     block (result f64) ;; label = @1
       block (result f32) ;; label = @2
         unreachable
@@ -12,5 +15,5 @@
     end
     drop
   )
-  (export "meet-bottom" (func 0))
+  (export "meet-bottom" (func 2))
 )

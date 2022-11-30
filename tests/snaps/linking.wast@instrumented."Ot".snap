@@ -1,15 +1,18 @@
 (module $Ot
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32) (result i32)))
-  (import "Mt" "h" (func $h (;0;) (type 0)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "Mt" "h" (func $h (;2;) (type 0)))
   (import "Mt" "tab" (table (;0;) 5 funcref))
-  (func $i (;1;) (type 0) (result i32)
+  (func $i (;3;) (type 0) (result i32)
     i32.const 6
   )
-  (func (;2;) (type 1) (param i32) (result i32)
+  (func (;4;) (type 1) (param i32) (result i32)
     local.get 0
     call_indirect (type 0)
   )
-  (export "call" (func 2))
-  (elem (;0;) (i32.const 1) func $i $h)
+  (export "call" (func 4))
+  (elem (;0;) (i32.const 1) func)
 )
