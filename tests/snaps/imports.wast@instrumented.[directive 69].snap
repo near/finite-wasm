@@ -2,8 +2,8 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "table" (table $tab (;0;) 10 20 funcref))
   (func (;2;) (type 1) (param i32) (result i32)
     local.get 0

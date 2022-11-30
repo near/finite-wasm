@@ -29,8 +29,8 @@
   (type (;27;) (func (param i32) (result f32)))
   (type (;28;) (func (param i32) (result f64)))
   (type (;29;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 29)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 29)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 29)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 29)))
   (func $const-i32 (;2;) (type $out-i32) (result i32)
     i32.const 306
   )

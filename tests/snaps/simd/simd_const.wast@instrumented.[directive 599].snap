@@ -4,8 +4,8 @@
   (type (;2;) (func (param v128 v128 v128 v128)))
   (type (;3;) (func (result v128)))
   (type (;4;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (func $set_g0 (;2;) (type 0) (param $0 v128)
     local.get $0
     global.set $g0

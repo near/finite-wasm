@@ -1,8 +1,8 @@
 (module
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
   (func $f (;2;) (type 0))
   (func (;3;) (type 0)
     i32.const 0
