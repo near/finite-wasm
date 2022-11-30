@@ -237,7 +237,7 @@ impl Module {
                     while !operators.eof() {
                         combined_visitor.set_offset(operators.original_position());
                         let (gas_result, stack_result) = operators
-                            .visit_with_offset(&mut combined_visitor)
+                            .visit_operator(&mut combined_visitor)
                             .map_err(Error::VisitOperators)?;
                         let stack_result = stack_result.map_err(Error::MaxStack)?;
                         gas_result.map_err(Error::Gas)?;

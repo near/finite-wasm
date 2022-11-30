@@ -4,118 +4,118 @@ use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator};
 
 macro_rules! instruction_category {
     ($($type:ident . const = $($insn:ident, $param: ty)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: $param) -> Self::Output {
+        $($(fn $insn(&mut self, _: $param) -> Self::Output {
             self.visit_const(ValType::$type)
         })*)*
     };
     ($($type:ident . unop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_unop()
         })*)*
     };
     ($($type:ident . binop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_binop()
         })*)*
     };
     ($($type:ident . testop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_testop()
         })*)*
     };
 
     ($($type:ident . relop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_relop()
         })*)*
     };
 
     ($($type:ident . cvtop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_cvtop(ValType::$type)
         })*)*
     };
 
     ($($type:ident . load = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+        $($(fn $insn(&mut self, _: MemArg) -> Self::Output {
             self.visit_load(ValType::$type)
         })*)*
     };
 
     ($($type:ident . store = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+        $($(fn $insn(&mut self, _: MemArg) -> Self::Output {
             self.visit_store()
         })*)*
     };
 
     ($($type:ident . loadlane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
+        $($(fn $insn(&mut self, _: MemArg, _: u8) -> Self::Output {
             self.visit_load_lane()
         })*)*
     };
 
     ($($type:ident . storelane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: MemArg, _: u8) -> Self::Output {
+        $($(fn $insn(&mut self, _: MemArg, _: u8) -> Self::Output {
             self.visit_store_lane()
         })*)*
     };
 
     ($($type:ident . vternop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_vternop()
         })*)*
     };
 
     ($($type:ident . vrelop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_vrelop()
         })*)*
     };
 
     ($($type:ident . vishiftop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_vishiftop()
         })*)*
     };
 
     ($($type:ident . vinarrowop = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_vinarrowop()
         })*)*
     };
 
     ($($type:ident . vbitmask = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_vbitmask()
         })*)*
     };
 
     ($($type:ident . splat = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize) -> Self::Output {
+        $($(fn $insn(&mut self) -> Self::Output {
             self.visit_splat()
         })*)*
     };
 
     ($($type:ident . replacelane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: u8) -> Self::Output {
+        $($(fn $insn(&mut self, _: u8) -> Self::Output {
             self.visit_replace_lane()
         })*)*
     };
 
     ($($type:ident . extractlane = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: u8) -> Self::Output {
+        $($(fn $insn(&mut self, _: u8) -> Self::Output {
             self.visit_extract_lane(ValType::$type)
         })*)*
     };
 
     ($($type:ident . atomic.rmw = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+        $($(fn $insn(&mut self, _: MemArg) -> Self::Output {
             self.visit_atomic_rmw(ValType::$type)
         })*)*
     };
 
     ($($type:ident . atomic.cmpxchg = $($insn:ident)|* ;)*) => {
-        $($(fn $insn(&mut self, _: usize, _: MemArg) -> Self::Output {
+        $($(fn $insn(&mut self, _: MemArg) -> Self::Output {
             self.visit_atomic_cmpxchg(ValType::$type)
         })*)*
     };
@@ -126,14 +126,14 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
 
     gen::r#const!(instruction_category);
 
-    fn visit_ref_null(&mut self, _: usize, t: ValType) -> Self::Output {
+    fn visit_ref_null(&mut self, t: ValType) -> Self::Output {
         // [] -> [t]
         self.push(t);
         Ok(None)
     }
 
-    fn visit_ref_func(&mut self, offset: usize, _: u32) -> Self::Output {
-        self.visit_ref_null(offset, ValType::FuncRef)
+    fn visit_ref_func(&mut self, _: u32) -> Self::Output {
+        self.visit_ref_null(ValType::FuncRef)
     }
 
     gen::unop!(instruction_category);
@@ -156,31 +156,31 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
     gen::atomic_rmw!(instruction_category);
     gen::atomic_cmpxchg!(instruction_category);
 
-    fn visit_i8x16_shuffle(&mut self, _: usize, _: [u8; 16]) -> Self::Output {
+    fn visit_i8x16_shuffle(&mut self, _: [u8; 16]) -> Self::Output {
         // i8x16.shuffle laneidx^16 : [v128 v128] → [v128]
         self.pop()?;
         Ok(None)
     }
 
-    fn visit_memory_atomic_notify(&mut self, _: usize, _: MemArg) -> Self::Output {
+    fn visit_memory_atomic_notify(&mut self, _: MemArg) -> Self::Output {
         // [i32 i32] -> [i32]
         self.pop()?;
         Ok(None)
     }
 
-    fn visit_memory_atomic_wait32(&mut self, _: usize, _: MemArg) -> Self::Output {
+    fn visit_memory_atomic_wait32(&mut self, _: MemArg) -> Self::Output {
         // [i32 i32 i64] -> [i32]
         self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_memory_atomic_wait64(&mut self, _: usize, _: MemArg) -> Self::Output {
+    fn visit_memory_atomic_wait64(&mut self, _: MemArg) -> Self::Output {
         // [i32 i64 i64] -> [i32]
         self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_atomic_fence(&mut self, _: usize) -> Self::Output {
+    fn visit_atomic_fence(&mut self) -> Self::Output {
         // https://github.com/WebAssembly/threads/blob/main/proposals/threads/Overview.md#fence-operator
         // [] -> []
 
@@ -188,7 +188,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_local_get(&mut self, _: usize, local_index: u32) -> Self::Output {
+    fn visit_local_get(&mut self, local_index: u32) -> Self::Output {
         // [] → [t]
         let local_type = self
             .locals
@@ -198,18 +198,18 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_local_set(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_local_set(&mut self, _: u32) -> Self::Output {
         // [t] → []
         self.pop()?;
         Ok(None)
     }
 
-    fn visit_local_tee(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_local_tee(&mut self, _: u32) -> Self::Output {
         // [t] → [t]
         Ok(None)
     }
 
-    fn visit_global_get(&mut self, _: usize, global: u32) -> Self::Output {
+    fn visit_global_get(&mut self, global: u32) -> Self::Output {
         // [] → [t]
         let global_usize =
             usize::try_from(global).map_err(|e| Error::GlobalIndexRange(global, e))?;
@@ -221,49 +221,49 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_global_set(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_global_set(&mut self, _: u32) -> Self::Output {
         // [t] → []
         self.pop()?;
         Ok(None)
     }
 
-    fn visit_memory_size(&mut self, _: usize, _: u32, _: u8) -> Self::Output {
+    fn visit_memory_size(&mut self, _: u32, _: u8) -> Self::Output {
         // [] → [i32]
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_memory_grow(&mut self, _: usize, _: u32, _: u8) -> Self::Output {
+    fn visit_memory_grow(&mut self, _: u32, _: u8) -> Self::Output {
         // [i32] → [i32]
 
         // Function body intentionally left empty.
         Ok(None)
     }
 
-    fn visit_memory_fill(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_memory_fill(&mut self, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
         self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_memory_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_memory_init(&mut self, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
         self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_memory_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_memory_copy(&mut self, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
         self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_data_drop(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_data_drop(&mut self, _: u32) -> Self::Output {
         // [] → []
         Ok(None)
     }
 
-    fn visit_table_get(&mut self, _: usize, table: u32) -> Self::Output {
+    fn visit_table_get(&mut self, table: u32) -> Self::Output {
         // [i32] → [t]
         let table_usize = usize::try_from(table).map_err(|e| Error::TableIndexRange(table, e))?;
         let table_ty = *self
@@ -275,97 +275,97 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_table_set(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_table_set(&mut self, _: u32) -> Self::Output {
         // [i32 t] → []
         self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_table_size(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_table_size(&mut self, _: u32) -> Self::Output {
         // [] → [i32]
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_table_grow(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_table_grow(&mut self, _: u32) -> Self::Output {
         // [t i32] → [i32]
         self.pop_many(2)?;
         self.push(ValType::I32);
         Ok(None)
     }
 
-    fn visit_table_fill(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_table_fill(&mut self, _: u32) -> Self::Output {
         // [i32 t i32] → []
         self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_table_copy(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_table_copy(&mut self, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
         self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_table_init(&mut self, _: usize, _: u32, _: u32) -> Self::Output {
+    fn visit_table_init(&mut self, _: u32, _: u32) -> Self::Output {
         // [i32 i32 i32] → []
         self.pop_many(3)?;
         Ok(None)
     }
 
-    fn visit_elem_drop(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_elem_drop(&mut self, _: u32) -> Self::Output {
         // [] → []
         Ok(None)
     }
 
-    fn visit_select(&mut self, _: usize) -> Self::Output {
+    fn visit_select(&mut self) -> Self::Output {
         // [t t i32] -> [t]
         self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_typed_select(&mut self, _: usize, _: ValType) -> Self::Output {
+    fn visit_typed_select(&mut self, _: ValType) -> Self::Output {
         // [t t i32] -> [t]
         self.pop_many(2)?;
         Ok(None)
     }
 
-    fn visit_drop(&mut self, _: usize) -> Self::Output {
+    fn visit_drop(&mut self) -> Self::Output {
         // [t] → []
         self.pop()?;
         Ok(None)
     }
 
-    fn visit_nop(&mut self, _: usize) -> Self::Output {
+    fn visit_nop(&mut self) -> Self::Output {
         // [] → []
         Ok(None)
     }
 
-    fn visit_call(&mut self, _: usize, function_index: u32) -> Self::Output {
+    fn visit_call(&mut self, function_index: u32) -> Self::Output {
         self.visit_function_call(self.function_type_index(function_index)?)
     }
 
-    fn visit_call_indirect(&mut self, _: usize, type_index: u32, _: u32, _: u8) -> Self::Output {
+    fn visit_call_indirect(&mut self, type_index: u32, _: u32, _: u8) -> Self::Output {
         self.visit_function_call(type_index)
     }
 
-    fn visit_return_call(&mut self, offset: usize, _: u32) -> Self::Output {
+    fn visit_return_call(&mut self, _: u32) -> Self::Output {
         // `return_call` behaves as-if a regular `return` followed by the `call`. For the purposes
         // of modelling the frame size of the _current_ function, only the `return` portion of this
         // computation is relevant (as it makes the stack polymorphic)
-        self.visit_return(offset)
+        self.visit_return()
     }
 
-    fn visit_return_call_indirect(&mut self, offset: usize, _: u32, _: u32) -> Self::Output {
-        self.visit_return(offset)
+    fn visit_return_call_indirect(&mut self, _: u32, _: u32) -> Self::Output {
+        self.visit_return()
     }
 
-    fn visit_unreachable(&mut self, _: usize) -> Self::Output {
+    fn visit_unreachable(&mut self) -> Self::Output {
         // [*] → [*]  (stack-polymorphic)
         self.make_polymorphic();
         Ok(None)
     }
 
-    fn visit_block(&mut self, _: usize, blockty: BlockType) -> Self::Output {
+    fn visit_block(&mut self, blockty: BlockType) -> Self::Output {
         // block blocktype instr* end : [t1*] → [t2*]
         self.with_block_types(blockty, |this, params, _| {
             this.new_frame(blockty, params.len())
@@ -373,7 +373,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_loop(&mut self, _: usize, blockty: BlockType) -> Self::Output {
+    fn visit_loop(&mut self, blockty: BlockType) -> Self::Output {
         // loop blocktype instr* end : [t1*] → [t2*]
         self.with_block_types(blockty, |this, params, _| {
             this.new_frame(blockty, params.len())
@@ -381,7 +381,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_if(&mut self, _: usize, blockty: BlockType) -> Self::Output {
+    fn visit_if(&mut self, blockty: BlockType) -> Self::Output {
         // if blocktype instr* else instr* end : [t1* i32] → [t2*]
         self.pop()?;
         self.with_block_types(blockty, |this, params, _| {
@@ -390,7 +390,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_else(&mut self, _: usize) -> Self::Output {
+    fn visit_else(&mut self) -> Self::Output {
         if let Some(frame) = self.end_frame()? {
             self.with_block_types(frame.block_type, |this, params, _| {
                 this.new_frame(frame.block_type, 0)?;
@@ -405,7 +405,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         }
     }
 
-    fn visit_end(&mut self, _: usize) -> Self::Output {
+    fn visit_end(&mut self) -> Self::Output {
         if let Some(frame) = self.end_frame()? {
             self.with_block_types(frame.block_type, |this, _, results| {
                 Ok(for result in results {
@@ -428,13 +428,13 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         }
     }
 
-    fn visit_br(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_br(&mut self, _: u32) -> Self::Output {
         // [t1* t*] → [t2*]  (stack-polymorphic)
         self.make_polymorphic();
         Ok(None)
     }
 
-    fn visit_br_if(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_br_if(&mut self, _: u32) -> Self::Output {
         // [t* i32] → [t*]
 
         // There are two things that could happen here.
@@ -456,42 +456,42 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
         Ok(None)
     }
 
-    fn visit_br_table(&mut self, _: usize, _: BrTable) -> Self::Output {
+    fn visit_br_table(&mut self, _: BrTable) -> Self::Output {
         // [t1* t* i32] → [t2*]  (stack-polymorphic)
         self.make_polymorphic();
         Ok(None)
     }
 
-    fn visit_return(&mut self, offset: usize) -> Self::Output {
+    fn visit_return(&mut self) -> Self::Output {
         // This behaves as-if a `br` to the outer-most block.
 
         // NB: self.frames.len() is actually 1 less than a number of frames, due to our maintaining
         // a `self.current_frame`.
         let branch_depth = u32::try_from(self.frames.len()).map_err(|_| Error::TooManyFrames)?;
-        self.visit_br(offset, branch_depth)
+        self.visit_br(branch_depth)
     }
 
-    fn visit_try(&mut self, _: usize, _: BlockType) -> Self::Output {
+    fn visit_try(&mut self, _: BlockType) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
 
-    fn visit_rethrow(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_rethrow(&mut self, _: u32) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
 
-    fn visit_throw(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_throw(&mut self, _: u32) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
 
-    fn visit_delegate(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_delegate(&mut self, _: u32) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
 
-    fn visit_catch(&mut self, _: usize, _: u32) -> Self::Output {
+    fn visit_catch(&mut self, _: u32) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
 
-    fn visit_catch_all(&mut self, _: usize) -> Self::Output {
+    fn visit_catch_all(&mut self) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
 }

@@ -5,6 +5,8 @@ use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitStatus;
 
+use crate::instrument;
+
 #[derive(Debug, PartialEq)]
 enum Line {
     Equal(String),
@@ -298,8 +300,7 @@ impl<'a> TestContext {
             })
             .map_err(|_| Error::AnalyseModulePanic(id.clone(), self.test_path.clone()))?
             .map_err(|e| Error::AnalyseModule(e, id.clone(), self.test_path.clone()))?;
-            let instrumented = module;
-            // self.instrument(&module, results).map_err(Error::Instrument)?;
+            let instrumented = self.instrument(&module, results).map_err(Error::Instrument)?;
             let print = wasmprinter::print_bytes(&instrumented).expect("print");
             self.compare_snapshot(&print, &format!("instrumented.{id}"))?;
         }
@@ -409,7 +410,7 @@ pub(crate) struct DefaultGasConfig;
 
 macro_rules! gas_visit {
     ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
-        $(fn $visit(&mut self, _: usize $($(,$arg: $argty)*)?) -> Self::Output {
+        $(fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
             1u64
         })*
     }
