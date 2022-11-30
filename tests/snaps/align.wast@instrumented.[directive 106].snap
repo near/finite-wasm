@@ -3,7 +3,10 @@
   (type (;1;) (func (param i32) (result f64)))
   (type (;2;) (func (param i32 i32) (result i32)))
   (type (;3;) (func (param i32 i32) (result i64)))
-  (func (;0;) (type 0) (param i32) (result f32)
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0) (param i32) (result f32)
     (local f32 f32)
     f32.const 0x1.4p+3 (;=10;)
     local.set 1
@@ -48,7 +51,7 @@
     end
     local.get 2
   )
-  (func (;1;) (type 1) (param i32) (result f64)
+  (func (;3;) (type 1) (param i32) (result f64)
     (local f64 f64)
     f64.const 0x1.4p+3 (;=10;)
     local.set 1
@@ -102,7 +105,7 @@
     end
     local.get 2
   )
-  (func (;2;) (type 2) (param i32 i32) (result i32)
+  (func (;4;) (type 2) (param i32 i32) (result i32)
     (local i32 i32)
     i32.const 10
     local.set 2
@@ -280,7 +283,7 @@
     end
     local.get 3
   )
-  (func (;3;) (type 3) (param i32 i32) (result i64)
+  (func (;5;) (type 3) (param i32 i32) (result i64)
     (local i64 i64)
     i64.const 10
     local.set 2
@@ -564,8 +567,8 @@
     local.get 3
   )
   (memory (;0;) 1)
-  (export "f32_align_switch" (func 0))
-  (export "f64_align_switch" (func 1))
-  (export "i32_align_switch" (func 2))
-  (export "i64_align_switch" (func 3))
+  (export "f32_align_switch" (func 2))
+  (export "f64_align_switch" (func 3))
+  (export "i32_align_switch" (func 4))
+  (export "i64_align_switch" (func 5))
 )

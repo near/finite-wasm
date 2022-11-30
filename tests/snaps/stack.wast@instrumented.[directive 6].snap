@@ -2,7 +2,10 @@
   (type $proc (;0;) (func))
   (type (;1;) (func (param i32)))
   (type (;2;) (func (result i32)))
-  (func (;0;) (type $proc)
+  (type (;3;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (func (;2;) (type $proc)
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)

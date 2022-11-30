@@ -1,14 +1,17 @@
 (module
   (type (;0;) (func (result externref)))
   (type (;1;) (func (result funcref)))
-  (func (;0;) (type 0) (result externref)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result externref)
     ref.null extern
   )
-  (func (;1;) (type 1) (result funcref)
+  (func (;3;) (type 1) (result funcref)
     ref.null func
   )
   (global (;0;) externref ref.null extern)
   (global (;1;) funcref ref.null func)
-  (export "externref" (func 0))
-  (export "funcref" (func 1))
+  (export "externref" (func 2))
+  (export "funcref" (func 3))
 )

@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (param i32) (result f64)))
-  (func (;0;) (type 0) (param i32) (result f64)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param i32) (result f64)
     (local f64 f64 f64 f64)
     f64.const 0x0p+0 (;=0;)
     local.set 1
@@ -62,5 +65,5 @@
     end
     local.get 1
   )
-  (export "tau" (func 0))
+  (export "tau" (func 2))
 )

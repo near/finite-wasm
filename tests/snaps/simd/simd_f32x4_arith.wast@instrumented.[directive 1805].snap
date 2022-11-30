@@ -1,124 +1,127 @@
 (module
   (type (;0;) (func (param v128 v128 v128) (result v128)))
   (type (;1;) (func (param v128 v128) (result v128)))
-  (func (;0;) (type 0) (param v128 v128 v128) (result v128)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
     f32x4.sub
     local.get 2
     f32x4.add
-  )
-  (func (;1;) (type 0) (param v128 v128 v128) (result v128)
-    local.get 0
-    local.get 1
-    f32x4.add
-    local.get 2
-    f32x4.div
-  )
-  (func (;2;) (type 0) (param v128 v128 v128) (result v128)
-    local.get 0
-    local.get 1
-    f32x4.mul
-    local.get 2
-    f32x4.div
   )
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
-    f32x4.sub
+    f32x4.add
     local.get 2
     f32x4.div
   )
   (func (;4;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
-    f32x4.add
-    local.get 2
     f32x4.mul
+    local.get 2
+    f32x4.div
   )
   (func (;5;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
-    f32x4.div
+    f32x4.sub
     local.get 2
-    f32x4.mul
+    f32x4.div
   )
   (func (;6;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
-    f32x4.sub
+    f32x4.add
     local.get 2
     f32x4.mul
   )
   (func (;7;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
+    f32x4.div
+    local.get 2
+    f32x4.mul
+  )
+  (func (;8;) (type 0) (param v128 v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    f32x4.sub
+    local.get 2
+    f32x4.mul
+  )
+  (func (;9;) (type 0) (param v128 v128 v128) (result v128)
+    local.get 0
+    local.get 1
     f32x4.add
     local.get 2
     f32x4.sub
-  )
-  (func (;8;) (type 1) (param v128 v128) (result v128)
-    local.get 0
-    f32x4.neg
-    local.get 1
-    f32x4.add
-  )
-  (func (;9;) (type 1) (param v128 v128) (result v128)
-    local.get 0
-    f32x4.sqrt
-    local.get 1
-    f32x4.add
   )
   (func (;10;) (type 1) (param v128 v128) (result v128)
     local.get 0
     f32x4.neg
     local.get 1
-    f32x4.div
+    f32x4.add
   )
   (func (;11;) (type 1) (param v128 v128) (result v128)
     local.get 0
     f32x4.sqrt
     local.get 1
-    f32x4.div
+    f32x4.add
   )
   (func (;12;) (type 1) (param v128 v128) (result v128)
     local.get 0
     f32x4.neg
     local.get 1
-    f32x4.mul
+    f32x4.div
   )
   (func (;13;) (type 1) (param v128 v128) (result v128)
     local.get 0
     f32x4.sqrt
     local.get 1
-    f32x4.mul
+    f32x4.div
   )
   (func (;14;) (type 1) (param v128 v128) (result v128)
     local.get 0
     f32x4.neg
     local.get 1
-    f32x4.sub
+    f32x4.mul
   )
   (func (;15;) (type 1) (param v128 v128) (result v128)
     local.get 0
     f32x4.sqrt
     local.get 1
+    f32x4.mul
+  )
+  (func (;16;) (type 1) (param v128 v128) (result v128)
+    local.get 0
+    f32x4.neg
+    local.get 1
     f32x4.sub
   )
-  (export "add-sub" (func 0))
-  (export "div-add" (func 1))
-  (export "div-mul" (func 2))
-  (export "div-sub" (func 3))
-  (export "mul-add" (func 4))
-  (export "mul-div" (func 5))
-  (export "mul-sub" (func 6))
-  (export "sub-add" (func 7))
-  (export "add-neg" (func 8))
-  (export "add-sqrt" (func 9))
-  (export "div-neg" (func 10))
-  (export "div-sqrt" (func 11))
-  (export "mul-neg" (func 12))
-  (export "mul-sqrt" (func 13))
-  (export "sub-neg" (func 14))
-  (export "sub-sqrt" (func 15))
+  (func (;17;) (type 1) (param v128 v128) (result v128)
+    local.get 0
+    f32x4.sqrt
+    local.get 1
+    f32x4.sub
+  )
+  (export "add-sub" (func 2))
+  (export "div-add" (func 3))
+  (export "div-mul" (func 4))
+  (export "div-sub" (func 5))
+  (export "mul-add" (func 6))
+  (export "mul-div" (func 7))
+  (export "mul-sub" (func 8))
+  (export "sub-add" (func 9))
+  (export "add-neg" (func 10))
+  (export "add-sqrt" (func 11))
+  (export "div-neg" (func 12))
+  (export "div-sqrt" (func 13))
+  (export "mul-neg" (func 14))
+  (export "mul-sqrt" (func 15))
+  (export "sub-neg" (func 16))
+  (export "sub-sqrt" (func 17))
 )

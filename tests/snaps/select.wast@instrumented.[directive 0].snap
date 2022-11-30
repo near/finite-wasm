@@ -9,116 +9,119 @@
   (type (;7;) (func (param externref externref i32) (result externref)))
   (type (;8;) (func (param i32) (result i32)))
   (type (;9;) (func (param i32)))
-  (func $dummy (;0;) (type 1))
-  (func (;1;) (type 2) (param i32 i32 i32) (result i32)
+  (type (;10;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 10)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 10)))
+  (func $dummy (;2;) (type 1))
+  (func (;3;) (type 2) (param i32 i32 i32) (result i32)
     local.get 0
     local.get 1
     local.get 2
     select
   )
-  (func (;2;) (type 3) (param i64 i64 i32) (result i64)
+  (func (;4;) (type 3) (param i64 i64 i32) (result i64)
     local.get 0
     local.get 1
     local.get 2
     select
   )
-  (func (;3;) (type 4) (param f32 f32 i32) (result f32)
+  (func (;5;) (type 4) (param f32 f32 i32) (result f32)
     local.get 0
     local.get 1
     local.get 2
     select
   )
-  (func (;4;) (type 5) (param f64 f64 i32) (result f64)
+  (func (;6;) (type 5) (param f64 f64 i32) (result f64)
     local.get 0
     local.get 1
     local.get 2
     select
   )
-  (func (;5;) (type 2) (param i32 i32 i32) (result i32)
+  (func (;7;) (type 2) (param i32 i32 i32) (result i32)
     local.get 0
     local.get 1
     local.get 2
     select (result i32)
   )
-  (func (;6;) (type 3) (param i64 i64 i32) (result i64)
+  (func (;8;) (type 3) (param i64 i64 i32) (result i64)
     local.get 0
     local.get 1
     local.get 2
     select (result i64)
   )
-  (func (;7;) (type 4) (param f32 f32 i32) (result f32)
+  (func (;9;) (type 4) (param f32 f32 i32) (result f32)
     local.get 0
     local.get 1
     local.get 2
     select (result f32)
   )
-  (func (;8;) (type 5) (param f64 f64 i32) (result f64)
+  (func (;10;) (type 5) (param f64 f64 i32) (result f64)
     local.get 0
     local.get 1
     local.get 2
     select (result f64)
   )
-  (func (;9;) (type 6) (param funcref funcref i32) (result funcref)
+  (func (;11;) (type 6) (param funcref funcref i32) (result funcref)
     local.get 0
     local.get 1
     local.get 2
     select (result funcref)
   )
-  (func (;10;) (type 7) (param externref externref i32) (result externref)
+  (func (;12;) (type 7) (param externref externref i32) (result externref)
     local.get 0
     local.get 1
     local.get 2
     select (result externref)
   )
-  (func (;11;) (type 8) (param i32) (result i32)
-    i32.const 0
-    i32.const 1
-    local.get 0
-    select
-    i32.const 2
-    i32.const 3
-    select
-  )
-  (func (;12;) (type 8) (param i32) (result i32)
-    i32.const 2
-    i32.const 0
-    i32.const 1
-    local.get 0
-    select
-    i32.const 3
-    select
-  )
   (func (;13;) (type 8) (param i32) (result i32)
-    i32.const 2
-    i32.const 3
     i32.const 0
     i32.const 1
     local.get 0
     select
+    i32.const 2
+    i32.const 3
     select
   )
   (func (;14;) (type 8) (param i32) (result i32)
-    loop (result i32) ;; label = @1
-      i32.const 2
-      i32.const 3
-      local.get 0
-      select
-      call $dummy
-      call $dummy
-    end
+    i32.const 2
+    i32.const 0
+    i32.const 1
+    local.get 0
+    select
+    i32.const 3
+    select
   )
   (func (;15;) (type 8) (param i32) (result i32)
-    loop (result i32) ;; label = @1
-      call $dummy
-      i32.const 2
-      i32.const 3
-      local.get 0
-      select
-      call $dummy
-    end
+    i32.const 2
+    i32.const 3
+    i32.const 0
+    i32.const 1
+    local.get 0
+    select
+    select
   )
   (func (;16;) (type 8) (param i32) (result i32)
     loop (result i32) ;; label = @1
+      i32.const 2
+      i32.const 3
+      local.get 0
+      select
+      call $dummy
+      call $dummy
+    end
+  )
+  (func (;17;) (type 8) (param i32) (result i32)
+    loop (result i32) ;; label = @1
+      call $dummy
+      i32.const 2
+      i32.const 3
+      local.get 0
+      select
+      call $dummy
+    end
+  )
+  (func (;18;) (type 8) (param i32) (result i32)
+    loop (result i32) ;; label = @1
       call $dummy
       call $dummy
       i32.const 2
@@ -127,7 +130,7 @@
       select
     end
   )
-  (func (;17;) (type 9) (param i32)
+  (func (;19;) (type 9) (param i32)
     i32.const 2
     i32.const 3
     local.get 0
@@ -136,7 +139,7 @@
       call $dummy
     end
   )
-  (func (;18;) (type 8) (param i32) (result i32)
+  (func (;20;) (type 8) (param i32) (result i32)
     i32.const 1
     if (result i32) ;; label = @1
       i32.const 2
@@ -147,7 +150,7 @@
       i32.const 4
     end
   )
-  (func (;19;) (type 8) (param i32) (result i32)
+  (func (;21;) (type 8) (param i32) (result i32)
     i32.const 0
     if (result i32) ;; label = @1
       i32.const 2
@@ -158,7 +161,7 @@
       select
     end
   )
-  (func (;20;) (type 8) (param i32) (result i32)
+  (func (;22;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 2
       i32.const 3
@@ -166,26 +169,6 @@
       select
       i32.const 4
       br_if 0 (;@1;)
-    end
-  )
-  (func (;21;) (type 8) (param i32) (result i32)
-    block (result i32) ;; label = @1
-      i32.const 2
-      i32.const 2
-      i32.const 3
-      local.get 0
-      select
-      br_if 0 (;@1;)
-    end
-  )
-  (func (;22;) (type 8) (param i32) (result i32)
-    block (result i32) ;; label = @1
-      i32.const 2
-      i32.const 3
-      local.get 0
-      select
-      i32.const 2
-      br_table 0 (;@1;) 0 (;@1;)
     end
   )
   (func (;23;) (type 8) (param i32) (result i32)
@@ -195,15 +178,35 @@
       i32.const 3
       local.get 0
       select
-      br_table 0 (;@1;) 0 (;@1;)
+      br_if 0 (;@1;)
     end
   )
-  (func $func (;24;) (type $check) (param i32 i32) (result i32)
-    local.get 0
+  (func (;24;) (type 8) (param i32) (result i32)
+    block (result i32) ;; label = @1
+      i32.const 2
+      i32.const 3
+      local.get 0
+      select
+      i32.const 2
+      br_table 0 (;@1;) 0 (;@1;)
+    end
   )
   (func (;25;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 2
+      i32.const 2
+      i32.const 3
+      local.get 0
+      select
+      br_table 0 (;@1;) 0 (;@1;)
+    end
+  )
+  (func $func (;26;) (type $check) (param i32 i32) (result i32)
+    local.get 0
+  )
+  (func (;27;) (type 8) (param i32) (result i32)
+    block (result i32) ;; label = @1
+      i32.const 2
       i32.const 3
       local.get 0
       select
@@ -212,7 +215,7 @@
       call_indirect $t (type $check)
     end
   )
-  (func (;26;) (type 8) (param i32) (result i32)
+  (func (;28;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 1
       i32.const 2
@@ -223,7 +226,7 @@
       call_indirect $t (type $check)
     end
   )
-  (func (;27;) (type 8) (param i32) (result i32)
+  (func (;29;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 1
       i32.const 4
@@ -234,7 +237,7 @@
       call_indirect $t (type $check)
     end
   )
-  (func (;28;) (type 9) (param i32)
+  (func (;30;) (type 9) (param i32)
     i32.const 0
     i32.const 4
     local.get 0
@@ -242,7 +245,7 @@
     i32.const 1
     i32.store
   )
-  (func (;29;) (type 9) (param i32)
+  (func (;31;) (type 9) (param i32)
     i32.const 8
     i32.const 1
     i32.const 2
@@ -250,38 +253,38 @@
     select
     i32.store
   )
-  (func (;30;) (type 8) (param i32) (result i32)
+  (func (;32;) (type 8) (param i32) (result i32)
     i32.const 1
     i32.const 2
     local.get 0
     select
     memory.grow
   )
-  (func $f (;31;) (type 8) (param i32) (result i32)
+  (func $f (;33;) (type 8) (param i32) (result i32)
     local.get 0
   )
-  (func (;32;) (type 8) (param i32) (result i32)
+  (func (;34;) (type 8) (param i32) (result i32)
     i32.const 1
     i32.const 2
     local.get 0
     select
     call $f
   )
-  (func (;33;) (type 8) (param i32) (result i32)
+  (func (;35;) (type 8) (param i32) (result i32)
     i32.const 1
     i32.const 2
     local.get 0
     select
     return
   )
-  (func (;34;) (type 9) (param i32)
+  (func (;36;) (type 9) (param i32)
     i32.const 1
     i32.const 2
     local.get 0
     select
     drop
   )
-  (func (;35;) (type 8) (param i32) (result i32)
+  (func (;37;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 1
       i32.const 2
@@ -290,7 +293,7 @@
       br 0 (;@1;)
     end
   )
-  (func (;36;) (type 8) (param i32) (result i32)
+  (func (;38;) (type 8) (param i32) (result i32)
     (local i32)
     i32.const 1
     i32.const 2
@@ -299,14 +302,14 @@
     local.set 0
     local.get 0
   )
-  (func (;37;) (type 8) (param i32) (result i32)
+  (func (;39;) (type 8) (param i32) (result i32)
     i32.const 1
     i32.const 2
     local.get 0
     select
     local.tee 0
   )
-  (func (;38;) (type 8) (param i32) (result i32)
+  (func (;40;) (type 8) (param i32) (result i32)
     i32.const 1
     i32.const 2
     local.get 0
@@ -314,21 +317,21 @@
     global.set $a
     global.get $a
   )
-  (func (;39;) (type 8) (param i32) (result i32)
+  (func (;41;) (type 8) (param i32) (result i32)
     i32.const 0
     i32.const 4
     local.get 0
     select
     i32.load
   )
-  (func (;40;) (type 8) (param i32) (result i32)
+  (func (;42;) (type 8) (param i32) (result i32)
     i32.const 0
     i32.const 1
     local.get 0
     select
     i32.eqz
   )
-  (func (;41;) (type 8) (param i32) (result i32)
+  (func (;43;) (type 8) (param i32) (result i32)
     i32.const 1
     i32.const 2
     local.get 0
@@ -339,7 +342,7 @@
     select
     i32.mul
   )
-  (func (;42;) (type 8) (param i32) (result i32)
+  (func (;44;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 0
       i32.const 1
@@ -348,7 +351,7 @@
       i32.eqz
     end
   )
-  (func (;43;) (type 8) (param i32) (result i32)
+  (func (;45;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 1
       i32.const 2
@@ -358,7 +361,7 @@
       i32.le_s
     end
   )
-  (func (;44;) (type 8) (param i32) (result i32)
+  (func (;46;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i32.const 1
       i32.const 0
@@ -368,7 +371,7 @@
       i32.ne
     end
   )
-  (func (;45;) (type 8) (param i32) (result i32)
+  (func (;47;) (type 8) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 1
       i64.const 0
@@ -381,49 +384,49 @@
   (table $t (;1;) 1 1 funcref)
   (memory (;0;) 1)
   (global $a (;0;) (mut i32) i32.const 10)
-  (export "select-i32" (func 1))
-  (export "select-i64" (func 2))
-  (export "select-f32" (func 3))
-  (export "select-f64" (func 4))
-  (export "select-i32-t" (func 5))
-  (export "select-i64-t" (func 6))
-  (export "select-f32-t" (func 7))
-  (export "select-f64-t" (func 8))
-  (export "select-funcref" (func 9))
-  (export "select-externref" (func 10))
-  (export "as-select-first" (func 11))
-  (export "as-select-mid" (func 12))
-  (export "as-select-last" (func 13))
-  (export "as-loop-first" (func 14))
-  (export "as-loop-mid" (func 15))
-  (export "as-loop-last" (func 16))
-  (export "as-if-condition" (func 17))
-  (export "as-if-then" (func 18))
-  (export "as-if-else" (func 19))
-  (export "as-br_if-first" (func 20))
-  (export "as-br_if-last" (func 21))
-  (export "as-br_table-first" (func 22))
-  (export "as-br_table-last" (func 23))
-  (export "as-call_indirect-first" (func 25))
-  (export "as-call_indirect-mid" (func 26))
-  (export "as-call_indirect-last" (func 27))
-  (export "as-store-first" (func 28))
-  (export "as-store-last" (func 29))
-  (export "as-memory.grow-value" (func 30))
-  (export "as-call-value" (func 32))
-  (export "as-return-value" (func 33))
-  (export "as-drop-operand" (func 34))
-  (export "as-br-value" (func 35))
-  (export "as-local.set-value" (func 36))
-  (export "as-local.tee-value" (func 37))
-  (export "as-global.set-value" (func 38))
-  (export "as-load-operand" (func 39))
-  (export "as-unary-operand" (func 40))
-  (export "as-binary-operand" (func 41))
-  (export "as-test-operand" (func 42))
-  (export "as-compare-left" (func 43))
-  (export "as-compare-right" (func 44))
-  (export "as-convert-operand" (func 45))
-  (elem (;0;) (i32.const 0) func $dummy)
-  (elem (;1;) (table $t) (i32.const 0) func $func)
+  (export "select-i32" (func 3))
+  (export "select-i64" (func 4))
+  (export "select-f32" (func 5))
+  (export "select-f64" (func 6))
+  (export "select-i32-t" (func 7))
+  (export "select-i64-t" (func 8))
+  (export "select-f32-t" (func 9))
+  (export "select-f64-t" (func 10))
+  (export "select-funcref" (func 11))
+  (export "select-externref" (func 12))
+  (export "as-select-first" (func 13))
+  (export "as-select-mid" (func 14))
+  (export "as-select-last" (func 15))
+  (export "as-loop-first" (func 16))
+  (export "as-loop-mid" (func 17))
+  (export "as-loop-last" (func 18))
+  (export "as-if-condition" (func 19))
+  (export "as-if-then" (func 20))
+  (export "as-if-else" (func 21))
+  (export "as-br_if-first" (func 22))
+  (export "as-br_if-last" (func 23))
+  (export "as-br_table-first" (func 24))
+  (export "as-br_table-last" (func 25))
+  (export "as-call_indirect-first" (func 27))
+  (export "as-call_indirect-mid" (func 28))
+  (export "as-call_indirect-last" (func 29))
+  (export "as-store-first" (func 30))
+  (export "as-store-last" (func 31))
+  (export "as-memory.grow-value" (func 32))
+  (export "as-call-value" (func 34))
+  (export "as-return-value" (func 35))
+  (export "as-drop-operand" (func 36))
+  (export "as-br-value" (func 37))
+  (export "as-local.set-value" (func 38))
+  (export "as-local.tee-value" (func 39))
+  (export "as-global.set-value" (func 40))
+  (export "as-load-operand" (func 41))
+  (export "as-unary-operand" (func 42))
+  (export "as-binary-operand" (func 43))
+  (export "as-test-operand" (func 44))
+  (export "as-compare-left" (func 45))
+  (export "as-compare-right" (func 46))
+  (export "as-convert-operand" (func 47))
+  (elem (;0;) (i32.const 0) func)
+  (elem (;1;) (table $t) (i32.const 0) func)
 )

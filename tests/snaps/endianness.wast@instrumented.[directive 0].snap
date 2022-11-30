@@ -6,7 +6,10 @@
   (type (;4;) (func (param i64) (result i64)))
   (type (;5;) (func (param f32) (result f32)))
   (type (;6;) (func (param f64) (result f64)))
-  (func $i16_store_little (;0;) (type 0) (param $address i32) (param $value i32)
+  (type (;7;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 7)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 7)))
+  (func $i16_store_little (;2;) (type 0) (param $address i32) (param $value i32)
     local.get $address
     local.get $value
     i32.store8
@@ -18,7 +21,7 @@
     i32.shr_u
     i32.store8
   )
-  (func $i32_store_little (;1;) (type 0) (param $address i32) (param $value i32)
+  (func $i32_store_little (;3;) (type 0) (param $address i32) (param $value i32)
     local.get $address
     local.get $value
     call $i16_store_little
@@ -30,7 +33,7 @@
     i32.shr_u
     call $i16_store_little
   )
-  (func $i64_store_little (;2;) (type 1) (param $address i32) (param $value i64)
+  (func $i64_store_little (;4;) (type 1) (param $address i32) (param $value i64)
     local.get $address
     local.get $value
     i32.wrap_i64
@@ -44,7 +47,7 @@
     i32.wrap_i64
     call $i32_store_little
   )
-  (func $i16_load_little (;3;) (type 2) (param $address i32) (result i32)
+  (func $i16_load_little (;5;) (type 2) (param $address i32) (result i32)
     local.get $address
     i32.load8_u
     local.get $address
@@ -55,7 +58,7 @@
     i32.shl
     i32.or
   )
-  (func $i32_load_little (;4;) (type 2) (param $address i32) (result i32)
+  (func $i32_load_little (;6;) (type 2) (param $address i32) (result i32)
     local.get $address
     call $i16_load_little
     local.get $address
@@ -66,7 +69,7 @@
     i32.shl
     i32.or
   )
-  (func $i64_load_little (;5;) (type 3) (param $address i32) (result i64)
+  (func $i64_load_little (;7;) (type 3) (param $address i32) (result i64)
     local.get $address
     call $i32_load_little
     i64.extend_i32_u
@@ -79,28 +82,28 @@
     i64.shl
     i64.or
   )
-  (func (;6;) (type 2) (param $value i32) (result i32)
+  (func (;8;) (type 2) (param $value i32) (result i32)
     i32.const 0
     local.get $value
     call $i16_store_little
     i32.const 0
     i32.load16_s
   )
-  (func (;7;) (type 2) (param $value i32) (result i32)
+  (func (;9;) (type 2) (param $value i32) (result i32)
     i32.const 0
     local.get $value
     call $i16_store_little
     i32.const 0
     i32.load16_u
   )
-  (func (;8;) (type 2) (param $value i32) (result i32)
+  (func (;10;) (type 2) (param $value i32) (result i32)
     i32.const 0
     local.get $value
     call $i32_store_little
     i32.const 0
     i32.load
   )
-  (func (;9;) (type 4) (param $value i64) (result i64)
+  (func (;11;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i32.wrap_i64
@@ -108,7 +111,7 @@
     i32.const 0
     i64.load16_s
   )
-  (func (;10;) (type 4) (param $value i64) (result i64)
+  (func (;12;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i32.wrap_i64
@@ -116,7 +119,7 @@
     i32.const 0
     i64.load16_u
   )
-  (func (;11;) (type 4) (param $value i64) (result i64)
+  (func (;13;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i32.wrap_i64
@@ -124,7 +127,7 @@
     i32.const 0
     i64.load32_s
   )
-  (func (;12;) (type 4) (param $value i64) (result i64)
+  (func (;14;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i32.wrap_i64
@@ -132,14 +135,14 @@
     i32.const 0
     i64.load32_u
   )
-  (func (;13;) (type 4) (param $value i64) (result i64)
+  (func (;15;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     call $i64_store_little
     i32.const 0
     i64.load
   )
-  (func (;14;) (type 5) (param $value f32) (result f32)
+  (func (;16;) (type 5) (param $value f32) (result f32)
     i32.const 0
     local.get $value
     i32.reinterpret_f32
@@ -147,7 +150,7 @@
     i32.const 0
     f32.load
   )
-  (func (;15;) (type 6) (param $value f64) (result f64)
+  (func (;17;) (type 6) (param $value f64) (result f64)
     i32.const 0
     local.get $value
     i64.reinterpret_f64
@@ -155,21 +158,21 @@
     i32.const 0
     f64.load
   )
-  (func (;16;) (type 2) (param $value i32) (result i32)
+  (func (;18;) (type 2) (param $value i32) (result i32)
     i32.const 0
     local.get $value
     i32.store16
     i32.const 0
     call $i16_load_little
   )
-  (func (;17;) (type 2) (param $value i32) (result i32)
+  (func (;19;) (type 2) (param $value i32) (result i32)
     i32.const 0
     local.get $value
     i32.store
     i32.const 0
     call $i32_load_little
   )
-  (func (;18;) (type 4) (param $value i64) (result i64)
+  (func (;20;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i64.store16
@@ -177,7 +180,7 @@
     call $i16_load_little
     i64.extend_i32_u
   )
-  (func (;19;) (type 4) (param $value i64) (result i64)
+  (func (;21;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i64.store32
@@ -185,14 +188,14 @@
     call $i32_load_little
     i64.extend_i32_u
   )
-  (func (;20;) (type 4) (param $value i64) (result i64)
+  (func (;22;) (type 4) (param $value i64) (result i64)
     i32.const 0
     local.get $value
     i64.store
     i32.const 0
     call $i64_load_little
   )
-  (func (;21;) (type 5) (param $value f32) (result f32)
+  (func (;23;) (type 5) (param $value f32) (result f32)
     i32.const 0
     local.get $value
     f32.store
@@ -200,7 +203,7 @@
     call $i32_load_little
     f32.reinterpret_i32
   )
-  (func (;22;) (type 6) (param $value f64) (result f64)
+  (func (;24;) (type 6) (param $value f64) (result f64)
     i32.const 0
     local.get $value
     f64.store
@@ -209,21 +212,21 @@
     f64.reinterpret_i64
   )
   (memory (;0;) 1)
-  (export "i32_load16_s" (func 6))
-  (export "i32_load16_u" (func 7))
-  (export "i32_load" (func 8))
-  (export "i64_load16_s" (func 9))
-  (export "i64_load16_u" (func 10))
-  (export "i64_load32_s" (func 11))
-  (export "i64_load32_u" (func 12))
-  (export "i64_load" (func 13))
-  (export "f32_load" (func 14))
-  (export "f64_load" (func 15))
-  (export "i32_store16" (func 16))
-  (export "i32_store" (func 17))
-  (export "i64_store16" (func 18))
-  (export "i64_store32" (func 19))
-  (export "i64_store" (func 20))
-  (export "f32_store" (func 21))
-  (export "f64_store" (func 22))
+  (export "i32_load16_s" (func 8))
+  (export "i32_load16_u" (func 9))
+  (export "i32_load" (func 10))
+  (export "i64_load16_s" (func 11))
+  (export "i64_load16_u" (func 12))
+  (export "i64_load32_s" (func 13))
+  (export "i64_load32_u" (func 14))
+  (export "i64_load" (func 15))
+  (export "f32_load" (func 16))
+  (export "f64_load" (func 17))
+  (export "i32_store16" (func 18))
+  (export "i32_store" (func 19))
+  (export "i64_store16" (func 20))
+  (export "i64_store32" (func 21))
+  (export "i64_store" (func 22))
+  (export "f32_store" (func 23))
+  (export "f64_store" (func 24))
 )

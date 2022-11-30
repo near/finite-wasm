@@ -1,7 +1,10 @@
 (module
   (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (import "spectest" "global_i32" (global (;0;) i32))
-  (func $f (;0;) (type 0))
+  (func $f (;2;) (type 0))
   (table (;0;) 1000 funcref)
-  (elem (;0;) (global.get 0) func $f)
+  (elem (;0;) (global.get 0) func)
 )

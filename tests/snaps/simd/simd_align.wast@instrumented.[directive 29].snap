@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func))
-  (func (;0;) (type 0)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
     i32.const 0
     v128.load32x2_s
     drop

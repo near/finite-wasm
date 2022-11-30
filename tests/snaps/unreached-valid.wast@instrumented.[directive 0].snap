@@ -3,19 +3,22 @@
   (type (;1;) (func))
   (type (;2;) (func (result i32)))
   (type (;3;) (func (result i64)))
-  (func (;0;) (type 0) (param $cond i32) (result i32)
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0) (param $cond i32) (result i32)
     unreachable
     i32.const 0
     local.get $cond
     select
   )
-  (func (;1;) (type 0) (param $cond i32) (result i32)
+  (func (;3;) (type 0) (param $cond i32) (result i32)
     i32.const 0
     unreachable
     local.get $cond
     select
   )
-  (func (;2;) (type 1)
+  (func (;4;) (type 1)
     unreachable
     select
     unreachable
@@ -36,35 +39,35 @@
     select
     unreachable
   )
-  (func (;3;) (type 2) (result i32)
+  (func (;5;) (type 2) (result i32)
     unreachable
     select
     i32.add
   )
-  (func (;4;) (type 3) (result i64)
+  (func (;6;) (type 3) (result i64)
     unreachable
     i64.const 0
     i32.const 0
     select
     i64.add
   )
-  (func (;5;) (type 1)
+  (func (;7;) (type 1)
     unreachable
     select
     i32.eqz
     drop
   )
-  (func (;6;) (type 1)
+  (func (;8;) (type 1)
     unreachable
     select
     ref.is_null
     drop
   )
-  (export "select-trap-left" (func 0))
-  (export "select-trap-right" (func 1))
-  (export "select-unreached" (func 2))
-  (export "select_unreached_result_1" (func 3))
-  (export "select_unreached_result_2" (func 4))
-  (export "unreachable-num" (func 5))
-  (export "unreachable-ref" (func 6))
+  (export "select-trap-left" (func 2))
+  (export "select-trap-right" (func 3))
+  (export "select-unreached" (func 4))
+  (export "select_unreached_result_1" (func 5))
+  (export "select_unreached_result_2" (func 6))
+  (export "unreachable-num" (func 7))
+  (export "unreachable-ref" (func 8))
 )

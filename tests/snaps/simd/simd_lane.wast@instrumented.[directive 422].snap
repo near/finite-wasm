@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (result i32)))
-  (func (;0;) (type 0) (result i32)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result i32)
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
     i8x16.extract_lane_s 15
   )

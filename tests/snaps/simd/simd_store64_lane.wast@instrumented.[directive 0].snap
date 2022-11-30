@@ -1,7 +1,10 @@
 (module
   (type (;0;) (func (param i32 v128) (result i64)))
   (type (;1;) (func (param v128) (result i64)))
-  (func (;0;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -14,7 +17,7 @@
     v128.store
     local.get $ret
   )
-  (func (;1;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;3;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -27,7 +30,7 @@
     v128.store
     local.get $ret
   )
-  (func (;2;) (type 1) (param $x v128) (result i64)
+  (func (;4;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i32.const 0
     local.get $x
@@ -40,7 +43,7 @@
     v128.store
     local.get $ret
   )
-  (func (;3;) (type 1) (param $x v128) (result i64)
+  (func (;5;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i32.const 0
     local.get $x
@@ -53,7 +56,7 @@
     v128.store offset=1
     local.get $ret
   )
-  (func (;4;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;6;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -66,7 +69,7 @@
     v128.store
     local.get $ret
   )
-  (func (;5;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;7;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -79,7 +82,7 @@
     v128.store
     local.get $ret
   )
-  (func (;6;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;8;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -92,7 +95,7 @@
     v128.store
     local.get $ret
   )
-  (func (;7;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;9;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -105,7 +108,7 @@
     v128.store
     local.get $ret
   )
-  (func (;8;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;10;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -118,7 +121,7 @@
     v128.store offset=1
     local.get $ret
   )
-  (func (;9;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;11;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -131,7 +134,7 @@
     v128.store offset=1
     local.get $ret
   )
-  (func (;10;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;12;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -144,7 +147,7 @@
     v128.store offset=1
     local.get $ret
   )
-  (func (;11;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;13;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     local.get $address
     local.get $x
@@ -159,16 +162,16 @@
   )
   (memory (;0;) 1)
   (global $zero (;0;) (mut v128) v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000)
-  (export "v128.store64_lane_0" (func 0))
-  (export "v128.store64_lane_1" (func 1))
-  (export "v128.store64_lane_0_offset_0" (func 2))
-  (export "v128.store64_lane_1_offset_1" (func 3))
-  (export "v128.store64_lane_0_align_1" (func 4))
-  (export "v128.store64_lane_0_align_2" (func 5))
-  (export "v128.store64_lane_0_align_4" (func 6))
-  (export "v128.store64_lane_0_align_8" (func 7))
-  (export "v128.store64_lane_1_align_1" (func 8))
-  (export "v128.store64_lane_1_align_2" (func 9))
-  (export "v128.store64_lane_1_align_4" (func 10))
-  (export "v128.store64_lane_1_align_8" (func 11))
+  (export "v128.store64_lane_0" (func 2))
+  (export "v128.store64_lane_1" (func 3))
+  (export "v128.store64_lane_0_offset_0" (func 4))
+  (export "v128.store64_lane_1_offset_1" (func 5))
+  (export "v128.store64_lane_0_align_1" (func 6))
+  (export "v128.store64_lane_0_align_2" (func 7))
+  (export "v128.store64_lane_0_align_4" (func 8))
+  (export "v128.store64_lane_0_align_8" (func 9))
+  (export "v128.store64_lane_1_align_1" (func 10))
+  (export "v128.store64_lane_1_align_2" (func 11))
+  (export "v128.store64_lane_1_align_4" (func 12))
+  (export "v128.store64_lane_1_align_8" (func 13))
 )

@@ -1,9 +1,12 @@
 (module
   (type (;0;) (func (param i32)))
-  (import "spectest" "print_i32" (func $imported_print (;0;) (type 0)))
-  (func (;1;) (type 0) (param $i i32)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "print_i32" (func $imported_print (;2;) (type 0)))
+  (func (;3;) (type 0) (param $i i32)
     local.get $i
     call $imported_print
   )
-  (export "print_i32" (func 1))
+  (export "print_i32" (func 3))
 )

@@ -1,12 +1,15 @@
 (module
   (type (;0;) (func))
-  (func $f1 (;0;) (type 0))
-  (func $f2 (;1;) (type 0))
-  (func $f3 (;2;) (type 0))
-  (func $f4 (;3;) (type 0))
-  (func $f5 (;4;) (type 0))
-  (func $f6 (;5;) (type 0))
-  (func (;6;) (type 0)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func $f1 (;2;) (type 0))
+  (func $f2 (;3;) (type 0))
+  (func $f3 (;4;) (type 0))
+  (func $f4 (;5;) (type 0))
+  (func $f5 (;6;) (type 0))
+  (func $f6 (;7;) (type 0))
+  (func (;8;) (type 0)
     ref.func $f1
     ref.func $f2
     ref.func $f3
@@ -16,10 +19,10 @@
     return
   )
   (table $t (;0;) 1 funcref)
-  (global (;0;) funcref ref.func $f1)
+  (global (;0;) funcref ref.func 0)
   (export "f" (func $f2))
-  (elem (;0;) (i32.const 0) func $f3)
-  (elem (;1;) (i32.const 0) funcref (ref.func $f4))
-  (elem (;2;) func $f5)
-  (elem (;3;) funcref (ref.func $f6))
+  (elem (;0;) (i32.const 0) func)
+  (elem (;1;) (i32.const 0) func)
+  (elem (;2;) func)
+  (elem (;3;) func)
 )

@@ -3,7 +3,10 @@
   (type (;1;) (func (result f64)))
   (type (;2;) (func (param i32) (result i32)))
   (type (;3;) (func (param i64) (result i64)))
-  (func (;0;) (type 0) (result i32)
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0) (result i32)
     i32.const 0
     i32.load8_u
     i32.const 65
@@ -44,7 +47,7 @@
     i32.and
     i32.and
   )
-  (func (;1;) (type 1) (result f64)
+  (func (;3;) (type 1) (result f64)
     i32.const 8
     i64.const -12345
     i64.store
@@ -66,70 +69,70 @@
     i32.const 9
     f64.load align=1
   )
-  (func (;2;) (type 2) (param $i i32) (result i32)
+  (func (;4;) (type 2) (param $i i32) (result i32)
     i32.const 8
     local.get $i
     i32.store8
     i32.const 8
     i32.load8_s
   )
-  (func (;3;) (type 2) (param $i i32) (result i32)
+  (func (;5;) (type 2) (param $i i32) (result i32)
     i32.const 8
     local.get $i
     i32.store8
     i32.const 8
     i32.load8_u
   )
-  (func (;4;) (type 2) (param $i i32) (result i32)
+  (func (;6;) (type 2) (param $i i32) (result i32)
     i32.const 8
     local.get $i
     i32.store16
     i32.const 8
     i32.load16_s
   )
-  (func (;5;) (type 2) (param $i i32) (result i32)
+  (func (;7;) (type 2) (param $i i32) (result i32)
     i32.const 8
     local.get $i
     i32.store16
     i32.const 8
     i32.load16_u
   )
-  (func (;6;) (type 3) (param $i i64) (result i64)
+  (func (;8;) (type 3) (param $i i64) (result i64)
     i32.const 8
     local.get $i
     i64.store8
     i32.const 8
     i64.load8_s
   )
-  (func (;7;) (type 3) (param $i i64) (result i64)
+  (func (;9;) (type 3) (param $i i64) (result i64)
     i32.const 8
     local.get $i
     i64.store8
     i32.const 8
     i64.load8_u
   )
-  (func (;8;) (type 3) (param $i i64) (result i64)
+  (func (;10;) (type 3) (param $i i64) (result i64)
     i32.const 8
     local.get $i
     i64.store16
     i32.const 8
     i64.load16_s
   )
-  (func (;9;) (type 3) (param $i i64) (result i64)
+  (func (;11;) (type 3) (param $i i64) (result i64)
     i32.const 8
     local.get $i
     i64.store16
     i32.const 8
     i64.load16_u
   )
-  (func (;10;) (type 3) (param $i i64) (result i64)
+  (func (;12;) (type 3) (param $i i64) (result i64)
     i32.const 8
     local.get $i
     i64.store32
     i32.const 8
     i64.load32_s
   )
-  (func (;11;) (type 3) (param $i i64) (result i64)
+  (func (;13;) (type 3) (param $i i64) (result i64)
     i32.const 8
     local.get $i
     i64.store32
@@ -137,18 +140,18 @@
     i64.load32_u
   )
   (memory (;0;) 1)
-  (export "data" (func 0))
-  (export "cast" (func 1))
-  (export "i32_load8_s" (func 2))
-  (export "i32_load8_u" (func 3))
-  (export "i32_load16_s" (func 4))
-  (export "i32_load16_u" (func 5))
-  (export "i64_load8_s" (func 6))
-  (export "i64_load8_u" (func 7))
-  (export "i64_load16_s" (func 8))
-  (export "i64_load16_u" (func 9))
-  (export "i64_load32_s" (func 10))
-  (export "i64_load32_u" (func 11))
+  (export "data" (func 2))
+  (export "cast" (func 3))
+  (export "i32_load8_s" (func 4))
+  (export "i32_load8_u" (func 5))
+  (export "i32_load16_s" (func 6))
+  (export "i32_load16_u" (func 7))
+  (export "i64_load8_s" (func 8))
+  (export "i64_load8_u" (func 9))
+  (export "i64_load16_s" (func 10))
+  (export "i64_load16_u" (func 11))
+  (export "i64_load32_s" (func 12))
+  (export "i64_load32_u" (func 13))
   (data (;0;) (i32.const 0) "ABC\a7D")
   (data (;1;) (i32.const 20) "WASM")
 )

@@ -1,7 +1,11 @@
 (module
+  (start $main)
   (type (;0;) (func))
   (type (;1;) (func (result i32)))
-  (func $inc (;0;) (type 0)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func $inc (;2;) (type 0)
     i32.const 0
     i32.const 0
     i32.load8_u
@@ -9,12 +13,12 @@
     i32.add
     i32.store8
   )
-  (func $get (;1;) (type 1) (result i32)
+  (func $get (;3;) (type 1) (result i32)
     i32.const 0
     i32.load8_u
     return
   )
-  (func $main (;2;) (type 0)
+  (func $main (;4;) (type 0)
     call $inc
     call $inc
     call $inc
@@ -22,6 +26,5 @@
   (memory (;0;) 1 1)
   (export "inc" (func $inc))
   (export "get" (func $get))
-  (start $main)
   (data (;0;) (i32.const 0) "A")
 )

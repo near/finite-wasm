@@ -1,13 +1,16 @@
 (module
   (type (;0;) (func))
-  (func $f (;0;) (type 0))
-  (func (;1;) (type 0)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func $f (;2;) (type 0))
+  (func (;3;) (type 0)
     i32.const 0
     i32.const 0
     i32.const 1
     table.init $e
   )
   (table (;0;) 10 funcref)
-  (export "init" (func 1))
-  (elem $e (;0;) (i32.const 0) func $f)
+  (export "init" (func 3))
+  (elem $e (;0;) (i32.const 0) func)
 )

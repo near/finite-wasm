@@ -1,11 +1,14 @@
 (module
   (type (;0;) (func (result v128)))
-  (func (;0;) (type 0) (result v128)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result v128)
     i32.const 0
     v128.load
     f32x4.abs
   )
   (memory (;0;) 1)
-  (export "as-f32x4.abs-operand" (func 0))
+  (export "as-f32x4.abs-operand" (func 2))
   (data (;0;) (i32.const 0) "\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff")
 )

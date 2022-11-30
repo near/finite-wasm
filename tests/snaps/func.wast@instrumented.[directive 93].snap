@@ -1,25 +1,28 @@
 (module
   (type $proc (;0;) (func (result i32)))
   (type $sig (;1;) (func (param i32) (result i32)))
-  (func (;0;) (type $sig) (param $var i32) (result i32)
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type $sig) (param $var i32) (result i32)
     (local i32)
     local.get 1
   )
-  (func $g (;1;) (type $sig) (param $var i32) (result i32)
+  (func $g (;3;) (type $sig) (param $var i32) (result i32)
     (local i32)
     local.get 1
   )
-  (func (;2;) (type $sig) (param i32) (result i32)
+  (func (;4;) (type $sig) (param i32) (result i32)
     local.get 0
     call $g
   )
-  (func (;3;) (type $proc) (result i32)
+  (func (;5;) (type $proc) (result i32)
     (local $var i32)
     i32.const 42
     local.set $var
     local.get $var
   )
-  (export "f" (func 0))
-  (export "g" (func 2))
-  (export "p" (func 3))
+  (export "f" (func 2))
+  (export "g" (func 4))
+  (export "p" (func 5))
 )

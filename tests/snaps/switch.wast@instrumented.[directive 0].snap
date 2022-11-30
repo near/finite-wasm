@@ -2,7 +2,10 @@
   (type (;0;) (func (param i32) (result i32)))
   (type (;1;) (func (param i64) (result i64)))
   (type (;2;) (func (result i32)))
-  (func (;0;) (type 0) (param $i i32) (result i32)
+  (type (;3;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (func (;2;) (type 0) (param $i i32) (result i32)
     (local $j i32)
     i32.const 100
     local.set $j
@@ -47,7 +50,7 @@
     local.get $j
     return
   )
-  (func (;1;) (type 1) (param $i i64) (result i64)
+  (func (;3;) (type 1) (param $i i64) (result i64)
     (local $j i64)
     i64.const 100
     local.set $j
@@ -88,7 +91,7 @@
     end
     return
   )
-  (func (;2;) (type 0) (param $i i32) (result i32)
+  (func (;4;) (type 0) (param $i i32) (result i32)
     block $2 (result i32) ;; label = @1
       i32.const 10
       block $1 (result i32) ;; label = @2
@@ -112,15 +115,15 @@
     end
     return
   )
-  (func (;3;) (type 2) (result i32)
+  (func (;5;) (type 2) (result i32)
     block ;; label = @1
       i32.const 0
       br_table 0 (;@1;)
     end
     i32.const 1
   )
-  (export "stmt" (func 0))
-  (export "expr" (func 1))
-  (export "arg" (func 2))
-  (export "corner" (func 3))
+  (export "stmt" (func 2))
+  (export "expr" (func 3))
+  (export "arg" (func 4))
+  (export "corner" (func 5))
 )

@@ -1,64 +1,67 @@
 (module
   (type (;0;) (func (param v128 v128 v128) (result v128)))
   (type (;1;) (func (param v128 v128) (result v128)))
-  (func (;0;) (type 0) (param v128 v128 v128) (result v128)
-    local.get 0
-    local.get 1
-    i8x16.sub_sat_s
-    local.get 2
-    i8x16.add_sat_s
-  )
-  (func (;1;) (type 0) (param v128 v128 v128) (result v128)
-    local.get 0
-    local.get 1
-    i8x16.sub_sat_u
-    local.get 2
-    i8x16.add_sat_s
-  )
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
     i8x16.sub_sat_s
     local.get 2
-    i8x16.add_sat_u
+    i8x16.add_sat_s
   )
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
     local.get 1
     i8x16.sub_sat_u
     local.get 2
-    i8x16.add_sat_u
-  )
-  (func (;4;) (type 1) (param v128 v128) (result v128)
-    local.get 0
-    i8x16.neg
-    local.get 1
     i8x16.add_sat_s
   )
-  (func (;5;) (type 1) (param v128 v128) (result v128)
+  (func (;4;) (type 0) (param v128 v128 v128) (result v128)
     local.get 0
-    i8x16.neg
     local.get 1
+    i8x16.sub_sat_s
+    local.get 2
+    i8x16.add_sat_u
+  )
+  (func (;5;) (type 0) (param v128 v128 v128) (result v128)
+    local.get 0
+    local.get 1
+    i8x16.sub_sat_u
+    local.get 2
     i8x16.add_sat_u
   )
   (func (;6;) (type 1) (param v128 v128) (result v128)
     local.get 0
     i8x16.neg
     local.get 1
-    i8x16.sub_sat_s
+    i8x16.add_sat_s
   )
   (func (;7;) (type 1) (param v128 v128) (result v128)
     local.get 0
     i8x16.neg
     local.get 1
+    i8x16.add_sat_u
+  )
+  (func (;8;) (type 1) (param v128 v128) (result v128)
+    local.get 0
+    i8x16.neg
+    local.get 1
+    i8x16.sub_sat_s
+  )
+  (func (;9;) (type 1) (param v128 v128) (result v128)
+    local.get 0
+    i8x16.neg
+    local.get 1
     i8x16.sub_sat_u
   )
-  (export "sat-add_s-sub_s" (func 0))
-  (export "sat-add_s-sub_u" (func 1))
-  (export "sat-add_u-sub_s" (func 2))
-  (export "sat-add_u-sub_u" (func 3))
-  (export "sat-add_s-neg" (func 4))
-  (export "sat-add_u-neg" (func 5))
-  (export "sat-sub_s-neg" (func 6))
-  (export "sat-sub_u-neg" (func 7))
+  (export "sat-add_s-sub_s" (func 2))
+  (export "sat-add_s-sub_u" (func 3))
+  (export "sat-add_u-sub_s" (func 4))
+  (export "sat-add_u-sub_u" (func 5))
+  (export "sat-add_s-neg" (func 6))
+  (export "sat-add_u-neg" (func 7))
+  (export "sat-sub_s-neg" (func 8))
+  (export "sat-sub_u-neg" (func 9))
 )

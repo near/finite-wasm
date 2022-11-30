@@ -22,4 +22,7 @@
   (type (;20;) (func (param f32 f64 i32)))
   (type (;21;) (func (result i64 i64 f32)))
   (type (;22;) (func (param i32 i32 i64 i32 i32) (result f32 f64 f64 i32)))
+  (type (;23;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 23)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 23)))
 )

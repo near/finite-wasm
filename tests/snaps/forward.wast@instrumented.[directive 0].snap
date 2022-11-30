@@ -1,6 +1,9 @@
 (module
   (type (;0;) (func (param i32) (result i32)))
-  (func $even (;0;) (type 0) (param $n i32) (result i32)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func $even (;2;) (type 0) (param $n i32) (result i32)
     local.get $n
     i32.const 0
     i32.eq
@@ -13,7 +16,7 @@
       call $odd
     end
   )
-  (func $odd (;1;) (type 0) (param $n i32) (result i32)
+  (func $odd (;3;) (type 0) (param $n i32) (result i32)
     local.get $n
     i32.const 0
     i32.eq

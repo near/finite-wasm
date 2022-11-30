@@ -3,7 +3,10 @@
   (type (;1;) (func (result i32)))
   (type (;2;) (func (result f32)))
   (type (;3;) (func (param i32) (result i32)))
-  (func (;0;) (type 0)
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0)
     i32.const 0
     i32.const 0
     i32.store
@@ -17,7 +20,7 @@
     i32.const 0
     i32.store
   )
-  (func (;1;) (type 1) (result i32)
+  (func (;3;) (type 1) (result i32)
     i32.const 8
     i32.const 0
     i32.store
@@ -27,7 +30,7 @@
     i32.const 8
     i32.load
   )
-  (func (;2;) (type 1) (result i32)
+  (func (;4;) (type 1) (result i32)
     (local $t i32) (local $s i32)
     i32.const 8
     i32.load
@@ -42,7 +45,7 @@
     local.get $s
     i32.add
   )
-  (func (;3;) (type 2) (result f32)
+  (func (;5;) (type 2) (result f32)
     (local $t f32)
     i32.const 8
     i32.const 589505315
@@ -55,10 +58,10 @@
     i32.store
     local.get $t
   )
-  (func $malloc (;4;) (type 3) (param $size i32) (result i32)
+  (func $malloc (;6;) (type 3) (param $size i32) (result i32)
     i32.const 16
   )
-  (func (;5;) (type 1) (result i32)
+  (func (;7;) (type 1) (result i32)
     (local $x i32) (local $y i32)
     i32.const 4
     call $malloc
@@ -76,10 +79,10 @@
     i32.load
   )
   (memory (;0;) 1 1)
-  (export "zero_everything" (func 0))
-  (export "test_store_to_load" (func 1))
-  (export "test_redundant_load" (func 2))
-  (export "test_dead_store" (func 3))
+  (export "zero_everything" (func 2))
+  (export "test_store_to_load" (func 3))
+  (export "test_redundant_load" (func 4))
+  (export "test_dead_store" (func 5))
   (export "malloc" (func $malloc))
-  (export "malloc_aliasing" (func 5))
+  (export "malloc_aliasing" (func 7))
 )

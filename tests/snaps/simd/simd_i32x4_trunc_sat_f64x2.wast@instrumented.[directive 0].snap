@@ -1,13 +1,16 @@
 (module
   (type (;0;) (func (param v128) (result v128)))
-  (func (;0;) (type 0) (param v128) (result v128)
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param v128) (result v128)
     local.get 0
     i32x4.trunc_sat_f64x2_s_zero
   )
-  (func (;1;) (type 0) (param v128) (result v128)
+  (func (;3;) (type 0) (param v128) (result v128)
     local.get 0
     i32x4.trunc_sat_f64x2_u_zero
   )
-  (export "i32x4.trunc_sat_f64x2_s_zero" (func 0))
-  (export "i32x4.trunc_sat_f64x2_u_zero" (func 1))
+  (export "i32x4.trunc_sat_f64x2_s_zero" (func 2))
+  (export "i32x4.trunc_sat_f64x2_u_zero" (func 3))
 )
