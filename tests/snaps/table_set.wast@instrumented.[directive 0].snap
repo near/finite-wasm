@@ -7,8 +7,8 @@
   (type (;5;) (func (param i32 i32)))
   (type (;6;) (func (param i32) (result i32)))
   (type (;7;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 7)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 7)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 7)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 7)))
   (func $dummy (;2;) (type 0))
   (func (;3;) (type 1) (param $i i32) (result externref)
     local.get $i

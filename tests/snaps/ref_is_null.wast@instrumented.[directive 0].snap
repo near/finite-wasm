@@ -5,8 +5,8 @@
   (type (;3;) (func (param externref)))
   (type (;4;) (func (param i32) (result i32)))
   (type (;5;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 5)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 5)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
   (func $f1 (;2;) (type 0) (param $x funcref) (result i32)
     local.get $x
     ref.is_null

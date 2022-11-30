@@ -16,8 +16,8 @@
   (type (;14;) (func (param i64 i64) (result i64)))
   (type (;15;) (func (param i64) (result i64)))
   (type (;16;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 16)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 16)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 16)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 16)))
   (func $dummy (;2;) (type $block-sig-1))
   (func (;3;) (type $block-sig-3) (param i32)
     local.get 0

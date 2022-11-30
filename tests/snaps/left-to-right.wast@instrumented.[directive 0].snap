@@ -13,8 +13,8 @@
   (type (;11;) (func (param f32 f32)))
   (type (;12;) (func (param f64 f64)))
   (type (;13;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 13)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 13)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 13)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 13)))
   (func $i32_t0 (;2;) (type $i32_T) (param i32 i32) (result i32)
     i32.const -1
   )

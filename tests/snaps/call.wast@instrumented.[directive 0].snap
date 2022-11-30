@@ -25,8 +25,8 @@
   (type (;23;) (func))
   (type (;24;) (func (param f32 i32 i32 f64 f32 f32 f32 f64 f32 i32 i32 f32 f64 i64 i64 i32 i64 i64 f32 i64 i64 i64 i32 f32 f32 f32 f64 f32 i32 i64 f32 f64 f64 f32 i32 f32 f32 f64 i64 f64 i32 i64 f32 f64 i32 i32 i32 i64 f64 i32 i64 i64 f64 f64 f64 f64 f64 f64 i32 f32 f64 f64 i32 i64 f32 f32 f32 i32 f64 f64 f64 f64 f64 f32 i64 i64 i32 i32 i32 f32 f64 i32 i64 f32 f32 f32 i32 i32 f32 f64 i64 f32 f64 f32 f32 f32 i32 f32 i64 i32) (result i32)))
   (type (;25;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 25)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 25)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 25)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 25)))
   (func $const-i32 (;2;) (type 1) (result i32)
     i32.const 306
   )

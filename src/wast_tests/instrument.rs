@@ -197,7 +197,11 @@ impl<'a> crate::test::TestContext {
                         match name {
                             wp::Name::Module { name, .. } => new_name_section.module(name),
                             wp::Name::Function(map) => {
-                                new_name_section.functions(&namemap(map, true))
+                                let mut new_name_map = namemap(map, true);
+                                new_name_map.append(0, "finite_wasm_gas");
+                                new_name_map.append(1, "finite_wasm_stack");
+                                new_name_section.functions(&new_name_map)
+
                             }
                             wp::Name::Local(map) => new_name_section.locals(&indirectnamemap(map)),
                             wp::Name::Label(map) => new_name_section.labels(&indirectnamemap(map)),

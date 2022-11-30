@@ -1,8 +1,8 @@
 (module
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
   (func $f1 (;2;) (type 0))
   (func $f2 (;3;) (type 0))
   (func $f3 (;4;) (type 0))
@@ -19,7 +19,7 @@
     return
   )
   (table $t (;0;) 1 funcref)
-  (global (;0;) funcref ref.func 0)
+  (global (;0;) funcref ref.func $finite_wasm_gas)
   (export "f" (func $f2))
   (elem (;0;) (i32.const 0) func)
   (elem (;1;) (i32.const 0) func)

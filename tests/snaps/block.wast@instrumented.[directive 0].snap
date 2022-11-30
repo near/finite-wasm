@@ -11,8 +11,8 @@
   (type (;9;) (func (result i32 i32 i64)))
   (type (;10;) (func (param i32 i32) (result i32 i32)))
   (type (;11;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 11)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 11)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 11)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 11)))
   (func $dummy (;2;) (type $block-sig-1))
   (func (;3;) (type $block-sig-1)
     block ;; label = @1
