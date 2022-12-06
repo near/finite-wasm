@@ -10,6 +10,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.add
   )
@@ -17,6 +19,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.sub
   )
@@ -24,6 +28,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.mul
   )
@@ -31,34 +37,64 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i64.div_s
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;6;) (type 0) (param $x i64) (param $y i64) (result i64)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i64.div_u
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;7;) (type 0) (param $x i64) (param $y i64) (result i64)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i64.rem_s
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;8;) (type 0) (param $x i64) (param $y i64) (result i64)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i64.rem_u
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;9;) (type 0) (param $x i64) (param $y i64) (result i64)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.and
   )
@@ -66,6 +102,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.or
   )
@@ -73,6 +111,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.xor
   )
@@ -80,6 +120,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.shl
   )
@@ -87,6 +129,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.shr_s
   )
@@ -94,6 +138,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.shr_u
   )
@@ -101,6 +147,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.rotl
   )
@@ -108,6 +156,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.rotr
   )
@@ -115,48 +165,64 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.clz
   )
   (func (;18;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.ctz
   )
   (func (;19;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.popcnt
   )
   (func (;20;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.extend8_s
   )
   (func (;21;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.extend16_s
   )
   (func (;22;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.extend32_s
   )
   (func (;23;) (type 2) (param $x i64) (result i32)
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 3
+    call 0
     i64.eqz
   )
   (func (;24;) (type 3) (param $x i64) (param $y i64) (result i32)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.eq
   )
@@ -164,6 +230,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.ne
   )
@@ -171,6 +239,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.lt_s
   )
@@ -178,6 +248,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.lt_u
   )
@@ -185,6 +257,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.le_s
   )
@@ -192,6 +266,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.le_u
   )
@@ -199,6 +275,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.gt_s
   )
@@ -206,6 +284,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.gt_u
   )
@@ -213,6 +293,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.ge_s
   )
@@ -220,6 +302,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     i64.ge_u
   )

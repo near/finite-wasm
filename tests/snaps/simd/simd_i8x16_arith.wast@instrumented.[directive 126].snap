@@ -8,6 +8,8 @@
     i64.const 1000002000032
     call 1
     local.get 0
+    i64.const 6
+    call 0
     local.get 1
     i8x16.sub
     local.get 2
@@ -17,6 +19,8 @@
     i64.const 1000002000032
     call 1
     local.get 0
+    i64.const 6
+    call 0
     local.get 1
     i8x16.add
     local.get 2
@@ -26,6 +30,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 5
+    call 0
     i8x16.neg
     local.get 1
     i8x16.add
@@ -34,6 +40,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 5
+    call 0
     i8x16.neg
     local.get 1
     i8x16.sub

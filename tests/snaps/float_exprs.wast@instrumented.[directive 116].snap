@@ -8,6 +8,8 @@
     i64.const 1000002000012
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     local.get $z
     f32.div
@@ -17,6 +19,8 @@
     i64.const 1000002000024
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     local.get $z
     f64.div

@@ -14,46 +14,77 @@
     i64.const 0
     call 6
     i32.const 5
+    i64.const 2
+    call 5
   )
   (func (;8;) (type 0) (result i32)
     i64.const 0
     call 6
     i32.const 6
+    i64.const 2
+    call 5
   )
   (func (;9;) (type 0) (result i32)
     i64.const 0
     call 6
     i32.const 7
+    i64.const 2
+    call 5
   )
   (func (;10;) (type 0) (result i32)
     i64.const 0
     call 6
     i32.const 8
+    i64.const 2
+    call 5
   )
   (func (;11;) (type 0) (result i32)
     i64.const 0
     call 6
     i32.const 9
+    i64.const 2
+    call 5
   )
   (func (;12;) (type 1)
     i64.const 1000000000004
     call 6
     i32.const 20
+    i64.const 3
+    call 5
     i32.const 22
     i32.const 4
     table.copy $t1 $t1
+    i64.const 1
+    call 5
+    end
+    i64.const 1
+    call 5
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 1000000000004
     call 6
     local.get 0
+    i64.const 1
+    call 5
     call_indirect $t1 (type 0)
+    i64.const 1
+    call 5
+    end
+    i64.const 1
+    call 5
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 1000000000004
     call 6
     local.get 0
+    i64.const 1
+    call 5
     call_indirect (type 0)
+    i64.const 1
+    call 5
+    end
+    i64.const 1
+    call 5
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)

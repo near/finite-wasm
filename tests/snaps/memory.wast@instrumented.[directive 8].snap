@@ -7,6 +7,8 @@
     i64.const 1000000000004
     call 1
     memory.size
+    i64.const 2
+    call 0
   )
   (memory (;0;) 0 0)
   (export "memsize" (func 2))

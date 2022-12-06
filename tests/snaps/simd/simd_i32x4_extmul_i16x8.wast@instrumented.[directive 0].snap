@@ -7,6 +7,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i32x4.extmul_low_i16x8_s
   )
@@ -14,6 +16,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i32x4.extmul_high_i16x8_s
   )
@@ -21,6 +25,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i32x4.extmul_low_i16x8_u
   )
@@ -28,6 +34,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i32x4.extmul_high_i16x8_u
   )

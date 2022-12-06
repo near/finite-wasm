@@ -8,18 +8,24 @@
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.abs
   )
   (func (;3;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.neg
   )
   (func (;4;) (type 1) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.copysign
   )

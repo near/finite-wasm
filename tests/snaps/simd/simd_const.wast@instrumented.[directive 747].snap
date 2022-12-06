@@ -7,6 +7,8 @@
     i64.const 1000000000016
     call 1
     v128.const i32x4 0x00000000 0x80008000 0xffffffff 0xffffffff
+    i64.const 2
+    call 0
   )
   (export "parse_i16x8" (func 2))
 )

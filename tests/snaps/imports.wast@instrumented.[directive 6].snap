@@ -8,7 +8,14 @@
     i64.const 0
     call $imported_print
     local.get $i
+    i64.const 1
+    call $finite_wasm_stack
     call $imported_print
+    i64.const 1
+    call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (export "print_i32" (func 3))
 )

@@ -9,6 +9,8 @@
     i64.const 1000000000008
     call $finite_wasm_stack
     memory.size
+    i64.const 4
+    call $finite_wasm_gas
     i32.const 65536
     i32.mul
   )
@@ -16,24 +18,49 @@
     i64.const 1000001000008
     call $finite_wasm_stack
     call $addr_limit
+    i64.const 1
+    call $finite_wasm_gas
     local.get $i
+    i64.const 3
+    call $finite_wasm_gas
     i32.add
     local.get $v
     i32.store
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;4;) (type 2) (param $i i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
     call $addr_limit
+    i64.const 1
+    call $finite_wasm_gas
     local.get $i
+    i64.const 2
+    call $finite_wasm_gas
     i32.add
     i32.load
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;5;) (type 2) (param i32) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     memory.grow
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (memory (;0;) 1)
   (export "store" (func 3))

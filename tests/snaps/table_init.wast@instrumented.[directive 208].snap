@@ -8,59 +8,86 @@
     i64.const 1000000000004
     call 1
     i32.const 0
+    i64.const 2
+    call 0
   )
   (func (;3;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 1
+    i64.const 2
+    call 0
   )
   (func (;4;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 2
+    i64.const 2
+    call 0
   )
   (func (;5;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 3
+    i64.const 2
+    call 0
   )
   (func (;6;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 4
+    i64.const 2
+    call 0
   )
   (func (;7;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 5
+    i64.const 2
+    call 0
   )
   (func (;8;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 6
+    i64.const 2
+    call 0
   )
   (func (;9;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 7
+    i64.const 2
+    call 0
   )
   (func (;10;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 8
+    i64.const 2
+    call 0
   )
   (func (;11;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     i32.const 9
+    i64.const 2
+    call 0
   )
   (func (;12;) (type 1)
     i64.const 1000000000012
     call 1
     i32.const 12
+    i64.const 3
+    call 0
     i32.const 0
     i32.const 5
     table.init 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 28 28 funcref)

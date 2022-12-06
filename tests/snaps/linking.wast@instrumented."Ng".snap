@@ -13,6 +13,8 @@
     i64.const 0
     call 6
     global.get $glob
+    i64.const 2
+    call 5
   )
   (global $glob (;2;) i32 i32.const 43)
   (export "Mg.glob" (global $x))

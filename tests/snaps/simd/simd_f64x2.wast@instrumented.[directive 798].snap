@@ -8,6 +8,8 @@
     i64.const 1000002000032
     call 1
     local.get 0
+    i64.const 6
+    call 0
     local.get 1
     f64x2.min
     local.get 2
@@ -17,6 +19,8 @@
     i64.const 1000002000032
     call 1
     local.get 0
+    i64.const 6
+    call 0
     local.get 1
     f64x2.max
     local.get 2
@@ -26,6 +30,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 5
+    call 0
     f64x2.abs
     local.get 1
     f64x2.max
@@ -34,6 +40,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 5
+    call 0
     f64x2.abs
     local.get 1
     f64x2.min

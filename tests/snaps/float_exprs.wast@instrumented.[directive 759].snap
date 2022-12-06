@@ -9,6 +9,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     f32.mul
     local.get $x
@@ -18,6 +20,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     f32.mul
     local.get $x
@@ -27,6 +31,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     f32.mul
     local.get $x
@@ -36,6 +42,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     f64.mul
     local.get $x
@@ -45,6 +53,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     f64.mul
     local.get $x
@@ -54,6 +64,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 6
+    call 0
     local.get $y
     f64.mul
     local.get $x
@@ -63,6 +75,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 5
+    call 0
     f32.demote_f64
     local.get $y
     f32.mul

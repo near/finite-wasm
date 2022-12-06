@@ -8,13 +8,21 @@
     i64.const 1000000000004
     call 1
     memory.size
+    i64.const 2
+    call 0
   )
   (func (;3;) (type 1) (param $sz i32)
     i64.const 1000000000004
     call 1
     local.get $sz
+    i64.const 1
+    call 0
     memory.grow
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (memory (;0;) 0 2)
   (export "size" (func 2))

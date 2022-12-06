@@ -7,8 +7,15 @@
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 2
+    call 0
     i32.const 1
     i32.store16
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 0)
 )

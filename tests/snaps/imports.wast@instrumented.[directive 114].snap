@@ -8,7 +8,14 @@
     i64.const 1000000000004
     call 2
     local.get 0
+    i64.const 1
+    call 1
     i32.load
+    i64.const 1
+    call 1
+    end
+    i64.const 1
+    call 1
   )
   (export "load" (func 2))
   (data (;0;) (i32.const 10) "\10")

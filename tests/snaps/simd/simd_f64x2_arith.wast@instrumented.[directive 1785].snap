@@ -7,6 +7,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x7ff80000 0x00000000 0x3ff00000
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x7ff80000 0x00000000 0x3ff00000
     f64x2.add
   )
@@ -14,6 +16,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x7ff80000 0x00000000 0x3ff00000
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0xfff80000
     f64x2.div
   )
@@ -21,6 +25,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x7ff80000 0x00000000 0x3ff00000
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x7ff80000
     f64x2.mul
   )
@@ -28,18 +34,24 @@
     i64.const 1000000000016
     call 1
     v128.const i32x4 0x00000000 0x7ff80000 0x00000000 0x3ff00000
+    i64.const 3
+    call 0
     f64x2.neg
   )
   (func (;6;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
     v128.const i32x4 0x00000000 0x40100000 0x00000000 0xfff80000
+    i64.const 3
+    call 0
     f64x2.sqrt
   )
   (func (;7;) (type 0) (result v128)
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x3ff00000 0x00000000 0xbff00000
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0xfff80000 0x00000000 0x3ff00000
     f64x2.sub
   )

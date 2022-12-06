@@ -8,6 +8,8 @@
     i64.const 1000001000012
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f32.lt
     local.get $x
@@ -19,6 +21,8 @@
     i64.const 1000001000012
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f32.le
     local.get $x
@@ -30,6 +34,8 @@
     i64.const 1000001000012
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f32.gt
     local.get $x
@@ -41,6 +47,8 @@
     i64.const 1000001000012
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f32.ge
     local.get $x
@@ -52,6 +60,8 @@
     i64.const 1000001000020
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f64.lt
     local.get $x
@@ -63,6 +73,8 @@
     i64.const 1000001000020
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f64.le
     local.get $x
@@ -74,6 +86,8 @@
     i64.const 1000001000020
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f64.gt
     local.get $x
@@ -85,6 +99,8 @@
     i64.const 1000001000020
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f64.ge
     local.get $x

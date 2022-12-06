@@ -8,7 +8,14 @@
     i64.const 1000000000004
     call 2
     local.get $a
+    i64.const 1
+    call 1
     i32.load8_u
+    i64.const 1
+    call 1
+    end
+    i64.const 1
+    call 1
   )
   (export "load" (func 2))
   (data (;0;) (i32.const 5) "\a0\a1\a2\a3\a4\a5\a6\a7")

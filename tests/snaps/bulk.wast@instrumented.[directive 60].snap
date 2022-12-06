@@ -8,27 +8,45 @@
     i64.const 1000000000000
     call 1
     data.drop $p
+    i64.const 2
+    call 0
   )
   (func (;3;) (type 1) (param $len i32)
     i64.const 1000000000012
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     i32.const 0
     local.get $len
     memory.init $p
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;4;) (type 0)
     i64.const 1000000000000
     call 1
     data.drop $a
+    i64.const 2
+    call 0
   )
   (func (;5;) (type 1) (param $len i32)
     i64.const 1000000000012
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     i32.const 0
     local.get $len
     memory.init $a
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1)
   (export "drop_passive" (func 2))

@@ -8,16 +8,28 @@
     i64.const 0
     call $f
     call $f
+    i64.const 1
+    call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (func (;4;) (type 0) (result i32)
     i64.const 1000000000004
     call $f
     call $g
+    i64.const 1
+    call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (func $g (;5;) (type 0) (result i32)
     i64.const 1000000000004
     call $f
     i32.const 3
+    i64.const 2
+    call $finite_wasm_stack
   )
   (export "Mf.call" (func $f))
   (export "call Mf.call" (func 3))

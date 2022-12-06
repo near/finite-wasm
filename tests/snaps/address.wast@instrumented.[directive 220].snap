@@ -8,38 +8,79 @@
     i64.const 1000000000004
     call 1
     local.get $i
+    i64.const 1
+    call 0
     f32.load
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 0) (param $i i32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $i
+    i64.const 1
+    call 0
     f32.load align=1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;4;) (type 0) (param $i i32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $i
+    i64.const 1
+    call 0
     f32.load offset=1 align=1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;5;) (type 0) (param $i i32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $i
+    i64.const 1
+    call 0
     f32.load offset=2 align=2
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;6;) (type 0) (param $i i32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $i
+    i64.const 1
+    call 0
     f32.load offset=8
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;7;) (type 1) (param $i i32)
     i64.const 1000000000004
     call 1
     local.get $i
+    i64.const 1
+    call 0
     f32.load offset=4294967295
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (memory (;0;) 1)
   (export "32_good1" (func 2))

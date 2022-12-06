@@ -9,24 +9,37 @@
     i64.const 1000001000004
     call $finite_wasm_stack
     local.get 1
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func $g (;3;) (type $sig) (param $var i32) (result i32)
     (local i32)
     i64.const 1000001000004
     call $finite_wasm_stack
     local.get 1
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;4;) (type $sig) (param i32) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     call $g
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;5;) (type $proc) (result i32)
     (local $var i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 42
+    i64.const 4
+    call $finite_wasm_gas
     local.set $var
     local.get $var
   )

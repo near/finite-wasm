@@ -7,9 +7,16 @@
     i64.const 1000000000012
     call 1
     i32.const 16384
+    i64.const 3
+    call 0
     i32.const -256
     i32.const 257
     memory.copy
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))

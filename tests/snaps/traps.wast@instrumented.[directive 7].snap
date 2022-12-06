@@ -8,33 +8,57 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i32.rem_s
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (func (;3;) (type 0) (param $x i32) (param $y i32)
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i32.rem_u
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (func (;4;) (type 1) (param $x i64) (param $y i64)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i64.rem_s
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (func (;5;) (type 1) (param $x i64) (param $y i64)
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 2
+    call 0
     local.get $y
     i64.rem_u
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (export "no_dce.i32.rem_s" (func 2))
   (export "no_dce.i32.rem_u" (func 3))

@@ -7,10 +7,20 @@
     i64.const 1000000000032
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 1
+    call 0
     v128.load offset=16
+    i64.const 1
+    call 0
     i8x16.eq
+    i64.const 2
+    call 0
   )
   (memory (;0;) 1)
   (export "as-i8x16.eq-operand" (func 2))

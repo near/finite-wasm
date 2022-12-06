@@ -9,38 +9,62 @@
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 1
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func $t2 (;3;) (type $T) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 2
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func $t3 (;4;) (type $T) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 3
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func $u1 (;5;) (type $U) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 4
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func $u2 (;6;) (type $U) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 5
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;7;) (type 2) (param $i i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
     local.get $i
+    i64.const 1
+    call $finite_wasm_gas
     call_indirect (type $T)
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;8;) (type 2) (param $i i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
     local.get $i
+    i64.const 1
+    call $finite_wasm_gas
     call_indirect (type $U)
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (table (;0;) 7 7 funcref)
   (export "callt" (func 7))

@@ -8,20 +8,37 @@
     i64.const 1000000000004
     call 1
     block $exit (result i32) ;; label = @1
+      i64.const 2
+      call 0
       i32.const 1
       br 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 0) (result i32)
     (local $i i32)
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 7
+        call 0
         i32.const 1
         i32.add
         local.set $i
@@ -29,22 +46,45 @@
         i32.const 5
         i32.eq
         if ;; label = @3
+          i64.const 1
+          call 0
           local.get $i
+          i64.const 1
+          call 0
           br 2 (;@1;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;4;) (type 0) (result i32)
     (local $i i32)
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 7
+        call 0
         i32.const 1
         i32.add
         local.set $i
@@ -52,28 +92,57 @@
         i32.const 5
         i32.eq
         if ;; label = @3
+          i64.const 1
+          call 0
           br 1 (;@2;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 3
+        call 0
         i32.const 8
         i32.eq
         if ;; label = @3
+          i64.const 1
+          call 0
           local.get $i
+          i64.const 1
+          call 0
           br 2 (;@1;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 4
+        call 0
         i32.const 1
         i32.add
         local.set $i
         br 0 (;@2;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;5;) (type 0) (result i32)
     (local $i i32)
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 11
+    call 0
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
@@ -85,22 +154,43 @@
         i32.const 5
         i32.eq
         if ;; label = @3
+          i64.const 1
+          call 0
           local.get $i
+          i64.const 1
+          call 0
           br 2 (;@1;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 2
+        call 0
       end
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;6;) (type 1) (param $max i32) (result i32)
     (local $i i32)
     i64.const 1000001000008
     call 1
     i32.const 1
+    i64.const 3
+    call 0
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 7
+        call 0
         local.get $i
         i32.add
         local.set $i
@@ -108,17 +198,36 @@
         local.get $max
         i32.gt_u
         if ;; label = @3
+          i64.const 1
+          call 0
           local.get $i
+          i64.const 1
+          call 0
           br 2 (;@1;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;7;) (type 0) (result i32)
     i64.const 1000000000008
     call 1
     loop $l (result i32) ;; label = @1
+      i64.const 6
+      call 0
       i32.const 1
     end
     i32.const 1
@@ -128,9 +237,17 @@
     i64.const 1000000000004
     call 1
     loop (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 3
+      i64.const 3
+      call 0
     end
   )
   (func (;9;) (type 0) (result i32)
@@ -138,67 +255,135 @@
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 4
+    call 0
     local.set $i
     block ;; label = @1
       i32.const 1
       if $l ;; label = @2
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 1
       if $#label2<l> (@name "l") ;; label = @2
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 1
       if $#label3<l> (@name "l") ;; label = @2
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 0
       if $#label4<l> (@name "l") ;; label = @2
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 0
       if $#label5<l> (@name "l") ;; label = @2
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 7
+      call 0
       i32.const 1
       i32.add
       local.set $i
@@ -210,67 +395,135 @@
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 4
+    call 0
     local.set $i
     block ;; label = @1
       i32.const 1
       if ;; label = @2
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 1
       if ;; label = @2
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 1
       if ;; label = @2
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 0
       if ;; label = @2
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 5
+      call 0
       i32.const 1
       i32.add
       local.set $i
       i32.const 0
       if ;; label = @2
+        i64.const 1
+        call 0
         i32.const 888
+        i64.const 2
+        call 0
         local.set $i
       else
+        i64.const 1
+        call 0
         br 0 (;@2;)
+        i64.const 1
+        call 0
         i32.const 666
+        i64.const 2
+        call 0
         local.set $i
       end
+      i64.const 1
+      call 0
       local.get $i
+      i64.const 7
+      call 0
       i32.const 1
       i32.add
       local.set $i
@@ -281,6 +534,8 @@
     i64.const 1000000000008
     call 1
     block $ret (result i32) ;; label = @1
+      i64.const 9
+      call 0
       i32.const 10
       block $exit (result i32) ;; label = @2
         block $0 ;; label = @3
@@ -290,58 +545,124 @@
                 block $1 ;; label = @7
                   local.get 0
                   br_table 4 (;@3;) 0 (;@7;) 1 (;@6;) 2 (;@5;) 3 (;@4;)
+                  i64.const 1
+                  call 0
                 end
+                i64.const 1
+                call 0
               end
+              i64.const 1
+              call 0
               i32.const 2
+              i64.const 1
+              call 0
               br 3 (;@2;)
+              i64.const 1
+              call 0
             end
+            i64.const 1
+            call 0
             i32.const 3
+            i64.const 1
+            call 0
             br 3 (;@1;)
+            i64.const 1
+            call 0
           end
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         i32.const 5
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
       i32.mul
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;12;) (type 1) (param i32) (result i32)
     i64.const 1000000000004
     call 1
     block $default ;; label = @1
+      i64.const 4
+      call 0
       block $1 ;; label = @2
         block $0 ;; label = @3
           local.get 0
           br_table 0 (;@3;) 1 (;@2;)
+          i64.const 1
+          call 0
           br 2 (;@1;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         i32.const 0
+        i64.const 1
+        call 0
         return
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
     i32.const 2
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;13;) (type 0) (result i32)
     (local $i i32)
     i64.const 1000000000008
     call 1
     i32.const 0
+    i64.const 5
+    call 0
     local.set $i
     block $outer (result i32) ;; label = @1
       block $inner ;; label = @2
         i32.const 0
         br_if 0 (;@2;)
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 5
+        call 0
         i32.const 1
         i32.or
         local.set $i
         i32.const 1
         br_if 0 (;@2;)
+        i64.const 1
+        call 0
         local.get $i
+        i64.const 4
+        call 0
         i32.const 2
         i32.or
         local.set $i
       end
+      i64.const 1
+      call 0
       block (result i32) ;; label = @2
+        i64.const 8
+        call 0
         local.get $i
         i32.const 4
         i32.or
@@ -350,7 +671,11 @@
       end
       i32.const 0
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       drop
+      i64.const 13
+      call 0
       local.get $i
       i32.const 8
       i32.or
@@ -364,50 +689,103 @@
       end
       i32.const 1
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       drop
+      i64.const 6
+      call 0
       local.get $i
       i32.const 32
       i32.or
       local.set $i
       local.get $i
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;14;) (type 0) (result i32)
     i64.const 1000000000008
     call 1
     block $l0 (result i32) ;; label = @1
+      i64.const 3
+      call 0
       block $l1 (result i32) ;; label = @2
         i32.const 1
         br 0 (;@2;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       drop
+      i64.const 2
+      call 0
       i32.const 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;15;) (type 0) (result i32)
     i64.const 1000000000008
     call 1
     block $l0 (result i32) ;; label = @1
+      i64.const 2
+      call 0
       i32.const 1
       if ;; label = @2
+        i64.const 1
+        call 0
         block $l1 (result i32) ;; label = @3
+          i64.const 2
+          call 0
           i32.const 1
           br 0 (;@3;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         i32.const 1
+        i64.const 1
+        call 0
         br_if 1 (;@1;)
+        i64.const 1
+        call 0
         drop
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;16;) (type 0) (result i32)
     (local $i1 i32)
     i64.const 1000000000008
     call 1
     block $l0 (result i32) ;; label = @1
+      i64.const 11
+      call 0
       block (result i32) ;; label = @2
         i32.const 1
         local.set $i1
@@ -419,10 +797,18 @@
         local.get $i1
       end
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       drop
+      i64.const 2
+      call 0
       i32.const 0
     end
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 5
+    call 0
     i32.add
     drop
     local.get $i1
@@ -431,47 +817,97 @@
     i64.const 1000000000004
     call 1
     block $l0 (result i32) ;; label = @1
+      i64.const 2
+      call 0
       i32.const 1
       if ;; label = @2
+        i64.const 1
+        call 0
         block $l1 (result i32) ;; label = @3
+          i64.const 2
+          call 0
           i32.const 1
           br 0 (;@3;)
+          i64.const 1
+          call 0
         end
+        i64.const 1
+        call 0
         br 1 (;@1;)
+        i64.const 1
+        call 0
       else
+        i64.const 1
+        call 0
         block ;; label = @3
+          i64.const 3
+          call 0
           block $#label4<l1> (@name "l1") (result i32) ;; label = @4
             i32.const 1
             br 0 (;@4;)
+            i64.const 1
+            call 0
           end
+          i64.const 1
+          call 0
           drop
+          i64.const 2
+          call 0
         end
       end
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;18;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
     block $l1 (result i32) ;; label = @1
+      i64.const 2
+      call 0
       i32.const 1
       br 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 2
+      i64.const 2
+      call 0
       i32.xor
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;19;) (type 0) (result i32)
     i64.const 1000000000008
     call 1
     block $l1 (result i32) ;; label = @1
+      i64.const 6
+      call 0
       block $#label1<l1> (@name "l1") (result i32) ;; label = @2
         i32.const 2
       end
       block $#label2<l1> (@name "l1") (result i32) ;; label = @2
         i32.const 3
         br 0 (;@2;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
       i32.add
+      i64.const 3
+      call 0
     end
   )
   (export "block" (func 2))

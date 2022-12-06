@@ -7,10 +7,20 @@
     i64.const 1000000000032
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 1
+    call 0
     v128.load offset=16
+    i64.const 1
+    call 0
     f32x4.min
+    i64.const 2
+    call 0
   )
   (memory (;0;) 1)
   (export "as-f32x4.min-operand" (func 2))

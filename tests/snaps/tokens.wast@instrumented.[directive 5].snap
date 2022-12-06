@@ -7,6 +7,10 @@
     i64.const 1000000000000
     call 1
     br 0 (;@0;)
+    i64.const 1
+    call 0
     nop
+    i64.const 2
+    call 0
   )
 )
