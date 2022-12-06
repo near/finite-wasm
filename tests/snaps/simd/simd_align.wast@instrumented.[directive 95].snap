@@ -7,18 +7,14 @@
     (local v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     v128.const i32x4 0x03020100 0x07060504 0x0b0a0908 0x0f0e0d0c
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0
@@ -27,18 +23,14 @@
     (local v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     v128.const i32x4 0x00010000 0x00030002 0x00050004 0x00070006
-    i64.const 1
-    call 0
     v128.store align=2
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load align=2
     i64.const 1
     call 0
@@ -47,18 +39,14 @@
     (local v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load align=2
     i64.const 1
     call 0
@@ -67,18 +55,14 @@
     (local v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
-    i64.const 1
-    call 0
     v128.store align=2
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0

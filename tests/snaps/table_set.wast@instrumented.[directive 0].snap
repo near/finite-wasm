@@ -62,11 +62,9 @@
   (func (;8;) (type 6) (param $i i32) (result i32)
     i64.const 1000000000032
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     local.get $i
-    i64.const 1
-    call $finite_wasm_gas
     call $f3
     i64.const 2
     call $finite_wasm_gas

@@ -6,17 +6,13 @@
   (func (;2;) (type 0) (result v128)
     i64.const 1000000000032
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 1
-    i64.const 1
-    call 0
     v128.load offset=15
     i64.const 2
     call 0

@@ -6,12 +6,10 @@
   (func (;2;) (type 0)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
-    i64.const 1
-    call 0
     v128.store offset=65521
     i64.const 1
     call 0

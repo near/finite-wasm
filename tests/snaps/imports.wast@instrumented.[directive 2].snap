@@ -30,48 +30,36 @@
     (local $x f32)
     i64.const 0
     call 17
-    i64.const 4
+    i64.const 5
     call 16
     local.get $i
     f32.convert_i32_s
     local.set $x
     local.get $i
-    i64.const 1
-    call 16
     call 2
-    i64.const 4
+    i64.const 5
     call 16
     local.get $i
     i32.const 1
     i32.add
     f32.const 0x1.5p+5 (;=42;)
-    i64.const 1
-    call 16
     call $print_i32_f32
-    i64.const 1
-    call 16
-    local.get $i
-    i64.const 1
-    call 16
-    call $print_i32
-    i64.const 1
-    call 16
-    local.get $i
-    i64.const 1
-    call 16
-    call $print_i32-2
-    i64.const 1
-    call 16
-    local.get $x
-    i64.const 1
-    call 16
-    call $print_f32
     i64.const 2
     call 16
     local.get $i
-    i32.const 0
-    i64.const 1
+    call $print_i32
+    i64.const 2
     call 16
+    local.get $i
+    call $print_i32-2
+    i64.const 2
+    call 16
+    local.get $x
+    call $print_f32
+    i64.const 3
+    call 16
+    local.get $i
+    i32.const 0
     call_indirect (type $func_i32)
     i64.const 1
     call 16
@@ -80,13 +68,11 @@
     (local $x f64)
     i64.const 0
     call 17
-    i64.const 1
+    i64.const 2
     call 16
     local.get $i
-    i64.const 1
-    call 16
     call $i64->i64
-    i64.const 6
+    i64.const 7
     call 16
     f64.convert_i64_s
     local.set $x
@@ -94,27 +80,19 @@
     f64.const 0x1p+0 (;=1;)
     f64.add
     f64.const 0x1.a8p+5 (;=53;)
-    i64.const 1
-    call 16
     call $print_f64_f64
-    i64.const 1
-    call 16
-    local.get $x
-    i64.const 1
-    call 16
-    call $print_f64
-    i64.const 1
-    call 16
-    local.get $x
-    i64.const 1
-    call 16
-    call $print_f64-2
     i64.const 2
     call 16
     local.get $x
-    i32.const 1
-    i64.const 1
+    call $print_f64
+    i64.const 2
     call 16
+    local.get $x
+    call $print_f64-2
+    i64.const 3
+    call 16
+    local.get $x
+    i32.const 1
     call_indirect (type $func_f64)
     i64.const 1
     call 16

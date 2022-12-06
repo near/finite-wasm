@@ -53,12 +53,10 @@
   (func (;7;) (type 4) (param $x i32) (result i32)
     i64.const 1000000000032
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 3
     call $finite_wasm_gas
     local.get $x
     table.get $t1
-    i64.const 1
-    call $finite_wasm_gas
     call $f1
     i64.const 1
     call $finite_wasm_gas
@@ -66,12 +64,10 @@
   (func (;8;) (type 4) (param $x i32) (result i32)
     i64.const 1000000000032
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 3
     call $finite_wasm_gas
     local.get $x
     table.get $t2
-    i64.const 1
-    call $finite_wasm_gas
     call $f2
     i64.const 1
     call $finite_wasm_gas

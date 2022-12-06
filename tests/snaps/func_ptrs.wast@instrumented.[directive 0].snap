@@ -50,11 +50,9 @@
   (func (;8;) (type $U) (param i32)
     i64.const 1000000000008
     call $print
-    i64.const 1
+    i64.const 2
     call $finite_wasm_stack
     local.get 0
-    i64.const 1
-    call $finite_wasm_stack
     call $print
     i64.const 1
     call $finite_wasm_stack

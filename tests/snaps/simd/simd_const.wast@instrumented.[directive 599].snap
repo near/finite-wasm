@@ -27,18 +27,14 @@
   (func $set_g0_g1_g2_g3 (;4;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (param $3 v128)
     i64.const 1000003000032
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     local.get $0
-    i64.const 1
-    call $finite_wasm_gas
     call $set_g0
-    i64.const 2
+    i64.const 3
     call $finite_wasm_gas
     local.get $1
     local.get $2
-    i64.const 1
-    call $finite_wasm_gas
     call $set_g1_g2
     i64.const 3
     call $finite_wasm_gas

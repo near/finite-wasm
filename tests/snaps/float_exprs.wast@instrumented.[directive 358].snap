@@ -7,12 +7,10 @@
   (func (;2;) (type 0) (param $i i32) (param $x f32)
     i64.const 1000001000008
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $i
     local.get $x
-    i64.const 1
-    call 0
     f32.store
     i64.const 1
     call 0
@@ -21,27 +19,21 @@
     (local $i i32)
     i64.const 1000002000012
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     block $exit ;; label = @1
-      i64.const 1
-      call 0
       loop $cont ;; label = @2
-        i64.const 2
+        i64.const 3
         call 0
         local.get $i
         local.get $i
-        i64.const 1
-        call 0
         f32.load
-        i64.const 2
+        i64.const 3
         call 0
         local.get $z
         f32.div
-        i64.const 1
-        call 0
         f32.store
-        i64.const 7
+        i64.const 8
         call 0
         local.get $i
         i32.const 4
@@ -50,8 +42,6 @@
         local.get $i
         local.get $n
         i32.lt_u
-        i64.const 1
-        call 0
         br_if 0 (;@2;)
         i64.const 3
         call 0
@@ -61,11 +51,9 @@
   (func (;4;) (type 1) (param $i i32) (result f32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     f32.load
     i64.const 1
     call 0

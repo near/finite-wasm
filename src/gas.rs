@@ -563,10 +563,7 @@ pub(crate) fn optimize(
         let merge_to_previous = match (kind, previous_kind) {
             (InstructionKind::Pure, InstructionKind::Pure) => true,
             (InstructionKind::Unreachable, InstructionKind::Unreachable) => true,
-            // TODO: we can likely merge 1 control flow into a prior sequence of `Pure`
-            // instructions. Lets do that once we have tests in so we can actually check the
-            // results :)
-            // (InstructionKind::ControlFlow, InstructionKind::Pure) => true,
+            (InstructionKind::ControlFlow, InstructionKind::Pure) => true,
             _ => false,
         };
         previous_kind = kind;

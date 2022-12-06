@@ -7,11 +7,9 @@
   (func (;2;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_u
     i64.const 1
     call 0
@@ -19,11 +17,9 @@
   (func (;3;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_u
     i64.const 1
     call 0
@@ -31,11 +27,9 @@
   (func (;4;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_u offset=1
     i64.const 1
     call 0
@@ -43,11 +37,9 @@
   (func (;5;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_u offset=2
     i64.const 1
     call 0
@@ -55,11 +47,9 @@
   (func (;6;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_u offset=25
     i64.const 1
     call 0
@@ -67,11 +57,9 @@
   (func (;7;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_s
     i64.const 1
     call 0
@@ -79,11 +67,9 @@
   (func (;8;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_s
     i64.const 1
     call 0
@@ -91,11 +77,9 @@
   (func (;9;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_s offset=1
     i64.const 1
     call 0
@@ -103,11 +87,9 @@
   (func (;10;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_s offset=2
     i64.const 1
     call 0
@@ -115,11 +97,9 @@
   (func (;11;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_s offset=25
     i64.const 1
     call 0
@@ -127,11 +107,9 @@
   (func (;12;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_u
     i64.const 1
     call 0
@@ -139,11 +117,9 @@
   (func (;13;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_u align=1
     i64.const 1
     call 0
@@ -151,11 +127,9 @@
   (func (;14;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_u offset=1 align=1
     i64.const 1
     call 0
@@ -163,11 +137,9 @@
   (func (;15;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_u offset=2
     i64.const 1
     call 0
@@ -175,11 +147,9 @@
   (func (;16;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_u offset=25
     i64.const 1
     call 0
@@ -187,11 +157,9 @@
   (func (;17;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_s
     i64.const 1
     call 0
@@ -199,11 +167,9 @@
   (func (;18;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_s align=1
     i64.const 1
     call 0
@@ -211,11 +177,9 @@
   (func (;19;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_s offset=1 align=1
     i64.const 1
     call 0
@@ -223,11 +187,9 @@
   (func (;20;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_s offset=2
     i64.const 1
     call 0
@@ -235,11 +197,9 @@
   (func (;21;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_s offset=25
     i64.const 1
     call 0
@@ -247,11 +207,9 @@
   (func (;22;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load
     i64.const 1
     call 0
@@ -259,11 +217,9 @@
   (func (;23;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load align=1
     i64.const 1
     call 0
@@ -271,11 +227,9 @@
   (func (;24;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load offset=1 align=1
     i64.const 1
     call 0
@@ -283,11 +237,9 @@
   (func (;25;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load offset=2 align=2
     i64.const 1
     call 0
@@ -295,11 +247,9 @@
   (func (;26;) (type 0) (param $i i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load offset=25
     i64.const 1
     call 0
@@ -307,11 +257,9 @@
   (func (;27;) (type 1) (param $i i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_u offset=4294967295
     i64.const 2
     call 0
@@ -320,11 +268,9 @@
   (func (;28;) (type 1) (param $i i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load8_s offset=4294967295
     i64.const 2
     call 0
@@ -333,11 +279,9 @@
   (func (;29;) (type 1) (param $i i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_u offset=4294967295
     i64.const 2
     call 0
@@ -346,11 +290,9 @@
   (func (;30;) (type 1) (param $i i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load16_s offset=4294967295
     i64.const 2
     call 0
@@ -359,11 +301,9 @@
   (func (;31;) (type 1) (param $i i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     i32.load offset=4294967295
     i64.const 2
     call 0

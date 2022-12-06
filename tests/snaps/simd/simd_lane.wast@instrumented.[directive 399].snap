@@ -9,20 +9,16 @@
   (func (;2;) (type 0) (param v128 i32) (result v128)
     i64.const 1000001000024
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     i32.const 0
     local.get 0
     local.get 1
     i8x16.replace_lane 0
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0
@@ -30,20 +26,16 @@
   (func (;3;) (type 0) (param v128 i32) (result v128)
     i64.const 1000001000024
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     i32.const 0
     local.get 0
     local.get 1
     i16x8.replace_lane 0
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0
@@ -51,20 +43,16 @@
   (func (;4;) (type 0) (param v128 i32) (result v128)
     i64.const 1000001000024
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     i32.const 0
     local.get 0
     local.get 1
     i32x4.replace_lane 0
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0
@@ -72,20 +60,16 @@
   (func (;5;) (type 1) (param v128 f32) (result v128)
     i64.const 1000001000024
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     i32.const 0
     local.get 0
     local.get 1
     f32x4.replace_lane 0
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0
@@ -93,20 +77,16 @@
   (func (;6;) (type 2) (param v128 i64) (result v128)
     i64.const 1000001000028
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     i32.const 0
     local.get 0
     local.get 1
     i64x2.replace_lane 0
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0
@@ -114,20 +94,16 @@
   (func (;7;) (type 3) (param v128 f64) (result v128)
     i64.const 1000001000028
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     i32.const 0
     local.get 0
     local.get 1
     f64x2.replace_lane 0
-    i64.const 1
-    call 0
     v128.store
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load
     i64.const 1
     call 0

@@ -7,12 +7,10 @@
   (func (;2;) (type 0) (param i32 i64)
     i64.const 1000001000012
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     local.get 1
-    i64.const 1
-    call 0
     i64.store align=4
     i64.const 1
     call 0
@@ -20,11 +18,9 @@
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get 0
-    i64.const 1
-    call 0
     i32.load
     i64.const 1
     call 0

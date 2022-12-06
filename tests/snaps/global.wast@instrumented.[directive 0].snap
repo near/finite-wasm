@@ -180,12 +180,10 @@
   (func (;23;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 2
+    i64.const 3
     call 2
     loop (result i32) ;; label = @1
       global.get $x
-      i64.const 1
-      call 2
       call $dummy
       i64.const 1
       call 2
@@ -197,17 +195,13 @@
   (func (;24;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     loop (result i32) ;; label = @1
-      i64.const 1
-      call 2
       call $dummy
-      i64.const 1
+      i64.const 2
       call 2
       global.get $x
-      i64.const 1
-      call 2
       call $dummy
       i64.const 2
       call 2
@@ -216,11 +210,9 @@
   (func (;25;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     loop (result i32) ;; label = @1
-      i64.const 1
-      call 2
       call $dummy
       i64.const 1
       call 2
@@ -233,29 +225,23 @@
   (func (;26;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     global.get $x
-    i64.const 1
-    call 2
     if (result i32) ;; label = @1
       i64.const 1
       call 2
       call $dummy
-      i64.const 1
+      i64.const 2
       call 2
       i32.const 2
-      i64.const 1
-      call 2
     else
       i64.const 1
       call 2
       call $dummy
-      i64.const 1
+      i64.const 2
       call 2
       i32.const 3
-      i64.const 1
-      call 2
     end
     i64.const 1
     call 2
@@ -263,23 +249,17 @@
   (func (;27;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     i32.const 1
-    i64.const 1
-    call 2
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 2
       global.get $x
-      i64.const 1
-      call 2
     else
-      i64.const 1
+      i64.const 2
       call 2
       i32.const 2
-      i64.const 1
-      call 2
     end
     i64.const 1
     call 2
@@ -287,23 +267,17 @@
   (func (;28;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     i32.const 0
-    i64.const 1
-    call 2
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 2
       i32.const 2
-      i64.const 1
-      call 2
     else
-      i64.const 1
+      i64.const 2
       call 2
       global.get $x
-      i64.const 1
-      call 2
     end
     i64.const 1
     call 2
@@ -311,19 +285,15 @@
   (func (;29;) (type 1) (result i32)
     i64.const 1000000000008
     call 3
-    i64.const 3
+    i64.const 4
     call 2
     block (result i32) ;; label = @1
       global.get $x
       i32.const 2
-      i64.const 1
-      call 2
       br_if 0 (;@1;)
-      i64.const 1
+      i64.const 2
       call 2
       i32.const 3
-      i64.const 1
-      call 2
       return
       i64.const 1
       call 2
@@ -334,19 +304,15 @@
   (func (;30;) (type 1) (result i32)
     i64.const 1000000000008
     call 3
-    i64.const 3
+    i64.const 4
     call 2
     block (result i32) ;; label = @1
       i32.const 2
       global.get $x
-      i64.const 1
-      call 2
       br_if 0 (;@1;)
-      i64.const 1
+      i64.const 2
       call 2
       i32.const 3
-      i64.const 1
-      call 2
       return
       i64.const 1
       call 2
@@ -357,13 +323,11 @@
   (func (;31;) (type 1) (result i32)
     i64.const 1000000000008
     call 3
-    i64.const 3
+    i64.const 4
     call 2
     block (result i32) ;; label = @1
       global.get $x
       i32.const 2
-      i64.const 1
-      call 2
       br_table 0 (;@1;) 0 (;@1;)
       i64.const 1
       call 2
@@ -374,13 +338,11 @@
   (func (;32;) (type 1) (result i32)
     i64.const 1000000000008
     call 3
-    i64.const 3
+    i64.const 4
     call 2
     block (result i32) ;; label = @1
       i32.const 2
       global.get $x
-      i64.const 1
-      call 2
       br_table 0 (;@1;) 0 (;@1;)
       i64.const 1
       call 2
@@ -398,14 +360,12 @@
   (func (;34;) (type 1) (result i32)
     i64.const 1000000000012
     call 3
-    i64.const 4
+    i64.const 5
     call 2
     block (result i32) ;; label = @1
       global.get $x
       i32.const 2
       i32.const 0
-      i64.const 1
-      call 2
       call_indirect (type $check)
       i64.const 2
       call 2
@@ -414,14 +374,12 @@
   (func (;35;) (type 1) (result i32)
     i64.const 1000000000012
     call 3
-    i64.const 4
+    i64.const 5
     call 2
     block (result i32) ;; label = @1
       i32.const 2
       global.get $x
       i32.const 0
-      i64.const 1
-      call 2
       call_indirect (type $check)
       i64.const 2
       call 2
@@ -430,14 +388,12 @@
   (func (;36;) (type 1) (result i32)
     i64.const 1000000000012
     call 3
-    i64.const 4
+    i64.const 5
     call 2
     block (result i32) ;; label = @1
       i32.const 2
       i32.const 0
       global.get $x
-      i64.const 1
-      call 2
       call_indirect (type $check)
       i64.const 2
       call 2
@@ -446,12 +402,10 @@
   (func (;37;) (type 11)
     i64.const 1000000000008
     call 3
-    i64.const 2
+    i64.const 3
     call 2
     global.get $x
     i32.const 1
-    i64.const 1
-    call 2
     i32.store
     i64.const 1
     call 2
@@ -459,12 +413,10 @@
   (func (;38;) (type 11)
     i64.const 1000000000008
     call 3
-    i64.const 2
+    i64.const 3
     call 2
     i32.const 0
     global.get $x
-    i64.const 1
-    call 2
     i32.store
     i64.const 1
     call 2
@@ -472,11 +424,9 @@
   (func (;39;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     global.get $x
-    i64.const 1
-    call 2
     i32.load
     i64.const 1
     call 2
@@ -503,11 +453,9 @@
   (func (;42;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     global.get $x
-    i64.const 1
-    call 2
     call $f
     i64.const 1
     call 2
@@ -515,11 +463,9 @@
   (func (;43;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 1
+    i64.const 2
     call 2
     global.get $x
-    i64.const 1
-    call 2
     return
     i64.const 1
     call 2
@@ -535,12 +481,10 @@
   (func (;45;) (type 1) (result i32)
     i64.const 1000000000004
     call 3
-    i64.const 2
+    i64.const 3
     call 2
     block (result i32) ;; label = @1
       global.get $x
-      i64.const 1
-      call 2
       br 0 (;@1;)
       i64.const 1
       call 2

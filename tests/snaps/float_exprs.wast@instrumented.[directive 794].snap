@@ -10,7 +10,7 @@
     i64.const 1
     call 0
     loop $label$0 ;; label = @1
-      i64.const 12
+      i64.const 13
       call 0
       local.get $0
       local.get $0
@@ -24,16 +24,12 @@
       f32.add
       f32.const 0x0p+0 (;=0;)
       f32.eq
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 1
+      i64.const 2
       call 0
     end
-    i64.const 1
-    call 0
     loop $label$2 ;; label = @1
-      i64.const 12
+      i64.const 13
       call 0
       local.get $0
       local.get $1
@@ -47,8 +43,6 @@
       f32.sub
       f32.const 0x0p+0 (;=0;)
       f32.ne
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 3
       call 0
@@ -61,7 +55,7 @@
     i64.const 1
     call 0
     loop $label$0 ;; label = @1
-      i64.const 12
+      i64.const 13
       call 0
       local.get $0
       local.get $0
@@ -75,16 +69,12 @@
       f64.add
       f64.const 0x0p+0 (;=0;)
       f64.eq
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 1
+      i64.const 2
       call 0
     end
-    i64.const 1
-    call 0
     loop $label$2 ;; label = @1
-      i64.const 12
+      i64.const 13
       call 0
       local.get $0
       local.get $1
@@ -98,8 +88,6 @@
       f64.sub
       f64.const 0x0p+0 (;=0;)
       f64.ne
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 3
       call 0

@@ -22,11 +22,9 @@
   (func (;4;) (type 2) (param i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     local.get 0
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type 0)
     i64.const 1
     call $finite_wasm_gas
