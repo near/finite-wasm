@@ -9,18 +9,18 @@
   (func $g (;3;) (type 0) (param $x i32) (result i32)
     i64.const 0
     call $f
-    local.get $x
     i64.const 4
     call $finite_wasm_stack
+    local.get $x
     i32.const 1
     i32.add
   )
   (func (;4;) (type 1)
     i64.const 1000000000008
     call $f
-    ref.func $ff1
     i64.const 5
     call $finite_wasm_stack
+    ref.func $ff1
     drop
     ref.func $ff2
     drop
@@ -28,119 +28,112 @@
   (func $gf1 (;5;) (type 1)
     i64.const 1000000000032
     call $f
-    end
     i64.const 1
     call $finite_wasm_stack
   )
   (func $gf2 (;6;) (type 1)
     i64.const 1000000000000
     call $f
-    end
     i64.const 1
     call $finite_wasm_stack
   )
   (func $ff1 (;7;) (type 1)
     i64.const 1000000000000
     call $f
-    end
     i64.const 1
     call $finite_wasm_stack
   )
   (func $ff2 (;8;) (type 1)
     i64.const 1000000000000
     call $f
-    end
     i64.const 1
     call $finite_wasm_stack
   )
   (func (;9;) (type 2) (result i32)
     i64.const 1000000000000
     call $f
-    ref.func $f
     i64.const 3
     call $finite_wasm_stack
+    ref.func $f
     ref.is_null
   )
   (func (;10;) (type 2) (result i32)
     i64.const 1000000000032
     call $f
-    ref.func $g
     i64.const 3
     call $finite_wasm_stack
+    ref.func $g
     ref.is_null
   )
   (func (;11;) (type 2) (result i32)
     i64.const 1000000000032
     call $f
-    global.get $v
     i64.const 3
     call $finite_wasm_stack
+    global.get $v
     ref.is_null
   )
   (func (;12;) (type 1)
     i64.const 1000000000032
     call $f
-    ref.func $f
     i64.const 3
     call $finite_wasm_stack
+    ref.func $f
     global.set $v
   )
   (func (;13;) (type 1)
     i64.const 1000000000032
     call $f
-    ref.func $g
     i64.const 3
     call $finite_wasm_stack
+    ref.func $g
     global.set $v
   )
   (func (;14;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000032
     call $f
-    i32.const 0
     i64.const 5
     call $finite_wasm_stack
+    i32.const 0
     ref.func $f
     table.set $t
     local.get $x
     i32.const 0
-    call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
-    end
+    call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
   )
   (func (;15;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000036
     call $f
-    i32.const 0
     i64.const 5
     call $finite_wasm_stack
+    i32.const 0
     ref.func $g
     table.set $t
     local.get $x
     i32.const 0
-    call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
-    end
+    call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
   )
   (func (;16;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000036
     call $f
-    i32.const 0
     i64.const 5
     call $finite_wasm_stack
+    i32.const 0
     global.get $v
     table.set $t
     local.get $x
     i32.const 0
-    call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
-    end
+    call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
   )

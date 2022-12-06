@@ -6,22 +6,20 @@
   (func $f (;2;) (type 0)
     i64.const 1000000000000
     call $finite_wasm_stack
-    end
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;3;) (type 0)
     i64.const 1000000000012
     call $finite_wasm_stack
-    i32.const 0
     i64.const 3
     call $finite_wasm_gas
     i32.const 0
+    i32.const 0
     i32.const 1
-    table.init $e
     i64.const 1
     call $finite_wasm_gas
-    end
+    table.init $e
     i64.const 1
     call $finite_wasm_gas
   )

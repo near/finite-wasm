@@ -6,54 +6,54 @@
   (func (;2;) (type 0) (param $x v128) (param $y v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f32x4.eq
   )
   (func (;3;) (type 0) (param $x v128) (param $y v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f32x4.ne
   )
   (func (;4;) (type 0) (param $x v128) (param $y v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f32x4.lt
   )
   (func (;5;) (type 0) (param $x v128) (param $y v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f32x4.le
   )
   (func (;6;) (type 0) (param $x v128) (param $y v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f32x4.gt
   )
   (func (;7;) (type 0) (param $x v128) (param $y v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f32x4.ge
   )

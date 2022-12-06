@@ -7,9 +7,9 @@
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000012
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     local.get $y
     f32.add
     local.get $x
@@ -20,9 +20,9 @@
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000024
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     local.get $y
     f64.add
     local.get $x

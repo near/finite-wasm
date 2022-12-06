@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000004
     call 1
-    local.get $x
     i64.const 2
     call 0
+    local.get $x
   )
   (export "f" (func 2))
 )

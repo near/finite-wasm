@@ -8,10 +8,12 @@
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 0
     i64.const 1
     call 0
@@ -19,28 +21,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;3;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 1
     i64.const 1
     call 0
@@ -48,28 +50,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;4;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 2
     i64.const 1
     call 0
@@ -77,28 +79,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;5;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 3
     i64.const 1
     call 0
@@ -106,28 +108,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;6;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 4
     i64.const 1
     call 0
@@ -135,28 +137,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;7;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 5
     i64.const 1
     call 0
@@ -164,28 +166,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;8;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 6
     i64.const 1
     call 0
@@ -193,28 +195,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;9;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 7
     i64.const 1
     call 0
@@ -222,28 +224,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;10;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 8
     i64.const 1
     call 0
@@ -251,28 +253,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;11;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 9
     i64.const 1
     call 0
@@ -280,28 +282,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;12;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 10
     i64.const 1
     call 0
@@ -309,28 +311,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;13;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 11
     i64.const 1
     call 0
@@ -338,28 +340,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;14;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 12
     i64.const 1
     call 0
@@ -367,28 +369,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;15;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 13
     i64.const 1
     call 0
@@ -396,28 +398,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;16;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 14
     i64.const 1
     call 0
@@ -425,28 +427,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;17;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 15
     i64.const 1
     call 0
@@ -454,28 +456,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     local.get $address
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;18;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 0
     i64.const 1
     call 0
@@ -483,28 +485,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;19;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=1 1
     i64.const 1
     call 0
@@ -512,28 +514,28 @@
     i64.const 1
     call 0
     i64.load offset=1
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=1
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=1
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;20;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=2 2
     i64.const 1
     call 0
@@ -541,28 +543,28 @@
     i64.const 1
     call 0
     i64.load offset=2
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=2
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=2
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;21;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=3 3
     i64.const 1
     call 0
@@ -570,28 +572,28 @@
     i64.const 1
     call 0
     i64.load offset=3
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=3
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=3
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;22;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=4 4
     i64.const 1
     call 0
@@ -599,28 +601,28 @@
     i64.const 1
     call 0
     i64.load offset=4
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=4
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=4
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;23;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=5 5
     i64.const 1
     call 0
@@ -628,28 +630,28 @@
     i64.const 1
     call 0
     i64.load offset=5
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=5
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=5
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;24;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=6 6
     i64.const 1
     call 0
@@ -657,28 +659,28 @@
     i64.const 1
     call 0
     i64.load offset=6
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=6
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=6
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;25;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=7 7
     i64.const 1
     call 0
@@ -686,28 +688,28 @@
     i64.const 1
     call 0
     i64.load offset=7
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=7
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=7
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;26;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=8 8
     i64.const 1
     call 0
@@ -715,28 +717,28 @@
     i64.const 1
     call 0
     i64.load offset=8
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=8
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=8
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;27;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=9 9
     i64.const 1
     call 0
@@ -744,28 +746,28 @@
     i64.const 1
     call 0
     i64.load offset=9
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=9
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=9
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;28;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=10 10
     i64.const 1
     call 0
@@ -773,28 +775,28 @@
     i64.const 1
     call 0
     i64.load offset=10
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=10
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=10
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;29;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=11 11
     i64.const 1
     call 0
@@ -802,28 +804,28 @@
     i64.const 1
     call 0
     i64.load offset=11
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=11
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=11
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;30;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=12 12
     i64.const 1
     call 0
@@ -831,28 +833,28 @@
     i64.const 1
     call 0
     i64.load offset=12
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=12
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=12
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;31;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=13 13
     i64.const 1
     call 0
@@ -860,28 +862,28 @@
     i64.const 1
     call 0
     i64.load offset=13
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=13
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=13
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;32;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=14 14
     i64.const 1
     call 0
@@ -889,28 +891,28 @@
     i64.const 1
     call 0
     i64.load offset=14
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=14
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=14
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;33;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000001000020
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane offset=15 15
     i64.const 1
     call 0
@@ -918,28 +920,28 @@
     i64.const 1
     call 0
     i64.load offset=15
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=15
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=15
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;34;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 0
     i64.const 1
     call 0
@@ -947,28 +949,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store
     i64.const 1
     call 0
-    local.get $ret
+    v128.store
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;35;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 1
     i64.const 1
     call 0
@@ -976,28 +978,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=1
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=1
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;36;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 2
     i64.const 1
     call 0
@@ -1005,28 +1007,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=2
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=2
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;37;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 3
     i64.const 1
     call 0
@@ -1034,28 +1036,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=3
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=3
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;38;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 4
     i64.const 1
     call 0
@@ -1063,28 +1065,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=4
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=4
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;39;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 5
     i64.const 1
     call 0
@@ -1092,28 +1094,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=5
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=5
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;40;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 6
     i64.const 1
     call 0
@@ -1121,28 +1123,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=6
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=6
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;41;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 7
     i64.const 1
     call 0
@@ -1150,28 +1152,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=7
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=7
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;42;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 8
     i64.const 1
     call 0
@@ -1179,28 +1181,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=8
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=8
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;43;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 9
     i64.const 1
     call 0
@@ -1208,28 +1210,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=9
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=9
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;44;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 10
     i64.const 1
     call 0
@@ -1237,28 +1239,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=10
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=10
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;45;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 11
     i64.const 1
     call 0
@@ -1266,28 +1268,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=11
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=11
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;46;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 12
     i64.const 1
     call 0
@@ -1295,28 +1297,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=12
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=12
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;47;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 13
     i64.const 1
     call 0
@@ -1324,28 +1326,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=13
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=13
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;48;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 14
     i64.const 1
     call 0
@@ -1353,28 +1355,28 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=14
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=14
     i64.const 2
     call 0
+    local.get $ret
   )
   (func (;49;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     i64.const 1000002000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $x
+    i64.const 1
+    call 0
     v128.store8_lane 15
     i64.const 1
     call 0
@@ -1382,19 +1384,17 @@
     i64.const 1
     call 0
     i64.load
-    i64.const 1
-    call 0
-    local.set $ret
     i64.const 3
     call 0
+    local.set $ret
     i32.const 0
     global.get $zero
-    v128.store offset=15
     i64.const 1
     call 0
-    local.get $ret
+    v128.store offset=15
     i64.const 2
     call 0
+    local.get $ret
   )
   (memory (;0;) 1)
   (global $zero (;0;) (mut v128) v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000)

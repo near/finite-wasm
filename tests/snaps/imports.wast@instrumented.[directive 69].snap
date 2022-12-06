@@ -8,29 +8,28 @@
   (func (;2;) (type 1) (param i32) (result i32)
     i64.const 1000000000008
     call 2
+    i64.const 1
+    call $finite_wasm_stack
     local.get 0
     i64.const 1
     call $finite_wasm_stack
     call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
-    end
-    i64.const 1
-    call $finite_wasm_stack
   )
   (func $f (;3;) (type 0) (result i32)
     i64.const 1000000000004
     call 2
-    i32.const 11
     i64.const 2
     call $finite_wasm_stack
+    i32.const 11
   )
   (func $g (;4;) (type 0) (result i32)
     i64.const 1000000000004
     call 2
-    i32.const 22
     i64.const 2
     call $finite_wasm_stack
+    i32.const 22
   )
   (export "call" (func 2))
   (elem (;0;) (i32.const 1) func)

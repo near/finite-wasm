@@ -9,52 +9,53 @@
   (func (;2;) (type 0)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i32.const 0
     i64.const 2
     call $finite_wasm_gas
     i32.const 0
-    i32.store
+    i32.const 0
     i64.const 1
+    call $finite_wasm_gas
+    i32.store
+    i64.const 2
     call $finite_wasm_gas
     i32.const 4
-    i64.const 2
-    call $finite_wasm_gas
     i32.const 0
-    i32.store
     i64.const 1
+    call $finite_wasm_gas
+    i32.store
+    i64.const 2
     call $finite_wasm_gas
     i32.const 8
-    i64.const 2
-    call $finite_wasm_gas
     i32.const 0
-    i32.store
     i64.const 1
+    call $finite_wasm_gas
+    i32.store
+    i64.const 2
     call $finite_wasm_gas
     i32.const 12
-    i64.const 2
-    call $finite_wasm_gas
     i32.const 0
-    i32.store
     i64.const 1
     call $finite_wasm_gas
-    end
+    i32.store
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;3;) (type 1) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i32.const 8
     i64.const 2
     call $finite_wasm_gas
+    i32.const 8
     i32.const 0
-    i32.store
     i64.const 1
     call $finite_wasm_gas
-    i32.const 5
+    i32.store
     i64.const 2
     call $finite_wasm_gas
+    i32.const 5
     f32.const -0x0p+0 (;=-0;)
+    i64.const 1
+    call $finite_wasm_gas
     f32.store
     i64.const 1
     call $finite_wasm_gas
@@ -64,25 +65,24 @@
     i32.load
     i64.const 1
     call $finite_wasm_gas
-    end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;4;) (type 1) (result i32)
     (local $t i32) (local $s i32)
     i64.const 1000001000008
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 8
     i64.const 1
     call $finite_wasm_gas
     i32.load
-    i64.const 1
-    call $finite_wasm_gas
-    local.set $t
     i64.const 3
     call $finite_wasm_gas
+    local.set $t
     i32.const 5
     i32.const -2147483648
+    i64.const 1
+    call $finite_wasm_gas
     i32.store
     i64.const 1
     call $finite_wasm_gas
@@ -90,11 +90,9 @@
     i64.const 1
     call $finite_wasm_gas
     i32.load
-    i64.const 1
-    call $finite_wasm_gas
-    local.set $s
     i64.const 5
     call $finite_wasm_gas
+    local.set $s
     local.get $t
     local.get $s
     i32.add
@@ -103,10 +101,12 @@
     (local $t f32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i32.const 8
     i64.const 2
     call $finite_wasm_gas
+    i32.const 8
     i32.const 589505315
+    i64.const 1
+    call $finite_wasm_gas
     i32.store
     i64.const 1
     call $finite_wasm_gas
@@ -114,56 +114,56 @@
     i64.const 1
     call $finite_wasm_gas
     f32.load
-    i64.const 1
-    call $finite_wasm_gas
-    local.set $t
     i64.const 3
     call $finite_wasm_gas
+    local.set $t
     i32.const 8
     i32.const 0
-    i32.store
     i64.const 1
     call $finite_wasm_gas
-    local.get $t
+    i32.store
     i64.const 2
     call $finite_wasm_gas
+    local.get $t
   )
   (func $malloc (;6;) (type 3) (param $size i32) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i32.const 16
     i64.const 2
     call $finite_wasm_gas
+    i32.const 16
   )
   (func (;7;) (type 1) (result i32)
     (local $x i32) (local $y i32)
     i64.const 1000001000008
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 4
     i64.const 1
     call $finite_wasm_gas
     call $malloc
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     local.set $x
-    i64.const 2
-    call $finite_wasm_gas
     i32.const 4
-    call $malloc
     i64.const 1
     call $finite_wasm_gas
-    local.set $y
+    call $malloc
     i64.const 3
     call $finite_wasm_gas
+    local.set $y
     local.get $x
     i32.const 42
-    i32.store
     i64.const 1
     call $finite_wasm_gas
-    local.get $y
+    i32.store
     i64.const 2
     call $finite_wasm_gas
+    local.get $y
     i32.const 43
+    i64.const 1
+    call $finite_wasm_gas
     i32.store
     i64.const 1
     call $finite_wasm_gas
@@ -171,9 +171,6 @@
     i64.const 1
     call $finite_wasm_gas
     i32.load
-    i64.const 1
-    call $finite_wasm_gas
-    end
     i64.const 1
     call $finite_wasm_gas
   )

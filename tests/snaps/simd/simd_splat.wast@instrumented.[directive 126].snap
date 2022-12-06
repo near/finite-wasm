@@ -20,81 +20,81 @@
   (func (;2;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.splat
     i8x16.extract_lane_s 0
   )
   (func (;3;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.splat
     i8x16.extract_lane_s 15
   )
   (func (;4;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i16x8.splat
     i16x8.extract_lane_s 0
   )
   (func (;5;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i16x8.splat
     i16x8.extract_lane_s 7
   )
   (func (;6;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i32x4.splat
     i32x4.extract_lane 0
   )
   (func (;7;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i32x4.splat
     i32x4.extract_lane 3
   )
   (func (;8;) (type 1) (param f32) (result f32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f32x4.splat
     f32x4.extract_lane 0
   )
   (func (;9;) (type 1) (param f32) (result f32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f32x4.splat
     f32x4.extract_lane 3
   )
   (func (;10;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.splat
@@ -103,45 +103,45 @@
   (func (;11;) (type 3) (param i64) (result i64)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i64x2.splat
     i64x2.extract_lane 0
   )
   (func (;12;) (type 3) (param i64) (result i64)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i64x2.splat
     i64x2.extract_lane 1
   )
   (func (;13;) (type 4) (param f64) (result f64)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f64x2.splat
     f64x2.extract_lane 0
   )
   (func (;14;) (type 4) (param f64) (result f64)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f64x2.splat
     f64x2.extract_lane 1
   )
   (func (;15;) (type 5) (param i32 i32 i32) (result v128)
     i64.const 1000002000048
     call 1
-    local.get 0
     i64.const 9
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.splat
@@ -153,9 +153,9 @@
   (func (;16;) (type 6) (param i32 i32 i32 i32) (result v128)
     i64.const 1000003000064
     call 1
-    local.get 0
     i64.const 12
     call 0
+    local.get 0
     i16x8.splat
     local.get 1
     i16x8.splat
@@ -170,9 +170,9 @@
   (func (;17;) (type 6) (param i32 i32 i32 i32) (result v128)
     i64.const 1000003000064
     call 1
-    local.get 0
     i64.const 12
     call 0
+    local.get 0
     i32x4.splat
     local.get 1
     i32x4.splat
@@ -187,9 +187,9 @@
   (func (;18;) (type 7) (param i64 i64 i64 i64) (result v128)
     i64.const 1000003000064
     call 1
-    local.get 0
     i64.const 12
     call 0
+    local.get 0
     i64x2.splat
     local.get 1
     i64x2.splat
@@ -204,9 +204,9 @@
   (func (;19;) (type 8) (param f64 f64 f64 f64) (result v128)
     i64.const 1000003000064
     call 1
-    local.get 0
     i64.const 12
     call 0
+    local.get 0
     f64x2.splat
     local.get 1
     f64x2.splat
@@ -221,9 +221,9 @@
   (func (;20;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.splat
@@ -232,9 +232,9 @@
   (func (;21;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i16x8.splat
     local.get 1
     i16x8.splat
@@ -243,9 +243,9 @@
   (func (;22;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.splat
@@ -254,9 +254,9 @@
   (func (;23;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i16x8.splat
     local.get 1
     i16x8.splat
@@ -265,9 +265,9 @@
   (func (;24;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000020
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.shr_s
@@ -275,9 +275,9 @@
   (func (;25;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000020
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i16x8.splat
     local.get 1
     i16x8.shr_s
@@ -285,9 +285,9 @@
   (func (;26;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000020
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i32x4.splat
     local.get 1
     i32x4.shr_s
@@ -295,9 +295,9 @@
   (func (;27;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.splat
@@ -306,9 +306,9 @@
   (func (;28;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i16x8.splat
     local.get 1
     i16x8.splat
@@ -317,9 +317,9 @@
   (func (;29;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i32x4.splat
     local.get 1
     i32x4.splat
@@ -328,45 +328,45 @@
   (func (;30;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.splat
     i8x16.all_true
   )
   (func (;31;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i16x8.splat
     i16x8.all_true
   )
   (func (;32;) (type 0) (param i32) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i32x4.splat
     i32x4.all_true
   )
   (func (;33;) (type 9) (param i64) (result i32)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i64x2.splat
     i32x4.all_true
   )
   (func (;34;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i8x16.splat
     local.get 1
     i8x16.splat
@@ -375,9 +375,9 @@
   (func (;35;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i16x8.splat
     local.get 1
     i16x8.splat
@@ -386,9 +386,9 @@
   (func (;36;) (type 2) (param i32 i32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i32x4.splat
     local.get 1
     i32x4.splat
@@ -397,9 +397,9 @@
   (func (;37;) (type 10) (param i64 i64) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     i64x2.splat
     local.get 1
     i64x2.splat
@@ -408,9 +408,9 @@
   (func (;38;) (type 11) (param f32 f32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     f32x4.splat
     local.get 1
     f32x4.splat
@@ -419,9 +419,9 @@
   (func (;39;) (type 12) (param f64 f64) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     f64x2.splat
     local.get 1
     f64x2.splat
@@ -430,18 +430,18 @@
   (func (;40;) (type 13) (param f32) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f32x4.splat
     f32x4.abs
   )
   (func (;41;) (type 11) (param f32 f32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     f32x4.splat
     local.get 1
     f32x4.splat
@@ -450,9 +450,9 @@
   (func (;42;) (type 11) (param f32 f32) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     f32x4.splat
     local.get 1
     f32x4.splat
@@ -461,18 +461,18 @@
   (func (;43;) (type 14) (param i32) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i32x4.splat
     f32x4.convert_i32x4_s
   )
   (func (;44;) (type 13) (param f32) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f32x4.splat
     i32x4.trunc_sat_f32x4_s
   )

@@ -6,9 +6,9 @@
   (func (;2;) (type 0)
     i64.const 1000000000000
     call 1
-    elem.drop 0
     i64.const 2
     call 0
+    elem.drop 0
   )
   (elem (;0;) func)
 )

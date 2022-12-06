@@ -8,34 +8,34 @@
   (func $f (;2;) (type 1) (result f64)
     i64.const 1000000000008
     call $finite_wasm_stack
-    f64.const 0x0p+0 (;=0;)
     i64.const 2
     call $finite_wasm_gas
+    f64.const 0x0p+0 (;=0;)
   )
   (func $g (;3;) (type $t) (param i32)
     i64.const 1000000000000
     call $finite_wasm_stack
-    end
     i64.const 1
     call $finite_wasm_gas
   )
   (func $i32->void (;4;) (type $t) (param i32)
     i64.const 1000000000000
     call $finite_wasm_stack
-    end
     i64.const 1
     call $finite_wasm_gas
   )
   (func $void->f64 (;5;) (type 1) (result f64)
     i64.const 1000000000008
     call $finite_wasm_stack
-    f64.const 0x0p+0 (;=0;)
     i64.const 2
     call $finite_wasm_gas
+    f64.const 0x0p+0 (;=0;)
   )
   (func $check (;6;) (type 2)
     i64.const 1000000000008
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 0
     i64.const 1
     call $finite_wasm_gas
@@ -43,10 +43,8 @@
     i64.const 1
     call $finite_wasm_gas
     call $void->f64
-    i64.const 1
-    call $finite_wasm_gas
-    drop
     i64.const 2
     call $finite_wasm_gas
+    drop
   )
 )

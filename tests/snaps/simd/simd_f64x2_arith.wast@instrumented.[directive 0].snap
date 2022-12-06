@@ -7,53 +7,53 @@
   (func (;2;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     f64x2.add
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     f64x2.sub
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     f64x2.mul
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     f64x2.div
   )
   (func (;6;) (type 1) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 3
     call 0
+    local.get 0
     f64x2.neg
   )
   (func (;7;) (type 1) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 3
     call 0
+    local.get 0
     f64x2.sqrt
   )
   (export "f64x2.add" (func 2))

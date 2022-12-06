@@ -7,9 +7,9 @@
   (func (;2;) (type 0) (param $a f32) (param $b f32) (param $c f32) (result f32)
     i64.const 1000002000012
     call 1
-    local.get $a
     i64.const 7
     call 0
+    local.get $a
     local.get $b
     local.get $c
     f32.sqrt
@@ -19,9 +19,9 @@
   (func (;3;) (type 1) (param $a f64) (param $b f64) (param $c f64) (result f64)
     i64.const 1000002000024
     call 1
-    local.get $a
     i64.const 7
     call 0
+    local.get $a
     local.get $b
     local.get $c
     f64.sqrt

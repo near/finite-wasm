@@ -7,27 +7,25 @@
   (func (;2;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $address i32) (param $value v128)
     i64.const 1000001000020
     call 1
-    local.get $address
     i64.const 2
     call 0
+    local.get $address
     local.get $value
-    v128.store
     i64.const 1
     call 0
-    end
+    v128.store
     i64.const 1
     call 0
   )

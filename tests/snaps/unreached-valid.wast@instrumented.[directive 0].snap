@@ -9,38 +9,38 @@
   (func (;2;) (type 0) (param $cond i32) (result i32)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    i32.const 0
+    unreachable
     i64.const 4
     call 0
+    i32.const 0
     local.get $cond
     select
   )
   (func (;3;) (type 0) (param $cond i32) (result i32)
     i64.const 1000000000004
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     unreachable
-    i64.const 1
-    call 0
-    local.get $cond
     i64.const 3
     call 0
+    local.get $cond
     select
   )
   (func (;4;) (type 1)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    select
+    unreachable
     i64.const 19
     call 0
+    select
     unreachable
     i32.const 0
     select
@@ -62,23 +62,23 @@
   (func (;5;) (type 2) (result i32)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    select
+    unreachable
     i64.const 3
     call 0
+    select
     i32.add
   )
   (func (;6;) (type 3) (result i64)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    i64.const 0
+    unreachable
     i64.const 5
     call 0
+    i64.const 0
     i32.const 0
     select
     i64.add
@@ -86,24 +86,24 @@
   (func (;7;) (type 1)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    select
+    unreachable
     i64.const 4
     call 0
+    select
     i32.eqz
     drop
   )
   (func (;8;) (type 1)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    select
+    unreachable
     i64.const 4
     call 0
+    select
     ref.is_null
     drop
   )

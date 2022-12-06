@@ -175,8 +175,14 @@ impl<'a> crate::test::TestContext {
 
                     let mut operators = reader.get_operators_reader().expect("TODO");
                     while !operators.eof() {
+
                         let (op, offset) = operators.read_with_offset().expect("TODO");
                         let end_offset = operators.original_position();
+                        if instrumentation_points.peek().map(|(o, _)| **o) == Some(offset) {
+                            let (_, g) = instrumentation_points.next().unwrap();
+                            new_function.instruction(&we::Instruction::I64Const(*g as i64));
+                            new_function.instruction(&we::Instruction::Call(gas_fn));
+                        }
                         match op {
                             wp::Operator::RefFunc { function_index } => new_function
                                 .instruction(&we::Instruction::RefFunc(function_index + 2)),
@@ -188,12 +194,6 @@ impl<'a> crate::test::TestContext {
                             }
                             _ => new_function.raw(module[offset..end_offset].iter().copied()),
                         };
-
-                        if instrumentation_points.peek().map(|(o, _)| **o) == Some(offset) {
-                            let (_, g) = instrumentation_points.next().unwrap();
-                            new_function.instruction(&we::Instruction::I64Const(*g as i64));
-                            new_function.instruction(&we::Instruction::Call(gas_fn));
-                        }
                     }
                     new_code_section.function(&new_function);
                 }

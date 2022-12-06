@@ -7,9 +7,9 @@
   (func (;2;) (type 0) (result i32)
     i64.const 1000000000004
     call 2
-    memory.size
     i64.const 2
     call 1
+    memory.size
   )
   (export "size" (func 2))
 )

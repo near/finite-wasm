@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (param $four f64) (param $ten f64) (result i32)
     i64.const 1000001000016
     call 1
-    local.get $four
     i64.const 6
     call 0
+    local.get $four
     local.get $ten
     f64.div
     f64.const 0x1.999999999999ap-2 (;=0.4;)

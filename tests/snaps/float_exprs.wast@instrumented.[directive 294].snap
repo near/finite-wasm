@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     f64.promote_f32
     f32.demote_f64
   )

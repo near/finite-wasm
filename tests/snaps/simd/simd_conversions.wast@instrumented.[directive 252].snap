@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i32x4.add
     f32x4.convert_i32x4_s
@@ -16,9 +16,9 @@
   (func (;3;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i32x4.sub
     f32x4.convert_i32x4_s
@@ -26,9 +26,9 @@
   (func (;4;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i32x4.mul
     f32x4.convert_i32x4_u
@@ -36,9 +36,9 @@
   (func (;5;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_s
     i16x8.extend_low_i8x16_s
@@ -46,9 +46,9 @@
   (func (;6;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_u
     i16x8.extend_low_i8x16_s
@@ -56,9 +56,9 @@
   (func (;7;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_s
     i16x8.extend_low_i8x16_s
@@ -66,9 +66,9 @@
   (func (;8;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_u
     i16x8.extend_low_i8x16_s
@@ -76,9 +76,9 @@
   (func (;9;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_u
     i16x8.extend_low_i8x16_u
@@ -86,9 +86,9 @@
   (func (;10;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_s
     i16x8.extend_low_i8x16_u
@@ -96,9 +96,9 @@
   (func (;11;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_u
     i16x8.extend_low_i8x16_u
@@ -106,9 +106,9 @@
   (func (;12;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.narrow_i16x8_s
     i16x8.extend_low_i8x16_u
@@ -116,9 +116,9 @@
   (func (;13;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_s
     i32x4.extend_low_i16x8_s
@@ -126,9 +126,9 @@
   (func (;14;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_u
     i32x4.extend_low_i16x8_s
@@ -136,9 +136,9 @@
   (func (;15;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_s
     i32x4.extend_low_i16x8_s
@@ -146,9 +146,9 @@
   (func (;16;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_u
     i32x4.extend_low_i16x8_s
@@ -156,9 +156,9 @@
   (func (;17;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_u
     i32x4.extend_low_i16x8_u
@@ -166,9 +166,9 @@
   (func (;18;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_s
     i32x4.extend_low_i16x8_u
@@ -176,9 +176,9 @@
   (func (;19;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_u
     i32x4.extend_low_i16x8_u
@@ -186,9 +186,9 @@
   (func (;20;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i16x8.narrow_i32x4_s
     i32x4.extend_low_i16x8_u

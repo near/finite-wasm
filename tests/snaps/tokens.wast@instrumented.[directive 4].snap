@@ -6,8 +6,8 @@
   (func $f (;2;) (type 0)
     i64.const 1000000000000
     call $finite_wasm_stack
-    nop
     i64.const 2
     call $finite_wasm_gas
+    nop
   )
 )

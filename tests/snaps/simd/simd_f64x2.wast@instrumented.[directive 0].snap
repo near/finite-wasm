@@ -8,331 +8,331 @@
   (func (;2;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     f64x2.min
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     f64x2.max
   )
   (func (;4;) (type 1) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 3
     call 0
+    local.get 0
     f64x2.abs
   )
   (func (;5;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x40000000
     f64x2.min
   )
   (func (;6;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     v128.const i32x4 0x00000000 0x3ff00000 0x00000000 0x40080000
     f64x2.min
   )
   (func (;7;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     f64x2.min
   )
   (func (;8;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     f64x2.min
   )
   (func (;9;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x40000000
     f64x2.min
   )
   (func (;10;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     v128.const i32x4 0x00000000 0x3ff00000 0x00000000 0x41e00000
     f64x2.min
   )
   (func (;11;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     f64x2.min
   )
   (func (;12;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     f64x2.min
   )
   (func (;13;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     f64x2.min
   )
   (func (;14;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     local.get 0
     f64x2.min
   )
   (func (;15;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     local.get 0
     f64x2.min
   )
   (func (;16;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     f64x2.min
   )
   (func (;17;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     local.get 0
     f64x2.min
   )
   (func (;18;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     local.get 0
     f64x2.min
   )
   (func (;19;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     local.get 0
     f64x2.min
   )
   (func (;20;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     local.get 0
     f64x2.min
   )
   (func (;21;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x40000000
     f64x2.max
   )
   (func (;22;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     v128.const i32x4 0x00000000 0x3ff00000 0x00000000 0x40080000
     f64x2.max
   )
   (func (;23;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     f64x2.max
   )
   (func (;24;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     f64x2.max
   )
   (func (;25;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x40000000
     f64x2.max
   )
   (func (;26;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     v128.const i32x4 0x00000000 0x3ff00000 0x00000000 0x41e00000
     f64x2.max
   )
   (func (;27;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     f64x2.max
   )
   (func (;28;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     f64x2.max
   )
   (func (;29;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     f64x2.max
   )
   (func (;30;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0xc0080000
     local.get 0
     f64x2.max
   )
   (func (;31;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     local.get 0
     f64x2.max
   )
   (func (;32;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     v128.const i32x4 0x00000000 0x40000000 0x00000000 0x40080000
     f64x2.max
   )
   (func (;33;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     local.get 0
     f64x2.max
   )
   (func (;34;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     local.get 0
     f64x2.max
   )
   (func (;35;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x3ff00000
     local.get 0
     f64x2.max
   )
   (func (;36;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
-    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     i64.const 4
     call 0
+    v128.const i32x4 0x00000000 0x40000000 0x00000000 0x41e00000
     local.get 0
     f64x2.max
   )
   (func (;37;) (type 2) (result v128)
     i64.const 1000000000016
     call 1
-    v128.const i32x4 0x00000000 0x80000000 0x00000000 0xbff00000
     i64.const 3
     call 0
+    v128.const i32x4 0x00000000 0x80000000 0x00000000 0xbff00000
     f64x2.abs
   )
   (func (;38;) (type 2) (result v128)
     i64.const 1000000000016
     call 1
-    v128.const i32x4 0x00000000 0xc0000000 0x00000000 0xc0080000
     i64.const 3
     call 0
+    v128.const i32x4 0x00000000 0xc0000000 0x00000000 0xc0080000
     f64x2.abs
   )
   (export "f64x2.min" (func 2))

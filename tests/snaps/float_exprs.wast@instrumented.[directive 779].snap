@@ -11,17 +11,17 @@
   (func (;2;) (type 0) (param f32) (result f32)
     i64.const 1000000000004
     call 1
-    local.get 0
     i64.const 3
     call 0
+    local.get 0
     f32.sqrt
   )
   (func (;3;) (type 1) (param f32 f32 f32 f32) (result f32)
     i64.const 1000003000016
     call 1
-    local.get 0
     i64.const 10
     call 0
+    local.get 0
     local.get 1
     f32.div
     local.get 2
@@ -34,9 +34,9 @@
   (func (;4;) (type 2) (param f32 f32 f32) (result f32)
     i64.const 1000002000008
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     f32.mul
     local.get 2
@@ -45,9 +45,9 @@
   (func (;5;) (type 2) (param f32 f32 f32) (result f32)
     i64.const 1000002000012
     call 1
-    local.get 0
     i64.const 8
     call 0
+    local.get 0
     local.get 1
     f32.div
     local.get 2
@@ -58,9 +58,9 @@
   (func (;6;) (type 1) (param f32 f32 f32 f32) (result f32)
     i64.const 1000003000016
     call 1
-    local.get 0
     i64.const 12
     call 0
+    local.get 0
     local.get 1
     local.get 2
     f32.mul
@@ -75,17 +75,17 @@
   (func (;7;) (type 3) (param f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get 0
     i64.const 3
     call 0
+    local.get 0
     f64.sqrt
   )
   (func (;8;) (type 4) (param f64 f64 f64 f64) (result f64)
     i64.const 1000003000032
     call 1
-    local.get 0
     i64.const 10
     call 0
+    local.get 0
     local.get 1
     f64.div
     local.get 2
@@ -98,9 +98,9 @@
   (func (;9;) (type 5) (param f64 f64 f64) (result f64)
     i64.const 1000002000016
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     f64.mul
     local.get 2
@@ -109,9 +109,9 @@
   (func (;10;) (type 5) (param f64 f64 f64) (result f64)
     i64.const 1000002000024
     call 1
-    local.get 0
     i64.const 8
     call 0
+    local.get 0
     local.get 1
     f64.div
     local.get 2
@@ -122,9 +122,9 @@
   (func (;11;) (type 4) (param f64 f64 f64 f64) (result f64)
     i64.const 1000003000032
     call 1
-    local.get 0
     i64.const 12
     call 0
+    local.get 0
     local.get 1
     local.get 2
     f64.mul

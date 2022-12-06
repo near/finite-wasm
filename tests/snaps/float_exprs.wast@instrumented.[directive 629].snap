@@ -7,22 +7,22 @@
     (local $sum f64) (local $c f64) (local $t f64)
     i64.const 1000004000024
     call 1
+    i64.const 1
+    call 0
     block $exit ;; label = @1
       i64.const 1
       call 0
       loop $top ;; label = @2
-        i64.const 1
-        call 0
-        local.get $c
         i64.const 2
         call 0
+        local.get $c
         local.get $p
-        f64.load
         i64.const 1
         call 0
-        local.get $t
+        f64.load
         i64.const 20
         call 0
+        local.get $t
         f64.sub
         local.tee $t
         f64.add
@@ -42,12 +42,12 @@
         i32.const -1
         i32.add
         local.tee $n
-        br_if 0 (;@2;)
         i64.const 1
         call 0
+        br_if 0 (;@2;)
+        i64.const 4
+        call 0
       end
-      i64.const 4
-      call 0
     end
     local.get $sum
   )
@@ -55,22 +55,22 @@
     (local $sum f64)
     i64.const 1000002000016
     call 1
+    i64.const 1
+    call 0
     block $exit ;; label = @1
       i64.const 1
       call 0
       loop $top ;; label = @2
-        i64.const 1
-        call 0
-        local.get $sum
         i64.const 2
         call 0
+        local.get $sum
         local.get $p
-        f64.load
         i64.const 1
         call 0
-        f64.add
+        f64.load
         i64.const 11
         call 0
+        f64.add
         local.set $sum
         local.get $p
         i32.const 8
@@ -81,12 +81,12 @@
         i32.add
         local.set $n
         local.get $n
-        br_if 0 (;@2;)
         i64.const 1
         call 0
+        br_if 0 (;@2;)
+        i64.const 4
+        call 0
       end
-      i64.const 4
-      call 0
     end
     local.get $sum
   )

@@ -8,112 +8,110 @@
     (local $x0 f32) (local $x1 f32) (local $x2 f32) (local $x3 f32) (local $y0 f32) (local $y1 f32) (local $y2 f32) (local $y3 f32)
     i64.const 1000010000012
     call 1
+    i64.const 1
+    call 0
     local.get $i
     i64.const 1
     call 0
     f32.load
-    i64.const 1
+    i64.const 2
     call 0
     local.set $x0
-    i64.const 2
-    call 0
     local.get $i
-    f32.load offset=4
     i64.const 1
+    call 0
+    f32.load offset=4
+    i64.const 2
     call 0
     local.set $x1
-    i64.const 2
-    call 0
     local.get $i
-    f32.load offset=8
     i64.const 1
+    call 0
+    f32.load offset=8
+    i64.const 2
     call 0
     local.set $x2
-    i64.const 2
-    call 0
     local.get $i
-    f32.load offset=12
     i64.const 1
+    call 0
+    f32.load offset=12
+    i64.const 2
     call 0
     local.set $x3
-    i64.const 2
-    call 0
     local.get $j
-    f32.load
     i64.const 1
+    call 0
+    f32.load
+    i64.const 2
     call 0
     local.set $y0
-    i64.const 2
-    call 0
     local.get $j
-    f32.load offset=4
     i64.const 1
+    call 0
+    f32.load offset=4
+    i64.const 2
     call 0
     local.set $y1
-    i64.const 2
-    call 0
     local.get $j
-    f32.load offset=8
     i64.const 1
+    call 0
+    f32.load offset=8
+    i64.const 2
     call 0
     local.set $y2
-    i64.const 2
-    call 0
     local.get $j
-    f32.load offset=12
     i64.const 1
     call 0
-    local.set $y3
+    f32.load offset=12
     i64.const 5
     call 0
+    local.set $y3
     local.get $k
     local.get $x0
     local.get $y0
     f32.add
-    f32.store
     i64.const 1
     call 0
-    local.get $k
+    f32.store
     i64.const 4
     call 0
+    local.get $k
     local.get $x1
     local.get $y1
     f32.add
-    f32.store offset=4
     i64.const 1
     call 0
-    local.get $k
+    f32.store offset=4
     i64.const 4
     call 0
+    local.get $k
     local.get $x2
     local.get $y2
     f32.add
-    f32.store offset=8
     i64.const 1
     call 0
-    local.get $k
+    f32.store offset=8
     i64.const 4
     call 0
+    local.get $k
     local.get $x3
     local.get $y3
     f32.add
-    f32.store offset=12
     i64.const 1
     call 0
-    end
+    f32.store offset=12
     i64.const 1
     call 0
   )
   (func (;3;) (type 1) (param $k i32) (result f32)
     i64.const 1000000000004
     call 1
+    i64.const 1
+    call 0
     local.get $k
     i64.const 1
     call 0
     f32.load
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )

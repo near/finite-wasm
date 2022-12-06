@@ -6,27 +6,26 @@
   (func $const-i32-a (;2;) (type $out-i32) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i32.const 65
     i64.const 2
     call $finite_wasm_gas
+    i32.const 65
   )
   (func $const-i32-b (;3;) (type $out-i32) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i32.const 66
     i64.const 2
     call $finite_wasm_gas
+    i32.const 66
   )
   (func (;4;) (type $out-i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 9
     i64.const 1
     call $finite_wasm_gas
     call_indirect (type $out-i32)
-    i64.const 1
-    call $finite_wasm_gas
-    end
     i64.const 1
     call $finite_wasm_gas
   )

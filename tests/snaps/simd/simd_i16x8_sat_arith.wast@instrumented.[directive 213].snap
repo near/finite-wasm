@@ -7,9 +7,9 @@
   (func (;2;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i16x8.sub_sat_s
     local.get 2
@@ -18,9 +18,9 @@
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i16x8.sub_sat_u
     local.get 2
@@ -29,9 +29,9 @@
   (func (;4;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i16x8.sub_sat_s
     local.get 2
@@ -40,9 +40,9 @@
   (func (;5;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i16x8.sub_sat_u
     local.get 2
@@ -51,9 +51,9 @@
   (func (;6;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i16x8.neg
     local.get 1
     i16x8.add_sat_s
@@ -61,9 +61,9 @@
   (func (;7;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i16x8.neg
     local.get 1
     i16x8.add_sat_u
@@ -71,9 +71,9 @@
   (func (;8;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i16x8.neg
     local.get 1
     i16x8.sub_sat_s
@@ -81,9 +81,9 @@
   (func (;9;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i16x8.neg
     local.get 1
     i16x8.sub_sat_u

@@ -9,17 +9,16 @@
   (func (;2;) (type 0) (param i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 3
+    call 0
     block (result v128) ;; label = @1
-      i64.const 3
-      call 0
       local.get 0
       i8x16.splat
+      i64.const 1
+      call 0
       br 0 (;@1;)
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -27,14 +26,13 @@
   (func (;3;) (type 0) (param i32) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 2
     call 0
+    local.get 0
     i16x8.splat
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )
@@ -42,49 +40,46 @@
     (local v128)
     i64.const 1000001000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i32x4.splat
     local.set 1
     local.get 1
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )
   (func (;5;) (type 1) (param f32) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f32x4.splat
     global.set $g
     global.get $g
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )
   (func (;6;) (type 2) (param i64) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 3
+    call 0
     block (result v128) ;; label = @1
-      i64.const 3
-      call 0
       local.get 0
       i64x2.splat
+      i64.const 1
+      call 0
       br 0 (;@1;)
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -92,14 +87,13 @@
   (func (;7;) (type 2) (param i64) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 2
     call 0
+    local.get 0
     i64x2.splat
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )
@@ -107,32 +101,30 @@
     (local v128)
     i64.const 1000001000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i64x2.splat
     local.set 1
     local.get 1
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )
   (func (;9;) (type 3) (param f64) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     f64x2.splat
     global.set $g
     global.get $g
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )

@@ -7,28 +7,28 @@
   (func (;2;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.not
     i64.const 2
     call 0
+    v128.not
   )
   (func (;3;) (type 1) (result i32)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    i8x16.all_true
     i64.const 2
     call 0
+    i8x16.all_true
   )
   (memory (;0;) 1)
   (export "as-v128.not-operand" (func 2))

@@ -6,15 +6,15 @@
   (func (;2;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    f32x4.convert_i32x4_u
     i64.const 2
     call 0
+    f32x4.convert_i32x4_u
   )
   (memory (;0;) 1)
   (export "as-f32x4.convert_i32x4_u-operand" (func 2))

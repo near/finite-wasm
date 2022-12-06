@@ -6,18 +6,18 @@
   (func (;2;) (type 0)
     i64.const 1000000000016
     call 1
+    i64.const 4
+    call 0
     block ;; label = @1
-      i64.const 4
-      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 6
+          call 0
         end
-        i64.const 6
-        call 0
         v128.not
       end
       drop
@@ -26,26 +26,26 @@
   (func (;3;) (type 0)
     i64.const 1000000000032
     call 1
+    i64.const 4
+    call 0
     block ;; label = @1
-      i64.const 4
-      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 3
+          call 0
         end
-        i64.const 3
-        call 0
         block (result v128) ;; label = @3
           i32.const 1
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 6
+          call 0
         end
-        i64.const 6
-        call 0
         v128.and
       end
       drop
@@ -54,26 +54,26 @@
   (func (;4;) (type 0)
     i64.const 1000000000032
     call 1
+    i64.const 4
+    call 0
     block ;; label = @1
-      i64.const 4
-      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 3
+          call 0
         end
-        i64.const 3
-        call 0
         block (result v128) ;; label = @3
           i32.const 1
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 6
+          call 0
         end
-        i64.const 6
-        call 0
         v128.or
       end
       drop
@@ -82,26 +82,26 @@
   (func (;5;) (type 0)
     i64.const 1000000000032
     call 1
+    i64.const 4
+    call 0
     block ;; label = @1
-      i64.const 4
-      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 3
+          call 0
         end
-        i64.const 3
-        call 0
         block (result v128) ;; label = @3
           i32.const 1
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 6
+          call 0
         end
-        i64.const 6
-        call 0
         v128.xor
       end
       drop
@@ -110,34 +110,34 @@
   (func (;6;) (type 0)
     i64.const 1000000000048
     call 1
+    i64.const 4
+    call 0
     block ;; label = @1
-      i64.const 4
-      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 3
+          call 0
         end
-        i64.const 3
-        call 0
         block (result v128) ;; label = @3
           i32.const 1
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 3
+          call 0
         end
-        i64.const 3
-        call 0
         block (result v128) ;; label = @3
           i32.const 2
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 6
+          call 0
         end
-        i64.const 6
-        call 0
         v128.bitselect
       end
       drop
@@ -146,26 +146,26 @@
   (func (;7;) (type 0)
     i64.const 1000000000032
     call 1
+    i64.const 4
+    call 0
     block ;; label = @1
-      i64.const 4
-      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 3
+          call 0
         end
-        i64.const 3
-        call 0
         block (result v128) ;; label = @3
           i32.const 1
-          v128.load
           i64.const 1
           call 0
+          v128.load
+          i64.const 6
+          call 0
         end
-        i64.const 6
-        call 0
         v128.andnot
       end
       drop
@@ -174,15 +174,15 @@
   (func (;8;) (type 0)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.not
     i64.const 5
     call 0
+    v128.not
     v128.not
     v128.not
     drop
@@ -190,6 +190,8 @@
   (func (;9;) (type 0)
     i64.const 1000000000064
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
@@ -200,12 +202,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.and
     i64.const 2
     call 0
+    v128.and
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -213,13 +215,13 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.and
     i64.const 3
     call 0
     v128.and
+    v128.and
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -227,12 +229,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.and
     i64.const 2
     call 0
+    v128.and
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -240,11 +242,9 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.and
     i64.const 5
     call 0
+    v128.and
     v128.and
     v128.and
     drop
@@ -252,6 +252,8 @@
   (func (;10;) (type 0)
     i64.const 1000000000064
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
@@ -262,12 +264,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.or
     i64.const 2
     call 0
+    v128.or
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -275,13 +277,13 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.or
     i64.const 3
     call 0
     v128.or
+    v128.or
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -289,12 +291,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.or
     i64.const 2
     call 0
+    v128.or
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -302,11 +304,9 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.or
     i64.const 5
     call 0
+    v128.or
     v128.or
     v128.or
     drop
@@ -314,6 +314,8 @@
   (func (;11;) (type 0)
     i64.const 1000000000064
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
@@ -324,12 +326,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.xor
     i64.const 2
     call 0
+    v128.xor
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -337,13 +339,13 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.xor
     i64.const 3
     call 0
     v128.xor
+    v128.xor
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -351,12 +353,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.xor
     i64.const 2
     call 0
+    v128.xor
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -364,11 +366,9 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.xor
     i64.const 5
     call 0
+    v128.xor
     v128.xor
     v128.xor
     drop
@@ -376,6 +376,8 @@
   (func (;12;) (type 0)
     i64.const 1000000000112
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
@@ -392,12 +394,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -411,12 +413,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -430,13 +432,13 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 3
     call 0
     v128.bitselect
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -450,12 +452,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -469,12 +471,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -488,13 +490,13 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 3
     call 0
     v128.bitselect
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -508,12 +510,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -527,12 +529,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -546,11 +548,9 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 5
     call 0
+    v128.bitselect
     v128.bitselect
     v128.bitselect
     drop
@@ -558,6 +558,8 @@
   (func (;13;) (type 0)
     i64.const 1000000000064
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
@@ -568,12 +570,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.andnot
     i64.const 2
     call 0
+    v128.andnot
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -581,13 +583,13 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.andnot
     i64.const 3
     call 0
     v128.andnot
+    v128.andnot
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -595,12 +597,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.andnot
     i64.const 2
     call 0
+    v128.andnot
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -608,11 +610,9 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.andnot
     i64.const 5
     call 0
+    v128.andnot
     v128.andnot
     v128.andnot
     drop
@@ -620,24 +620,26 @@
   (func (;14;) (type 0)
     i64.const 1000000000064
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.not
     i64.const 2
     call 0
+    v128.not
     i32.const 1
-    v128.load
     i64.const 1
     call 0
-    v128.not
+    v128.load
     i64.const 3
     call 0
+    v128.not
     v128.and
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -651,12 +653,12 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
     i64.const 2
     call 0
+    v128.bitselect
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
     i64.const 1
     call 0
@@ -664,11 +666,9 @@
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    v128.andnot
     i64.const 5
     call 0
+    v128.andnot
     v128.xor
     v128.or
     drop

@@ -6,9 +6,9 @@
   (func (;2;) (type 0)
     i64.const 1000000000016
     call 1
-    v128.const i32x4 0x7f000000 0x7f000000 0xff000000 0xfe967699
     i64.const 3
     call 0
+    v128.const i32x4 0x7f000000 0x7f000000 0xff000000 0xfe967699
     drop
   )
 )

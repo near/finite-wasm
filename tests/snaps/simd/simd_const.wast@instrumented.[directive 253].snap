@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    v128.const i32x4 0x7f7fffff 0x7f7fffff 0x7f7fffff 0x7f7fffff
     i64.const 2
     call 0
+    v128.const i32x4 0x7f7fffff 0x7f7fffff 0x7f7fffff 0x7f7fffff
   )
   (export "f" (func 2))
 )

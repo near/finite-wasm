@@ -6,11 +6,13 @@
   (func $even (;2;) (type 0) (param $n i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    local.get $n
     i64.const 3
     call $finite_wasm_gas
+    local.get $n
     i32.const 0
     i32.eq
+    i64.const 1
+    call $finite_wasm_gas
     if (result i32) ;; label = @1
       i64.const 1
       call $finite_wasm_gas
@@ -18,19 +20,16 @@
       i64.const 1
       call $finite_wasm_gas
     else
-      i64.const 1
-      call $finite_wasm_gas
-      local.get $n
       i64.const 3
       call $finite_wasm_gas
+      local.get $n
       i32.const 1
       i32.sub
+      i64.const 1
+      call $finite_wasm_gas
       call $odd
       i64.const 1
       call $finite_wasm_gas
-    end
-    i64.const 1
-    call $finite_wasm_gas
     end
     i64.const 1
     call $finite_wasm_gas
@@ -38,11 +37,13 @@
   (func $odd (;3;) (type 0) (param $n i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    local.get $n
     i64.const 3
     call $finite_wasm_gas
+    local.get $n
     i32.const 0
     i32.eq
+    i64.const 1
+    call $finite_wasm_gas
     if (result i32) ;; label = @1
       i64.const 1
       call $finite_wasm_gas
@@ -50,19 +51,16 @@
       i64.const 1
       call $finite_wasm_gas
     else
-      i64.const 1
-      call $finite_wasm_gas
-      local.get $n
       i64.const 3
       call $finite_wasm_gas
+      local.get $n
       i32.const 1
       i32.sub
+      i64.const 1
+      call $finite_wasm_gas
       call $even
       i64.const 1
       call $finite_wasm_gas
-    end
-    i64.const 1
-    call $finite_wasm_gas
     end
     i64.const 1
     call $finite_wasm_gas

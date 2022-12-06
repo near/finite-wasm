@@ -7,28 +7,26 @@
   (func (;2;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 2
     call 0
+    local.get $x
     i32.const 2
-    i32.div_s
     i64.const 1
     call 0
-    end
+    i32.div_s
     i64.const 1
     call 0
   )
   (func (;3;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000016
     call 1
+    i64.const 2
+    call 0
     local.get $x
     i64.const 2
-    call 0
-    i64.const 2
-    i64.div_s
     i64.const 1
     call 0
-    end
+    i64.div_s
     i64.const 1
     call 0
   )

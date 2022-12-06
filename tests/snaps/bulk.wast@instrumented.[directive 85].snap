@@ -7,51 +7,48 @@
   (func $f (;2;) (type 0)
     i64.const 1000000000000
     call $finite_wasm_stack
-    end
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;3;) (type 0)
     i64.const 1000000000000
     call $finite_wasm_stack
-    elem.drop $p
     i64.const 2
     call $finite_wasm_gas
+    elem.drop $p
   )
   (func (;4;) (type 1) (param $len i32)
     i64.const 1000000000012
     call $finite_wasm_stack
-    i32.const 0
     i64.const 3
     call $finite_wasm_gas
     i32.const 0
+    i32.const 0
     local.get $len
-    table.init $p
     i64.const 1
     call $finite_wasm_gas
-    end
+    table.init $p
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;5;) (type 0)
     i64.const 1000000000000
     call $finite_wasm_stack
-    elem.drop $a
     i64.const 2
     call $finite_wasm_gas
+    elem.drop $a
   )
   (func (;6;) (type 1) (param $len i32)
     i64.const 1000000000012
     call $finite_wasm_stack
-    i32.const 0
     i64.const 3
     call $finite_wasm_gas
     i32.const 0
+    i32.const 0
     local.get $len
-    table.init $a
     i64.const 1
     call $finite_wasm_gas
-    end
+    table.init $a
     i64.const 1
     call $finite_wasm_gas
   )
