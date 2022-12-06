@@ -106,7 +106,7 @@
     (local f32 i64 i64 f64)
     i64.const 1000008000072
     call 1
-    i64.const 36
+    i64.const 37
     call 0
     f32.const -0x1.333334p-2 (;=-0.3;)
     local.set 1
@@ -144,8 +144,6 @@
     f64.add
     f64.add
     f64.add
-    i64.const 1
-    call 0
     i64.trunc_f64_s
     i64.const 1
     call 0
@@ -173,13 +171,11 @@
   (func (;14;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     block ;; label = @1
       i32.const 9
       local.set 0
-      i64.const 1
-      call 0
       br 0 (;@1;)
       i64.const 1
       call 0
@@ -190,14 +186,12 @@
   (func (;15;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       i32.const 8
       local.set 0
       i32.const 1
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 1
       call 0
@@ -208,14 +202,12 @@
   (func (;16;) (type 1) (param i32)
     i64.const 1000000000008
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       i32.const 6
       i32.const 9
       local.set 0
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 1
       call 0
@@ -226,14 +218,12 @@
   (func (;17;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       i32.const 10
       local.set 0
       i32.const 1
-      i64.const 1
-      call 0
       br_table 0 (;@1;)
       i64.const 1
       call 0
@@ -244,12 +234,10 @@
   (func (;18;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 7
     local.set 0
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -257,18 +245,14 @@
   (func (;19;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get 0
-    i64.const 1
-    call 0
     if ;; label = @1
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 3
       local.set 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -276,21 +260,17 @@
   (func (;20;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get 0
-    i64.const 1
-    call 0
     if ;; label = @1
       i64.const 1
       call 0
     else
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 1
       local.set 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0

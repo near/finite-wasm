@@ -8,14 +8,12 @@
     (local $x f32) (local $result f32)
     i64.const 1000001000008
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     f32.const 0x1p+0 (;=1;)
     local.set $x
-    i64.const 1
-    call 0
     loop $loop ;; label = @1
-      i64.const 9
+      i64.const 10
       call 0
       local.get $x
       local.tee $result
@@ -26,8 +24,6 @@
       f32.add
       f32.const 0x1p+0 (;=1;)
       f32.gt
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 3
       call 0
@@ -38,14 +34,12 @@
     (local $x f64) (local $result f64)
     i64.const 1000001000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     f64.const 0x1p+0 (;=1;)
     local.set $x
-    i64.const 1
-    call 0
     loop $loop ;; label = @1
-      i64.const 9
+      i64.const 10
       call 0
       local.get $x
       local.tee $result
@@ -56,8 +50,6 @@
       f64.add
       f64.const 0x1p+0 (;=1;)
       f64.gt
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 3
       call 0

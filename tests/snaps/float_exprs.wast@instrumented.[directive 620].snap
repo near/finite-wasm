@@ -8,97 +8,73 @@
     (local $x0 f64) (local $x1 f64) (local $x2 f64) (local $x3 f64) (local $y0 f64) (local $y1 f64) (local $y2 f64) (local $y3 f64)
     i64.const 1000010000020
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $i
-    i64.const 1
-    call 0
     f64.load
-    i64.const 2
+    i64.const 3
     call 0
     local.set $x0
     local.get $i
-    i64.const 1
-    call 0
     f64.load offset=8
-    i64.const 2
+    i64.const 3
     call 0
     local.set $x1
     local.get $i
-    i64.const 1
-    call 0
     f64.load offset=16
-    i64.const 2
+    i64.const 3
     call 0
     local.set $x2
     local.get $i
-    i64.const 1
-    call 0
     f64.load offset=24
-    i64.const 2
+    i64.const 3
     call 0
     local.set $x3
     local.get $j
-    i64.const 1
-    call 0
     f64.load
-    i64.const 2
+    i64.const 3
     call 0
     local.set $y0
     local.get $j
-    i64.const 1
-    call 0
     f64.load offset=8
-    i64.const 2
+    i64.const 3
     call 0
     local.set $y1
     local.get $j
-    i64.const 1
-    call 0
     f64.load offset=16
-    i64.const 2
+    i64.const 3
     call 0
     local.set $y2
     local.get $j
-    i64.const 1
-    call 0
     f64.load offset=24
-    i64.const 5
+    i64.const 6
     call 0
     local.set $y3
     local.get $k
     local.get $x0
     local.get $y0
     f64.add
-    i64.const 1
-    call 0
     f64.store
-    i64.const 4
+    i64.const 5
     call 0
     local.get $k
     local.get $x1
     local.get $y1
     f64.add
-    i64.const 1
-    call 0
     f64.store offset=8
-    i64.const 4
+    i64.const 5
     call 0
     local.get $k
     local.get $x2
     local.get $y2
     f64.add
-    i64.const 1
-    call 0
     f64.store offset=16
-    i64.const 4
+    i64.const 5
     call 0
     local.get $k
     local.get $x3
     local.get $y3
     f64.add
-    i64.const 1
-    call 0
     f64.store offset=24
     i64.const 1
     call 0
@@ -106,11 +82,9 @@
   (func (;3;) (type 1) (param $k i32) (result f64)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $k
-    i64.const 1
-    call 0
     f64.load
     i64.const 1
     call 0

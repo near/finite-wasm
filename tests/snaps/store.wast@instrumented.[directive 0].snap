@@ -6,13 +6,11 @@
   (func (;2;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     block ;; label = @1
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
       i64.const 2
       call 0
@@ -21,13 +19,11 @@
   (func (;3;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     loop ;; label = @1
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
       i64.const 2
       call 0
@@ -36,13 +32,11 @@
   (func (;4;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     block ;; label = @1
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
       i64.const 1
       call 0
@@ -56,19 +50,15 @@
   (func (;5;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     block ;; label = @1
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
       i64.const 1
       call 0
@@ -79,14 +69,12 @@
   (func (;6;) (type 0)
     i64.const 1000000000012
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       i32.const 6
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
       i64.const 1
       call 0
@@ -100,19 +88,15 @@
   (func (;7;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     block ;; label = @1
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
       br_table 0 (;@1;)
       i64.const 1
       call 0
@@ -123,12 +107,10 @@
   (func (;8;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     i32.const 1
-    i64.const 1
-    call 0
     i32.store
     i64.const 1
     call 0
@@ -139,18 +121,14 @@
   (func (;9;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 1
-    i64.const 1
-    call 0
     if ;; label = @1
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
       i64.const 1
       call 0
@@ -161,21 +139,17 @@
   (func (;10;) (type 0)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     if ;; label = @1
       i64.const 1
       call 0
     else
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       i32.const 1
-      i64.const 1
-      call 0
       i32.store
       i64.const 1
       call 0

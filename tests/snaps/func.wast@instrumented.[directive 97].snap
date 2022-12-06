@@ -51,17 +51,13 @@
   (func (;9;) (type $sig)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     i32.const 1
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $sig)
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     i32.const 4
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $sig)
     i64.const 1
     call $finite_wasm_gas
@@ -69,7 +65,7 @@
   (func (;10;) (type $sig)
     i64.const 1000000000076
     call $finite_wasm_stack
-    i64.const 9
+    i64.const 10
     call $finite_wasm_gas
     f64.const 0x0p+0 (;=0;)
     i64.const 0
@@ -80,10 +76,8 @@
     f32.const 0x0p+0 (;=0;)
     i32.const 0
     i32.const 0
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type 3)
-    i64.const 9
+    i64.const 10
     call $finite_wasm_gas
     f64.const 0x0p+0 (;=0;)
     i64.const 0
@@ -94,10 +88,8 @@
     f32.const 0x0p+0 (;=0;)
     i32.const 0
     i32.const 2
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type 3)
-    i64.const 9
+    i64.const 10
     call $finite_wasm_gas
     f64.const 0x0p+0 (;=0;)
     i64.const 0
@@ -108,8 +100,6 @@
     f32.const 0x0p+0 (;=0;)
     i32.const 0
     i32.const 3
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type 3)
     i64.const 1
     call $finite_wasm_gas
@@ -117,11 +107,9 @@
   (func (;11;) (type $sig)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     i32.const 1
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $empty-sig-duplicate)
     i64.const 1
     call $finite_wasm_gas
@@ -129,7 +117,7 @@
   (func (;12;) (type $sig)
     i64.const 1000000000068
     call $finite_wasm_stack
-    i64.const 9
+    i64.const 10
     call $finite_wasm_gas
     i64.const 0
     i64.const 0
@@ -140,10 +128,8 @@
     f32.const 0x0p+0 (;=0;)
     i32.const 0
     i32.const 5
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $complex-sig-duplicate)
-    i64.const 9
+    i64.const 10
     call $finite_wasm_gas
     i64.const 0
     i64.const 0
@@ -154,8 +140,6 @@
     f32.const 0x0p+0 (;=0;)
     i32.const 0
     i32.const 6
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $complex-sig-duplicate)
     i64.const 1
     call $finite_wasm_gas

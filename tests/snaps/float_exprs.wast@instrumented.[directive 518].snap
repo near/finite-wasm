@@ -7,26 +7,20 @@
   (func (;2;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f32.const 0x0p+0 (;=0;)
     f32.lt
-    i64.const 1
-    call 0
     if (result f32) ;; label = @1
-      i64.const 2
+      i64.const 3
       call 0
       local.get $x
       f32.neg
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       local.get $x
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -34,26 +28,20 @@
   (func (;3;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f32.const -0x0p+0 (;=-0;)
     f32.le
-    i64.const 1
-    call 0
     if (result f32) ;; label = @1
-      i64.const 2
+      i64.const 3
       call 0
       local.get $x
       f32.neg
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       local.get $x
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -61,26 +49,20 @@
   (func (;4;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f32.const -0x0p+0 (;=-0;)
     f32.gt
-    i64.const 1
-    call 0
     if (result f32) ;; label = @1
-      i64.const 1
-      call 0
-      local.get $x
-      i64.const 1
-      call 0
-    else
       i64.const 2
       call 0
       local.get $x
-      f32.neg
-      i64.const 1
+    else
+      i64.const 3
       call 0
+      local.get $x
+      f32.neg
     end
     i64.const 1
     call 0
@@ -88,26 +70,20 @@
   (func (;5;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000008
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f32.const 0x0p+0 (;=0;)
     f32.ge
-    i64.const 1
-    call 0
     if (result f32) ;; label = @1
-      i64.const 1
-      call 0
-      local.get $x
-      i64.const 1
-      call 0
-    else
       i64.const 2
       call 0
       local.get $x
-      f32.neg
-      i64.const 1
+    else
+      i64.const 3
       call 0
+      local.get $x
+      f32.neg
     end
     i64.const 1
     call 0
@@ -115,26 +91,20 @@
   (func (;6;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000016
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f64.const 0x0p+0 (;=0;)
     f64.lt
-    i64.const 1
-    call 0
     if (result f64) ;; label = @1
-      i64.const 2
+      i64.const 3
       call 0
       local.get $x
       f64.neg
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       local.get $x
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -142,26 +112,20 @@
   (func (;7;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000016
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f64.const -0x0p+0 (;=-0;)
     f64.le
-    i64.const 1
-    call 0
     if (result f64) ;; label = @1
-      i64.const 2
+      i64.const 3
       call 0
       local.get $x
       f64.neg
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       local.get $x
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -169,26 +133,20 @@
   (func (;8;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000016
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f64.const -0x0p+0 (;=-0;)
     f64.gt
-    i64.const 1
-    call 0
     if (result f64) ;; label = @1
-      i64.const 1
-      call 0
-      local.get $x
-      i64.const 1
-      call 0
-    else
       i64.const 2
       call 0
       local.get $x
-      f64.neg
-      i64.const 1
+    else
+      i64.const 3
       call 0
+      local.get $x
+      f64.neg
     end
     i64.const 1
     call 0
@@ -196,26 +154,20 @@
   (func (;9;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000016
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     local.get $x
     f64.const 0x0p+0 (;=0;)
     f64.ge
-    i64.const 1
-    call 0
     if (result f64) ;; label = @1
-      i64.const 1
-      call 0
-      local.get $x
-      i64.const 1
-      call 0
-    else
       i64.const 2
       call 0
       local.get $x
-      f64.neg
-      i64.const 1
+    else
+      i64.const 3
       call 0
+      local.get $x
+      f64.neg
     end
     i64.const 1
     call 0

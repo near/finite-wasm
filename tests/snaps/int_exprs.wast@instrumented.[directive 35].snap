@@ -7,14 +7,12 @@
   (func (;2;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000008
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     local.get $x
     i32.const 6
     i32.mul
     i32.const 6
-    i64.const 1
-    call 0
     i32.div_s
     i64.const 1
     call 0
@@ -22,14 +20,12 @@
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000008
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     local.get $x
     i32.const 6
     i32.mul
     i32.const 6
-    i64.const 1
-    call 0
     i32.div_u
     i64.const 1
     call 0
@@ -37,14 +33,12 @@
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000016
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     local.get $x
     i64.const 6
     i64.mul
     i64.const 6
-    i64.const 1
-    call 0
     i64.div_s
     i64.const 1
     call 0
@@ -52,14 +46,12 @@
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 1000000000016
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     local.get $x
     i64.const 6
     i64.mul
     i64.const 6
-    i64.const 1
-    call 0
     i64.div_u
     i64.const 1
     call 0

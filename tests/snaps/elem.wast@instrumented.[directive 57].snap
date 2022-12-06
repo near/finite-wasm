@@ -20,11 +20,9 @@
   (func (;4;) (type $out-i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     i32.const 9
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $out-i32)
     i64.const 1
     call $finite_wasm_gas

@@ -7,12 +7,10 @@
   (func (;2;) (type 0) (param i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     f32.convert_i32_s
-    i64.const 1
-    call 0
     i32.trunc_f32_s
     i64.const 1
     call 0
@@ -20,12 +18,10 @@
   (func (;3;) (type 0) (param i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     f32.convert_i32_u
-    i64.const 1
-    call 0
     i32.trunc_f32_u
     i64.const 1
     call 0
@@ -33,12 +29,10 @@
   (func (;4;) (type 1) (param i64) (result i64)
     i64.const 1000000000008
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     f64.convert_i64_s
-    i64.const 1
-    call 0
     i64.trunc_f64_s
     i64.const 1
     call 0
@@ -46,12 +40,10 @@
   (func (;5;) (type 1) (param i64) (result i64)
     i64.const 1000000000008
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     f64.convert_i64_u
-    i64.const 1
-    call 0
     i64.trunc_f64_u
     i64.const 1
     call 0

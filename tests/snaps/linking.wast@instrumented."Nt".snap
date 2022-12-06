@@ -17,11 +17,9 @@
   (func (;5;) (type 2) (param i32) (result i32)
     i64.const 0
     call $h
-    i64.const 1
+    i64.const 2
     call $f
     local.get 0
-    i64.const 1
-    call $f
     call $f
     i64.const 1
     call $f
@@ -29,11 +27,9 @@
   (func (;6;) (type 2) (param i32) (result i32)
     i64.const 1000000000004
     call $h
-    i64.const 1
+    i64.const 2
     call $f
     local.get 0
-    i64.const 1
-    call $f
     call_indirect (type 1)
     i64.const 1
     call $f

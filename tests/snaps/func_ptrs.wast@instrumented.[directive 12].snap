@@ -43,11 +43,9 @@
   (func (;7;) (type 2) (param $i i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     local.get $i
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $T)
     i64.const 1
     call $finite_wasm_gas
@@ -55,11 +53,9 @@
   (func (;8;) (type 2) (param $i i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     local.get $i
-    i64.const 1
-    call $finite_wasm_gas
     call_indirect (type $U)
     i64.const 1
     call $finite_wasm_gas

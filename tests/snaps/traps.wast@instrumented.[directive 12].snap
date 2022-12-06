@@ -7,11 +7,9 @@
   (func (;2;) (type 0) (param $x f32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i32.trunc_f32_s
     i64.const 2
     call 0
@@ -20,11 +18,9 @@
   (func (;3;) (type 0) (param $x f32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i32.trunc_f32_u
     i64.const 2
     call 0
@@ -33,11 +29,9 @@
   (func (;4;) (type 1) (param $x f64)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i32.trunc_f64_s
     i64.const 2
     call 0
@@ -46,11 +40,9 @@
   (func (;5;) (type 1) (param $x f64)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i32.trunc_f64_u
     i64.const 2
     call 0
@@ -59,11 +51,9 @@
   (func (;6;) (type 0) (param $x f32)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i64.trunc_f32_s
     i64.const 2
     call 0
@@ -72,11 +62,9 @@
   (func (;7;) (type 0) (param $x f32)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i64.trunc_f32_u
     i64.const 2
     call 0
@@ -85,11 +73,9 @@
   (func (;8;) (type 1) (param $x f64)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i64.trunc_f64_s
     i64.const 2
     call 0
@@ -98,11 +84,9 @@
   (func (;9;) (type 1) (param $x f64)
     i64.const 1000000000008
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $x
-    i64.const 1
-    call 0
     i64.trunc_f64_u
     i64.const 2
     call 0

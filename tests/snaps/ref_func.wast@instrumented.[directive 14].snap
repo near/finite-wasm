@@ -42,7 +42,7 @@
   (func (;8;) (type 0)
     i64.const 1000000000192
     call $finite_wasm_stack
-    i64.const 6
+    i64.const 7
     call $finite_wasm_gas
     ref.func $f1
     ref.func $f2
@@ -50,8 +50,6 @@
     ref.func $f4
     ref.func $f5
     ref.func $f6
-    i64.const 1
-    call $finite_wasm_gas
     return
     i64.const 1
     call $finite_wasm_gas

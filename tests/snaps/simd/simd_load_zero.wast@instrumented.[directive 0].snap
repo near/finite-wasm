@@ -7,11 +7,9 @@
   (func (;2;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load32_zero
     i64.const 1
     call 0
@@ -19,11 +17,9 @@
   (func (;3;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero
     i64.const 1
     call 0
@@ -31,11 +27,9 @@
   (func (;4;) (type 1) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
     v128.load32_zero
     i64.const 1
     call 0
@@ -43,11 +37,9 @@
   (func (;5;) (type 1) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 8
-    i64.const 1
-    call 0
     v128.load64_zero
     i64.const 1
     call 0
@@ -55,11 +47,9 @@
   (func (;6;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load32_zero
     i64.const 1
     call 0
@@ -67,11 +57,9 @@
   (func (;7;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load32_zero align=1
     i64.const 1
     call 0
@@ -79,11 +67,9 @@
   (func (;8;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load32_zero align=1
     i64.const 1
     call 0
@@ -91,11 +77,9 @@
   (func (;9;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load32_zero offset=1 align=1
     i64.const 1
     call 0
@@ -103,11 +87,9 @@
   (func (;10;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load32_zero offset=10
     i64.const 1
     call 0
@@ -115,11 +97,9 @@
   (func (;11;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero
     i64.const 1
     call 0
@@ -127,11 +107,9 @@
   (func (;12;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero align=1
     i64.const 1
     call 0
@@ -139,11 +117,9 @@
   (func (;13;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero align=1
     i64.const 1
     call 0
@@ -151,11 +127,9 @@
   (func (;14;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero offset=1 align=1
     i64.const 1
     call 0
@@ -163,11 +137,9 @@
   (func (;15;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero offset=10 align=4
     i64.const 1
     call 0
@@ -175,11 +147,9 @@
   (func (;16;) (type 0) (param $0 i32) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $0
-    i64.const 1
-    call 0
     v128.load64_zero offset=20
     i64.const 1
     call 0

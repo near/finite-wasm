@@ -34,11 +34,9 @@
   (func $check (;6;) (type 2)
     i64.const 1000000000008
     call $finite_wasm_stack
-    i64.const 1
+    i64.const 2
     call $finite_wasm_gas
     i32.const 0
-    i64.const 1
-    call $finite_wasm_gas
     call $i32->void
     i64.const 1
     call $finite_wasm_gas

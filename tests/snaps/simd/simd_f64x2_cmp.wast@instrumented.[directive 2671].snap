@@ -6,22 +6,18 @@
   (func (;2;) (type 0)
     i64.const 1000000000032
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          i64.const 1
-          call 0
           v128.load
-          i64.const 3
+          i64.const 4
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
-          i64.const 1
-          call 0
           v128.load
           i64.const 6
           call 0
@@ -34,22 +30,18 @@
   (func (;3;) (type 0)
     i64.const 1000000000032
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          i64.const 1
-          call 0
           v128.load
-          i64.const 3
+          i64.const 4
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
-          i64.const 1
-          call 0
           v128.load
           i64.const 6
           call 0
@@ -62,22 +54,18 @@
   (func (;4;) (type 0)
     i64.const 1000000000032
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          i64.const 1
-          call 0
           v128.load
-          i64.const 3
+          i64.const 4
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
-          i64.const 1
-          call 0
           v128.load
           i64.const 6
           call 0
@@ -90,22 +78,18 @@
   (func (;5;) (type 0)
     i64.const 1000000000032
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          i64.const 1
-          call 0
           v128.load
-          i64.const 3
+          i64.const 4
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
-          i64.const 1
-          call 0
           v128.load
           i64.const 6
           call 0
@@ -118,22 +102,18 @@
   (func (;6;) (type 0)
     i64.const 1000000000032
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          i64.const 1
-          call 0
           v128.load
-          i64.const 3
+          i64.const 4
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
-          i64.const 1
-          call 0
           v128.load
           i64.const 6
           call 0
@@ -146,22 +126,18 @@
   (func (;7;) (type 0)
     i64.const 1000000000032
     call 1
-    i64.const 4
+    i64.const 5
     call 0
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
-          i64.const 1
-          call 0
           v128.load
-          i64.const 3
+          i64.const 4
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
-          i64.const 1
-          call 0
           v128.load
           i64.const 6
           call 0
@@ -174,57 +150,41 @@
   (func (;8;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.eq
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
     call 0
     f64x2.eq
-    f64x2.eq
-    i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
+    i32.const 2
     v128.load
     i64.const 2
     call 0
+    i32.const 3
+    v128.load
+    i64.const 4
+    call 0
+    f64x2.eq
+    f64x2.eq
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.eq
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0
@@ -236,57 +196,41 @@
   (func (;9;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.ne
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
     call 0
     f64x2.ne
-    f64x2.ne
-    i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
+    i32.const 2
     v128.load
     i64.const 2
     call 0
+    i32.const 3
+    v128.load
+    i64.const 4
+    call 0
+    f64x2.ne
+    f64x2.ne
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.ne
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0
@@ -298,57 +242,41 @@
   (func (;10;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.lt
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
     call 0
     f64x2.lt
-    f64x2.lt
-    i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
+    i32.const 2
     v128.load
     i64.const 2
     call 0
+    i32.const 3
+    v128.load
+    i64.const 4
+    call 0
+    f64x2.lt
+    f64x2.lt
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.lt
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0
@@ -360,57 +288,41 @@
   (func (;11;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.le
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
     call 0
     f64x2.le
-    f64x2.le
-    i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
+    i32.const 2
     v128.load
     i64.const 2
     call 0
+    i32.const 3
+    v128.load
+    i64.const 4
+    call 0
+    f64x2.le
+    f64x2.le
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.le
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0
@@ -422,57 +334,41 @@
   (func (;12;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.gt
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
     call 0
     f64x2.gt
-    f64x2.gt
-    i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
+    i32.const 2
     v128.load
     i64.const 2
     call 0
+    i32.const 3
+    v128.load
+    i64.const 4
+    call 0
+    f64x2.gt
+    f64x2.gt
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.gt
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0
@@ -484,57 +380,41 @@
   (func (;13;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.ge
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
     call 0
     f64x2.ge
-    f64x2.ge
-    i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
+    i32.const 2
     v128.load
     i64.const 2
     call 0
+    i32.const 3
+    v128.load
+    i64.const 4
+    call 0
+    f64x2.ge
+    f64x2.ge
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.ge
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0
@@ -546,57 +426,41 @@
   (func (;14;) (type 0)
     i64.const 1000000000064
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
-    f64x2.lt
-    i32.const 2
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 3
-    i64.const 1
-    call 0
+    i32.const 1
     v128.load
     i64.const 3
+    call 0
+    f64x2.lt
+    i32.const 2
+    v128.load
+    i64.const 2
+    call 0
+    i32.const 3
+    v128.load
+    i64.const 4
     call 0
     f64x2.le
     f64x2.ne
     i32.const 0
-    i64.const 1
-    call 0
-    v128.load
-    i64.const 1
-    call 0
-    i32.const 1
-    i64.const 1
-    call 0
     v128.load
     i64.const 2
     call 0
+    i32.const 1
+    v128.load
+    i64.const 3
+    call 0
     f64x2.ge
     i32.const 2
-    i64.const 1
-    call 0
     v128.load
-    i64.const 1
+    i64.const 2
     call 0
     i32.const 3
-    i64.const 1
-    call 0
     v128.load
     i64.const 5
     call 0

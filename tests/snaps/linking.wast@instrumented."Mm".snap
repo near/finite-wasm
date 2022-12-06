@@ -6,11 +6,9 @@
   (func (;2;) (type 0) (param $a i32) (result i32)
     i64.const 1000000000004
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     local.get $a
-    i64.const 1
-    call 0
     i32.load8_u
     i64.const 1
     call 0

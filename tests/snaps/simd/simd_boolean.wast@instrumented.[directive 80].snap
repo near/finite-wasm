@@ -8,24 +8,18 @@
   (func (;2;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     v128.any_true
-    i64.const 1
-    call 0
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -33,24 +27,18 @@
   (func (;3;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     v128.any_true
-    i64.const 1
-    call 0
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -58,24 +46,18 @@
   (func (;4;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     v128.any_true
-    i64.const 1
-    call 0
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -83,24 +65,18 @@
   (func (;5;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     i8x16.all_true
-    i64.const 1
-    call 0
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -108,24 +84,18 @@
   (func (;6;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     i16x8.all_true
-    i64.const 1
-    call 0
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -133,24 +103,18 @@
   (func (;7;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get 0
     i32x4.all_true
-    i64.const 1
-    call 0
     if (result i32) ;; label = @1
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 1
-      i64.const 1
-      call 0
     else
-      i64.const 1
+      i64.const 2
       call 0
       i32.const 0
-      i64.const 1
-      call 0
     end
     i64.const 1
     call 0
@@ -225,7 +189,7 @@
     (local $1 i32)
     i64.const 1000001000016
     call 1
-    i64.const 7
+    i64.const 8
     call 0
     i32.const 2
     local.set $1
@@ -234,15 +198,11 @@
       local.set $1
       local.get $0
       v128.any_true
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       local.set $1
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -252,7 +212,7 @@
     (local $1 i32)
     i64.const 1000001000016
     call 1
-    i64.const 7
+    i64.const 8
     call 0
     i32.const 2
     local.set $1
@@ -261,15 +221,11 @@
       local.set $1
       local.get $0
       v128.any_true
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       local.set $1
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -279,7 +235,7 @@
     (local $1 i32)
     i64.const 1000001000016
     call 1
-    i64.const 7
+    i64.const 8
     call 0
     i32.const 2
     local.set $1
@@ -288,15 +244,11 @@
       local.set $1
       local.get $0
       v128.any_true
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       local.set $1
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -306,7 +258,7 @@
     (local $1 i32)
     i64.const 1000001000016
     call 1
-    i64.const 7
+    i64.const 8
     call 0
     i32.const 2
     local.set $1
@@ -315,15 +267,11 @@
       local.set $1
       local.get $0
       i8x16.all_true
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       local.set $1
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -333,7 +281,7 @@
     (local $1 i32)
     i64.const 1000001000016
     call 1
-    i64.const 7
+    i64.const 8
     call 0
     i32.const 2
     local.set $1
@@ -342,15 +290,11 @@
       local.set $1
       local.get $0
       i16x8.all_true
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       local.set $1
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -360,7 +304,7 @@
     (local $1 i32)
     i64.const 1000001000016
     call 1
-    i64.const 7
+    i64.const 8
     call 0
     i32.const 2
     local.set $1
@@ -369,15 +313,11 @@
       local.set $1
       local.get $0
       i32x4.all_true
-      i64.const 1
-      call 0
       br_if 0 (;@1;)
-      i64.const 2
+      i64.const 3
       call 0
       i32.const 0
       local.set $1
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0

@@ -7,11 +7,9 @@
   (func (;3;) (type 0) (param $a i32) (result i32)
     i64.const 0
     call $loadM
-    i64.const 1
+    i64.const 2
     call $finite_wasm_stack
     local.get $a
-    i64.const 1
-    call $finite_wasm_stack
     i32.load8_u
     i64.const 1
     call $finite_wasm_stack

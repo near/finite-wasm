@@ -6,11 +6,9 @@
   (func (;2;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x0badd00d 0x0badd00d 0x0badd00d 0x0badd00d
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -18,11 +16,9 @@
   (func (;3;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x7fffffff 0x7fffffff 0x7fffffff 0x7fffffff
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -30,11 +26,9 @@
   (func (;4;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x80000001 0x80000001 0x80000001 0x80000001
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -42,13 +36,11 @@
   (func (;5;) (type 0) (result v128)
     i64.const 1000000000032
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     v128.const i32x4 0x80000000 0x80000000 0x80000000 0x80000000
     v128.const i32x4 0x00000001 0x00000001 0x00000001 0x00000001
     i32x4.add
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -56,11 +48,9 @@
   (func (;6;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -68,11 +58,9 @@
   (func (;7;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x0000000a 0x0000000a 0x0000000a 0x0000000a
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -80,11 +68,9 @@
   (func (;8;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x0000002a 0x0000002a 0x0000002a 0x0000002a
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -120,11 +106,9 @@
   (func (;13;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x0badd00d 0x0badd00d 0x0badd00d 0x0badd00d
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -132,11 +116,9 @@
   (func (;14;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0xffffffff 0x7fffffff 0xffffffff 0x7fffffff
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -144,11 +126,9 @@
   (func (;15;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x00000001 0x80000000 0x00000001 0x80000000
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -156,13 +136,11 @@
   (func (;16;) (type 0) (result v128)
     i64.const 1000000000032
     call 1
-    i64.const 3
+    i64.const 4
     call 0
     v128.const i32x4 0x00000000 0x80000000 0x00000000 0x80000000
     v128.const i32x4 0x00000001 0x00000000 0x00000001 0x00000000
     i64x2.add
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -170,11 +148,9 @@
   (func (;17;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -182,11 +158,9 @@
   (func (;18;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x0000271a 0x00000000 0x0000271a 0x00000000
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0
@@ -194,11 +168,9 @@
   (func (;19;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
-    i64.const 1
+    i64.const 2
     call 0
     v128.const i32x4 0x0000002a 0x00000000 0x0000002a 0x00000000
-    i64.const 1
-    call 0
     return
     i64.const 1
     call 0

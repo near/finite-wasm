@@ -92,15 +92,13 @@
   (func (;14;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000032
     call $f
-    i64.const 5
+    i64.const 6
     call $finite_wasm_stack
     i32.const 0
     ref.func $f
     table.set $t
     local.get $x
     i32.const 0
-    i64.const 1
-    call $finite_wasm_stack
     call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
@@ -108,15 +106,13 @@
   (func (;15;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000036
     call $f
-    i64.const 5
+    i64.const 6
     call $finite_wasm_stack
     i32.const 0
     ref.func $g
     table.set $t
     local.get $x
     i32.const 0
-    i64.const 1
-    call $finite_wasm_stack
     call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack
@@ -124,15 +120,13 @@
   (func (;16;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000036
     call $f
-    i64.const 5
+    i64.const 6
     call $finite_wasm_stack
     i32.const 0
     global.get $v
     table.set $t
     local.get $x
     i32.const 0
-    i64.const 1
-    call $finite_wasm_stack
     call_indirect (type 0)
     i64.const 1
     call $finite_wasm_stack

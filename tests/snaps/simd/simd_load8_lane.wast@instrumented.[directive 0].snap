@@ -7,12 +7,10 @@
   (func (;2;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 0
     i64.const 1
     call 0
@@ -20,12 +18,10 @@
   (func (;3;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 1
     i64.const 1
     call 0
@@ -33,12 +29,10 @@
   (func (;4;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 2
     i64.const 1
     call 0
@@ -46,12 +40,10 @@
   (func (;5;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 3
     i64.const 1
     call 0
@@ -59,12 +51,10 @@
   (func (;6;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 4
     i64.const 1
     call 0
@@ -72,12 +62,10 @@
   (func (;7;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 5
     i64.const 1
     call 0
@@ -85,12 +73,10 @@
   (func (;8;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 6
     i64.const 1
     call 0
@@ -98,12 +84,10 @@
   (func (;9;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 7
     i64.const 1
     call 0
@@ -111,12 +95,10 @@
   (func (;10;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 8
     i64.const 1
     call 0
@@ -124,12 +106,10 @@
   (func (;11;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 9
     i64.const 1
     call 0
@@ -137,12 +117,10 @@
   (func (;12;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 10
     i64.const 1
     call 0
@@ -150,12 +128,10 @@
   (func (;13;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 11
     i64.const 1
     call 0
@@ -163,12 +139,10 @@
   (func (;14;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 12
     i64.const 1
     call 0
@@ -176,12 +150,10 @@
   (func (;15;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 13
     i64.const 1
     call 0
@@ -189,12 +161,10 @@
   (func (;16;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 14
     i64.const 1
     call 0
@@ -202,12 +172,10 @@
   (func (;17;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 15
     i64.const 1
     call 0
@@ -215,12 +183,10 @@
   (func (;18;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 0
     i64.const 1
     call 0
@@ -228,12 +194,10 @@
   (func (;19;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=1 1
     i64.const 1
     call 0
@@ -241,12 +205,10 @@
   (func (;20;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=2 2
     i64.const 1
     call 0
@@ -254,12 +216,10 @@
   (func (;21;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=3 3
     i64.const 1
     call 0
@@ -267,12 +227,10 @@
   (func (;22;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=4 4
     i64.const 1
     call 0
@@ -280,12 +238,10 @@
   (func (;23;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=5 5
     i64.const 1
     call 0
@@ -293,12 +249,10 @@
   (func (;24;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=6 6
     i64.const 1
     call 0
@@ -306,12 +260,10 @@
   (func (;25;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=7 7
     i64.const 1
     call 0
@@ -319,12 +271,10 @@
   (func (;26;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=8 8
     i64.const 1
     call 0
@@ -332,12 +282,10 @@
   (func (;27;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=9 9
     i64.const 1
     call 0
@@ -345,12 +293,10 @@
   (func (;28;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=10 10
     i64.const 1
     call 0
@@ -358,12 +304,10 @@
   (func (;29;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=11 11
     i64.const 1
     call 0
@@ -371,12 +315,10 @@
   (func (;30;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=12 12
     i64.const 1
     call 0
@@ -384,12 +326,10 @@
   (func (;31;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=13 13
     i64.const 1
     call 0
@@ -397,12 +337,10 @@
   (func (;32;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=14 14
     i64.const 1
     call 0
@@ -410,12 +348,10 @@
   (func (;33;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     i32.const 0
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane offset=15 15
     i64.const 1
     call 0
@@ -423,12 +359,10 @@
   (func (;34;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 0
     i64.const 1
     call 0
@@ -436,12 +370,10 @@
   (func (;35;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 1
     i64.const 1
     call 0
@@ -449,12 +381,10 @@
   (func (;36;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 2
     i64.const 1
     call 0
@@ -462,12 +392,10 @@
   (func (;37;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 3
     i64.const 1
     call 0
@@ -475,12 +403,10 @@
   (func (;38;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 4
     i64.const 1
     call 0
@@ -488,12 +414,10 @@
   (func (;39;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 5
     i64.const 1
     call 0
@@ -501,12 +425,10 @@
   (func (;40;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 6
     i64.const 1
     call 0
@@ -514,12 +436,10 @@
   (func (;41;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 7
     i64.const 1
     call 0
@@ -527,12 +447,10 @@
   (func (;42;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 8
     i64.const 1
     call 0
@@ -540,12 +458,10 @@
   (func (;43;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 9
     i64.const 1
     call 0
@@ -553,12 +469,10 @@
   (func (;44;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 10
     i64.const 1
     call 0
@@ -566,12 +480,10 @@
   (func (;45;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 11
     i64.const 1
     call 0
@@ -579,12 +491,10 @@
   (func (;46;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 12
     i64.const 1
     call 0
@@ -592,12 +502,10 @@
   (func (;47;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 13
     i64.const 1
     call 0
@@ -605,12 +513,10 @@
   (func (;48;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 14
     i64.const 1
     call 0
@@ -618,12 +524,10 @@
   (func (;49;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
-    i64.const 2
+    i64.const 3
     call 0
     local.get $address
     local.get $x
-    i64.const 1
-    call 0
     v128.load8_lane 15
     i64.const 1
     call 0
