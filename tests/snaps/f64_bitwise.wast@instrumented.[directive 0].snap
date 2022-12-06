@@ -7,25 +7,25 @@
   (func (;2;) (type 0) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.abs
   )
   (func (;3;) (type 0) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.neg
   )
   (func (;4;) (type 1) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.copysign
   )

@@ -7,9 +7,9 @@
   (func (;2;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000016
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     f32.neg
     local.get $x
     local.get $x
@@ -20,9 +20,9 @@
   (func (;3;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000016
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     f32.neg
     local.get $x
     local.get $x
@@ -33,9 +33,9 @@
   (func (;4;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000016
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     local.get $x
     f32.neg
     local.get $x
@@ -46,9 +46,9 @@
   (func (;5;) (type 0) (param $x f32) (result f32)
     i64.const 1000000000016
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     local.get $x
     f32.neg
     local.get $x
@@ -59,9 +59,9 @@
   (func (;6;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000032
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     f64.neg
     local.get $x
     local.get $x
@@ -72,9 +72,9 @@
   (func (;7;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000032
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     f64.neg
     local.get $x
     local.get $x
@@ -85,9 +85,9 @@
   (func (;8;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000032
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     local.get $x
     f64.neg
     local.get $x
@@ -98,9 +98,9 @@
   (func (;9;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000032
     call 1
-    local.get $x
     i64.const 8
     call 0
+    local.get $x
     local.get $x
     f64.neg
     local.get $x

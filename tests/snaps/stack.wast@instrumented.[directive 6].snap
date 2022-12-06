@@ -8,145 +8,34 @@
   (func (;2;) (type $proc)
     i64.const 1000000000008
     call 1
-    block ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 3
-    call 0
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
     i64.const 2
     call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    i32.const 0
-    i64.const 1
-    call 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    else
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
     block ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 3
-    call 0
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 1
-      call 0
       i32.const 0
       i64.const 1
       call 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    i32.const 0
-    i64.const 1
-    call 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    else
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    block ;; label = @1
       i64.const 3
       call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-      i64.const 1
-      call 0
     end
-    i64.const 4
-    call 0
     loop ;; label = @1
       i32.const 0
-      i32.const 0
-      call_indirect (type 1)
       i64.const 1
       call 0
+      call_indirect (type $proc)
+      i64.const 2
+      call 0
     end
-    i64.const 2
-    call 0
     i32.const 0
+    i64.const 1
+    call 0
     if ;; label = @1
       i64.const 1
       call 0
       i32.const 0
-      i64.const 2
+      i64.const 1
       call 0
-      i32.const 0
-      call_indirect (type 1)
+      call_indirect (type $proc)
       i64.const 1
       call 0
     end
@@ -159,46 +48,159 @@
       i64.const 1
       call 0
       i32.const 0
-      i64.const 2
+      i64.const 1
       call 0
-      i32.const 0
-      call_indirect (type 1)
+      call_indirect (type $proc)
       i64.const 1
       call 0
     else
       i64.const 1
       call 0
       i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 2
+    call 0
+    block ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 3
+      call 0
+    end
+    loop ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 2
+      call 0
+    end
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    else
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 3
+    call 0
+    block ;; label = @1
+      i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
+      i64.const 4
+      call 0
+    end
+    loop ;; label = @1
+      i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
+      i64.const 2
+      call 0
+    end
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
       i64.const 2
       call 0
       i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
       call_indirect (type 1)
       i64.const 1
       call 0
     end
     i64.const 1
     call 0
-    block (result i32) ;; label = @1
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
       i64.const 2
       call 0
       i32.const 0
-      call_indirect (type 2)
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
+      i64.const 1
+      call 0
+    else
+      i64.const 2
+      call 0
+      i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
       i64.const 1
       call 0
     end
-    i64.const 4
+    i64.const 2
     call 0
+    block (result i32) ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 2)
+      i64.const 4
+      call 0
+    end
     drop
     loop (result i32) ;; label = @1
       i32.const 0
-      call_indirect (type 2)
       i64.const 1
       call 0
+      call_indirect (type 2)
+      i64.const 3
+      call 0
     end
-    i64.const 3
-    call 0
     drop
     i32.const 0
+    i64.const 1
+    call 0
     if (result i32) ;; label = @1
       i64.const 1
       call 0
@@ -218,203 +220,35 @@
       i64.const 1
       call 0
     end
-    i64.const 1
+    i64.const 3
     call 0
     drop
-    i64.const 3
-    call 0
     block ;; label = @1
       i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 3
-    call 0
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
       i64.const 1
       call 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    i32.const 0
-    i64.const 1
-    call 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    else
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    block ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 3
-    call 0
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    i32.const 0
-    i64.const 1
-    call 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    else
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    block ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 3
-    call 0
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    i32.const 0
-    i64.const 1
-    call 0
-    if ;; label = @1
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    else
-      i64.const 1
-      call 0
-      i32.const 0
-      i64.const 1
-      call 0
-      call_indirect (type $proc)
-      i64.const 1
-      call 0
-    end
-    i64.const 1
-    call 0
-    block ;; label = @1
       i64.const 3
       call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-      i64.const 1
-      call 0
     end
-    i64.const 4
-    call 0
     loop ;; label = @1
       i32.const 0
-      i32.const 0
-      call_indirect (type 1)
       i64.const 1
       call 0
+      call_indirect (type $proc)
+      i64.const 2
+      call 0
     end
-    i64.const 2
-    call 0
     i32.const 0
+    i64.const 1
+    call 0
     if ;; label = @1
       i64.const 1
       call 0
       i32.const 0
-      i64.const 2
+      i64.const 1
       call 0
-      i32.const 0
-      call_indirect (type 1)
+      call_indirect (type $proc)
       i64.const 1
       call 0
     end
@@ -427,46 +261,214 @@
       i64.const 1
       call 0
       i32.const 0
-      i64.const 2
+      i64.const 1
       call 0
-      i32.const 0
-      call_indirect (type 1)
+      call_indirect (type $proc)
       i64.const 1
       call 0
     else
       i64.const 1
       call 0
       i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 2
+    call 0
+    block ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 3
+      call 0
+    end
+    loop ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 2
+      call 0
+    end
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    else
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 2
+    call 0
+    block ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 3
+      call 0
+    end
+    loop ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 2
+      call 0
+    end
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    else
+      i64.const 1
+      call 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type $proc)
+      i64.const 1
+      call 0
+    end
+    i64.const 3
+    call 0
+    block ;; label = @1
+      i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
+      i64.const 4
+      call 0
+    end
+    loop ;; label = @1
+      i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
+      i64.const 2
+      call 0
+    end
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
       i64.const 2
       call 0
       i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
       call_indirect (type 1)
       i64.const 1
       call 0
     end
     i64.const 1
     call 0
-    block (result i32) ;; label = @1
+    i32.const 0
+    i64.const 1
+    call 0
+    if ;; label = @1
       i64.const 2
       call 0
       i32.const 0
-      call_indirect (type 2)
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
+      i64.const 1
+      call 0
+    else
+      i64.const 2
+      call 0
+      i32.const 0
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 1)
       i64.const 1
       call 0
     end
-    i64.const 4
+    i64.const 2
     call 0
+    block (result i32) ;; label = @1
+      i32.const 0
+      i64.const 1
+      call 0
+      call_indirect (type 2)
+      i64.const 4
+      call 0
+    end
     drop
     loop (result i32) ;; label = @1
       i32.const 0
-      call_indirect (type 2)
       i64.const 1
       call 0
+      call_indirect (type 2)
+      i64.const 3
+      call 0
     end
-    i64.const 3
-    call 0
     drop
     i32.const 0
+    i64.const 1
+    call 0
     if (result i32) ;; label = @1
       i64.const 1
       call 0
@@ -486,28 +488,28 @@
       i64.const 1
       call 0
     end
-    i64.const 1
+    i64.const 3
     call 0
     drop
-    i64.const 3
-    call 0
     block ;; label = @1
       i32.const 0
-      call_indirect (type $proc)
       i64.const 1
       call 0
+      call_indirect (type $proc)
+      i64.const 3
+      call 0
     end
-    i64.const 3
-    call 0
     loop ;; label = @1
       i32.const 0
-      call_indirect (type $proc)
       i64.const 1
       call 0
+      call_indirect (type $proc)
+      i64.const 2
+      call 0
     end
-    i64.const 2
-    call 0
     i32.const 0
+    i64.const 1
+    call 0
     if ;; label = @1
       i64.const 1
       call 0
@@ -548,9 +550,6 @@
     i64.const 1
     call 0
     call_indirect (type $proc)
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )

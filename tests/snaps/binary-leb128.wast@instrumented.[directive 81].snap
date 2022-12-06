@@ -6,12 +6,12 @@
   (func (;2;) (type 0)
     i64.const 1000000000000
     call 1
-    unreachable
     i64.const 1
     call 0
-    i32.trunc_sat_f32_s
+    unreachable
     i64.const 9
     call 0
+    i32.trunc_sat_f32_s
     unreachable
     i32.trunc_sat_f32_u
     unreachable

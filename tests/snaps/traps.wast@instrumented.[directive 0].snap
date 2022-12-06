@@ -7,58 +7,58 @@
   (func (;2;) (type 0) (param $x i32) (param $y i32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 2
     call 0
+    local.get $x
     local.get $y
-    i32.div_s
     i64.const 1
     call 0
-    drop
+    i32.div_s
     i64.const 2
     call 0
+    drop
   )
   (func (;3;) (type 0) (param $x i32) (param $y i32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 2
     call 0
+    local.get $x
     local.get $y
-    i32.div_u
     i64.const 1
     call 0
-    drop
+    i32.div_u
     i64.const 2
     call 0
+    drop
   )
   (func (;4;) (type 1) (param $x i64) (param $y i64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 2
     call 0
+    local.get $x
     local.get $y
-    i64.div_s
     i64.const 1
     call 0
-    drop
+    i64.div_s
     i64.const 2
     call 0
+    drop
   )
   (func (;5;) (type 1) (param $x i64) (param $y i64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 2
     call 0
+    local.get $x
     local.get $y
-    i64.div_u
     i64.const 1
     call 0
-    drop
+    i64.div_u
     i64.const 2
     call 0
+    drop
   )
   (export "no_dce.i32.div_s" (func 2))
   (export "no_dce.i32.div_u" (func 3))

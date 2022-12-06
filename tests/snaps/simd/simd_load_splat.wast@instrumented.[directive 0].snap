@@ -6,364 +6,336 @@
   (func (;2;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )
   (func (;3;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )
   (func (;4;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )
   (func (;5;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )
   (func (;6;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )
   (func (;7;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat offset=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat offset=2
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;10;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat offset=15
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;11;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;12;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat align=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat offset=1 align=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat offset=2 align=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;15;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat offset=15
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;16;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;17;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat align=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;18;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat offset=1 align=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;19;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat offset=2 align=2
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;20;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat offset=15
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;21;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;22;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat align=1
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;23;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat offset=1 align=2
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;24;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat offset=2 align=4
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;25;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat offset=15
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;26;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load8_splat offset=65536
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;27;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load16_splat offset=65535
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;28;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load32_splat offset=65533
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;29;) (type 0) (param $address i32) (result v128)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     local.get $address
     i64.const 1
     call 0
     v128.load64_splat offset=65529
-    i64.const 1
-    call 0
-    end
     i64.const 1
     call 0
   )

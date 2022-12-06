@@ -7,11 +7,13 @@
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f32.lt
+    i64.const 1
+    call 0
     if (result f32) ;; label = @1
       i64.const 1
       call 0
@@ -24,9 +26,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -34,11 +33,13 @@
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f32.le
+    i64.const 1
+    call 0
     if (result f32) ;; label = @1
       i64.const 1
       call 0
@@ -51,9 +52,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -61,11 +59,13 @@
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f32.gt
+    i64.const 1
+    call 0
     if (result f32) ;; label = @1
       i64.const 1
       call 0
@@ -78,9 +78,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -88,11 +85,13 @@
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f32.ge
+    i64.const 1
+    call 0
     if (result f32) ;; label = @1
       i64.const 1
       call 0
@@ -108,18 +107,17 @@
     end
     i64.const 1
     call 0
-    end
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f64.lt
+    i64.const 1
+    call 0
     if (result f64) ;; label = @1
       i64.const 1
       call 0
@@ -132,9 +130,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -142,11 +137,13 @@
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f64.le
+    i64.const 1
+    call 0
     if (result f64) ;; label = @1
       i64.const 1
       call 0
@@ -159,9 +156,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -169,11 +163,13 @@
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f64.gt
+    i64.const 1
+    call 0
     if (result f64) ;; label = @1
       i64.const 1
       call 0
@@ -186,9 +182,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0
@@ -196,11 +189,13 @@
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     local.get $y
     f64.ge
+    i64.const 1
+    call 0
     if (result f64) ;; label = @1
       i64.const 1
       call 0
@@ -213,9 +208,6 @@
       local.get $y
       i64.const 1
       call 0
-    end
-    i64.const 1
-    call 0
     end
     i64.const 1
     call 0

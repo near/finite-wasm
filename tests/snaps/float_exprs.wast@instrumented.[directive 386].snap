@@ -7,9 +7,9 @@
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result i32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f32.ge
     i32.eqz
@@ -17,9 +17,9 @@
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f32.gt
     i32.eqz
@@ -27,9 +27,9 @@
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result i32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f32.le
     i32.eqz
@@ -37,9 +37,9 @@
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result i32)
     i64.const 1000001000008
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f32.lt
     i32.eqz
@@ -47,9 +47,9 @@
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result i32)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f64.ge
     i32.eqz
@@ -57,9 +57,9 @@
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result i32)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f64.gt
     i32.eqz
@@ -67,9 +67,9 @@
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result i32)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f64.le
     i32.eqz
@@ -77,9 +77,9 @@
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result i32)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 5
     call 0
+    local.get $x
     local.get $y
     f64.lt
     i32.eqz

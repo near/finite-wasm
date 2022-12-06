@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (param $x0 f64) (param $x1 f64) (param $x2 f64) (param $x3 f64) (param $y0 f64) (param $y1 f64) (param $y2 f64) (param $y3 f64) (result f64)
     i64.const 1000007000024
     call 1
-    local.get $x0
     i64.const 16
     call 0
+    local.get $x0
     local.get $y0
     f64.mul
     local.get $x1
@@ -27,9 +27,9 @@
   (func (;3;) (type 0) (param $x0 f64) (param $x1 f64) (param $x2 f64) (param $x3 f64) (param $y0 f64) (param $y1 f64) (param $y2 f64) (param $y3 f64) (result f64)
     i64.const 1000007000032
     call 1
-    local.get $x0
     i64.const 16
     call 0
+    local.get $x0
     local.get $y0
     f64.mul
     local.get $x1

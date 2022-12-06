@@ -6,14 +6,13 @@
   (func (;2;) (type 0)
     i64.const 1000000000008
     call 1
-    i32.const 0
     i64.const 2
     call 0
+    i32.const 0
     i32.const 1
-    i32.store8
     i64.const 1
     call 0
-    end
+    i32.store8
     i64.const 1
     call 0
   )

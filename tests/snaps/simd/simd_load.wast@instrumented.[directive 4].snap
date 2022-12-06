@@ -6,15 +6,15 @@
   (func (;2;) (type 0) (result i32)
     i64.const 1000000000016
     call 1
+    i64.const 1
+    call 0
     i32.const 0
     i64.const 1
     call 0
     v128.load
-    i64.const 1
-    call 0
-    i8x16.extract_lane_s 0
     i64.const 2
     call 0
+    i8x16.extract_lane_s 0
   )
   (memory (;0;) 1)
   (export "as-i8x16_extract_lane_s-value/0" (func 2))

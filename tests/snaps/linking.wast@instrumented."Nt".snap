@@ -10,33 +10,31 @@
   (func $g (;4;) (type 1) (result i32)
     i64.const 0
     call $h
-    i32.const 5
     i64.const 2
     call $f
+    i32.const 5
   )
   (func (;5;) (type 2) (param i32) (result i32)
     i64.const 0
     call $h
+    i64.const 1
+    call $f
     local.get 0
     i64.const 1
     call $f
     call $f
-    i64.const 1
-    call $f
-    end
     i64.const 1
     call $f
   )
   (func (;6;) (type 2) (param i32) (result i32)
     i64.const 1000000000004
     call $h
+    i64.const 1
+    call $f
     local.get 0
     i64.const 1
     call $f
     call_indirect (type 1)
-    i64.const 1
-    call $f
-    end
     i64.const 1
     call $f
   )

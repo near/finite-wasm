@@ -6,36 +6,36 @@
   (func (;2;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     i16x8.extmul_low_i8x16_s
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     i16x8.extmul_high_i8x16_s
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     i16x8.extmul_low_i8x16_u
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     i16x8.extmul_high_i8x16_u
   )

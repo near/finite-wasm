@@ -7,13 +7,12 @@
   (func (;2;) (type 0) (param i32) (result i32)
     i64.const 1000000000004
     call 2
+    i64.const 1
+    call 1
     local.get 0
     i64.const 1
     call 1
     memory.grow
-    i64.const 1
-    call 1
-    end
     i64.const 1
     call 1
   )

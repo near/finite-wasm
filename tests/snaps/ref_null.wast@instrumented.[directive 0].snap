@@ -7,16 +7,16 @@
   (func (;2;) (type 0) (result externref)
     i64.const 1000000000032
     call 1
-    ref.null extern
     i64.const 2
     call 0
+    ref.null extern
   )
   (func (;3;) (type 1) (result funcref)
     i64.const 1000000000032
     call 1
-    ref.null func
     i64.const 2
     call 0
+    ref.null func
   )
   (global (;0;) externref ref.null extern)
   (global (;1;) funcref ref.null func)

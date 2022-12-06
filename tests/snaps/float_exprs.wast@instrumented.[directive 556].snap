@@ -7,9 +7,9 @@
     (local $x f64) (local $r f64) (local $q f64) (local $z0 f64) (local $z1 f64)
     i64.const 1000004000024
     call 1
-    f64.const 0x1.388p+7 (;=156.25;)
     i64.const 32
     call 0
+    f64.const 0x1.388p+7 (;=156.25;)
     local.set $x
     f64.const 0x1.a0aaaaaab064bp+7 (;=208.333333334;)
     local.set $r
@@ -41,6 +41,8 @@
       local.get $z0
       local.get $z1
       f64.eq
+      i64.const 1
+      call 0
       br_if 0 (;@1;)
       i64.const 1
       call 0
@@ -48,11 +50,9 @@
       i64.const 1
       call 0
     end
-    i64.const 1
-    call 0
-    local.get $z1
     i64.const 2
     call 0
+    local.get $z1
   )
   (export "calculate" (func 2))
 )

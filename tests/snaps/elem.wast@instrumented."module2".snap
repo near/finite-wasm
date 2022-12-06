@@ -7,16 +7,16 @@
   (func $const-i32-c (;2;) (type $out-i32) (result i32)
     i64.const 1000000000004
     call $const-i32-c
-    i32.const 67
     i64.const 2
     call $finite_wasm_stack
+    i32.const 67
   )
   (func $const-i32-d (;3;) (type $out-i32) (result i32)
     i64.const 1000000000004
     call $const-i32-c
-    i32.const 68
     i64.const 2
     call $finite_wasm_stack
+    i32.const 68
   )
   (elem (;0;) (i32.const 7) func)
   (elem (;1;) (i32.const 8) func)

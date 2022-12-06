@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (param i32 i32) (result i32)
     i64.const 1000001000008
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     local.get 1
     i32.add
   )

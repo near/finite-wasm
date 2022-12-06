@@ -8,9 +8,9 @@
   (func (;2;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     local.get 2
@@ -19,9 +19,9 @@
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     local.get 2
@@ -30,9 +30,9 @@
   (func (;4;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     local.get 2
@@ -41,9 +41,9 @@
   (func (;5;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     local.get 2
@@ -52,9 +52,9 @@
   (func (;6;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     local.get 2
@@ -63,9 +63,9 @@
   (func (;7;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.abs
     local.get 1
     i8x16.min_s
@@ -73,9 +73,9 @@
   (func (;8;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     i8x16.abs
@@ -83,9 +83,9 @@
   (func (;9;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.popcnt
     local.get 1
     i8x16.min_s
@@ -93,9 +93,9 @@
   (func (;10;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     i8x16.popcnt
@@ -103,9 +103,9 @@
   (func (;11;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     local.get 2
@@ -114,9 +114,9 @@
   (func (;12;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     local.get 2
@@ -125,9 +125,9 @@
   (func (;13;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     local.get 2
@@ -136,9 +136,9 @@
   (func (;14;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     local.get 2
@@ -147,9 +147,9 @@
   (func (;15;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     local.get 2
@@ -158,9 +158,9 @@
   (func (;16;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.abs
     local.get 1
     i8x16.min_u
@@ -168,9 +168,9 @@
   (func (;17;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     i8x16.abs
@@ -178,9 +178,9 @@
   (func (;18;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.popcnt
     local.get 1
     i8x16.min_u
@@ -188,9 +188,9 @@
   (func (;19;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     i8x16.popcnt
@@ -198,9 +198,9 @@
   (func (;20;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     local.get 2
@@ -209,9 +209,9 @@
   (func (;21;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     local.get 2
@@ -220,9 +220,9 @@
   (func (;22;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     local.get 2
@@ -231,9 +231,9 @@
   (func (;23;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     local.get 2
@@ -242,9 +242,9 @@
   (func (;24;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     local.get 2
@@ -253,9 +253,9 @@
   (func (;25;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.abs
     local.get 1
     i8x16.max_s
@@ -263,9 +263,9 @@
   (func (;26;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     i8x16.abs
@@ -273,9 +273,9 @@
   (func (;27;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.popcnt
     local.get 1
     i8x16.max_s
@@ -283,9 +283,9 @@
   (func (;28;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     i8x16.popcnt
@@ -293,9 +293,9 @@
   (func (;29;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     local.get 2
@@ -304,9 +304,9 @@
   (func (;30;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     local.get 2
@@ -315,9 +315,9 @@
   (func (;31;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     local.get 2
@@ -326,9 +326,9 @@
   (func (;32;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     local.get 2
@@ -337,9 +337,9 @@
   (func (;33;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     local.get 2
@@ -348,9 +348,9 @@
   (func (;34;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.abs
     local.get 1
     i8x16.max_u
@@ -358,9 +358,9 @@
   (func (;35;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     i8x16.abs
@@ -368,9 +368,9 @@
   (func (;36;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.popcnt
     local.get 1
     i8x16.max_u
@@ -378,9 +378,9 @@
   (func (;37;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     i8x16.popcnt
@@ -388,9 +388,9 @@
   (func (;38;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     local.get 2
@@ -399,9 +399,9 @@
   (func (;39;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_u
     local.get 2
@@ -410,9 +410,9 @@
   (func (;40;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.max_s
     local.get 2
@@ -421,9 +421,9 @@
   (func (;41;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_u
     local.get 2
@@ -432,9 +432,9 @@
   (func (;42;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 1000002000032
     call 1
-    local.get 0
     i64.const 6
     call 0
+    local.get 0
     local.get 1
     i8x16.min_s
     local.get 2
@@ -443,9 +443,9 @@
   (func (;43;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.abs
     local.get 1
     i8x16.avgr_u
@@ -453,9 +453,9 @@
   (func (;44;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     i8x16.abs
@@ -463,9 +463,9 @@
   (func (;45;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     i8x16.popcnt
     local.get 1
     i8x16.avgr_u
@@ -473,9 +473,9 @@
   (func (;46;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get 0
     i64.const 5
     call 0
+    local.get 0
     local.get 1
     i8x16.avgr_u
     i8x16.popcnt
@@ -483,36 +483,36 @@
   (func (;47;) (type 2) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.popcnt
     i8x16.abs
   )
   (func (;48;) (type 2) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.abs
     i8x16.abs
   )
   (func (;49;) (type 2) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.popcnt
     i8x16.popcnt
   )
   (func (;50;) (type 2) (param v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get 0
     i64.const 4
     call 0
+    local.get 0
     i8x16.abs
     i8x16.popcnt
   )

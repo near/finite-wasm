@@ -6,89 +6,89 @@
   (func (;2;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     v128.any_true
   )
   (func (;3;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i8x16.all_true
   )
   (func (;4;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i8x16.bitmask
   )
   (func (;5;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     v128.any_true
   )
   (func (;6;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i16x8.all_true
   )
   (func (;7;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i16x8.bitmask
   )
   (func (;8;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     v128.any_true
   )
   (func (;9;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i32x4.all_true
   )
   (func (;10;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i32x4.bitmask
   )
   (func (;11;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i64x2.all_true
   )
   (func (;12;) (type 0) (param $0 v128) (result i32)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     i64x2.bitmask
   )
   (export "i8x16.any_true" (func 2))

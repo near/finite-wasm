@@ -8,49 +8,47 @@
   (func $zero (;2;) (type 0) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i32.const 0
     i64.const 2
     call $finite_wasm_gas
+    i32.const 0
   )
   (func $one (;3;) (type 0) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i32.const 1
     i64.const 2
     call $finite_wasm_gas
+    i32.const 1
   )
   (func $two (;4;) (type 0) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
-    i32.const 2
     i64.const 2
     call $finite_wasm_gas
+    i32.const 2
   )
   (func (;5;) (type 1) (param i32 i32 i32)
     i64.const 1000002000012
     call $finite_wasm_stack
-    local.get 0
     i64.const 3
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     local.get 2
-    table.copy
     i64.const 1
     call $finite_wasm_gas
-    end
+    table.copy
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;6;) (type 2) (param i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     local.get 0
     i64.const 1
     call $finite_wasm_gas
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
-    end
     i64.const 1
     call $finite_wasm_gas
   )

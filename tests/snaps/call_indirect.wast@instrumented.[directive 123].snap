@@ -8,107 +8,101 @@
   (func $f (;2;) (type $ii-i) (param i32 i32) (result i32)
     i64.const 1000001000008
     call $finite_wasm_stack
-    local.get 0
     i64.const 4
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     i32.add
   )
   (func $g (;3;) (type $ii-i) (param i32 i32) (result i32)
     i64.const 1000001000008
     call $finite_wasm_stack
-    local.get 0
     i64.const 4
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     i32.sub
   )
   (func $h (;4;) (type $ii-i) (param i32 i32) (result i32)
     i64.const 1000001000008
     call $finite_wasm_stack
-    local.get 0
     i64.const 4
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     i32.mul
   )
   (func $i (;5;) (type $ii-i) (param i32 i32) (result i32)
     i64.const 1000001000008
     call $finite_wasm_stack
-    local.get 0
     i64.const 2
     call $finite_wasm_gas
+    local.get 0
     local.get 1
-    i32.div_u
     i64.const 1
     call $finite_wasm_gas
-    end
+    i32.div_u
     i64.const 1
     call $finite_wasm_gas
   )
   (func $j (;6;) (type $ii-i) (param i32 i32) (result i32)
     i64.const 1000001000008
     call $finite_wasm_stack
-    local.get 0
     i64.const 2
     call $finite_wasm_gas
+    local.get 0
     local.get 1
-    i32.rem_u
     i64.const 1
     call $finite_wasm_gas
-    end
+    i32.rem_u
     i64.const 1
     call $finite_wasm_gas
   )
   (func $z (;7;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
-    end
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;8;) (type 2) (param i32 i32 i32) (result i32)
     i64.const 1000002000012
     call $finite_wasm_stack
-    local.get 0
     i64.const 3
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     local.get 2
-    call_indirect (type $ii-i)
     i64.const 1
     call $finite_wasm_gas
-    end
+    call_indirect (type $ii-i)
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;9;) (type 2) (param i32 i32 i32) (result i32)
     i64.const 1000002000012
     call $finite_wasm_stack
-    local.get 0
     i64.const 3
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     local.get 2
-    call_indirect $t2 (type $ii-i)
     i64.const 1
     call $finite_wasm_gas
-    end
+    call_indirect $t2 (type $ii-i)
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;10;) (type 2) (param i32 i32 i32) (result i32)
     i64.const 1000002000012
     call $finite_wasm_stack
-    local.get 0
     i64.const 3
     call $finite_wasm_gas
+    local.get 0
     local.get 1
     local.get 2
-    call_indirect $t3 (type $ii-i)
     i64.const 1
     call $finite_wasm_gas
-    end
+    call_indirect $t3 (type $ii-i)
     i64.const 1
     call $finite_wasm_gas
   )

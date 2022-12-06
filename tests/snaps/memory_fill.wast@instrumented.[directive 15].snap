@@ -7,14 +7,16 @@
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 1000002000008
     call 1
+    i64.const 1
+    call 0
     loop $cont ;; label = @1
-      i64.const 1
-      call 0
-      local.get $from
       i64.const 3
       call 0
+      local.get $from
       local.get $to
       i32.eq
+      i64.const 1
+      call 0
       if ;; label = @2
         i64.const 1
         call 0
@@ -31,50 +33,46 @@
       i64.const 1
       call 0
       i32.load8_u
-      i64.const 1
-      call 0
-      local.get $expected
       i64.const 2
       call 0
+      local.get $expected
       i32.eq
+      i64.const 1
+      call 0
       if ;; label = @2
-        i64.const 1
-        call 0
-        local.get $from
         i64.const 4
         call 0
+        local.get $from
         i32.const 1
         i32.add
         local.set $from
+        i64.const 1
+        call 0
         br 1 (;@1;)
         i64.const 1
         call 0
       end
-      i64.const 1
+      i64.const 2
       call 0
     end
-    i64.const 2
-    call 0
     local.get $from
-    return
     i64.const 1
     call 0
-    end
+    return
     i64.const 1
     call 0
   )
   (func (;3;) (type 1)
     i64.const 1000000000012
     call 1
-    i32.const 1
     i64.const 3
     call 0
+    i32.const 1
     i32.const 170
     i32.const 65534
-    memory.fill
     i64.const 1
     call 0
-    end
+    memory.fill
     i64.const 1
     call 0
   )

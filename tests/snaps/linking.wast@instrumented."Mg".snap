@@ -7,23 +7,23 @@
   (func (;2;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
-    global.get $glob
     i64.const 2
     call 0
+    global.get $glob
   )
   (func (;3;) (type 0) (result i32)
     i64.const 1000000000004
     call 1
-    global.get $mut_glob
     i64.const 2
     call 0
+    global.get $mut_glob
   )
   (func (;4;) (type 1) (param i32)
     i64.const 1000000000004
     call 1
-    local.get 0
     i64.const 3
     call 0
+    local.get 0
     global.set $mut_glob
   )
   (global $glob (;0;) i32 i32.const 42)

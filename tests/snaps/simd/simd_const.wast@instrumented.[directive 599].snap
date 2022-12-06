@@ -9,17 +9,17 @@
   (func $set_g0 (;2;) (type 0) (param $0 v128)
     i64.const 1000000000016
     call $finite_wasm_stack
-    local.get $0
     i64.const 3
     call $finite_wasm_gas
+    local.get $0
     global.set $g0
   )
   (func $set_g1_g2 (;3;) (type 1) (param $0 v128) (param $1 v128)
     i64.const 1000001000016
     call $finite_wasm_stack
-    local.get $0
     i64.const 5
     call $finite_wasm_gas
+    local.get $0
     global.set $g1
     local.get $1
     global.set $g2
@@ -27,51 +27,51 @@
   (func $set_g0_g1_g2_g3 (;4;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (param $3 v128)
     i64.const 1000003000032
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     local.get $0
     i64.const 1
     call $finite_wasm_gas
     call $set_g0
-    i64.const 1
-    call $finite_wasm_gas
-    local.get $1
     i64.const 2
     call $finite_wasm_gas
+    local.get $1
     local.get $2
-    call $set_g1_g2
     i64.const 1
     call $finite_wasm_gas
-    local.get $3
+    call $set_g1_g2
     i64.const 3
     call $finite_wasm_gas
+    local.get $3
     global.set $g3
   )
   (func (;5;) (type 3) (result v128)
     i64.const 1000000000016
     call $finite_wasm_stack
-    global.get $g0
     i64.const 2
     call $finite_wasm_gas
+    global.get $g0
   )
   (func (;6;) (type 3) (result v128)
     i64.const 1000000000016
     call $finite_wasm_stack
-    global.get $g1
     i64.const 2
     call $finite_wasm_gas
+    global.get $g1
   )
   (func (;7;) (type 3) (result v128)
     i64.const 1000000000016
     call $finite_wasm_stack
-    global.get $g2
     i64.const 2
     call $finite_wasm_gas
+    global.get $g2
   )
   (func (;8;) (type 3) (result v128)
     i64.const 1000000000016
     call $finite_wasm_stack
-    global.get $g3
     i64.const 2
     call $finite_wasm_gas
+    global.get $g3
   )
   (memory (;0;) 1)
   (global $g0 (;0;) (mut v128) v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003)

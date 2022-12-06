@@ -7,95 +7,95 @@
   (func (;2;) (type 0) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.add
   )
   (func (;3;) (type 0) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.sub
   )
   (func (;4;) (type 0) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.mul
   )
   (func (;5;) (type 0) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.div
   )
   (func (;6;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.sqrt
   )
   (func (;7;) (type 0) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.min
   )
   (func (;8;) (type 0) (param $x f64) (param $y f64) (result f64)
     i64.const 1000001000016
     call 1
-    local.get $x
     i64.const 4
     call 0
+    local.get $x
     local.get $y
     f64.max
   )
   (func (;9;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.ceil
   )
   (func (;10;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.floor
   )
   (func (;11;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.trunc
   )
   (func (;12;) (type 1) (param $x f64) (result f64)
     i64.const 1000000000008
     call 1
-    local.get $x
     i64.const 3
     call 0
+    local.get $x
     f64.nearest
   )
   (export "add" (func 2))

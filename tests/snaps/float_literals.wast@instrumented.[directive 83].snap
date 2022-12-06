@@ -6,9 +6,9 @@
   (func (;2;) (type 0) (result f64)
     i64.const 1000000000008
     call 1
-    f64.const 0x1.ffffffa2p+31 (;=4294967249;)
     i64.const 2
     call 0
+    f64.const 0x1.ffffffa2p+31 (;=4294967249;)
   )
   (export "4294967249" (func 2))
 )

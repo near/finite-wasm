@@ -8,44 +8,44 @@
   (func (;2;) (type 0) (param $0 v128) (result v128)
     i64.const 1000000000016
     call 1
-    local.get $0
     i64.const 3
     call 0
+    local.get $0
     v128.not
   )
   (func (;3;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $0
     i64.const 4
     call 0
+    local.get $0
     local.get $1
     v128.and
   )
   (func (;4;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $0
     i64.const 4
     call 0
+    local.get $0
     local.get $1
     v128.or
   )
   (func (;5;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $0
     i64.const 4
     call 0
+    local.get $0
     local.get $1
     v128.xor
   )
   (func (;6;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result v128)
     i64.const 1000002000048
     call 1
-    local.get $0
     i64.const 5
     call 0
+    local.get $0
     local.get $1
     local.get $2
     v128.bitselect
@@ -53,9 +53,9 @@
   (func (;7;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     i64.const 1000001000032
     call 1
-    local.get $0
     i64.const 4
     call 0
+    local.get $0
     local.get $1
     v128.andnot
   )
