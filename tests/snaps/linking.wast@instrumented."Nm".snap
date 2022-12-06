@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
   (import "Mm" "load" (func $loadM (;2;) (type 0)))
   (func (;3;) (type 0) (param $a i32) (result i32)
+    i64.const 0
+    call $loadM
     local.get $a
     i32.load8_u
   )

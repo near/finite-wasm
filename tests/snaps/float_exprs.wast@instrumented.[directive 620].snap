@@ -6,6 +6,8 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $i i32) (param $j i32) (param $k i32)
     (local $x0 f64) (local $x1 f64) (local $x2 f64) (local $x3 f64) (local $y0 f64) (local $y1 f64) (local $y2 f64) (local $y3 f64)
+    i64.const 1000010000020
+    call 1
     local.get $i
     f64.load
     local.set $x0
@@ -52,6 +54,8 @@
     f64.store offset=24
   )
   (func (;3;) (type 1) (param $k i32) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $k
     f64.load
   )

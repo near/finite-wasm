@@ -5,12 +5,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param i32 i32 i32)
+    i64.const 1000002000012
+    call 1
     local.get 0
     local.get 1
     local.get 2
     memory.fill
   )
   (func (;3;) (type 1) (param i32) (result i32)
+    i64.const 1000000000004
+    call 1
     local.get 0
     i32.load8_u
   )

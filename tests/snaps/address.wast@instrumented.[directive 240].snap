@@ -5,26 +5,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $i i32) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load
   )
   (func (;3;) (type 0) (param $i i32) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load align=1
   )
   (func (;4;) (type 0) (param $i i32) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load offset=1 align=1
   )
   (func (;5;) (type 0) (param $i i32) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load offset=2 align=2
   )
   (func (;6;) (type 0) (param $i i32) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load offset=18
   )
   (func (;7;) (type 1) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load offset=4294967295
     drop

@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (func (;2;) (type 0)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 0
     i32.const 0
     i32.store
@@ -21,6 +23,8 @@
     i32.store
   )
   (func (;3;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 8
     i32.const 0
     i32.store
@@ -32,6 +36,8 @@
   )
   (func (;4;) (type 1) (result i32)
     (local $t i32) (local $s i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     i32.const 8
     i32.load
     local.set $t
@@ -47,6 +53,8 @@
   )
   (func (;5;) (type 2) (result f32)
     (local $t f32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 8
     i32.const 589505315
     i32.store
@@ -59,10 +67,14 @@
     local.get $t
   )
   (func $malloc (;6;) (type 3) (param $size i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 16
   )
   (func (;7;) (type 1) (result i32)
     (local $x i32) (local $y i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     i32.const 4
     call $malloc
     local.set $x

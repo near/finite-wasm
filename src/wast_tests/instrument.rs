@@ -150,6 +150,8 @@ impl<'a> crate::test::TestContext {
                     raw_sections.push(section_placeholder(new_code_section.id()));
                 }
                 wp::Payload::CodeSectionEntry(reader) => {
+                    maybe_add_imports(&mut new_type_section, &mut new_import_section);
+                    let finite_wasm_stack_fn = new_import_section.len() - 1;
                     let locals = reader
                         .get_locals_reader()
                         .expect("TODO")
@@ -158,6 +160,12 @@ impl<'a> crate::test::TestContext {
                         .collect::<Result<Vec<_>, _>>()
                         .expect("TODO");
                     let mut new_function = we::Function::new(locals);
+                    // Reserve the stack.
+                    new_function.instruction(&we::Instruction::I64Const(
+                        results.function_stack_sizes[new_code_section.len() as usize] as i64,
+                    ));
+                    new_function.instruction(&we::Instruction::Call(finite_wasm_stack_fn));
+
                     let mut operators = reader.get_operators_reader().expect("TODO");
                     while !operators.eof() {
                         let (op, offset) = operators.read_with_offset().expect("TODO");
@@ -251,7 +259,6 @@ impl<'a> crate::test::TestContext {
         // The type and import sections always come first in a module. They may potentially be
         // preceded or interspersed by custom sections in the original module, so we’re just hoping
         // that the ordering doesn’t matter for tests…
-        maybe_add_imports(&mut new_type_section, &mut new_import_section);
         output.section(&new_type_section);
         output.section(&new_import_section);
         for section in raw_sections {

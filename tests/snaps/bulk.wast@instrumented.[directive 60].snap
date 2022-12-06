@@ -5,18 +5,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
     data.drop $p
   )
   (func (;3;) (type 1) (param $len i32)
+    i64.const 1000000000012
+    call 1
     i32.const 0
     i32.const 0
     local.get $len
     memory.init $p
   )
   (func (;4;) (type 0)
+    i64.const 1000000000000
+    call 1
     data.drop $a
   )
   (func (;5;) (type 1) (param $len i32)
+    i64.const 1000000000012
+    call 1
     i32.const 0
     i32.const 0
     local.get $len

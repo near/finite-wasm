@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param i32) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       local.get 0
       i8x16.splat
@@ -14,12 +16,16 @@
     end
   )
   (func (;3;) (type 0) (param i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get 0
     i16x8.splat
     return
   )
   (func (;4;) (type 0) (param i32) (result v128)
     (local v128)
+    i64.const 1000001000016
+    call 1
     local.get 0
     i32x4.splat
     local.set 1
@@ -27,6 +33,8 @@
     return
   )
   (func (;5;) (type 1) (param f32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get 0
     f32x4.splat
     global.set $g
@@ -34,6 +42,8 @@
     return
   )
   (func (;6;) (type 2) (param i64) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       local.get 0
       i64x2.splat
@@ -41,12 +51,16 @@
     end
   )
   (func (;7;) (type 2) (param i64) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get 0
     i64x2.splat
     return
   )
   (func (;8;) (type 2) (param i64) (result v128)
     (local v128)
+    i64.const 1000001000016
+    call 1
     local.get 0
     i64x2.splat
     local.set 1
@@ -54,6 +68,8 @@
     return
   )
   (func (;9;) (type 3) (param f64) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get 0
     f64x2.splat
     global.set $g

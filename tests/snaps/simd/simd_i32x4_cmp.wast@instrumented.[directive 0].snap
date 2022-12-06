@@ -4,51 +4,71 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.eq
   )
   (func (;3;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.ne
   )
   (func (;4;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.lt_s
   )
   (func (;5;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.lt_u
   )
   (func (;6;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.le_s
   )
   (func (;7;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.le_u
   )
   (func (;8;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.gt_s
   )
   (func (;9;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.gt_u
   )
   (func (;10;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.ge_s
   )
   (func (;11;) (type 0) (param $x v128) (param $y v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get $x
     local.get $y
     i32x4.ge_u

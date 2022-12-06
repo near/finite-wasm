@@ -9,10 +9,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 6)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 6)))
   (func (;2;) (type 0) (param f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get 0
     f32.sqrt
   )
   (func (;3;) (type 1) (param f32 f32 f32 f32) (result f32)
+    i64.const 1000003000016
+    call 1
     local.get 0
     local.get 1
     f32.div
@@ -24,6 +28,8 @@
     f32.add
   )
   (func (;4;) (type 2) (param f32 f32 f32) (result f32)
+    i64.const 1000002000008
+    call 1
     local.get 0
     local.get 1
     f32.mul
@@ -31,6 +37,8 @@
     f32.div
   )
   (func (;5;) (type 2) (param f32 f32 f32) (result f32)
+    i64.const 1000002000012
+    call 1
     local.get 0
     local.get 1
     f32.div
@@ -40,6 +48,8 @@
     f32.add
   )
   (func (;6;) (type 1) (param f32 f32 f32 f32) (result f32)
+    i64.const 1000003000016
+    call 1
     local.get 0
     local.get 1
     local.get 2
@@ -53,10 +63,14 @@
     f32.div
   )
   (func (;7;) (type 3) (param f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get 0
     f64.sqrt
   )
   (func (;8;) (type 4) (param f64 f64 f64 f64) (result f64)
+    i64.const 1000003000032
+    call 1
     local.get 0
     local.get 1
     f64.div
@@ -68,6 +82,8 @@
     f64.add
   )
   (func (;9;) (type 5) (param f64 f64 f64) (result f64)
+    i64.const 1000002000016
+    call 1
     local.get 0
     local.get 1
     f64.mul
@@ -75,6 +91,8 @@
     f64.div
   )
   (func (;10;) (type 5) (param f64 f64 f64) (result f64)
+    i64.const 1000002000024
+    call 1
     local.get 0
     local.get 1
     f64.div
@@ -84,6 +102,8 @@
     f64.add
   )
   (func (;11;) (type 4) (param f64 f64 f64 f64) (result f64)
+    i64.const 1000003000032
+    call 1
     local.get 0
     local.get 1
     local.get 2

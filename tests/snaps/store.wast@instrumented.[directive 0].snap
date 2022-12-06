@@ -4,6 +4,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0)
+    i64.const 1000000000008
+    call 1
     block ;; label = @1
       i32.const 0
       i32.const 1
@@ -11,6 +13,8 @@
     end
   )
   (func (;3;) (type 0)
+    i64.const 1000000000008
+    call 1
     loop ;; label = @1
       i32.const 0
       i32.const 1
@@ -18,6 +22,8 @@
     end
   )
   (func (;4;) (type 0)
+    i64.const 1000000000008
+    call 1
     block ;; label = @1
       i32.const 0
       i32.const 1
@@ -26,6 +32,8 @@
     end
   )
   (func (;5;) (type 0)
+    i64.const 1000000000008
+    call 1
     block ;; label = @1
       i32.const 0
       i32.const 1
@@ -35,6 +43,8 @@
     end
   )
   (func (;6;) (type 0)
+    i64.const 1000000000012
+    call 1
     block ;; label = @1
       i32.const 6
       i32.const 0
@@ -44,6 +54,8 @@
     end
   )
   (func (;7;) (type 0)
+    i64.const 1000000000008
+    call 1
     block ;; label = @1
       i32.const 0
       i32.const 1
@@ -53,12 +65,16 @@
     end
   )
   (func (;8;) (type 0)
+    i64.const 1000000000008
+    call 1
     i32.const 0
     i32.const 1
     i32.store
     return
   )
   (func (;9;) (type 0)
+    i64.const 1000000000008
+    call 1
     i32.const 1
     if ;; label = @1
       i32.const 0
@@ -67,6 +83,8 @@
     end
   )
   (func (;10;) (type 0)
+    i64.const 1000000000008
+    call 1
     i32.const 0
     if ;; label = @1
     else

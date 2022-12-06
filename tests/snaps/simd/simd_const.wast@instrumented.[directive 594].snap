@@ -6,12 +6,16 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $0 v128) (result v128)
     (local v128 v128 v128 v128)
+    i64.const 1000004000016
+    call 1
     local.get $0
     local.set $0
     local.get $0
   )
   (func (;3;) (type 0) (param $0 v128) (result v128)
     (local v128 v128 v128 v128)
+    i64.const 1000004000016
+    call 1
     local.get $0
     local.set $0
     local.get $0
@@ -24,6 +28,8 @@
   )
   (func (;4;) (type 0) (param $0 v128) (result v128)
     (local v128 v128 v128 v128)
+    i64.const 1000004000016
+    call 1
     local.get $0
     local.set $0
     local.get $0
@@ -36,6 +42,8 @@
   )
   (func (;5;) (type 1) (result v128)
     (local v128)
+    i64.const 1000000000016
+    call 1
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     local.tee 0
   )

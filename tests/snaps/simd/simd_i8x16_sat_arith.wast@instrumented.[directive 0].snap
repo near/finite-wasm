@@ -4,21 +4,29 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0) (param v128 v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get 0
     local.get 1
     i8x16.add_sat_s
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get 0
     local.get 1
     i8x16.add_sat_u
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get 0
     local.get 1
     i8x16.sub_sat_s
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
+    i64.const 1000001000032
+    call 1
     local.get 0
     local.get 1
     i8x16.sub_sat_u

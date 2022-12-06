@@ -5,5 +5,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0)
     (local f32 f32)
+    i64.const 1000001000000
+    call 1
   )
 )

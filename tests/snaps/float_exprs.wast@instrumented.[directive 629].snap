@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0) (param $p i32) (param $n i32) (result f64)
     (local $sum f64) (local $c f64) (local $t f64)
+    i64.const 1000004000024
+    call 1
     block $exit ;; label = @1
       loop $top ;; label = @2
         local.get $c
@@ -37,6 +39,8 @@
   )
   (func (;3;) (type 0) (param $p i32) (param $n i32) (result f64)
     (local $sum f64)
+    i64.const 1000002000016
+    call 1
     block $exit ;; label = @1
       loop $top ;; label = @2
         local.get $sum

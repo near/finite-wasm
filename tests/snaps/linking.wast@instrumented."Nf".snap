@@ -5,12 +5,18 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
   (import "Mf" "call" (func $f (;2;) (type 0)))
   (func (;3;) (type 0) (result i32)
+    i64.const 0
+    call $f
     call $f
   )
   (func (;4;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $f
     call $g
   )
   (func $g (;5;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $f
     i32.const 3
   )
   (export "Mf.call" (func $f))

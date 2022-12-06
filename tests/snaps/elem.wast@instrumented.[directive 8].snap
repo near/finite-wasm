@@ -4,16 +4,24 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
   (func $const-i32-a (;2;) (type $out-i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 65
   )
   (func $const-i32-b (;3;) (type $out-i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 66
   )
   (func (;4;) (type $out-i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 7
     call_indirect (type $out-i32)
   )
   (func (;5;) (type $out-i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 9
     call_indirect (type $out-i32)
   )

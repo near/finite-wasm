@@ -6,58 +6,94 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (func $f0 (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
   )
   (func $f1 (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 1
   )
   (func $f2 (;4;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 2
   )
   (func $f3 (;5;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 3
   )
   (func $f4 (;6;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 4
   )
   (func $f5 (;7;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 5
   )
   (func $f6 (;8;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 6
   )
   (func $f7 (;9;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 7
   )
   (func $f8 (;10;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 8
   )
   (func $f9 (;11;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 9
   )
   (func $f10 (;12;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 10
   )
   (func $f11 (;13;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 11
   )
   (func $f12 (;14;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 12
   )
   (func $f13 (;15;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 13
   )
   (func $f14 (;16;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 14
   )
   (func $f15 (;17;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 15
   )
   (func (;18;) (type 1) (param $n i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     local.get $n
     call_indirect (type 0)
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
+    i64.const 1000002000012
+    call $finite_wasm_stack
     local.get $targetOffs
     local.get $srcOffs
     local.get $len

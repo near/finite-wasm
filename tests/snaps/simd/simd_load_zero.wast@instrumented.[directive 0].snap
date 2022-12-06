@@ -5,62 +5,92 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load32_zero
   )
   (func (;3;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero
   )
   (func (;4;) (type 1) (result v128)
+    i64.const 1000000000016
+    call 1
     i32.const 0
     v128.load32_zero
   )
   (func (;5;) (type 1) (result v128)
+    i64.const 1000000000016
+    call 1
     i32.const 8
     v128.load64_zero
   )
   (func (;6;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load32_zero
   )
   (func (;7;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load32_zero align=1
   )
   (func (;8;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load32_zero align=1
   )
   (func (;9;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load32_zero offset=1 align=1
   )
   (func (;10;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load32_zero offset=10
   )
   (func (;11;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero
   )
   (func (;12;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero align=1
   )
   (func (;13;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero align=1
   )
   (func (;14;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero offset=1 align=1
   )
   (func (;15;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero offset=10 align=4
   )
   (func (;16;) (type 0) (param $0 i32) (result v128)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.load64_zero offset=20
   )

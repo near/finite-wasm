@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
+    i64.const 1000000000012
+    call 1
     i32.const 10
     i32.const 85
     i32.const 10
@@ -15,6 +17,8 @@
     memory.copy
   )
   (func (;3;) (type 1) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
     loop $cont ;; label = @1
       local.get $from
       local.get $to

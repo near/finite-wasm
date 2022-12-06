@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       block (result v128) ;; label = @2
         i32.const 0
@@ -13,6 +15,8 @@
     end
   )
   (func (;3;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       block (result v128) ;; label = @2
         i32.const 1
@@ -21,6 +25,8 @@
     end
   )
   (func (;4;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       block (result v128) ;; label = @2
         i32.const 2
@@ -29,6 +35,8 @@
     end
   )
   (func (;5;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       block (result v128) ;; label = @2
         i32.const 3
@@ -37,6 +45,8 @@
     end
   )
   (func (;6;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       block (result v128) ;; label = @2
         i32.const 4
@@ -45,6 +55,8 @@
     end
   )
   (func (;7;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       block (result v128) ;; label = @2
         i32.const 5
@@ -53,6 +65,8 @@
     end
   )
   (func (;8;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       i32.const 6
       v128.load8x8_s
@@ -60,6 +74,8 @@
     end
   )
   (func (;9;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       i32.const 7
       v128.load8x8_u
@@ -67,6 +83,8 @@
     end
   )
   (func (;10;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       i32.const 8
       v128.load16x4_s
@@ -74,6 +92,8 @@
     end
   )
   (func (;11;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       i32.const 9
       v128.load16x4_u
@@ -81,6 +101,8 @@
     end
   )
   (func (;12;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       i32.const 10
       v128.load32x2_s
@@ -88,6 +110,8 @@
     end
   )
   (func (;13;) (type 0) (result v128)
+    i64.const 1000000000016
+    call 1
     block (result v128) ;; label = @1
       i32.const 11
       v128.load32x2_u
@@ -95,31 +119,43 @@
     end
   )
   (func (;14;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 12
     v128.load8x8_s
     i8x16.extract_lane_s 0
   )
   (func (;15;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 13
     v128.load8x8_u
     i8x16.extract_lane_s 0
   )
   (func (;16;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 14
     v128.load16x4_s
     i8x16.extract_lane_s 0
   )
   (func (;17;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 15
     v128.load16x4_u
     i8x16.extract_lane_s 0
   )
   (func (;18;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 16
     v128.load32x2_s
     i8x16.extract_lane_s 0
   )
   (func (;19;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 17
     v128.load32x2_u
     i8x16.extract_lane_s 0

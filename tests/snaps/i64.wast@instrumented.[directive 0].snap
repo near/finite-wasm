@@ -7,154 +7,218 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.add
   )
   (func (;3;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.sub
   )
   (func (;4;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.mul
   )
   (func (;5;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.div_s
   )
   (func (;6;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.div_u
   )
   (func (;7;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.rem_s
   )
   (func (;8;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.rem_u
   )
   (func (;9;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.and
   )
   (func (;10;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.or
   )
   (func (;11;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.xor
   )
   (func (;12;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.shl
   )
   (func (;13;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.shr_s
   )
   (func (;14;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.shr_u
   )
   (func (;15;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.rotl
   )
   (func (;16;) (type 0) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.rotr
   )
   (func (;17;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.clz
   )
   (func (;18;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.ctz
   )
   (func (;19;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.popcnt
   )
   (func (;20;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.extend8_s
   )
   (func (;21;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.extend16_s
   )
   (func (;22;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.extend32_s
   )
   (func (;23;) (type 2) (param $x i64) (result i32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.eqz
   )
   (func (;24;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.eq
   )
   (func (;25;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.ne
   )
   (func (;26;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.lt_s
   )
   (func (;27;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.lt_u
   )
   (func (;28;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.le_s
   )
   (func (;29;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.le_u
   )
   (func (;30;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.gt_s
   )
   (func (;31;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.gt_u
   )
   (func (;32;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.ge_s
   )
   (func (;33;) (type 3) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     i64.ge_u

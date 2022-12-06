@@ -16,35 +16,55 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 13)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 13)))
   (func $i32_t0 (;2;) (type $i32_T) (param i32 i32) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -1
   )
   (func $i32_t1 (;3;) (type $i32_T) (param i32 i32) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -2
   )
   (func $i64_t0 (;4;) (type $i64_T) (param i64 i64) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -1
   )
   (func $i64_t1 (;5;) (type $i64_T) (param i64 i64) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -2
   )
   (func $f32_t0 (;6;) (type $f32_T) (param f32 f32) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -1
   )
   (func $f32_t1 (;7;) (type $f32_T) (param f32 f32) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -2
   )
   (func $f64_t0 (;8;) (type $f64_T) (param f64 f64) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -1
   )
   (func $f64_t1 (;9;) (type $f64_T) (param f64 f64) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     i32.const -2
   )
   (func $reset (;10;) (type 4)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 8
     i32.const 0
     i32.store
   )
   (func $bump (;11;) (type 4)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 11
     i32.const 10
     i32.load8_u
@@ -62,10 +82,14 @@
     i32.store8
   )
   (func $get (;12;) (type 5) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 8
     i32.load
   )
   (func $i32_left (;13;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 1
@@ -73,6 +97,8 @@
     i32.const 0
   )
   (func $i32_right (;14;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 2
@@ -80,6 +106,8 @@
     i32.const 1
   )
   (func $i32_another (;15;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 3
@@ -87,6 +115,8 @@
     i32.const 1
   )
   (func $i32_callee (;16;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 4
@@ -94,6 +124,8 @@
     i32.const 0
   )
   (func $i32_bool (;17;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 5
@@ -101,6 +133,8 @@
     i32.const 0
   )
   (func $i64_left (;18;) (type 6) (result i64)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 1
@@ -108,6 +142,8 @@
     i64.const 0
   )
   (func $i64_right (;19;) (type 6) (result i64)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 2
@@ -115,6 +151,8 @@
     i64.const 1
   )
   (func $i64_another (;20;) (type 6) (result i64)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 3
@@ -122,6 +160,8 @@
     i64.const 1
   )
   (func $i64_callee (;21;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 4
@@ -129,6 +169,8 @@
     i32.const 2
   )
   (func $i64_bool (;22;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 5
@@ -136,6 +178,8 @@
     i32.const 0
   )
   (func $f32_left (;23;) (type 7) (result f32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 1
@@ -143,6 +187,8 @@
     f32.const 0x0p+0 (;=0;)
   )
   (func $f32_right (;24;) (type 7) (result f32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 2
@@ -150,6 +196,8 @@
     f32.const 0x1p+0 (;=1;)
   )
   (func $f32_another (;25;) (type 7) (result f32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 3
@@ -157,6 +205,8 @@
     f32.const 0x1p+0 (;=1;)
   )
   (func $f32_callee (;26;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 4
@@ -164,6 +214,8 @@
     i32.const 4
   )
   (func $f32_bool (;27;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 5
@@ -171,6 +223,8 @@
     i32.const 0
   )
   (func $f64_left (;28;) (type 8) (result f64)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 1
@@ -178,6 +232,8 @@
     f64.const 0x0p+0 (;=0;)
   )
   (func $f64_right (;29;) (type 8) (result f64)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 2
@@ -185,6 +241,8 @@
     f64.const 0x1p+0 (;=1;)
   )
   (func $f64_another (;30;) (type 8) (result f64)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 3
@@ -192,6 +250,8 @@
     f64.const 0x1p+0 (;=1;)
   )
   (func $f64_callee (;31;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 4
@@ -199,17 +259,33 @@
     i32.const 6
   )
   (func $f64_bool (;32;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $bump
     i32.const 8
     i32.const 5
     i32.store8
     i32.const 0
   )
-  (func $i32_dummy (;33;) (type 9) (param i32 i32))
-  (func $i64_dummy (;34;) (type 10) (param i64 i64))
-  (func $f32_dummy (;35;) (type 11) (param f32 f32))
-  (func $f64_dummy (;36;) (type 12) (param f64 f64))
+  (func $i32_dummy (;33;) (type 9) (param i32 i32)
+    i64.const 1000001000000
+    call $finite_wasm_stack
+  )
+  (func $i64_dummy (;34;) (type 10) (param i64 i64)
+    i64.const 1000001000000
+    call $finite_wasm_stack
+  )
+  (func $f32_dummy (;35;) (type 11) (param f32 f32)
+    i64.const 1000001000000
+    call $finite_wasm_stack
+  )
+  (func $f64_dummy (;36;) (type 12) (param f64 f64)
+    i64.const 1000001000000
+    call $finite_wasm_stack
+  )
   (func (;37;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -218,6 +294,8 @@
     call $get
   )
   (func (;38;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -226,6 +304,8 @@
     call $get
   )
   (func (;39;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -234,6 +314,8 @@
     call $get
   )
   (func (;40;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -242,6 +324,8 @@
     call $get
   )
   (func (;41;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -250,6 +334,8 @@
     call $get
   )
   (func (;42;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -258,6 +344,8 @@
     call $get
   )
   (func (;43;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -266,6 +354,8 @@
     call $get
   )
   (func (;44;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -274,6 +364,8 @@
     call $get
   )
   (func (;45;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -282,6 +374,8 @@
     call $get
   )
   (func (;46;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -290,6 +384,8 @@
     call $get
   )
   (func (;47;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -298,6 +394,8 @@
     call $get
   )
   (func (;48;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -306,6 +404,8 @@
     call $get
   )
   (func (;49;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -314,6 +414,8 @@
     call $get
   )
   (func (;50;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -322,6 +424,8 @@
     call $get
   )
   (func (;51;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -330,6 +434,8 @@
     call $get
   )
   (func (;52;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -338,6 +444,8 @@
     call $get
   )
   (func (;53;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -346,6 +454,8 @@
     call $get
   )
   (func (;54;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -354,6 +464,8 @@
     call $get
   )
   (func (;55;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -362,6 +474,8 @@
     call $get
   )
   (func (;56;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -370,6 +484,8 @@
     call $get
   )
   (func (;57;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -378,6 +494,8 @@
     call $get
   )
   (func (;58;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -386,6 +504,8 @@
     call $get
   )
   (func (;59;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -394,6 +514,8 @@
     call $get
   )
   (func (;60;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -401,6 +523,8 @@
     call $get
   )
   (func (;61;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -408,6 +532,8 @@
     call $get
   )
   (func (;62;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -415,6 +541,8 @@
     call $get
   )
   (func (;63;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -422,6 +550,8 @@
     call $get
   )
   (func (;64;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -431,6 +561,8 @@
     call $get
   )
   (func (;65;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i32_right
@@ -440,6 +572,8 @@
     call $get
   )
   (func (;66;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -448,6 +582,8 @@
     call $get
   )
   (func (;67;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -456,6 +592,8 @@
     call $get
   )
   (func (;68;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -464,6 +602,8 @@
     call $get
   )
   (func (;69;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -472,6 +612,8 @@
     call $get
   )
   (func (;70;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -480,6 +622,8 @@
     call $get
   )
   (func (;71;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -488,6 +632,8 @@
     call $get
   )
   (func (;72;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -496,6 +642,8 @@
     call $get
   )
   (func (;73;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -504,6 +652,8 @@
     call $get
   )
   (func (;74;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -512,6 +662,8 @@
     call $get
   )
   (func (;75;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -520,6 +672,8 @@
     call $get
   )
   (func (;76;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -528,6 +682,8 @@
     call $get
   )
   (func (;77;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -536,6 +692,8 @@
     call $get
   )
   (func (;78;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -544,6 +702,8 @@
     call $get
   )
   (func (;79;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -552,6 +712,8 @@
     call $get
   )
   (func (;80;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -560,6 +722,8 @@
     call $get
   )
   (func (;81;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -568,6 +732,8 @@
     call $get
   )
   (func (;82;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -576,6 +742,8 @@
     call $get
   )
   (func (;83;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -584,6 +752,8 @@
     call $get
   )
   (func (;84;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -592,6 +762,8 @@
     call $get
   )
   (func (;85;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -600,6 +772,8 @@
     call $get
   )
   (func (;86;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -608,6 +782,8 @@
     call $get
   )
   (func (;87;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -616,6 +792,8 @@
     call $get
   )
   (func (;88;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -624,6 +802,8 @@
     call $get
   )
   (func (;89;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i64_right
@@ -631,6 +811,8 @@
     call $get
   )
   (func (;90;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i64_right
@@ -638,6 +820,8 @@
     call $get
   )
   (func (;91;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i64_right
@@ -645,6 +829,8 @@
     call $get
   )
   (func (;92;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $i64_right
@@ -652,6 +838,8 @@
     call $get
   )
   (func (;93;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -659,6 +847,8 @@
     call $get
   )
   (func (;94;) (type 5) (result i32)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -668,6 +858,8 @@
     call $get
   )
   (func (;95;) (type 5) (result i32)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     call $reset
     call $i64_left
     call $i64_right
@@ -677,6 +869,8 @@
     call $get
   )
   (func (;96;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -685,6 +879,8 @@
     call $get
   )
   (func (;97;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -693,6 +889,8 @@
     call $get
   )
   (func (;98;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -701,6 +899,8 @@
     call $get
   )
   (func (;99;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -709,6 +909,8 @@
     call $get
   )
   (func (;100;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -717,6 +919,8 @@
     call $get
   )
   (func (;101;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -725,6 +929,8 @@
     call $get
   )
   (func (;102;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -733,6 +939,8 @@
     call $get
   )
   (func (;103;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -741,6 +949,8 @@
     call $get
   )
   (func (;104;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -749,6 +959,8 @@
     call $get
   )
   (func (;105;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -757,6 +969,8 @@
     call $get
   )
   (func (;106;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -765,6 +979,8 @@
     call $get
   )
   (func (;107;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -773,6 +989,8 @@
     call $get
   )
   (func (;108;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -781,6 +999,8 @@
     call $get
   )
   (func (;109;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $f32_right
@@ -788,6 +1008,8 @@
     call $get
   )
   (func (;110;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -795,6 +1017,8 @@
     call $get
   )
   (func (;111;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -804,6 +1028,8 @@
     call $get
   )
   (func (;112;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $f32_left
     call $f32_right
@@ -813,6 +1039,8 @@
     call $get
   )
   (func (;113;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -821,6 +1049,8 @@
     call $get
   )
   (func (;114;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -829,6 +1059,8 @@
     call $get
   )
   (func (;115;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -837,6 +1069,8 @@
     call $get
   )
   (func (;116;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -845,6 +1079,8 @@
     call $get
   )
   (func (;117;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -853,6 +1089,8 @@
     call $get
   )
   (func (;118;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -861,6 +1099,8 @@
     call $get
   )
   (func (;119;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -869,6 +1109,8 @@
     call $get
   )
   (func (;120;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -877,6 +1119,8 @@
     call $get
   )
   (func (;121;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -885,6 +1129,8 @@
     call $get
   )
   (func (;122;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -893,6 +1139,8 @@
     call $get
   )
   (func (;123;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -901,6 +1149,8 @@
     call $get
   )
   (func (;124;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -909,6 +1159,8 @@
     call $get
   )
   (func (;125;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -917,6 +1169,8 @@
     call $get
   )
   (func (;126;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     call $reset
     call $i32_left
     call $f64_right
@@ -924,6 +1178,8 @@
     call $get
   )
   (func (;127;) (type 5) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -931,6 +1187,8 @@
     call $get
   )
   (func (;128;) (type 5) (result i32)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -940,6 +1198,8 @@
     call $get
   )
   (func (;129;) (type 5) (result i32)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     call $reset
     call $f64_left
     call $f64_right
@@ -949,6 +1209,8 @@
     call $get
   )
   (func (;130;) (type 5) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       call $reset
       call $i32_left
@@ -961,6 +1223,8 @@
     end
   )
   (func (;131;) (type 5) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block $a (result i32) ;; label = @1
       call $reset
       block $b (result i32) ;; label = @2

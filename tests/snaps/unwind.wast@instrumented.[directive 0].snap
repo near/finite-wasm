@@ -5,22 +5,30 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
+    i64.const 1000000000012
+    call 1
     i32.const 3
     i64.const 1
     unreachable
   )
   (func (;3;) (type 0)
+    i64.const 1000000000012
+    call 1
     i32.const 3
     i64.const 1
     br 0 (;@0;)
   )
   (func (;4;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 3
     i64.const 1
     i32.const 9
     br 0 (;@0;)
   )
   (func (;5;) (type 0)
+    i64.const 1000000000016
+    call 1
     i32.const 3
     i64.const 1
     i32.const 1
@@ -29,6 +37,8 @@
     drop
   )
   (func (;6;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     i32.const 3
     i64.const 1
     i32.const 9
@@ -38,12 +48,16 @@
     drop
   )
   (func (;7;) (type 0)
+    i64.const 1000000000016
+    call 1
     i32.const 3
     i64.const 1
     i32.const 0
     br_table 0 (;@0;)
   )
   (func (;8;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     i32.const 3
     i64.const 1
     i32.const 9
@@ -51,12 +65,16 @@
     br_table 0 (;@0;)
   )
   (func (;9;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     i32.const 3
     i64.const 1
     i32.const 9
     return
   )
   (func (;10;) (type 0)
+    i64.const 1000000000012
+    call 1
     block ;; label = @1
       i32.const 3
       i64.const 1
@@ -64,6 +82,8 @@
     end
   )
   (func (;11;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block ;; label = @1
       i32.const 3
       i64.const 1
@@ -72,6 +92,8 @@
     i32.const 9
   )
   (func (;12;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       i64.const 1
@@ -80,6 +102,8 @@
     end
   )
   (func (;13;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block ;; label = @1
       i32.const 3
       i64.const 1
@@ -91,6 +115,8 @@
     i32.const 9
   )
   (func (;14;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       i64.const 1
@@ -102,6 +128,8 @@
     end
   )
   (func (;15;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block ;; label = @1
       i32.const 3
       i64.const 1
@@ -111,6 +139,8 @@
     i32.const 9
   )
   (func (;16;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       i64.const 1
@@ -120,6 +150,8 @@
     end
   )
   (func (;17;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       i64.const 1
@@ -128,6 +160,8 @@
     end
   )
   (func (;18;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -137,6 +171,8 @@
     end
   )
   (func (;19;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -148,6 +184,8 @@
     i32.const 9
   )
   (func (;20;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -158,6 +196,8 @@
     end
   )
   (func (;21;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -171,6 +211,8 @@
     i32.const 9
   )
   (func (;22;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -184,6 +226,8 @@
     end
   )
   (func (;23;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -196,6 +240,8 @@
     i32.const 9
   )
   (func (;24;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -207,6 +253,8 @@
     end
   )
   (func (;25;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block (result i32) ;; label = @1
       i32.const 3
       block ;; label = @2
@@ -217,11 +265,15 @@
     end
   )
   (func (;26;) (type 1) (result i32)
+    i64.const 1000000000004
+    call 1
     f32.const 0x0p+0 (;=0;)
     unreachable
     i64.eqz
   )
   (func (;27;) (type 1) (result i32)
+    i64.const 1000000000008
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       i32.const 9
@@ -230,6 +282,8 @@
     end
   )
   (func (;28;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block (result i32) ;; label = @1
       i64.const 0
       i32.const 9
@@ -240,6 +294,8 @@
     end
   )
   (func (;29;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       i32.const 9
@@ -249,18 +305,24 @@
     end
   )
   (func (;30;) (type 1) (result i32)
+    i64.const 1000000000008
+    call 1
     f32.const 0x0p+0 (;=0;)
     i32.const 9
     return
     i64.eqz
   )
   (func (;31;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     f32.const 0x0p+0 (;=0;)
     f64.const 0x1p+0 (;=1;)
     unreachable
     i64.eq
   )
   (func (;32;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       f64.const 0x1p+0 (;=1;)
@@ -270,6 +332,8 @@
     end
   )
   (func (;33;) (type 1) (result i32)
+    i64.const 1000000000024
+    call 1
     block (result i32) ;; label = @1
       i64.const 0
       i64.const 1
@@ -281,6 +345,8 @@
     end
   )
   (func (;34;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       f64.const 0x1p+0 (;=1;)
@@ -291,6 +357,8 @@
     end
   )
   (func (;35;) (type 1) (result i32)
+    i64.const 1000000000016
+    call 1
     f32.const 0x0p+0 (;=0;)
     f64.const 0x1p+0 (;=1;)
     i32.const 9
@@ -298,6 +366,8 @@
     i64.eq
   )
   (func (;36;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     f32.const 0x0p+0 (;=0;)
     f64.const 0x1p+0 (;=1;)
     i64.const 0
@@ -305,6 +375,8 @@
     select
   )
   (func (;37;) (type 1) (result i32)
+    i64.const 1000000000024
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       f64.const 0x1p+0 (;=1;)
@@ -315,6 +387,8 @@
     end
   )
   (func (;38;) (type 1) (result i32)
+    i64.const 1000000000020
+    call 1
     block (result i32) ;; label = @1
       i32.const 0
       i32.const 1
@@ -327,6 +401,8 @@
     end
   )
   (func (;39;) (type 1) (result i32)
+    i64.const 1000000000028
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       f64.const 0x1p+0 (;=1;)
@@ -338,6 +414,8 @@
     end
   )
   (func (;40;) (type 1) (result i32)
+    i64.const 1000000000024
+    call 1
     f32.const 0x0p+0 (;=0;)
     f64.const 0x1p+0 (;=1;)
     i64.const 1
@@ -346,12 +424,16 @@
     select
   )
   (func (;41;) (type 1) (result i32)
+    i64.const 1000000000004
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       unreachable
     end
   )
   (func (;42;) (type 1) (result i32)
+    i64.const 1000000000008
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       i32.const 9
@@ -359,6 +441,8 @@
     end
   )
   (func (;43;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block (result i32) ;; label = @1
       i32.const 0
       i32.const 9
@@ -368,6 +452,8 @@
     end
   )
   (func (;44;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       i32.const 9
@@ -376,6 +462,8 @@
     end
   )
   (func (;45;) (type 1) (result i32)
+    i64.const 1000000000008
+    call 1
     block (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       i32.const 9
@@ -383,12 +471,16 @@
     end
   )
   (func (;46;) (type 1) (result i32)
+    i64.const 1000000000004
+    call 1
     loop (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       unreachable
     end
   )
   (func (;47;) (type 1) (result i32)
+    i64.const 1000000000008
+    call 1
     block (result i32) ;; label = @1
       loop (result i32) ;; label = @2
         f32.const 0x0p+0 (;=0;)
@@ -398,6 +490,8 @@
     end
   )
   (func (;48;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block (result i32) ;; label = @1
       loop (result i32) ;; label = @2
         i32.const 0
@@ -409,6 +503,8 @@
     end
   )
   (func (;49;) (type 1) (result i32)
+    i64.const 1000000000012
+    call 1
     block (result i32) ;; label = @1
       loop (result i32) ;; label = @2
         f32.const 0x0p+0 (;=0;)
@@ -419,6 +515,8 @@
     end
   )
   (func (;50;) (type 1) (result i32)
+    i64.const 1000000000008
+    call 1
     loop (result i32) ;; label = @1
       f32.const 0x0p+0 (;=0;)
       i32.const 9

@@ -6,44 +6,63 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (func $f (;2;) (type $ii-i) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     i32.add
   )
   (func $g (;3;) (type $ii-i) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     i32.sub
   )
   (func $h (;4;) (type $ii-i) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     i32.mul
   )
   (func $i (;5;) (type $ii-i) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     i32.div_u
   )
   (func $j (;6;) (type $ii-i) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     i32.rem_u
   )
-  (func $z (;7;) (type 1))
+  (func $z (;7;) (type 1)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+  )
   (func (;8;) (type 2) (param i32 i32 i32) (result i32)
+    i64.const 1000002000012
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     local.get 2
     call_indirect (type $ii-i)
   )
   (func (;9;) (type 2) (param i32 i32 i32) (result i32)
+    i64.const 1000002000012
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     local.get 2
     call_indirect $t2 (type $ii-i)
   )
   (func (;10;) (type 2) (param i32 i32 i32) (result i32)
+    i64.const 1000002000012
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     local.get 2

@@ -3,7 +3,10 @@
   (type (;1;) (func (param i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
-  (func $f (;2;) (type 0))
+  (func $f (;2;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+  )
   (table (;0;) 1 funcref)
   (elem (;0;) (i32.const 0) func)
 )

@@ -5,12 +5,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param i32) (result i32)
+    i64.const 1000000000036
+    call 1
     ref.null func
     local.get 0
     table.grow $t
   )
   (func (;3;) (type 1) (param i32 i32) (result funcref)
     (local funcref)
+    i64.const 1000002000032
+    call 1
     ref.func 3
     local.set 2
     block ;; label = @1

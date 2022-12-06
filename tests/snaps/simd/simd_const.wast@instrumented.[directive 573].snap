@@ -6,12 +6,16 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (func (;2;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     block (result v128) ;; label = @1
       v128.const i32x4 0x03020100 0x07060504 0x0b0a0908 0x0f0e0d0c
       br 0 (;@1;)
     end
   )
   (func (;3;) (type 1) (result v128)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     block (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
       i32.const 1
@@ -19,10 +23,14 @@
     end
   )
   (func (;4;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     return
   )
   (func (;5;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 1
     if (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
@@ -31,6 +39,8 @@
     end
   )
   (func (;6;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 0
     if (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
@@ -39,35 +49,49 @@
     end
   )
   (func $f (;7;) (type $sig) (param v128 v128 v128) (result v128)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
   )
   (func (;8;) (type 1) (result v128)
+    i64.const 1000000000048
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     call $f
   )
   (func (;9;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     block (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     end
   )
   (func (;10;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     loop (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     end
   )
   (func (;11;) (type 2)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     drop
   )
   (func (;12;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     block (result v128) ;; label = @1
       v128.const i32x4 0x07060504 0x03020100 0x0f0e0d0c 0x0b0a0908
       br 0 (;@1;)
     end
   )
   (func (;13;) (type 1) (result v128)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     block (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
       i32.const 1
@@ -75,10 +99,14 @@
     end
   )
   (func (;14;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     return
   )
   (func (;15;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 1
     if (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
@@ -87,6 +115,8 @@
     end
   )
   (func (;16;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 0
     if (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
@@ -95,15 +125,21 @@
     end
   )
   (func $f2 (;17;) (type $sig) (param v128 v128 v128) (result v128)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
   )
   (func (;18;) (type 1) (result v128)
+    i64.const 1000000000048
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     call $f2
   )
   (func (;19;) (type 1) (result v128)
+    i64.const 1000000000052
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
@@ -111,6 +147,8 @@
     call_indirect (type $sig)
   )
   (func (;20;) (type 1) (result v128)
+    i64.const 1000000000052
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
@@ -118,16 +156,22 @@
     call_indirect (type $sig)
   )
   (func (;21;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     block (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     end
   )
   (func (;22;) (type 1) (result v128)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     loop (result v128) ;; label = @1
       v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     end
   )
   (func (;23;) (type 2)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     drop
   )

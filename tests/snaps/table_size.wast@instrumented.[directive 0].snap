@@ -5,36 +5,52 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     table.size $t0
   )
   (func (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     table.size $t1
   )
   (func (;4;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     table.size $t2
   )
   (func (;5;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     table.size $t3
   )
   (func (;6;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
     ref.null extern
     local.get $sz
     table.grow $t0
     drop
   )
   (func (;7;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
     ref.null extern
     local.get $sz
     table.grow $t1
     drop
   )
   (func (;8;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
     ref.null extern
     local.get $sz
     table.grow $t2
     drop
   )
   (func (;9;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
     ref.null extern
     local.get $sz
     table.grow $t3

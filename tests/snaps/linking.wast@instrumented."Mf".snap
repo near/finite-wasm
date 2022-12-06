@@ -4,9 +4,13 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
   (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     call $g
   )
   (func $g (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 2
   )
   (export "call" (func 2))

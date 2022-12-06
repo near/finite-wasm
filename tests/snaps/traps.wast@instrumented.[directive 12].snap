@@ -5,41 +5,57 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     i32.trunc_f32_s
     drop
   )
   (func (;3;) (type 0) (param $x f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     i32.trunc_f32_u
     drop
   )
   (func (;4;) (type 1) (param $x f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i32.trunc_f64_s
     drop
   )
   (func (;5;) (type 1) (param $x f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i32.trunc_f64_u
     drop
   )
   (func (;6;) (type 0) (param $x f32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f32_s
     drop
   )
   (func (;7;) (type 0) (param $x f32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f32_u
     drop
   )
   (func (;8;) (type 1) (param $x f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f64_s
     drop
   )
   (func (;9;) (type 1) (param $x f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f64_u
     drop
