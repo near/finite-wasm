@@ -12,8 +12,6 @@
     i64.const 1
     call 0
     unreachable
-    i64.const 4
-    call 0
     i32.const 0
     local.get $cond
     select
@@ -25,8 +23,6 @@
     call 0
     i32.const 0
     unreachable
-    i64.const 3
-    call 0
     local.get $cond
     select
   )
@@ -36,8 +32,6 @@
     i64.const 1
     call 0
     unreachable
-    i64.const 19
-    call 0
     select
     unreachable
     i32.const 0
@@ -63,8 +57,6 @@
     i64.const 1
     call 0
     unreachable
-    i64.const 3
-    call 0
     select
     i32.add
   )
@@ -74,8 +66,6 @@
     i64.const 1
     call 0
     unreachable
-    i64.const 5
-    call 0
     i64.const 0
     i32.const 0
     select
@@ -87,8 +77,6 @@
     i64.const 1
     call 0
     unreachable
-    i64.const 4
-    call 0
     select
     i32.eqz
     drop
@@ -99,8 +87,6 @@
     i64.const 1
     call 0
     unreachable
-    i64.const 4
-    call 0
     select
     ref.is_null
     drop

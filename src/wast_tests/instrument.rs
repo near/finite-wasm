@@ -1,4 +1,4 @@
-use finite_wasm::Module;
+use finite_wasm::{Module, gas::InstructionKind};
 use wasm_encoder as we;
 use wasmparser as wp;
 use we::{ConstExpr, Section};
@@ -169,19 +169,22 @@ impl<'a> crate::test::TestContext {
                     new_function.instruction(&we::Instruction::Call(stack_fn));
                     let gas_offsets = &results.gas_offsets[code_idx];
                     let gas_costs = &results.gas_costs[code_idx];
+                    let gas_kinds = &results.gas_kinds[code_idx];
 
                     let mut instrumentation_points =
-                        gas_offsets.iter().zip(gas_costs.iter()).peekable();
+                        gas_offsets.iter().zip(gas_costs.iter()).zip(gas_kinds.iter()).peekable();
 
                     let mut operators = reader.get_operators_reader().expect("TODO");
                     while !operators.eof() {
 
                         let (op, offset) = operators.read_with_offset().expect("TODO");
                         let end_offset = operators.original_position();
-                        if instrumentation_points.peek().map(|(o, _)| **o) == Some(offset) {
-                            let (_, g) = instrumentation_points.next().unwrap();
-                            new_function.instruction(&we::Instruction::I64Const(*g as i64));
-                            new_function.instruction(&we::Instruction::Call(gas_fn));
+                        if instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
+                            let ((_, g), k) = instrumentation_points.next().unwrap();
+                            if !matches!(k, InstructionKind::Unreachable) {
+                                new_function.instruction(&we::Instruction::I64Const(*g as i64));
+                                new_function.instruction(&we::Instruction::Call(gas_fn));
+                            }
                         }
                         match op {
                             wp::Operator::RefFunc { function_index } => new_function

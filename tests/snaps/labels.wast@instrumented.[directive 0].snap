@@ -12,8 +12,6 @@
     block $exit (result i32) ;; label = @1
       i32.const 1
       br 0 (;@1;)
-      i64.const 1
-      call 0
       i32.const 0
       i64.const 1
       call 0
@@ -221,8 +219,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -239,8 +235,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -262,8 +256,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -290,8 +282,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -313,8 +303,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -343,8 +331,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -361,8 +347,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -384,8 +368,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -412,8 +394,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -435,8 +415,6 @@
         i64.const 1
         call 0
         br 0 (;@2;)
-        i64.const 2
-        call 0
         i32.const 666
         local.set $i
         i64.const 1
@@ -510,8 +488,6 @@
         block $0 ;; label = @3
           local.get 0
           br_table 0 (;@3;) 1 (;@2;)
-          i64.const 1
-          call 0
           br 2 (;@1;)
           i64.const 1
           call 0
@@ -732,8 +708,6 @@
     block $l1 (result i32) ;; label = @1
       i32.const 1
       br 0 (;@1;)
-      i64.const 2
-      call 0
       i32.const 2
       i32.xor
       i64.const 1

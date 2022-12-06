@@ -920,8 +920,6 @@
     i64.const 1
     call $finite_wasm_gas
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;28;) (type $block-sig-3) (param i32)
     i64.const 1000000000004
@@ -1295,8 +1293,6 @@
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       unreachable
       i64.const 1
       call $finite_wasm_gas
@@ -1308,8 +1304,6 @@
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       unreachable
       i64.const 1
       call $finite_wasm_gas
@@ -1333,8 +1327,6 @@
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       unreachable
       i64.const 1
       call $finite_wasm_gas
@@ -1401,8 +1393,6 @@
       call $finite_wasm_gas
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       unreachable
       i64.const 1
       call $finite_wasm_gas
@@ -1415,8 +1405,6 @@
       call $finite_wasm_gas
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       unreachable
       i64.const 1
       call $finite_wasm_gas
@@ -1441,8 +1429,6 @@
       call $finite_wasm_gas
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       unreachable
       i64.const 1
       call $finite_wasm_gas
@@ -1462,8 +1448,6 @@
       call $finite_wasm_gas
       i32.const 18
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       i32.const 19
       i64.const 1
       call $finite_wasm_gas
@@ -1472,8 +1456,6 @@
       call $finite_wasm_gas
       i32.const 21
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       i32.const 20
       i64.const 1
       call $finite_wasm_gas
@@ -1494,8 +1476,6 @@
       i32.const -18
       i64.const 18
       br 0 (;@1;)
-      i64.const 3
-      call $finite_wasm_gas
       i32.const 19
       i32.const -19
       i64.const 19
@@ -1508,8 +1488,6 @@
       i32.const 18
       i64.const -18
       br 0 (;@1;)
-      i64.const 3
-      call $finite_wasm_gas
       i32.const -19
       i32.const 19
       i64.const -19
@@ -1675,8 +1653,6 @@
       i32.mul
       local.set 1
       br 0 (;@1;)
-      i64.const 4
-      call $finite_wasm_gas
       local.get 1
       i32.const 100
       i32.mul
@@ -1699,8 +1675,6 @@
       i32.mul
       local.set 1
       br 0 (;@1;)
-      i64.const 4
-      call $finite_wasm_gas
       local.get 1
       i32.const 1000
       i32.mul
@@ -1730,8 +1704,6 @@
     local.get $i
     i64.lt_u
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $add64_u_saturated (;52;) (type 14) (param i64 i64) (result i64)
     i64.const 1000001000020

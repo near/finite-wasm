@@ -215,8 +215,6 @@
         block ;; label = @3
           local.get 0
           br_table 0 (;@3;) 1 (;@2;) 2 (;@1;)
-          i64.const 2
-          call 0
           i32.const 0
           return
           i64.const 1
@@ -247,8 +245,6 @@
     call 0
     local.get 0
     return
-    i64.const 1
-    call 0
   )
   (func (;19;) (type 4) (param i32) (result i32)
     i64.const 1000000000004

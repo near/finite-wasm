@@ -408,8 +408,6 @@
       local.tee 0
       i32.const 1
       br_table 0 (;@1;) 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       i32.const 7
       i64.const 1
       call $finite_wasm_gas
@@ -427,8 +425,6 @@
       i32.const 11
       local.tee 0
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       i32.const 7
       i64.const 1
       call $finite_wasm_gas
@@ -444,8 +440,6 @@
     i32.const 7
     local.tee 0
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;28;) (type 5) (param i32) (result i32)
     i64.const 1000000000004

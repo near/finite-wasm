@@ -475,8 +475,6 @@
     local.get 0
     select
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;36;) (type 9) (param i32)
     i64.const 1000000000012
