@@ -9,6 +9,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.min_s
   )
@@ -16,6 +18,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.min_u
   )
@@ -23,6 +27,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.max_s
   )
@@ -30,6 +36,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.max_u
   )
@@ -37,6 +45,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.avgr_u
   )
@@ -44,12 +54,16 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     i16x8.abs
   )
   (func (;8;) (type 2) (result v128)
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
+    i64.const 4
+    call 0
     v128.const i32x4 0xffffffff 0x40004000 0x7fff7fff 0x80008000
     i16x8.min_s
   )
@@ -57,6 +71,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
+    i64.const 4
+    call 0
     v128.const i32x4 0x00030003 0x00020002 0x00010001 0x00000000
     i16x8.min_s
   )
@@ -64,6 +80,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
+    i64.const 4
+    call 0
     v128.const i32x4 0xffffffff 0x40004000 0x7fff7fff 0x80008000
     i16x8.min_u
   )
@@ -71,6 +89,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
+    i64.const 4
+    call 0
     v128.const i32x4 0x00030003 0x00020002 0x00010001 0x00000000
     i16x8.min_u
   )
@@ -78,6 +98,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
+    i64.const 4
+    call 0
     v128.const i32x4 0xffffffff 0x40004000 0x7fff7fff 0x80008000
     i16x8.max_s
   )
@@ -85,6 +107,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
+    i64.const 4
+    call 0
     v128.const i32x4 0x00030003 0x00020002 0x00010001 0x00000000
     i16x8.max_s
   )
@@ -92,6 +116,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
+    i64.const 4
+    call 0
     v128.const i32x4 0xffffffff 0x40004000 0x7fff7fff 0x80008000
     i16x8.max_u
   )
@@ -99,6 +125,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
+    i64.const 4
+    call 0
     v128.const i32x4 0x00030003 0x00020002 0x00010001 0x00000000
     i16x8.max_u
   )
@@ -106,6 +134,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
+    i64.const 4
+    call 0
     v128.const i32x4 0xffffffff 0x40004000 0x7fff7fff 0x80008000
     i16x8.avgr_u
   )
@@ -113,6 +143,8 @@
     i64.const 1000000000032
     call 1
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
+    i64.const 4
+    call 0
     v128.const i32x4 0x00030003 0x00020002 0x00010001 0x00000000
     i16x8.avgr_u
   )
@@ -120,12 +152,16 @@
     i64.const 1000000000016
     call 1
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
+    i64.const 3
+    call 0
     i16x8.abs
   )
   (func (;19;) (type 1) (param v128) (result v128)
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
     i16x8.min_s
   )
@@ -133,6 +169,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
     i16x8.min_s
   )
@@ -140,6 +178,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
     i16x8.min_u
   )
@@ -147,6 +187,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
     i16x8.min_u
   )
@@ -154,6 +196,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
     i16x8.max_s
   )
@@ -161,6 +205,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
     i16x8.max_s
   )
@@ -168,6 +214,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
     i16x8.max_u
   )
@@ -175,6 +223,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
     i16x8.max_u
   )
@@ -182,6 +232,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x80008000 0x7fff7fff 0x40004000 0xffffffff
     i16x8.avgr_u
   )
@@ -189,6 +241,8 @@
     i64.const 1000000000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     v128.const i32x4 0x00000000 0x00010001 0x00020002 0x00030003
     i16x8.avgr_u
   )

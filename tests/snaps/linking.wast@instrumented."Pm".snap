@@ -8,7 +8,14 @@
     i64.const 1000000000004
     call 2
     local.get $a
+    i64.const 1
+    call 1
     memory.grow
+    i64.const 1
+    call 1
+    end
+    i64.const 1
+    call 1
   )
   (export "grow" (func 2))
 )

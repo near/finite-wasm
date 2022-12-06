@@ -7,7 +7,14 @@
     i64.const 1000000000004
     call 1
     local.get 0
+    i64.const 1
+    call 0
     memory.grow
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 0 10)
   (export "grow" (func 2))

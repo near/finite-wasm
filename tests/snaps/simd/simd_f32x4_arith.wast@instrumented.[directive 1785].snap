@@ -7,18 +7,24 @@
     i64.const 1000000000016
     call 1
     v128.const i32x4 0x7fa00000 0xffa00000 0x41800000 0x41c80000
+    i64.const 3
+    call 0
     f32x4.sqrt
   )
   (func (;3;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
     v128.const i32x4 0xbf800000 0x7fc00000 0x40800000 0x41100000
+    i64.const 3
+    call 0
     f32x4.sqrt
   )
   (func (;4;) (type 0) (result v128)
     i64.const 1000000000016
     call 1
     v128.const i32x4 0xff800000 0x7fa00000 0x42100000 0x42440000
+    i64.const 3
+    call 0
     f32x4.sqrt
   )
   (export "f32x4_sqrt_arith" (func 2))

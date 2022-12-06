@@ -10,9 +10,20 @@
     i64.const 0
     call 3
     local.get 0
+    i64.const 1
+    call 2
+    call 2
+    i64.const 1
     call 2
     local.get 1
+    i64.const 1
+    call 2
     call 3
+    i64.const 1
+    call 2
+    end
+    i64.const 1
+    call 2
   )
   (export "print32" (func 4))
 )

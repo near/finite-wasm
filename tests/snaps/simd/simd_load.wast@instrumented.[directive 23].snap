@@ -7,8 +7,14 @@
     i64.const 1000000000016
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32x4.trunc_sat_f32x4_s
+    i64.const 2
+    call 0
   )
   (memory (;0;) 1)
   (export "as-i32x4.trunc_sat_f32x4_s-operand" (func 2))

@@ -7,8 +7,15 @@
     i64.const 1000000000036
     call $finite_wasm_stack
     ref.func $f
+    i64.const 2
+    call $finite_wasm_gas
     i32.const -16
     table.grow $t
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (table $t (;0;) 16 funcref)
   (export "grow" (func $f))

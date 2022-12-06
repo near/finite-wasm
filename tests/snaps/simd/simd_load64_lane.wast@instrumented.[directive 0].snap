@@ -8,85 +8,169 @@
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;4;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;5;) (type 1) (param $x v128) (result v128)
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane offset=1 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;6;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane align=1 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;7;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane align=2 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;8;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane align=4 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;9;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;10;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane align=1 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;11;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane align=2 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;12;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane align=4 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;13;) (type 0) (param $address i32) (param $x v128) (result v128)
     i64.const 1000001000020
     call 1
     local.get $address
+    i64.const 2
+    call 0
     local.get $x
     v128.load64_lane 1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1)
   (export "v128.load64_lane_0" (func 2))

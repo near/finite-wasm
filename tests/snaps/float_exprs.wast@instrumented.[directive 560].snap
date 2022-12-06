@@ -7,6 +7,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 7
+    call 0
     i32.const 268435455
     i32.and
     f32.convert_i32_s

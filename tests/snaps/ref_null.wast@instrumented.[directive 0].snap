@@ -8,11 +8,15 @@
     i64.const 1000000000032
     call 1
     ref.null extern
+    i64.const 2
+    call 0
   )
   (func (;3;) (type 1) (result funcref)
     i64.const 1000000000032
     call 1
     ref.null func
+    i64.const 2
+    call 0
   )
   (global (;0;) externref ref.null extern)
   (global (;1;) funcref ref.null func)

@@ -7,6 +7,8 @@
     i64.const 1000000000016
     call 1
     v128.const i32x4 0xffffffff 0x7fffffff 0xffffffff 0x7fffffff
+    i64.const 3
+    call 0
     drop
   )
 )

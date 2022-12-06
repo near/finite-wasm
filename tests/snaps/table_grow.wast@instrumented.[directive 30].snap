@@ -7,8 +7,15 @@
     i64.const 1000000000036
     call 1
     ref.null extern
+    i64.const 2
+    call 0
     local.get 0
     table.grow $t
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (table $t (;0;) 0 10 externref)
   (export "grow" (func 2))

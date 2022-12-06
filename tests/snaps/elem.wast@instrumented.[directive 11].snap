@@ -6,6 +6,9 @@
   (func $f (;2;) (type 0)
     i64.const 1000000000000
     call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (table (;0;) 10 funcref)
   (elem (;0;) (i32.const 9) func)

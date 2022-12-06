@@ -9,51 +9,106 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.get 0
     i8x16.splat
     v128.store
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 0) (param i32) (result v128)
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.get 0
     i16x8.splat
     v128.store
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;4;) (type 0) (param i32) (result v128)
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.get 0
     i32x4.splat
     v128.store
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;5;) (type 1) (param i64) (result v128)
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.get 0
     i64x2.splat
     v128.store
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;6;) (type 2) (param f64) (result v128)
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 3
+    call 0
     local.get 0
     f64x2.splat
     v128.store
+    i64.const 1
+    call 0
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1)
   (export "as-v128_store-operand-1" (func 2))

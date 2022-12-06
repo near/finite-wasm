@@ -9,72 +9,164 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 2
+    call 0
     v128.any_true
     if (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     else
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 2
+    call 0
     v128.any_true
     if (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     else
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;4;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 2
+    call 0
     v128.any_true
     if (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     else
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;5;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 2
+    call 0
     i8x16.all_true
     if (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     else
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;6;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 2
+    call 0
     i16x8.all_true
     if (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     else
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;7;) (type 0) (param v128) (result i32)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 2
+    call 0
     i32x4.all_true
     if (result i32) ;; label = @1
+      i64.const 1
+      call 0
       i32.const 1
+      i64.const 1
+      call 0
     else
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;8;) (type 0) (param v128) (result i32)
     i64.const 1000000000024
     call 1
     i32.const 1
+    i64.const 6
+    call 0
     i32.const 0
     local.get 0
     v128.any_true
@@ -84,6 +176,8 @@
     i64.const 1000000000024
     call 1
     i32.const 1
+    i64.const 6
+    call 0
     i32.const 0
     local.get 0
     v128.any_true
@@ -93,6 +187,8 @@
     i64.const 1000000000024
     call 1
     i32.const 1
+    i64.const 6
+    call 0
     i32.const 0
     local.get 0
     v128.any_true
@@ -102,6 +198,8 @@
     i64.const 1000000000024
     call 1
     i32.const 1
+    i64.const 6
+    call 0
     i32.const 0
     local.get 0
     i8x16.all_true
@@ -111,6 +209,8 @@
     i64.const 1000000000024
     call 1
     i32.const 1
+    i64.const 6
+    call 0
     i32.const 0
     local.get 0
     i16x8.all_true
@@ -120,6 +220,8 @@
     i64.const 1000000000024
     call 1
     i32.const 1
+    i64.const 6
+    call 0
     i32.const 0
     local.get 0
     i32x4.all_true
@@ -130,6 +232,8 @@
     i64.const 1000001000016
     call 1
     i32.const 2
+    i64.const 7
+    call 0
     local.set $1
     block ;; label = @1
       i32.const 1
@@ -137,16 +241,26 @@
       local.get $0
       v128.any_true
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 2
+      call 0
       local.set $1
     end
+    i64.const 1
+    call 0
     local.get $1
+    i64.const 2
+    call 0
   )
   (func (;15;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     i64.const 1000001000016
     call 1
     i32.const 2
+    i64.const 7
+    call 0
     local.set $1
     block ;; label = @1
       i32.const 1
@@ -154,16 +268,26 @@
       local.get $0
       v128.any_true
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 2
+      call 0
       local.set $1
     end
+    i64.const 1
+    call 0
     local.get $1
+    i64.const 2
+    call 0
   )
   (func (;16;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     i64.const 1000001000016
     call 1
     i32.const 2
+    i64.const 7
+    call 0
     local.set $1
     block ;; label = @1
       i32.const 1
@@ -171,16 +295,26 @@
       local.get $0
       v128.any_true
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 2
+      call 0
       local.set $1
     end
+    i64.const 1
+    call 0
     local.get $1
+    i64.const 2
+    call 0
   )
   (func (;17;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     i64.const 1000001000016
     call 1
     i32.const 2
+    i64.const 7
+    call 0
     local.set $1
     block ;; label = @1
       i32.const 1
@@ -188,16 +322,26 @@
       local.get $0
       i8x16.all_true
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 2
+      call 0
       local.set $1
     end
+    i64.const 1
+    call 0
     local.get $1
+    i64.const 2
+    call 0
   )
   (func (;18;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     i64.const 1000001000016
     call 1
     i32.const 2
+    i64.const 7
+    call 0
     local.set $1
     block ;; label = @1
       i32.const 1
@@ -205,16 +349,26 @@
       local.get $0
       i16x8.all_true
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 2
+      call 0
       local.set $1
     end
+    i64.const 1
+    call 0
     local.get $1
+    i64.const 2
+    call 0
   )
   (func (;19;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     i64.const 1000001000016
     call 1
     i32.const 2
+    i64.const 7
+    call 0
     local.set $1
     block ;; label = @1
       i32.const 1
@@ -222,15 +376,25 @@
       local.get $0
       i32x4.all_true
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       i32.const 0
+      i64.const 2
+      call 0
       local.set $1
     end
+    i64.const 1
+    call 0
     local.get $1
+    i64.const 2
+    call 0
   )
   (func (;20;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -240,6 +404,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -249,6 +415,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -258,6 +426,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -267,6 +437,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -276,6 +448,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -285,6 +459,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -294,6 +470,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -303,6 +481,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     v128.any_true
     local.get $1
     v128.any_true
@@ -312,6 +492,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i8x16.all_true
     local.get $1
     i8x16.all_true
@@ -321,6 +503,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i16x8.all_true
     local.get $1
     i16x8.all_true
@@ -330,6 +514,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i32x4.all_true
     local.get $1
     i32x4.all_true
@@ -339,6 +525,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i8x16.all_true
     local.get $1
     i8x16.all_true
@@ -348,6 +536,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i16x8.all_true
     local.get $1
     i16x8.all_true
@@ -357,6 +547,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i32x4.all_true
     local.get $1
     i32x4.all_true
@@ -366,6 +558,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i8x16.all_true
     local.get $1
     i8x16.all_true
@@ -375,6 +569,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i16x8.all_true
     local.get $1
     i16x8.all_true
@@ -384,6 +580,8 @@
     i64.const 1000001000020
     call 1
     local.get $0
+    i64.const 6
+    call 0
     i32x4.all_true
     local.get $1
     i32x4.all_true
@@ -393,6 +591,8 @@
     i64.const 1000000000016
     call 1
     local.get $0
+    i64.const 4
+    call 0
     v128.not
     v128.any_true
   )
@@ -400,6 +600,8 @@
     i64.const 1000000000016
     call 1
     local.get $0
+    i64.const 4
+    call 0
     v128.not
     v128.any_true
   )
@@ -407,6 +609,8 @@
     i64.const 1000000000016
     call 1
     local.get $0
+    i64.const 4
+    call 0
     v128.not
     v128.any_true
   )
@@ -414,6 +618,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.and
     v128.any_true
@@ -422,6 +628,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.and
     v128.any_true
@@ -430,6 +638,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.and
     v128.any_true
@@ -438,6 +648,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.or
     v128.any_true
@@ -446,6 +658,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.or
     v128.any_true
@@ -454,6 +668,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.or
     v128.any_true
@@ -462,6 +678,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.xor
     v128.any_true
@@ -470,6 +688,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.xor
     v128.any_true
@@ -478,6 +698,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.xor
     v128.any_true
@@ -486,6 +708,8 @@
     i64.const 1000002000048
     call 1
     local.get $0
+    i64.const 6
+    call 0
     local.get $1
     local.get $2
     v128.bitselect
@@ -495,6 +719,8 @@
     i64.const 1000002000048
     call 1
     local.get $0
+    i64.const 6
+    call 0
     local.get $1
     local.get $2
     v128.bitselect
@@ -504,6 +730,8 @@
     i64.const 1000002000048
     call 1
     local.get $0
+    i64.const 6
+    call 0
     local.get $1
     local.get $2
     v128.bitselect
@@ -513,6 +741,8 @@
     i64.const 1000000000016
     call 1
     local.get $0
+    i64.const 4
+    call 0
     v128.not
     i8x16.all_true
   )
@@ -520,6 +750,8 @@
     i64.const 1000000000016
     call 1
     local.get $0
+    i64.const 4
+    call 0
     v128.not
     i16x8.all_true
   )
@@ -527,6 +759,8 @@
     i64.const 1000000000016
     call 1
     local.get $0
+    i64.const 4
+    call 0
     v128.not
     i32x4.all_true
   )
@@ -534,6 +768,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.and
     i8x16.all_true
@@ -542,6 +778,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.and
     i16x8.all_true
@@ -550,6 +788,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.and
     i32x4.all_true
@@ -558,6 +798,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.or
     i8x16.all_true
@@ -566,6 +808,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.or
     i16x8.all_true
@@ -574,6 +818,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.or
     i32x4.all_true
@@ -582,6 +828,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.xor
     i8x16.all_true
@@ -590,6 +838,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.xor
     i16x8.all_true
@@ -598,6 +848,8 @@
     i64.const 1000001000032
     call 1
     local.get $0
+    i64.const 5
+    call 0
     local.get $1
     v128.xor
     i32x4.all_true
@@ -606,6 +858,8 @@
     i64.const 1000002000048
     call 1
     local.get $0
+    i64.const 6
+    call 0
     local.get $1
     local.get $2
     v128.bitselect
@@ -615,6 +869,8 @@
     i64.const 1000002000048
     call 1
     local.get $0
+    i64.const 6
+    call 0
     local.get $1
     local.get $2
     v128.bitselect
@@ -624,6 +880,8 @@
     i64.const 1000002000048
     call 1
     local.get $0
+    i64.const 6
+    call 0
     local.get $1
     local.get $2
     v128.bitselect

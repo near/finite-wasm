@@ -8,29 +8,50 @@
     i64.const 1000000000036
     call 1
     ref.null func
+    i64.const 2
+    call 0
     local.get 0
     table.grow $t
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 1) (param i32 i32) (result funcref)
     (local funcref)
     i64.const 1000002000032
     call 1
     ref.func 3
+    i64.const 3
+    call 0
     local.set 2
     block ;; label = @1
       loop ;; label = @2
+        i64.const 1
+        call 0
         local.get 0
+        i64.const 6
+        call 0
         table.get $t
         local.set 2
         local.get 2
         ref.is_null
         i32.eqz
         br_if 1 (;@1;)
+        i64.const 1
+        call 0
         local.get 0
+        i64.const 3
+        call 0
         local.get 1
         i32.ge_u
         br_if 1 (;@1;)
+        i64.const 1
+        call 0
         local.get 0
+        i64.const 7
+        call 0
         i32.const 1
         i32.add
         local.set 0
@@ -38,9 +59,17 @@
         local.get 1
         i32.le_u
         br_if 0 (;@2;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
     local.get 2
+    i64.const 2
+    call 0
   )
   (table $t (;0;) 10 funcref)
   (export "grow" (func 2))

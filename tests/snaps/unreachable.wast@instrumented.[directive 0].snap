@@ -12,236 +12,487 @@
   (func $dummy (;2;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func $dummy3 (;3;) (type $sig) (param i32 i32 i32)
     i64.const 1000002000000
     call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;4;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;5;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;6;) (type 3) (result f64)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;7;) (type 3) (result f64)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;8;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const -1
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;9;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     call $dummy
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const -1
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;10;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     call $dummy
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;11;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     call $dummy
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;12;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 2
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;13;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       call $dummy
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 2
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;14;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     block ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       nop
       call $dummy
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;15;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       nop
       call $dummy
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;16;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       call $dummy
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 1
+      i64.const 1
+      call $finite_wasm_gas
       br 0 (;@1;)
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;17;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     loop (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 2
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;18;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     loop (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       call $dummy
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 2
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;19;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     loop ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       nop
       call $dummy
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;20;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       loop (result i32) ;; label = @2
         call $dummy
+        i64.const 1
+        call $finite_wasm_gas
         i32.const 1
+        i64.const 1
+        call $finite_wasm_gas
         br 1 (;@1;)
+        i64.const 1
+        call $finite_wasm_gas
         unreachable
+        i64.const 1
+        call $finite_wasm_gas
       end
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;21;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       br 0 (;@1;)
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;22;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     block ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       br_if 0 (;@1;)
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;23;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 1
+      i64.const 4
+      call $finite_wasm_gas
       br_if 0 (;@1;)
       drop
       i32.const 7
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;24;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       i32.const 6
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       br_if 0 (;@1;)
+      i64.const 3
+      call $finite_wasm_gas
       drop
       i32.const 7
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;25;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     block ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       br_table 0 (;@1;) 0 (;@1;) 0 (;@1;)
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;26;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       i32.const 1
+      i64.const 3
+      call $finite_wasm_gas
       br_table 0 (;@1;) 0 (;@1;) 0 (;@1;)
       i32.const 7
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;27;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       block (result i32) ;; label = @2
         unreachable
+        i64.const 1
+        call $finite_wasm_gas
         i32.const 1
+        i64.const 2
+        call $finite_wasm_gas
         br_table 0 (;@2;) 1 (;@1;)
       end
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;28;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       i32.const 6
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       br_table 0 (;@1;) 0 (;@1;)
+      i64.const 2
+      call $finite_wasm_gas
       i32.const 7
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;29;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     block (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
       br_table 0 (;@1;) 0 (;@1;)
+      i64.const 2
+      call $finite_wasm_gas
       i32.const 8
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;30;) (type 4) (result i64)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     return
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;31;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     if (result i32) ;; label = @1
+      i64.const 6
+      call $finite_wasm_gas
       i32.const 0
     else
       i32.const 1
@@ -251,36 +502,80 @@
     i64.const 1000001000004
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     if (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     else
+      i64.const 1
+      call $finite_wasm_gas
       local.get 1
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;33;) (type 5) (param i32 i32) (result i32)
     i64.const 1000001000004
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     if (result i32) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       local.get 1
+      i64.const 1
+      call $finite_wasm_gas
     else
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;34;) (type 5) (param i32 i32) (result i32)
     i64.const 1000001000004
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     if ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
       unreachable
+      i64.const 1
+      call $finite_wasm_gas
     end
+    i64.const 1
+    call $finite_wasm_gas
     local.get 1
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;35;) (type 5) (param i32 i32) (result i32)
     i64.const 1000001000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     local.get 0
+    i64.const 4
+    call $finite_wasm_gas
     local.get 1
     select
   )
@@ -288,23 +583,39 @@
     i64.const 1000001000004
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     local.get 1
+    i64.const 3
+    call $finite_wasm_gas
     select
   )
   (func (;37;) (type 2) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
     i32.const 0
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 1
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     select
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;38;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 2
+    i64.const 4
+    call $finite_wasm_gas
     i32.const 3
     call $dummy3
   )
@@ -312,23 +623,39 @@
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 1
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 3
+    i64.const 3
+    call $finite_wasm_gas
     call $dummy3
   )
   (func (;40;) (type 1)
     i64.const 1000000000008
     call $finite_wasm_stack
     i32.const 1
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 2
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     call $dummy3
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;41;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 1
+    i64.const 5
+    call $finite_wasm_gas
     i32.const 2
     i32.const 3
     call_indirect (type $sig)
@@ -337,8 +664,14 @@
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 0
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 2
+    i64.const 4
+    call $finite_wasm_gas
     i32.const 3
     call_indirect (type $sig)
   )
@@ -346,131 +679,219 @@
     i64.const 1000000000008
     call $finite_wasm_stack
     i32.const 0
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 1
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 3
+    i64.const 3
+    call $finite_wasm_gas
     call_indirect (type $sig)
   )
   (func (;44;) (type 1)
     i64.const 1000000000012
     call $finite_wasm_stack
     i32.const 0
+    i64.const 3
+    call $finite_wasm_gas
     i32.const 1
     i32.const 2
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     call_indirect (type $sig)
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;45;) (type 1)
     (local f32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     local.set 0
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;46;) (type 6) (result f32)
     (local f32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     local.tee 0
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;47;) (type 6) (result f32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     global.set $a
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;48;) (type 6) (result f32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     f32.load
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;49;) (type 4) (result i64)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i64.load8_s
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;50;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     f64.const 0x1.cp+2 (;=7;)
+    i64.const 3
+    call $finite_wasm_gas
     f64.store
   )
   (func (;51;) (type 1)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 2
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i64.store
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;52;) (type 1)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 7
+    i64.const 3
+    call $finite_wasm_gas
     i32.store8
   )
   (func (;53;) (type 1)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 2
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i64.store16
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;54;) (type 6) (result f32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     f32.neg
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;55;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.const 10
+    i64.const 3
+    call $finite_wasm_gas
     i32.add
   )
   (func (;56;) (type 4) (result i64)
     i64.const 1000000000008
     call $finite_wasm_stack
     i64.const 10
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i64.sub
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;57;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.eqz
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;58;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     f64.const 0x1.4p+3 (;=10;)
+    i64.const 3
+    call $finite_wasm_gas
     f64.le
   )
   (func (;59;) (type 2) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     f32.const 0x1.4p+3 (;=10;)
+    i64.const 1
+    call $finite_wasm_gas
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     f32.ne
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;60;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     i32.wrap_i64
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;61;) (type 2) (result i32)
     i64.const 1000000000000
     call $finite_wasm_stack
     unreachable
+    i64.const 1
+    call $finite_wasm_gas
     memory.grow
+    i64.const 2
+    call $finite_wasm_gas
   )
   (table (;0;) 1 1 funcref)
   (memory (;0;) 1)

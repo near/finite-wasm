@@ -9,6 +9,8 @@
     i64.const 0
     call $imported_print
     local.get $i
+    i64.const 4
+    call $finite_wasm_stack
     local.get $j
     i32.add
   )

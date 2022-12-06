@@ -8,6 +8,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.add
   )
@@ -15,6 +17,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.sub
   )
@@ -22,6 +26,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.mul
   )
@@ -29,6 +35,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.div
   )
@@ -36,12 +44,16 @@
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.sqrt
   )
   (func (;7;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.min
   )
@@ -49,6 +61,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 4
+    call 0
     local.get $y
     f32.max
   )
@@ -56,24 +70,32 @@
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.ceil
   )
   (func (;10;) (type 1) (param $x f32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.floor
   )
   (func (;11;) (type 1) (param $x f32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.trunc
   )
   (func (;12;) (type 1) (param $x f32) (result f32)
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 3
+    call 0
     f32.nearest
   )
   (export "add" (func 2))

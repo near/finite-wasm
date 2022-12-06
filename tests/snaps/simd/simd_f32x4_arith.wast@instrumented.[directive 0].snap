@@ -8,6 +8,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     f32x4.add
   )
@@ -15,6 +17,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     f32x4.sub
   )
@@ -22,6 +26,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     f32x4.mul
   )
@@ -29,6 +35,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     f32x4.div
   )
@@ -36,12 +44,16 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f32x4.neg
   )
   (func (;7;) (type 1) (param v128) (result v128)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f32x4.sqrt
   )
   (export "f32x4.add" (func 2))

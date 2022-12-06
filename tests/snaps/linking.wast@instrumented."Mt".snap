@@ -9,17 +9,28 @@
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const 4
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;3;) (type 0) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i32.const -4
+    i64.const 2
+    call $finite_wasm_gas
   )
   (func (;4;) (type 2) (param i32) (result i32)
     i64.const 1000000000008
     call $finite_wasm_stack
     local.get 0
+    i64.const 1
+    call $finite_wasm_gas
     call_indirect (type 0)
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (table (;0;) 10 funcref)
   (export "tab" (table 0))

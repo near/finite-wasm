@@ -8,39 +8,83 @@
     i64.const 1000002000008
     call 1
     loop $cont ;; label = @1
+      i64.const 1
+      call 0
       local.get $from
+      i64.const 3
+      call 0
       local.get $to
       i32.eq
       if ;; label = @2
+        i64.const 1
+        call 0
         i32.const -1
+        i64.const 1
+        call 0
         return
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
       local.get $from
+      i64.const 1
+      call 0
       i32.load8_u
+      i64.const 1
+      call 0
       local.get $expected
+      i64.const 2
+      call 0
       i32.eq
       if ;; label = @2
+        i64.const 1
+        call 0
         local.get $from
+        i64.const 4
+        call 0
         i32.const 1
         i32.add
         local.set $from
         br 1 (;@1;)
+        i64.const 1
+        call 0
       end
+      i64.const 1
+      call 0
     end
+    i64.const 2
+    call 0
     local.get $from
     return
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (func (;3;) (type 1)
     i64.const 1000000000012
     call 1
     i32.const 18
+    i64.const 3
+    call 0
     i32.const 85
     i32.const 10
     memory.fill
+    i64.const 1
+    call 0
     i32.const 21
+    i64.const 3
+    call 0
     i32.const 170
     i32.const 4
     memory.fill
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))

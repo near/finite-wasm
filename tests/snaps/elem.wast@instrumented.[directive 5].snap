@@ -7,6 +7,9 @@
   (func $f (;2;) (type 0)
     i64.const 1000000000000
     call $f
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (elem (;0;) (i32.const 9) func)
   (elem (;1;) (i32.const 3) func)

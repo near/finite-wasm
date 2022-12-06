@@ -8,6 +8,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 6
+    call 0
     i32.const 1
     i32.shr_s
     i32.const 1
@@ -17,6 +19,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 6
+    call 0
     i32.const 1
     i32.shr_u
     i32.const 1
@@ -26,6 +30,8 @@
     i64.const 1000000000016
     call 1
     local.get $x
+    i64.const 6
+    call 0
     i64.const 1
     i64.shr_s
     i64.const 1
@@ -35,6 +41,8 @@
     i64.const 1000000000016
     call 1
     local.get $x
+    i64.const 6
+    call 0
     i64.const 1
     i64.shr_u
     i64.const 1

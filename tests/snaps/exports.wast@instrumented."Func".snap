@@ -7,9 +7,16 @@
     i64.const 1000000000008
     call $finite_wasm_stack
     local.get $n
+    i64.const 3
+    call $finite_wasm_gas
     i32.const 1
     i32.add
     return
+    i64.const 1
+    call $finite_wasm_gas
+    end
+    i64.const 1
+    call $finite_wasm_gas
   )
   (export "e" (func $f))
 )

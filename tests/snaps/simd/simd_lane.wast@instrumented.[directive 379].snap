@@ -13,6 +13,8 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 4
+    call 0
     i8x16.extract_lane_s 0
     i8x16.splat
   )
@@ -20,6 +22,8 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 4
+    call 0
     i16x8.extract_lane_u 0
     i16x8.splat
   )
@@ -27,6 +31,8 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 4
+    call 0
     i32x4.extract_lane 0
     i32x4.splat
   )
@@ -34,6 +40,8 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 4
+    call 0
     f32x4.extract_lane 0
     f32x4.splat
   )
@@ -41,6 +49,8 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 4
+    call 0
     i64x2.extract_lane 0
     i64x2.splat
   )
@@ -48,6 +58,8 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 4
+    call 0
     f64x2.extract_lane 0
     f64x2.splat
   )
@@ -55,6 +67,8 @@
     i64.const 1000003000036
     call 1
     local.get 0
+    i64.const 8
+    call 0
     local.get 1
     i8x16.replace_lane 0
     local.get 2
@@ -66,6 +80,8 @@
     i64.const 1000003000036
     call 1
     local.get 0
+    i64.const 8
+    call 0
     local.get 1
     i16x8.replace_lane 0
     local.get 2
@@ -77,6 +93,8 @@
     i64.const 1000003000036
     call 1
     local.get 0
+    i64.const 8
+    call 0
     local.get 1
     i32x4.replace_lane 0
     local.get 2
@@ -88,6 +106,8 @@
     i64.const 1000003000040
     call 1
     local.get 0
+    i64.const 8
+    call 0
     local.get 1
     i64x2.replace_lane 0
     local.get 2
@@ -99,6 +119,8 @@
     i64.const 1000003000048
     call 1
     local.get 0
+    i64.const 8
+    call 0
     local.get 1
     i8x16.swizzle
     local.get 2
@@ -110,6 +132,8 @@
     i64.const 1000003000048
     call 1
     local.get 0
+    i64.const 8
+    call 0
     local.get 1
     i8x16.shuffle 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
     local.get 2
@@ -121,6 +145,8 @@
     i64.const 1000001000020
     call 1
     local.get 0
+    i64.const 5
+    call 0
     local.get 1
     i8x16.replace_lane 0
     v128.any_true
@@ -129,6 +155,8 @@
     i64.const 1000001000020
     call 1
     local.get 0
+    i64.const 5
+    call 0
     local.get 1
     i16x8.replace_lane 0
     v128.any_true
@@ -137,6 +165,8 @@
     i64.const 1000001000020
     call 1
     local.get 0
+    i64.const 5
+    call 0
     local.get 1
     i32x4.replace_lane 0
     v128.any_true
@@ -145,6 +175,8 @@
     i64.const 1000001000024
     call 1
     local.get 0
+    i64.const 5
+    call 0
     local.get 1
     i64x2.replace_lane 0
     v128.any_true
@@ -153,6 +185,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 5
+    call 0
     local.get 1
     i8x16.swizzle
     i8x16.all_true
@@ -161,6 +195,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 5
+    call 0
     local.get 1
     i8x16.shuffle 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
     v128.any_true

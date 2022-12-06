@@ -7,6 +7,8 @@
     i64.const 1000000000004
     call 1
     f32.const -0x1p-50 (;=-0.0000000000000008881784;)
+    i64.const 2
+    call 0
   )
   (export "f" (func 2))
 )

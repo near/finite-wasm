@@ -8,6 +8,8 @@
     i64.const 1000003000008
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f32.mul
     local.get $z
@@ -19,6 +21,8 @@
     i64.const 1000003000016
     call 1
     local.get $x
+    i64.const 8
+    call 0
     local.get $y
     f64.mul
     local.get $z

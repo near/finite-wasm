@@ -8,30 +8,40 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f32x4.convert_i32x4_s
   )
   (func (;3;) (type 0) (param v128) (result v128)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f32x4.convert_i32x4_u
   )
   (func (;4;) (type 0) (param v128) (result v128)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f64x2.convert_low_i32x4_s
   )
   (func (;5;) (type 0) (param v128) (result v128)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f64x2.convert_low_i32x4_u
   )
   (func (;6;) (type 1) (param v128 v128) (result v128)
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i8x16.narrow_i16x8_s
   )
@@ -39,6 +49,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i8x16.narrow_i16x8_u
   )
@@ -46,6 +58,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.narrow_i32x4_s
   )
@@ -53,6 +67,8 @@
     i64.const 1000001000032
     call 1
     local.get 0
+    i64.const 4
+    call 0
     local.get 1
     i16x8.narrow_i32x4_u
   )
@@ -60,12 +76,16 @@
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f64x2.promote_low_f32x4
   )
   (func (;11;) (type 0) (param v128) (result v128)
     i64.const 1000000000016
     call 1
     local.get 0
+    i64.const 3
+    call 0
     f32x4.demote_f64x2_zero
   )
   (export "f32x4.convert_i32x4_s" (func 2))

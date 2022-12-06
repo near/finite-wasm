@@ -13,20 +13,30 @@
   (func (;3;) (type 0)
     i64.const 0
     call $print
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (func (;4;) (type $S)
     i64.const 1000000000000
     call $print
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (func (;5;) (type 4) (result i32)
     i64.const 1000000000000
     call $print
     i32.const 13
+    i64.const 2
+    call $finite_wasm_stack
   )
   (func (;6;) (type $T) (param i32) (result i32)
     i64.const 1000000000004
     call $print
     local.get 0
+    i64.const 4
+    call $finite_wasm_stack
     i32.const 1
     i32.add
   )
@@ -34,6 +44,8 @@
     i64.const 1000000000008
     call $print
     local.get $a
+    i64.const 4
+    call $finite_wasm_stack
     i32.const 2
     i32.sub
   )
@@ -41,7 +53,14 @@
     i64.const 1000000000008
     call $print
     local.get 0
+    i64.const 1
+    call $finite_wasm_stack
     call $print
+    i64.const 1
+    call $finite_wasm_stack
+    end
+    i64.const 1
+    call $finite_wasm_stack
   )
   (export "one" (func 5))
   (export "two" (func 6))

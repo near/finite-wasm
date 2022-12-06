@@ -7,11 +7,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i8x16.shl
       end
@@ -22,11 +28,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i8x16.shr_s
       end
@@ -37,11 +49,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i8x16.shr_u
       end
@@ -52,11 +70,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i16x8.shl
       end
@@ -67,11 +91,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i16x8.shr_s
       end
@@ -82,11 +112,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i16x8.shr_u
       end
@@ -97,11 +133,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i32x4.shl
       end
@@ -112,11 +154,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i32x4.shr_s
       end
@@ -127,11 +175,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i32x4.shr_u
       end
@@ -142,11 +196,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i64x2.shl
       end
@@ -157,11 +217,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i64x2.shr_s
       end
@@ -172,11 +238,17 @@
     i64.const 1000000000020
     call 1
     block ;; label = @1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
+          i64.const 1
+          call 0
         end
+        i64.const 7
+        call 0
         i32.const 1
         i64x2.shr_u
       end
@@ -187,8 +259,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i8x16.shl
     i32.const 1
     i8x16.shl
@@ -200,8 +278,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i8x16.shr_s
     i32.const 1
     i8x16.shr_s
@@ -213,8 +297,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i8x16.shr_u
     i32.const 1
     i8x16.shr_u
@@ -226,8 +316,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i16x8.shl
     i32.const 1
     i16x8.shl
@@ -239,8 +335,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i16x8.shr_s
     i32.const 1
     i16x8.shr_s
@@ -252,8 +354,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i16x8.shr_u
     i32.const 1
     i16x8.shr_u
@@ -265,8 +373,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i32x4.shl
     i32.const 1
     i32x4.shl
@@ -278,8 +392,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i32x4.shr_s
     i32.const 1
     i32x4.shr_s
@@ -291,8 +411,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i32x4.shr_u
     i32.const 1
     i32x4.shr_u
@@ -304,8 +430,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i64x2.shl
     i32.const 1
     i64x2.shl
@@ -317,8 +449,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i64x2.shr_s
     i32.const 1
     i64x2.shr_s
@@ -330,8 +468,14 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load
+    i64.const 1
+    call 0
     i32.const 1
+    i64.const 8
+    call 0
     i64x2.shr_u
     i32.const 1
     i64x2.shr_u

@@ -7,8 +7,15 @@
     i64.const 1000000000020
     call 1
     i32.const 0
+    i64.const 2
+    call 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.store align=1
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1)
 )

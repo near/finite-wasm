@@ -7,8 +7,14 @@
     i64.const 1000000000016
     call 1
     i32.const 0
+    i64.const 1
+    call 0
     v128.load32x2_u align=2
+    i64.const 1
+    call 0
     drop
+    i64.const 2
+    call 0
   )
   (memory (;0;) 1)
 )

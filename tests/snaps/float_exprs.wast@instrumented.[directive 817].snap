@@ -9,9 +9,15 @@
     i64.const 1000001000008
     call 1
     f32.const 0x1p+0 (;=1;)
+    i64.const 2
+    call 0
     local.set $x
     loop $loop ;; label = @1
+      i64.const 1
+      call 0
       local.get $x
+      i64.const 9
+      call 0
       local.tee $result
       f32.const 0x1p-1 (;=0.5;)
       f32.mul
@@ -21,7 +27,11 @@
       f32.const 0x1p+0 (;=1;)
       f32.gt
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
     end
+    i64.const 3
+    call 0
     local.get $result
   )
   (func (;3;) (type 1) (result f64)
@@ -29,9 +39,15 @@
     i64.const 1000001000016
     call 1
     f64.const 0x1p+0 (;=1;)
+    i64.const 2
+    call 0
     local.set $x
     loop $loop ;; label = @1
+      i64.const 1
+      call 0
       local.get $x
+      i64.const 9
+      call 0
       local.tee $result
       f64.const 0x1p-1 (;=0.5;)
       f64.mul
@@ -41,7 +57,11 @@
       f64.const 0x1p+0 (;=1;)
       f64.gt
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
     end
+    i64.const 3
+    call 0
     local.get $result
   )
   (export "f32.epsilon" (func 2))

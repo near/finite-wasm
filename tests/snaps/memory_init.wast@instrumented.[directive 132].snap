@@ -7,10 +7,17 @@
     i64.const 1000000000012
     call 1
     data.drop 0
+    i64.const 4
+    call 0
     i32.const 1234
     i32.const 1
     i32.const 1
     memory.init 0
+    i64.const 1
+    call 0
+    end
+    i64.const 1
+    call 0
   )
   (memory (;0;) 1)
   (export "test" (func 2))

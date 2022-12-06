@@ -10,6 +10,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 9
+    call 0
     f32.reinterpret_i32
     local.get $y
     f32.reinterpret_i32
@@ -22,6 +24,8 @@
     i64.const 1000001000008
     call 1
     local.get $x
+    i64.const 9
+    call 0
     f32.reinterpret_i32
     local.get $y
     f32.reinterpret_i32
@@ -34,6 +38,8 @@
     i64.const 1000000000004
     call 1
     local.get $x
+    i64.const 5
+    call 0
     f32.reinterpret_i32
     f32.neg
     i32.reinterpret_f32
@@ -42,6 +48,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 9
+    call 0
     f64.reinterpret_i64
     local.get $y
     f64.reinterpret_i64
@@ -54,6 +62,8 @@
     i64.const 1000001000016
     call 1
     local.get $x
+    i64.const 9
+    call 0
     f64.reinterpret_i64
     local.get $y
     f64.reinterpret_i64
@@ -66,6 +76,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 5
+    call 0
     f64.reinterpret_i64
     f64.neg
     i64.reinterpret_f64
@@ -74,6 +86,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f32.reinterpret_i32
     f32.const 0x0p+0 (;=0;)
     f32.sub
@@ -85,6 +99,8 @@
     i64.const 1000000000008
     call 1
     f32.const -0x0p+0 (;=-0;)
+    i64.const 8
+    call 0
     local.get $x
     f32.reinterpret_i32
     f32.sub
@@ -96,6 +112,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f32.reinterpret_i32
     f32.const 0x1p+0 (;=1;)
     f32.mul
@@ -107,6 +125,8 @@
     i64.const 1000000000008
     call 1
     f32.const -0x1p+0 (;=-1;)
+    i64.const 8
+    call 0
     local.get $x
     f32.reinterpret_i32
     f32.mul
@@ -118,6 +138,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f32.reinterpret_i32
     f32.const 0x1p+0 (;=1;)
     f32.div
@@ -129,6 +151,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f32.reinterpret_i32
     f32.const -0x1p+0 (;=-1;)
     f32.div
@@ -140,6 +164,8 @@
     i64.const 1000000000016
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f64.reinterpret_i64
     f64.const 0x0p+0 (;=0;)
     f64.sub
@@ -151,6 +177,8 @@
     i64.const 1000000000016
     call 1
     f64.const -0x0p+0 (;=-0;)
+    i64.const 8
+    call 0
     local.get $x
     f64.reinterpret_i64
     f64.sub
@@ -162,6 +190,8 @@
     i64.const 1000000000016
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f64.reinterpret_i64
     f64.const 0x1p+0 (;=1;)
     f64.mul
@@ -173,6 +203,8 @@
     i64.const 1000000000016
     call 1
     f64.const -0x1p+0 (;=-1;)
+    i64.const 8
+    call 0
     local.get $x
     f64.reinterpret_i64
     f64.mul
@@ -184,6 +216,8 @@
     i64.const 1000000000016
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f64.reinterpret_i64
     f64.const 0x1p+0 (;=1;)
     f64.div
@@ -195,6 +229,8 @@
     i64.const 1000000000016
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f64.reinterpret_i64
     f64.const -0x1p+0 (;=-1;)
     f64.div
@@ -206,6 +242,8 @@
     i64.const 1000000000008
     call 1
     local.get $x
+    i64.const 8
+    call 0
     f32.reinterpret_i32
     f64.promote_f32
     f32.demote_f64

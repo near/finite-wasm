@@ -151,7 +151,8 @@ impl<'a> crate::test::TestContext {
                 }
                 wp::Payload::CodeSectionEntry(reader) => {
                     maybe_add_imports(&mut new_type_section, &mut new_import_section);
-                    let finite_wasm_stack_fn = new_import_section.len() - 1;
+                    let stack_fn = new_import_section.len() - 1;
+                    let gas_fn = new_import_section.len() - 2;
                     let locals = reader
                         .get_locals_reader()
                         .expect("TODO")
@@ -161,10 +162,16 @@ impl<'a> crate::test::TestContext {
                         .expect("TODO");
                     let mut new_function = we::Function::new(locals);
                     // Reserve the stack.
+                    let code_idx = new_code_section.len() as usize;
                     new_function.instruction(&we::Instruction::I64Const(
-                        results.function_stack_sizes[new_code_section.len() as usize] as i64,
+                        results.function_stack_sizes[code_idx] as i64,
                     ));
-                    new_function.instruction(&we::Instruction::Call(finite_wasm_stack_fn));
+                    new_function.instruction(&we::Instruction::Call(stack_fn));
+                    let gas_offsets = &results.gas_offsets[code_idx];
+                    let gas_costs = &results.gas_costs[code_idx];
+
+                    let mut instrumentation_points =
+                        gas_offsets.iter().zip(gas_costs.iter()).peekable();
 
                     let mut operators = reader.get_operators_reader().expect("TODO");
                     while !operators.eof() {
@@ -181,6 +188,12 @@ impl<'a> crate::test::TestContext {
                             }
                             _ => new_function.raw(module[offset..end_offset].iter().copied()),
                         };
+
+                        if instrumentation_points.peek().map(|(o, _)| **o) == Some(offset) {
+                            let (_, g) = instrumentation_points.next().unwrap();
+                            new_function.instruction(&we::Instruction::I64Const(*g as i64));
+                            new_function.instruction(&we::Instruction::Call(gas_fn));
+                        }
                     }
                     new_code_section.function(&new_function);
                 }

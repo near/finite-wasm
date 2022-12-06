@@ -8,6 +8,8 @@
     i64.const 1000004000012
     call 1
     f32.const 0x1.388p+7 (;=156.25;)
+    i64.const 32
+    call 0
     local.set $x
     f32.const 0x1.a0aaaap+7 (;=208.33333;)
     local.set $r
@@ -40,9 +42,17 @@
       local.get $z1
       f32.eq
       br_if 0 (;@1;)
+      i64.const 1
+      call 0
       unreachable
+      i64.const 1
+      call 0
     end
+    i64.const 1
+    call 0
     local.get $z1
+    i64.const 2
+    call 0
   )
   (export "calculate" (func 2))
 )
