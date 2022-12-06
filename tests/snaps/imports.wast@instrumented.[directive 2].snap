@@ -28,6 +28,8 @@
   (import "spectest" "print_i32" (func (;17;) (type $forward)))
   (func (;18;) (type $func_i32) (param $i i32)
     (local $x f32)
+    i64.const 0
+    call 17
     local.get $i
     f32.convert_i32_s
     local.set $x
@@ -50,6 +52,8 @@
   )
   (func (;19;) (type $func_i64) (param $i i64)
     (local $x f64)
+    i64.const 0
+    call 17
     local.get $i
     call $i64->i64
     f64.convert_i64_s

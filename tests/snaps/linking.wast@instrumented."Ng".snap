@@ -10,6 +10,8 @@
   (import "Mg" "get_mut" (func $get_mut (;3;) (type 0)))
   (import "Mg" "set_mut" (func $set_mut (;4;) (type 1)))
   (func (;5;) (type 0) (result i32)
+    i64.const 0
+    call 6
     global.get $glob
   )
   (global $glob (;2;) i32 i32.const 43)

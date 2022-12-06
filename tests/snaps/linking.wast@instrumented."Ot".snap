@@ -7,9 +7,13 @@
   (import "Mt" "h" (func $h (;2;) (type 0)))
   (import "Mt" "tab" (table (;0;) 5 funcref))
   (func $i (;3;) (type 0) (result i32)
+    i64.const 0
+    call $i
     i32.const 6
   )
   (func (;4;) (type 1) (param i32) (result i32)
+    i64.const 1000000000004
+    call $i
     local.get 0
     call_indirect (type 0)
   )

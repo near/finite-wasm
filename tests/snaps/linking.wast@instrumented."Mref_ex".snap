@@ -1,7 +1,4 @@
 (module $Mref_ex
-  (type (;0;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
   (global (;0;) funcref ref.null func)
   (global (;1;) (mut funcref) ref.null func)
   (global (;2;) externref ref.null extern)

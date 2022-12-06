@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
+    i64.const 1000002000012
+    call 1
     local.get $x
     local.get $z
     f32.mul
@@ -14,6 +16,8 @@
     f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
+    i64.const 1000002000024
+    call 1
     local.get $x
     local.get $z
     f64.mul

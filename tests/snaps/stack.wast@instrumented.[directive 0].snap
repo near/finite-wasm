@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (func (;2;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get $n
     local.set $i
     i64.const 1
@@ -35,6 +37,8 @@
   )
   (func (;3;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get $n
     local.set $i
     i64.const 1
@@ -63,6 +67,8 @@
   )
   (func (;4;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get $n
     local.set $i
     i64.const 1
@@ -91,6 +97,8 @@
   )
   (func (;5;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get $n
     local.set $i
     i64.const 1
@@ -119,6 +127,8 @@
   )
   (func (;6;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get $n
     local.set $i
     i64.const 1
@@ -147,6 +157,8 @@
   )
   (func $add_one_to_global (;7;) (type 1) (result i32)
     (local i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 1
     global.get $temp
     i32.add
@@ -154,10 +166,14 @@
     global.get $temp
   )
   (func $add_one_to_global_and_drop (;8;) (type 2)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     call $add_one_to_global
     drop
   )
   (func (;9;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     call $add_one_to_global
     call $add_one_to_global
     call $add_one_to_global_and_drop

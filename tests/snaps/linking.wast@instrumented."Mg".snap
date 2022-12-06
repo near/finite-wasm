@@ -5,12 +5,18 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     global.get $glob
   )
   (func (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     global.get $mut_glob
   )
   (func (;4;) (type 1) (param i32)
+    i64.const 1000000000004
+    call 1
     local.get 0
     global.set $mut_glob
   )

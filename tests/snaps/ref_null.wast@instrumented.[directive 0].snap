@@ -5,9 +5,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result externref)
+    i64.const 1000000000032
+    call 1
     ref.null extern
   )
   (func (;3;) (type 1) (result funcref)
+    i64.const 1000000000032
+    call 1
     ref.null func
   )
   (global (;0;) externref ref.null extern)

@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (import "grown-memory" "memory" (memory (;0;) 2))
   (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 2
     i32.const 1
     memory.grow
   )

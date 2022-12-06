@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param $x i32) (param $y i32) (result i32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     local.get $y
@@ -17,6 +19,8 @@
     i32.and
   )
   (func (;3;) (type 0) (param $x i32) (param $y i32) (result i32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     local.get $y
@@ -27,12 +31,16 @@
     i32.and
   )
   (func (;4;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     f32.reinterpret_i32
     f32.neg
     i32.reinterpret_f32
   )
   (func (;5;) (type 2) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     f64.reinterpret_i64
     local.get $y
@@ -43,6 +51,8 @@
     i64.and
   )
   (func (;6;) (type 2) (param $x i64) (param $y i64) (result i64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     f64.reinterpret_i64
     local.get $y
@@ -53,12 +63,16 @@
     i64.and
   )
   (func (;7;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     f64.reinterpret_i64
     f64.neg
     i64.reinterpret_f64
   )
   (func (;8;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     f32.const 0x0p+0 (;=0;)
@@ -68,6 +82,8 @@
     i32.and
   )
   (func (;9;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     f32.const -0x0p+0 (;=-0;)
     local.get $x
     f32.reinterpret_i32
@@ -77,6 +93,8 @@
     i32.and
   )
   (func (;10;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     f32.const 0x1p+0 (;=1;)
@@ -86,6 +104,8 @@
     i32.and
   )
   (func (;11;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     f32.const -0x1p+0 (;=-1;)
     local.get $x
     f32.reinterpret_i32
@@ -95,6 +115,8 @@
     i32.and
   )
   (func (;12;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     f32.const 0x1p+0 (;=1;)
@@ -104,6 +126,8 @@
     i32.and
   )
   (func (;13;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     f32.const -0x1p+0 (;=-1;)
@@ -113,6 +137,8 @@
     i32.and
   )
   (func (;14;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
     local.get $x
     f64.reinterpret_i64
     f64.const 0x0p+0 (;=0;)
@@ -122,6 +148,8 @@
     i64.and
   )
   (func (;15;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
     f64.const -0x0p+0 (;=-0;)
     local.get $x
     f64.reinterpret_i64
@@ -131,6 +159,8 @@
     i64.and
   )
   (func (;16;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
     local.get $x
     f64.reinterpret_i64
     f64.const 0x1p+0 (;=1;)
@@ -140,6 +170,8 @@
     i64.and
   )
   (func (;17;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
     f64.const -0x1p+0 (;=-1;)
     local.get $x
     f64.reinterpret_i64
@@ -149,6 +181,8 @@
     i64.and
   )
   (func (;18;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
     local.get $x
     f64.reinterpret_i64
     f64.const 0x1p+0 (;=1;)
@@ -158,6 +192,8 @@
     i64.and
   )
   (func (;19;) (type 3) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
     local.get $x
     f64.reinterpret_i64
     f64.const -0x1p+0 (;=-1;)
@@ -167,6 +203,8 @@
     i64.and
   )
   (func (;20;) (type 1) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     f32.reinterpret_i32
     f64.promote_f32

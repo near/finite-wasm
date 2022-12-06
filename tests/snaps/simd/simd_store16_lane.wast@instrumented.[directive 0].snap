@@ -6,6 +6,8 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 0
@@ -19,6 +21,8 @@
   )
   (func (;3;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 1
@@ -32,6 +36,8 @@
   )
   (func (;4;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 2
@@ -45,6 +51,8 @@
   )
   (func (;5;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 3
@@ -58,6 +66,8 @@
   )
   (func (;6;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 4
@@ -71,6 +81,8 @@
   )
   (func (;7;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 5
@@ -84,6 +96,8 @@
   )
   (func (;8;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 6
@@ -97,6 +111,8 @@
   )
   (func (;9;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 7
@@ -110,6 +126,8 @@
   )
   (func (;10;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane 0
@@ -123,6 +141,8 @@
   )
   (func (;11;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=1 1
@@ -136,6 +156,8 @@
   )
   (func (;12;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=2 2
@@ -149,6 +171,8 @@
   )
   (func (;13;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=3 3
@@ -162,6 +186,8 @@
   )
   (func (;14;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=4 4
@@ -175,6 +201,8 @@
   )
   (func (;15;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=5 5
@@ -188,6 +216,8 @@
   )
   (func (;16;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=6 6
@@ -201,6 +231,8 @@
   )
   (func (;17;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000001000020
+    call 1
     i32.const 0
     local.get $x
     v128.store16_lane offset=7 7
@@ -214,6 +246,8 @@
   )
   (func (;18;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 0
@@ -227,6 +261,8 @@
   )
   (func (;19;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 0
@@ -240,6 +276,8 @@
   )
   (func (;20;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 1
@@ -253,6 +291,8 @@
   )
   (func (;21;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 1
@@ -266,6 +306,8 @@
   )
   (func (;22;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 2
@@ -279,6 +321,8 @@
   )
   (func (;23;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 2
@@ -292,6 +336,8 @@
   )
   (func (;24;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 3
@@ -305,6 +351,8 @@
   )
   (func (;25;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 3
@@ -318,6 +366,8 @@
   )
   (func (;26;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 4
@@ -331,6 +381,8 @@
   )
   (func (;27;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 4
@@ -344,6 +396,8 @@
   )
   (func (;28;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 5
@@ -357,6 +411,8 @@
   )
   (func (;29;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 5
@@ -370,6 +426,8 @@
   )
   (func (;30;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 6
@@ -383,6 +441,8 @@
   )
   (func (;31;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 6
@@ -396,6 +456,8 @@
   )
   (func (;32;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane align=1 7
@@ -409,6 +471,8 @@
   )
   (func (;33;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
+    i64.const 1000002000020
+    call 1
     local.get $address
     local.get $x
     v128.store16_lane 7

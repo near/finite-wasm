@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "print_i32" (func $print_i32 (;2;) (type 0)))
   (func $main (;3;) (type 1)
+    i64.const 0
+    call $print_i32
     i32.const 1
     call $print_i32
   )

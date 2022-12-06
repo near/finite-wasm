@@ -18,8 +18,13 @@
   (type (;16;) (func (param i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 16)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 16)))
-  (func $dummy (;2;) (type $block-sig-1))
+  (func $dummy (;2;) (type $block-sig-1)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+  )
   (func (;3;) (type $block-sig-3) (param i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if ;; label = @1
     end
@@ -34,6 +39,8 @@
     end
   )
   (func (;4;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if ;; label = @1
       nop
@@ -52,6 +59,8 @@
     end
   )
   (func (;5;) (type 6) (param i32) (result i32 i32)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     local.get 0
     if ;; label = @1
       call $dummy
@@ -109,6 +118,8 @@
     drop
   )
   (func (;6;) (type $check) (param i32 i32) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       local.get 1
@@ -161,6 +172,8 @@
     end
   )
   (func (;7;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       call $dummy
@@ -174,6 +187,8 @@
     select
   )
   (func (;8;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 2
     local.get 0
     if (result i32) ;; label = @1
@@ -187,6 +202,8 @@
     select
   )
   (func (;9;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 2
     i32.const 3
     local.get 0
@@ -200,6 +217,8 @@
     select
   )
   (func (;10;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     loop (result i32) ;; label = @1
       local.get 0
       if (result i32) ;; label = @2
@@ -214,6 +233,8 @@
     end
   )
   (func (;11;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     loop (result i32) ;; label = @1
       call $dummy
       local.get 0
@@ -228,6 +249,8 @@
     end
   )
   (func (;12;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     loop (result i32) ;; label = @1
       call $dummy
       call $dummy
@@ -242,6 +265,8 @@
     end
   )
   (func (;13;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -257,6 +282,8 @@
     end
   )
   (func (;14;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       local.get 0
       if (result i32) ;; label = @2
@@ -273,6 +300,8 @@
     end
   )
   (func (;15;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 2
       local.get 0
@@ -289,6 +318,8 @@
     end
   )
   (func (;16;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       local.get 0
       if (result i32) ;; label = @2
@@ -303,6 +334,8 @@
     end
   )
   (func (;17;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 2
       local.get 0
@@ -317,9 +350,13 @@
     end
   )
   (func $func (;18;) (type $check) (param i32 i32) (result i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     local.get 0
   )
   (func (;19;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       local.get 0
       if (result i32) ;; label = @2
@@ -335,6 +372,8 @@
     end
   )
   (func (;20;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 2
       local.get 0
@@ -350,6 +389,8 @@
     end
   )
   (func (;21;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 2
       i32.const 0
@@ -365,6 +406,8 @@
     end
   )
   (func (;22;) (type $block-sig-3) (param i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       call $dummy
@@ -377,6 +420,8 @@
     i32.store
   )
   (func (;23;) (type $block-sig-3) (param i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 2
     local.get 0
     if (result i32) ;; label = @1
@@ -389,6 +434,8 @@
     i32.store
   )
   (func (;24;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -398,9 +445,13 @@
     memory.grow
   )
   (func $f (;25;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
   )
   (func (;26;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -410,6 +461,8 @@
     call $f
   )
   (func (;27;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -419,6 +472,8 @@
     return
   )
   (func (;28;) (type $block-sig-3) (param i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -428,6 +483,8 @@
     drop
   )
   (func (;29;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       local.get 0
       if (result i32) ;; label = @2
@@ -440,6 +497,8 @@
   )
   (func (;30;) (type 5) (param i32) (result i32)
     (local i32)
+    i64.const 1000001000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -450,6 +509,8 @@
     local.get 0
   )
   (func (;31;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -459,6 +520,8 @@
     local.tee 0
   )
   (func (;32;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 1
@@ -469,6 +532,8 @@
     global.get $a
   )
   (func (;33;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 11
@@ -478,6 +543,8 @@
     i32.load
   )
   (func (;34;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       call $dummy
@@ -489,6 +556,8 @@
     i32.ctz
   )
   (func (;35;) (type $check) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       call $dummy
@@ -508,6 +577,8 @@
     i32.mul
   )
   (func (;36;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       call $dummy
@@ -519,6 +590,8 @@
     i32.eqz
   )
   (func (;37;) (type $check) (param i32 i32) (result i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     local.get 0
     if (result f32) ;; label = @1
       call $dummy
@@ -538,6 +611,8 @@
     f32.gt
   )
   (func (;38;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     local.get 0
     if (type 8) (result i32 i32) ;; label = @1
       call $dummy
@@ -553,6 +628,8 @@
     i32.mul
   )
   (func (;39;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     local.get 0
     if (type 9) (result f32 f32) ;; label = @1
       call $dummy
@@ -568,6 +645,8 @@
     f32.gt
   )
   (func (;40;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     local.get 0
     if (type 8) (result i32 i32) ;; label = @1
       call $dummy
@@ -585,6 +664,8 @@
     i32.mul
   )
   (func (;41;) (type $block-sig-2) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 1
     if ;; label = @1
       br 0 (;@1;)
@@ -651,6 +732,8 @@
     i32.const 19
   )
   (func (;42;) (type 5) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     local.get 0
     if (result i32) ;; label = @1
       i32.const 18
@@ -663,6 +746,8 @@
     end
   )
   (func (;43;) (type 10) (param i32) (result i32 i32 i64)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     local.get 0
     if (type 11) (result i32 i32 i64) ;; label = @1
       i32.const 18
@@ -683,6 +768,8 @@
     end
   )
   (func (;44;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 1
     local.get 0
     if (type 5) (param i32) (result i32) ;; label = @1
@@ -694,6 +781,8 @@
     end
   )
   (func (;45;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     local.get 0
@@ -704,6 +793,8 @@
     end
   )
   (func (;46;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     local.get 0
@@ -712,6 +803,8 @@
     i32.add
   )
   (func (;47;) (type 5) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 1
     local.get 0
     if (type 5) (param i32) (result i32) ;; label = @1
@@ -725,6 +818,8 @@
     end
   )
   (func (;48;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     local.get 0
@@ -737,6 +832,8 @@
     end
   )
   (func (;49;) (type 5) (param i32) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     local.get 0
@@ -747,6 +844,8 @@
   )
   (func (;50;) (type 5) (param i32) (result i32)
     (local i32)
+    i64.const 1000001000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 1
       local.set 1
@@ -793,6 +892,8 @@
   )
   (func $add64_u_with_carry (;51;) (type 13) (param $i i64) (param $j i64) (param $c i32) (result i64 i32)
     (local $k i64)
+    i64.const 1000003000024
+    call $finite_wasm_stack
     local.get $i
     local.get $j
     i64.add
@@ -807,6 +908,8 @@
     return
   )
   (func $add64_u_saturated (;52;) (type 14) (param i64 i64) (result i64)
+    i64.const 1000001000020
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     i32.const 0
@@ -817,6 +920,8 @@
     end
   )
   (func (;53;) (type $block-sig-1)
+    i64.const 1000000000020
+    call $finite_wasm_stack
     i32.const 1
     if ;; label = @1
     end

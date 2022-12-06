@@ -5,81 +5,113 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     i32.trunc_f32_s
     f32.convert_i32_s
   )
   (func (;3;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     i32.trunc_f32_u
     f32.convert_i32_s
   )
   (func (;4;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     i32.trunc_f32_s
     f32.convert_i32_u
   )
   (func (;5;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     i32.trunc_f32_u
     f32.convert_i32_u
   )
   (func (;6;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i32.trunc_f64_s
     f64.convert_i32_s
   )
   (func (;7;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i32.trunc_f64_u
     f64.convert_i32_s
   )
   (func (;8;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i32.trunc_f64_s
     f64.convert_i32_u
   )
   (func (;9;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i32.trunc_f64_u
     f64.convert_i32_u
   )
   (func (;10;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f32_s
     f32.convert_i64_s
   )
   (func (;11;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f32_u
     f32.convert_i64_s
   )
   (func (;12;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f32_s
     f32.convert_i64_u
   )
   (func (;13;) (type 0) (param $x f32) (result f32)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f32_u
     f32.convert_i64_u
   )
   (func (;14;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f64_s
     f64.convert_i64_s
   )
   (func (;15;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f64_u
     f64.convert_i64_s
   )
   (func (;16;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f64_s
     f64.convert_i64_u
   )
   (func (;17;) (type 1) (param $x f64) (result f64)
+    i64.const 1000000000008
+    call 1
     local.get $x
     i64.trunc_f64_u
     f64.convert_i64_u

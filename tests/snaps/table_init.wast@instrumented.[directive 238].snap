@@ -5,36 +5,58 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 0
   )
   (func (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 1
   )
   (func (;4;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 2
   )
   (func (;5;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 3
   )
   (func (;6;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 4
   )
   (func (;7;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 5
   )
   (func (;8;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 6
   )
   (func (;9;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 7
   )
   (func (;10;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 8
   )
   (func (;11;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
     i32.const 9
   )
   (func (;12;) (type 1)
+    i64.const 1000000000012
+    call 1
     i32.const 29
     i32.const 5
     i32.const 0

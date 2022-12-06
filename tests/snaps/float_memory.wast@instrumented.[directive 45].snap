@@ -6,24 +6,34 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result f64)
+    i64.const 1000000000008
+    call 1
     i32.const 1
     f64.load
   )
   (func (;3;) (type 1) (result i64)
+    i64.const 1000000000008
+    call 1
     i32.const 1
     i64.load
   )
   (func (;4;) (type 2)
+    i64.const 1000000000012
+    call 1
     i32.const 1
     f64.const nan:0x4000000000000 (;=NaN;)
     f64.store
   )
   (func (;5;) (type 2)
+    i64.const 1000000000012
+    call 1
     i32.const 1
     i64.const 9219994337134247936
     i64.store
   )
   (func (;6;) (type 2)
+    i64.const 1000000000012
+    call 1
     i32.const 1
     i64.const 0
     i64.store

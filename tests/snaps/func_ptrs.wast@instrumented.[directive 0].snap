@@ -10,22 +10,36 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 7)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 7)))
   (import "spectest" "print_i32" (func $print (;2;) (type $U)))
-  (func (;3;) (type 0))
-  (func (;4;) (type $S))
+  (func (;3;) (type 0)
+    i64.const 0
+    call $print
+  )
+  (func (;4;) (type $S)
+    i64.const 1000000000000
+    call $print
+  )
   (func (;5;) (type 4) (result i32)
+    i64.const 1000000000000
+    call $print
     i32.const 13
   )
   (func (;6;) (type $T) (param i32) (result i32)
+    i64.const 1000000000004
+    call $print
     local.get 0
     i32.const 1
     i32.add
   )
   (func (;7;) (type $T) (param $a i32) (result i32)
+    i64.const 1000000000008
+    call $print
     local.get $a
     i32.const 2
     i32.sub
   )
   (func (;8;) (type $U) (param i32)
+    i64.const 1000000000008
+    call $print
     local.get 0
     call $print
   )

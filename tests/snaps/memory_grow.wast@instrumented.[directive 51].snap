@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (func (;2;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 0
       memory.grow
@@ -14,6 +16,8 @@
     end
   )
   (func (;3;) (type 2)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     block ;; label = @1
       i32.const 0
       memory.grow
@@ -21,6 +25,8 @@
     end
   )
   (func (;4;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 0
       memory.grow
@@ -31,6 +37,8 @@
     end
   )
   (func (;5;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 6
       i32.const 0
@@ -41,6 +49,8 @@
     end
   )
   (func (;6;) (type 2)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     block ;; label = @1
       i32.const 0
       memory.grow
@@ -48,6 +58,8 @@
     end
   )
   (func (;7;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 0
       memory.grow
@@ -57,6 +69,8 @@
     end
   )
   (func (;8;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     block (result i32) ;; label = @1
       i32.const 6
       i32.const 0
@@ -66,11 +80,15 @@
     end
   )
   (func (;9;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     return
   )
   (func (;10;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     if (result i32) ;; label = @1
@@ -80,6 +98,8 @@
     end
   )
   (func (;11;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 1
     if (result i32) ;; label = @1
       i32.const 0
@@ -89,6 +109,8 @@
     end
   )
   (func (;12;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     if (result i32) ;; label = @1
       i32.const 0
@@ -98,6 +120,8 @@
     end
   )
   (func (;13;) (type 3) (param i32 i32) (result i32)
+    i64.const 1000001000012
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     local.get 0
@@ -105,6 +129,8 @@
     select
   )
   (func (;14;) (type 3) (param i32 i32) (result i32)
+    i64.const 1000001000012
+    call $finite_wasm_stack
     local.get 0
     i32.const 0
     memory.grow
@@ -112,6 +138,8 @@
     select
   )
   (func (;15;) (type 1) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 0
     i32.const 1
     i32.const 0
@@ -119,9 +147,13 @@
     select
   )
   (func $f (;16;) (type $sig) (param i32 i32 i32) (result i32)
+    i64.const 1000002000004
+    call $finite_wasm_stack
     i32.const -1
   )
   (func (;17;) (type 1) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.const 2
@@ -129,6 +161,8 @@
     call $f
   )
   (func (;18;) (type 1) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 1
     i32.const 0
     memory.grow
@@ -136,6 +170,8 @@
     call $f
   )
   (func (;19;) (type 1) (result i32)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     i32.const 0
@@ -143,6 +179,8 @@
     call $f
   )
   (func (;20;) (type 1) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.const 2
@@ -151,6 +189,8 @@
     call_indirect (type $sig)
   )
   (func (;21;) (type 1) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 1
     i32.const 0
     memory.grow
@@ -159,6 +199,8 @@
     call_indirect (type $sig)
   )
   (func (;22;) (type 1) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     i32.const 0
@@ -167,6 +209,8 @@
     call_indirect (type $sig)
   )
   (func (;23;) (type 1) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     i32.const 1
     i32.const 2
     i32.const 3
@@ -176,91 +220,123 @@
   )
   (func (;24;) (type 2)
     (local i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     local.set 0
   )
   (func (;25;) (type 1) (result i32)
     (local i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     local.tee 0
   )
   (func (;26;) (type 2)
     (local i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     global.set $g
   )
   (func (;27;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.load
   )
   (func (;28;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.load8_s
   )
   (func (;29;) (type 2)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.const 7
     i32.store
   )
   (func (;30;) (type 2)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 2
     i32.const 0
     memory.grow
     i32.store
   )
   (func (;31;) (type 2)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.const 7
     i32.store8
   )
   (func (;32;) (type 2)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 2
     i32.const 0
     memory.grow
     i32.store16
   )
   (func (;33;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.clz
   )
   (func (;34;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.const 10
     i32.add
   )
   (func (;35;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 10
     i32.const 0
     memory.grow
     i32.sub
   )
   (func (;36;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.eqz
   )
   (func (;37;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     i32.const 10
     i32.le_s
   )
   (func (;38;) (type 1) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
     i32.const 10
     i32.const 0
     memory.grow
     i32.ne
   )
   (func (;39;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     memory.grow
     memory.grow

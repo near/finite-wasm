@@ -5,52 +5,74 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.add
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.sub
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.mul
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.div
   )
   (func (;6;) (type 1) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     f32.sqrt
   )
   (func (;7;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.min
   )
   (func (;8;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.max
   )
   (func (;9;) (type 1) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     f32.ceil
   )
   (func (;10;) (type 1) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     f32.floor
   )
   (func (;11;) (type 1) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     f32.trunc
   )
   (func (;12;) (type 1) (param $x f32) (result f32)
+    i64.const 1000000000004
+    call 1
     local.get $x
     f32.nearest
   )

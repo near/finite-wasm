@@ -7,20 +7,28 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param $i i32) (result externref)
+    i64.const 1000000000032
+    call 1
     local.get $i
     table.get $t
   )
   (func (;3;) (type 1) (param $i i32) (param $r externref)
+    i64.const 1000001000036
+    call 1
     local.get $i
     local.get $r
     table.set $t
   )
   (func (;4;) (type 2) (param $sz i32) (param $init externref) (result i32)
+    i64.const 1000001000036
+    call 1
     local.get $init
     local.get $sz
     table.grow $t
   )
   (func (;5;) (type 3) (result i32)
+    i64.const 1000000000004
+    call 1
     table.size $t
   )
   (table $t (;0;) 0 externref)

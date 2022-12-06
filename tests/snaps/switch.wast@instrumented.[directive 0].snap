@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $i i32) (result i32)
     (local $j i32)
+    i64.const 1000001000008
+    call 1
     i32.const 100
     local.set $j
     block $switch ;; label = @1
@@ -52,6 +54,8 @@
   )
   (func (;3;) (type 1) (param $i i64) (result i64)
     (local $j i64)
+    i64.const 1000001000016
+    call 1
     i64.const 100
     local.set $j
     block $switch (result i64) ;; label = @1
@@ -92,6 +96,8 @@
     return
   )
   (func (;4;) (type 0) (param $i i32) (result i32)
+    i64.const 1000000000024
+    call 1
     block $2 (result i32) ;; label = @1
       i32.const 10
       block $1 (result i32) ;; label = @2
@@ -116,6 +122,8 @@
     return
   )
   (func (;5;) (type 2) (result i32)
+    i64.const 1000000000004
+    call 1
     block ;; label = @1
       i32.const 0
       br_table 0 (;@1;)

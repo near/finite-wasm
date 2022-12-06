@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.lt
@@ -15,6 +17,8 @@
     end
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.le
@@ -25,6 +29,8 @@
     end
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.gt
@@ -35,6 +41,8 @@
     end
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
+    i64.const 1000001000008
+    call 1
     local.get $x
     local.get $y
     f32.ge
@@ -45,6 +53,8 @@
     end
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result f64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     f64.lt
@@ -55,6 +65,8 @@
     end
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result f64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     f64.le
@@ -65,6 +77,8 @@
     end
   )
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result f64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     f64.gt
@@ -75,6 +89,8 @@
     end
   )
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result f64)
+    i64.const 1000001000016
+    call 1
     local.get $x
     local.get $y
     f64.ge

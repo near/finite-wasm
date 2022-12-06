@@ -6,6 +6,8 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (func $inc (;2;) (type 0)
+    i64.const 1000000000012
+    call $finite_wasm_stack
     i32.const 0
     i32.const 0
     i32.load8_u
@@ -14,11 +16,15 @@
     i32.store8
   )
   (func $get (;3;) (type 1) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
     i32.const 0
     i32.load8_u
     return
   )
   (func $main (;4;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
     call $inc
     call $inc
     call $inc

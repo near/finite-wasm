@@ -4,6 +4,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0)
+    i64.const 1000000000032
+    call 1
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
@@ -20,6 +22,8 @@
     end
   )
   (func (;3;) (type 0)
+    i64.const 1000000000032
+    call 1
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
@@ -36,6 +40,8 @@
     end
   )
   (func (;4;) (type 0)
+    i64.const 1000000000032
+    call 1
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
@@ -52,6 +58,8 @@
     end
   )
   (func (;5;) (type 0)
+    i64.const 1000000000032
+    call 1
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
@@ -68,6 +76,8 @@
     end
   )
   (func (;6;) (type 0)
+    i64.const 1000000000032
+    call 1
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
@@ -84,6 +94,8 @@
     end
   )
   (func (;7;) (type 0)
+    i64.const 1000000000032
+    call 1
     block ;; label = @1
       block (result v128) ;; label = @2
         block (result v128) ;; label = @3
@@ -100,6 +112,8 @@
     end
   )
   (func (;8;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1
@@ -126,6 +140,8 @@
     drop
   )
   (func (;9;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1
@@ -152,6 +168,8 @@
     drop
   )
   (func (;10;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1
@@ -178,6 +196,8 @@
     drop
   )
   (func (;11;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1
@@ -204,6 +224,8 @@
     drop
   )
   (func (;12;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1
@@ -230,6 +252,8 @@
     drop
   )
   (func (;13;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1
@@ -256,6 +280,8 @@
     drop
   )
   (func (;14;) (type 0)
+    i64.const 1000000000064
+    call 1
     i32.const 0
     v128.load
     i32.const 1

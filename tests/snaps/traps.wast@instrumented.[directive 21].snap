@@ -4,71 +4,99 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0) (param $i i32)
+    i64.const 1000000000004
+    call 1
     local.get $i
     i32.load
     drop
   )
   (func (;3;) (type 0) (param $i i32)
+    i64.const 1000000000004
+    call 1
     local.get $i
     i32.load16_s
     drop
   )
   (func (;4;) (type 0) (param $i i32)
+    i64.const 1000000000004
+    call 1
     local.get $i
     i32.load16_u
     drop
   )
   (func (;5;) (type 0) (param $i i32)
+    i64.const 1000000000004
+    call 1
     local.get $i
     i32.load8_s
     drop
   )
   (func (;6;) (type 0) (param $i i32)
+    i64.const 1000000000004
+    call 1
     local.get $i
     i32.load8_u
     drop
   )
   (func (;7;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load
     drop
   )
   (func (;8;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load32_s
     drop
   )
   (func (;9;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load32_u
     drop
   )
   (func (;10;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load16_s
     drop
   )
   (func (;11;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load16_u
     drop
   )
   (func (;12;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load8_s
     drop
   )
   (func (;13;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     i64.load8_u
     drop
   )
   (func (;14;) (type 0) (param $i i32)
+    i64.const 1000000000004
+    call 1
     local.get $i
     f32.load
     drop
   )
   (func (;15;) (type 0) (param $i i32)
+    i64.const 1000000000008
+    call 1
     local.get $i
     f64.load
     drop

@@ -6,6 +6,8 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result f32)
     (local $x f32) (local $result f32)
+    i64.const 1000001000008
+    call 1
     f32.const 0x1p+0 (;=1;)
     local.set $x
     loop $loop ;; label = @1
@@ -24,6 +26,8 @@
   )
   (func (;3;) (type 1) (result f64)
     (local $x f64) (local $result f64)
+    i64.const 1000001000016
+    call 1
     f64.const 0x1p+0 (;=1;)
     local.set $x
     loop $loop ;; label = @1

@@ -7,6 +7,8 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (func (;2;) (type 0) (param i64) (result i64)
+    i64.const 1000000000024
+    call $finite_wasm_stack
     local.get 0
     i64.const 0
     i64.eq
@@ -22,6 +24,8 @@
     end
   )
   (func $fac-rec-named (;3;) (type 0) (param $n i64) (result i64)
+    i64.const 1000000000024
+    call $finite_wasm_stack
     local.get $n
     i64.const 0
     i64.eq
@@ -38,6 +42,8 @@
   )
   (func (;4;) (type 0) (param i64) (result i64)
     (local i64 i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get 0
     local.set 1
     i64.const 1
@@ -66,6 +72,8 @@
   )
   (func (;5;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
     local.get $n
     local.set $i
     i64.const 1
@@ -94,6 +102,8 @@
   )
   (func (;6;) (type 0) (param i64) (result i64)
     (local i64)
+    i64.const 1000001000016
+    call $finite_wasm_stack
     i64.const 1
     local.set 1
     block ;; label = @1
@@ -119,15 +129,21 @@
     local.get 1
   )
   (func $pick0 (;7;) (type 1) (param i64) (result i64 i64)
+    i64.const 1000000000016
+    call $finite_wasm_stack
     local.get 0
     local.get 0
   )
   (func $pick1 (;8;) (type 2) (param i64 i64) (result i64 i64 i64)
+    i64.const 1000001000024
+    call $finite_wasm_stack
     local.get 0
     local.get 1
     local.get 0
   )
   (func (;9;) (type 0) (param i64) (result i64)
+    i64.const 1000000000048
+    call $finite_wasm_stack
     i64.const 1
     local.get 0
     loop $l (type 3) (param i64 i64) (result i64) ;; label = @1

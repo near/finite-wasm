@@ -4,6 +4,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
     i32.const 0
     v128.load align=1
     drop

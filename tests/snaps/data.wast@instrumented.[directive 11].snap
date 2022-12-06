@@ -1,7 +1,4 @@
 (module
-  (type (;0;) (func (param i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
   (memory (;0;) 2)
   (data (;0;) (i32.const 131071) "a")
 )

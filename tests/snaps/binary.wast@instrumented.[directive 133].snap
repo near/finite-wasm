@@ -3,7 +3,10 @@
   (type (;1;) (func (param i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
-  (func (;2;) (type 0))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+  )
   (table (;0;) 0 funcref)
   (memory (;0;) 0)
   (elem (;0;) func)

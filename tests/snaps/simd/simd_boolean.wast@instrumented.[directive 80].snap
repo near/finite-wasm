@@ -6,6 +6,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get 0
     v128.any_true
     if (result i32) ;; label = @1
@@ -15,6 +17,8 @@
     end
   )
   (func (;3;) (type 0) (param v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get 0
     v128.any_true
     if (result i32) ;; label = @1
@@ -24,6 +28,8 @@
     end
   )
   (func (;4;) (type 0) (param v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get 0
     v128.any_true
     if (result i32) ;; label = @1
@@ -33,6 +39,8 @@
     end
   )
   (func (;5;) (type 0) (param v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get 0
     i8x16.all_true
     if (result i32) ;; label = @1
@@ -42,6 +50,8 @@
     end
   )
   (func (;6;) (type 0) (param v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get 0
     i16x8.all_true
     if (result i32) ;; label = @1
@@ -51,6 +61,8 @@
     end
   )
   (func (;7;) (type 0) (param v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get 0
     i32x4.all_true
     if (result i32) ;; label = @1
@@ -60,6 +72,8 @@
     end
   )
   (func (;8;) (type 0) (param v128) (result i32)
+    i64.const 1000000000024
+    call 1
     i32.const 1
     i32.const 0
     local.get 0
@@ -67,6 +81,8 @@
     select
   )
   (func (;9;) (type 0) (param v128) (result i32)
+    i64.const 1000000000024
+    call 1
     i32.const 1
     i32.const 0
     local.get 0
@@ -74,6 +90,8 @@
     select
   )
   (func (;10;) (type 0) (param v128) (result i32)
+    i64.const 1000000000024
+    call 1
     i32.const 1
     i32.const 0
     local.get 0
@@ -81,6 +99,8 @@
     select
   )
   (func (;11;) (type 0) (param v128) (result i32)
+    i64.const 1000000000024
+    call 1
     i32.const 1
     i32.const 0
     local.get 0
@@ -88,6 +108,8 @@
     select
   )
   (func (;12;) (type 0) (param v128) (result i32)
+    i64.const 1000000000024
+    call 1
     i32.const 1
     i32.const 0
     local.get 0
@@ -95,6 +117,8 @@
     select
   )
   (func (;13;) (type 0) (param v128) (result i32)
+    i64.const 1000000000024
+    call 1
     i32.const 1
     i32.const 0
     local.get 0
@@ -103,6 +127,8 @@
   )
   (func (;14;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
+    i64.const 1000001000016
+    call 1
     i32.const 2
     local.set $1
     block ;; label = @1
@@ -118,6 +144,8 @@
   )
   (func (;15;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
+    i64.const 1000001000016
+    call 1
     i32.const 2
     local.set $1
     block ;; label = @1
@@ -133,6 +161,8 @@
   )
   (func (;16;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
+    i64.const 1000001000016
+    call 1
     i32.const 2
     local.set $1
     block ;; label = @1
@@ -148,6 +178,8 @@
   )
   (func (;17;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
+    i64.const 1000001000016
+    call 1
     i32.const 2
     local.set $1
     block ;; label = @1
@@ -163,6 +195,8 @@
   )
   (func (;18;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
+    i64.const 1000001000016
+    call 1
     i32.const 2
     local.set $1
     block ;; label = @1
@@ -178,6 +212,8 @@
   )
   (func (;19;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
+    i64.const 1000001000016
+    call 1
     i32.const 2
     local.set $1
     block ;; label = @1
@@ -192,6 +228,8 @@
     local.get $1
   )
   (func (;20;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -199,6 +237,8 @@
     i32.and
   )
   (func (;21;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -206,6 +246,8 @@
     i32.and
   )
   (func (;22;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -213,6 +255,8 @@
     i32.and
   )
   (func (;23;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -220,6 +264,8 @@
     i32.or
   )
   (func (;24;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -227,6 +273,8 @@
     i32.or
   )
   (func (;25;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -234,6 +282,8 @@
     i32.or
   )
   (func (;26;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -241,6 +291,8 @@
     i32.xor
   )
   (func (;27;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -248,6 +300,8 @@
     i32.xor
   )
   (func (;28;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     v128.any_true
     local.get $1
@@ -255,6 +309,8 @@
     i32.xor
   )
   (func (;29;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i8x16.all_true
     local.get $1
@@ -262,6 +318,8 @@
     i32.and
   )
   (func (;30;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i16x8.all_true
     local.get $1
@@ -269,6 +327,8 @@
     i32.and
   )
   (func (;31;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i32x4.all_true
     local.get $1
@@ -276,6 +336,8 @@
     i32.and
   )
   (func (;32;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i8x16.all_true
     local.get $1
@@ -283,6 +345,8 @@
     i32.or
   )
   (func (;33;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i16x8.all_true
     local.get $1
@@ -290,6 +354,8 @@
     i32.or
   )
   (func (;34;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i32x4.all_true
     local.get $1
@@ -297,6 +363,8 @@
     i32.or
   )
   (func (;35;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i8x16.all_true
     local.get $1
@@ -304,6 +372,8 @@
     i32.xor
   )
   (func (;36;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i16x8.all_true
     local.get $1
@@ -311,6 +381,8 @@
     i32.xor
   )
   (func (;37;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000020
+    call 1
     local.get $0
     i32x4.all_true
     local.get $1
@@ -318,75 +390,101 @@
     i32.xor
   )
   (func (;38;) (type 0) (param $0 v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.not
     v128.any_true
   )
   (func (;39;) (type 0) (param $0 v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.not
     v128.any_true
   )
   (func (;40;) (type 0) (param $0 v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.not
     v128.any_true
   )
   (func (;41;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.and
     v128.any_true
   )
   (func (;42;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.and
     v128.any_true
   )
   (func (;43;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.and
     v128.any_true
   )
   (func (;44;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.or
     v128.any_true
   )
   (func (;45;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.or
     v128.any_true
   )
   (func (;46;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.or
     v128.any_true
   )
   (func (;47;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.xor
     v128.any_true
   )
   (func (;48;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.xor
     v128.any_true
   )
   (func (;49;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.xor
     v128.any_true
   )
   (func (;50;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    i64.const 1000002000048
+    call 1
     local.get $0
     local.get $1
     local.get $2
@@ -394,6 +492,8 @@
     v128.any_true
   )
   (func (;51;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    i64.const 1000002000048
+    call 1
     local.get $0
     local.get $1
     local.get $2
@@ -401,6 +501,8 @@
     v128.any_true
   )
   (func (;52;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    i64.const 1000002000048
+    call 1
     local.get $0
     local.get $1
     local.get $2
@@ -408,75 +510,101 @@
     v128.any_true
   )
   (func (;53;) (type 0) (param $0 v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.not
     i8x16.all_true
   )
   (func (;54;) (type 0) (param $0 v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.not
     i16x8.all_true
   )
   (func (;55;) (type 0) (param $0 v128) (result i32)
+    i64.const 1000000000016
+    call 1
     local.get $0
     v128.not
     i32x4.all_true
   )
   (func (;56;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.and
     i8x16.all_true
   )
   (func (;57;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.and
     i16x8.all_true
   )
   (func (;58;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.and
     i32x4.all_true
   )
   (func (;59;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.or
     i8x16.all_true
   )
   (func (;60;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.or
     i16x8.all_true
   )
   (func (;61;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.or
     i32x4.all_true
   )
   (func (;62;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.xor
     i8x16.all_true
   )
   (func (;63;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.xor
     i16x8.all_true
   )
   (func (;64;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    i64.const 1000001000032
+    call 1
     local.get $0
     local.get $1
     v128.xor
     i32x4.all_true
   )
   (func (;65;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    i64.const 1000002000048
+    call 1
     local.get $0
     local.get $1
     local.get $2
@@ -484,6 +612,8 @@
     i8x16.all_true
   )
   (func (;66;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    i64.const 1000002000048
+    call 1
     local.get $0
     local.get $1
     local.get $2
@@ -491,6 +621,8 @@
     i16x8.all_true
   )
   (func (;67;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    i64.const 1000002000048
+    call 1
     local.get $0
     local.get $1
     local.get $2

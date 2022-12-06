@@ -5,12 +5,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $i i32) (param $r externref) (param $n i32)
+    i64.const 1000002000040
+    call 1
     local.get $i
     local.get $r
     local.get $n
     table.fill $t
   )
   (func (;3;) (type 1) (param $i i32) (result externref)
+    i64.const 1000000000032
+    call 1
     local.get $i
     table.get $t
   )

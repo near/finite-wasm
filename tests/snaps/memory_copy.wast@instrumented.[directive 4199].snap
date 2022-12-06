@@ -4,6 +4,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
   (func (;2;) (type 0)
+    i64.const 1000000000012
+    call 1
     i32.const 16384
     i32.const -256
     i32.const 257

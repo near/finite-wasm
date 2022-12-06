@@ -7,8 +7,13 @@
   (type (;5;) (func (param i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 5)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
-  (func $dummy (;2;) (type 0))
+  (func $dummy (;2;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+  )
   (func (;3;) (type 1) (param $r externref)
+    i64.const 1000000000036
+    call $finite_wasm_stack
     i32.const 1
     local.get $r
     table.set $t2
@@ -18,14 +23,20 @@
     table.set $t3
   )
   (func (;4;) (type 2) (param $i i32) (result externref)
+    i64.const 1000000000032
+    call $finite_wasm_stack
     local.get $i
     table.get $t2
   )
   (func $f3 (;5;) (type 3) (param $i i32) (result funcref)
+    i64.const 1000000000032
+    call $finite_wasm_stack
     local.get $i
     table.get $t3
   )
   (func (;6;) (type 4) (param $i i32) (result i32)
+    i64.const 1000000000032
+    call $finite_wasm_stack
     local.get $i
     call $f3
     ref.is_null
