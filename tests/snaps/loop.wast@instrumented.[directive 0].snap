@@ -517,8 +517,6 @@
       i32.const 1
     end
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;28;) (type $block-sig-1)
     i64.const 1000000000004
@@ -719,8 +717,6 @@
         i64.const 1
         call $finite_wasm_gas
         br 1 (;@1;)
-        i64.const 2
-        call $finite_wasm_gas
         br 0 (;@2;)
         unreachable
         i64.const 2
@@ -746,8 +742,6 @@
       loop ;; label = @2
         i32.const 0
         br_table 1 (;@1;)
-        i64.const 1
-        call $finite_wasm_gas
         unreachable
         i64.const 2
         call $finite_wasm_gas
@@ -759,8 +753,6 @@
       loop ;; label = @2
         i32.const 1
         br_table 1 (;@1;) 1 (;@1;) 1 (;@1;)
-        i64.const 1
-        call $finite_wasm_gas
         unreachable
         i64.const 2
         call $finite_wasm_gas
@@ -839,8 +831,6 @@
       loop (result i32) ;; label = @2
         i32.const 18
         br 1 (;@1;)
-        i64.const 19
-        call $finite_wasm_gas
         i32.const 19
         br 1 (;@1;)
         i32.const 20
@@ -927,8 +917,6 @@
       loop (result i32) ;; label = @2
         i32.const 8
         br 1 (;@1;)
-        i64.const 1
-        call $finite_wasm_gas
         i32.ctz
         i64.const 2
         call $finite_wasm_gas
@@ -981,8 +969,6 @@
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       i32.ctz
       i64.const 5
       call $finite_wasm_gas
@@ -1130,8 +1116,6 @@
         i32.mul
         local.set 0
         br 1 (;@1;)
-        i64.const 4
-        call $finite_wasm_gas
         local.get 0
         i32.const 100
         i32.mul

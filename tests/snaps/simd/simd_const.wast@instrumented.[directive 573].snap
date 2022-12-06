@@ -41,8 +41,6 @@
     call $finite_wasm_gas
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;5;) (type 1) (result v128)
     i64.const 1000000000016
@@ -161,8 +159,6 @@
     call $finite_wasm_gas
     v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;15;) (type 1) (result v128)
     i64.const 1000000000016

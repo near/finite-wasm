@@ -167,8 +167,6 @@
     i64.const 1
     call $finite_wasm_gas
     unreachable
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;24;) (type 9) (result i32 f64 f32)
     i64.const 1000000000000
@@ -176,8 +174,6 @@
     i64.const 1
     call $finite_wasm_gas
     unreachable
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;25;) (type 10) (result i32 f64)
     i64.const 1000000000000
@@ -185,8 +181,6 @@
     i64.const 1
     call $finite_wasm_gas
     unreachable
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;26;) (type 11) (result i32 f32 i64 i32 f64)
     i64.const 1000000000000
@@ -194,8 +188,6 @@
     i64.const 1
     call $finite_wasm_gas
     unreachable
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;27;) (type $sig-1)
     i64.const 1000000000000
@@ -262,8 +254,6 @@
     i64.const 1
     call $finite_wasm_gas
     unreachable
-    i64.const 2
-    call $finite_wasm_gas
     unreachable
   )
   (func $complex-sig (;37;) (type $sig)
@@ -273,8 +263,6 @@
     i64.const 1
     call $finite_wasm_gas
     unreachable
-    i64.const 2
-    call $finite_wasm_gas
     unreachable
   )
   (func (;38;) (type $sig-2) (result i32)
@@ -553,8 +541,6 @@
     i64.const 1
     call $finite_wasm_gas
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;68;) (type $sig-2) (result i32)
     i64.const 1000000000004
@@ -563,8 +549,6 @@
     call $finite_wasm_gas
     i32.const 78
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;69;) (type 13) (result i64)
     i64.const 1000000000008
@@ -573,8 +557,6 @@
     call $finite_wasm_gas
     i64.const 7878
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;70;) (type 14) (result f32)
     i64.const 1000000000004
@@ -583,8 +565,6 @@
     call $finite_wasm_gas
     f32.const 0x1.3accccp+6 (;=78.7;)
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;71;) (type 15) (result f64)
     i64.const 1000000000008
@@ -593,8 +573,6 @@
     call $finite_wasm_gas
     f64.const 0x1.3b1eb851eb852p+6 (;=78.78;)
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;72;) (type 10) (result i32 f64)
     i64.const 1000000000012
@@ -604,8 +582,6 @@
     i32.const 78
     f64.const 0x1.3b1eb851eb852p+6 (;=78.78;)
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;73;) (type 21) (result i32 i32 i32)
     i64.const 1000000000012
@@ -616,8 +592,6 @@
     i32.const 2
     i32.const 3
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;74;) (type $sig-2) (result i32)
     i64.const 1000000000004
@@ -631,8 +605,6 @@
       i32.const 77
     end
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;75;) (type 22) (result i32 i64)
     i64.const 1000000000012
@@ -647,8 +619,6 @@
       i64.const 2
     end
     return
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;76;) (type $sig)
     i64.const 1000000000000
@@ -656,8 +626,6 @@
     i64.const 1
     call $finite_wasm_gas
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;77;) (type $sig-2) (result i32)
     i64.const 1000000000004
@@ -666,8 +634,6 @@
     call $finite_wasm_gas
     i32.const 79
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;78;) (type 13) (result i64)
     i64.const 1000000000008
@@ -676,8 +642,6 @@
     call $finite_wasm_gas
     i64.const 7979
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;79;) (type 14) (result f32)
     i64.const 1000000000004
@@ -686,8 +650,6 @@
     call $finite_wasm_gas
     f32.const 0x1.3f999ap+6 (;=79.9;)
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;80;) (type 15) (result f64)
     i64.const 1000000000008
@@ -696,8 +658,6 @@
     call $finite_wasm_gas
     f64.const 0x1.3f28f5c28f5c3p+6 (;=79.79;)
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;81;) (type 10) (result i32 f64)
     i64.const 1000000000012
@@ -707,8 +667,6 @@
     i32.const 79
     f64.const 0x1.3f28f5c28f5c3p+6 (;=79.79;)
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;82;) (type 21) (result i32 i32 i32)
     i64.const 1000000000012
@@ -719,8 +677,6 @@
     i32.const 2
     i32.const 3
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;83;) (type $sig-2) (result i32)
     i64.const 1000000000004
@@ -734,8 +690,6 @@
       i32.const 77
     end
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;84;) (type 22) (result i32 i64)
     i64.const 1000000000012
@@ -750,8 +704,6 @@
       i64.const 2
     end
     br 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;85;) (type $sig-3) (param i32)
     i64.const 1000000000004
@@ -799,8 +751,6 @@
     call $finite_wasm_gas
     local.get 0
     br_table 0 (;@0;) 0 (;@0;) 0 (;@0;)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;89;) (type 23) (param i32) (result i32)
     i64.const 1000000000008
@@ -810,8 +760,6 @@
     i32.const 50
     local.get 0
     br_table 0 (;@0;) 0 (;@0;)
-    i64.const 2
-    call $finite_wasm_gas
     i32.const 51
   )
   (func (;90;) (type 24) (param i32) (result i32 i64)
@@ -823,8 +771,6 @@
     i64.const 51
     local.get 0
     br_table 0 (;@0;) 0 (;@0;)
-    i64.const 3
-    call $finite_wasm_gas
     i32.const 51
     i64.const 52
   )
@@ -851,8 +797,6 @@
       i32.const 50
       local.get 0
       br_table 0 (;@1;) 1 (;@0;) 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       i32.const 51
       i64.const 1
       call $finite_wasm_gas
@@ -872,8 +816,6 @@
       i32.const 51
       local.get 0
       br_table 0 (;@1;) 1 (;@0;) 0 (;@1;)
-      i64.const 2
-      call $finite_wasm_gas
       i32.const 51
       i32.const -3
       i64.const 1

@@ -12,8 +12,6 @@
     i32.const 3
     i64.const 1
     unreachable
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0)
     i64.const 1000000000012
@@ -23,8 +21,6 @@
     i32.const 3
     i64.const 1
     br 0 (;@0;)
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (result i32)
     i64.const 1000000000016
@@ -35,8 +31,6 @@
     i64.const 1
     i32.const 9
     br 0 (;@0;)
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 0)
     i64.const 1000000000016
@@ -76,8 +70,6 @@
     i64.const 1
     i32.const 0
     br_table 0 (;@0;)
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 1) (result i32)
     i64.const 1000000000020
@@ -89,8 +81,6 @@
     i32.const 9
     i32.const 0
     br_table 0 (;@0;)
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 1) (result i32)
     i64.const 1000000000016
@@ -101,8 +91,6 @@
     i64.const 1
     i32.const 9
     return
-    i64.const 1
-    call 0
   )
   (func (;10;) (type 0)
     i64.const 1000000000012
@@ -391,8 +379,6 @@
     call 0
     f32.const 0x0p+0 (;=0;)
     unreachable
-    i64.const 2
-    call 0
     i64.eqz
   )
   (func (;27;) (type 1) (result i32)
@@ -404,8 +390,6 @@
       f32.const 0x0p+0 (;=0;)
       i32.const 9
       br 0 (;@1;)
-      i64.const 1
-      call 0
       i64.eqz
       i64.const 1
       call 0
@@ -441,8 +425,6 @@
       i32.const 9
       i32.const 0
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call 0
       i64.eqz
       i64.const 1
       call 0
@@ -458,8 +440,6 @@
     f32.const 0x0p+0 (;=0;)
     i32.const 9
     return
-    i64.const 2
-    call 0
     i64.eqz
   )
   (func (;31;) (type 1) (result i32)
@@ -470,8 +450,6 @@
     f32.const 0x0p+0 (;=0;)
     f64.const 0x1p+0 (;=1;)
     unreachable
-    i64.const 2
-    call 0
     i64.eq
   )
   (func (;32;) (type 1) (result i32)
@@ -484,8 +462,6 @@
       f64.const 0x1p+0 (;=1;)
       i32.const 9
       br 0 (;@1;)
-      i64.const 1
-      call 0
       i64.eq
       i64.const 1
       call 0
@@ -523,8 +499,6 @@
       i32.const 9
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call 0
       i64.eq
       i64.const 1
       call 0
@@ -541,8 +515,6 @@
     f64.const 0x1p+0 (;=1;)
     i32.const 9
     return
-    i64.const 2
-    call 0
     i64.eq
   )
   (func (;36;) (type 1) (result i32)
@@ -554,8 +526,6 @@
     f64.const 0x1p+0 (;=1;)
     i64.const 0
     unreachable
-    i64.const 2
-    call 0
     select
   )
   (func (;37;) (type 1) (result i32)
@@ -569,8 +539,6 @@
       i64.const 0
       i32.const 9
       br 0 (;@1;)
-      i64.const 1
-      call 0
       select
       i64.const 1
       call 0
@@ -610,8 +578,6 @@
       i32.const 9
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call 0
       select
       i64.const 1
       call 0
@@ -629,8 +595,6 @@
     i64.const 1
     i32.const 9
     return
-    i64.const 2
-    call 0
     select
   )
   (func (;41;) (type 1) (result i32)
