@@ -16,6 +16,8 @@ enum Error {
     WriteTestOutput(#[source] std::io::Error),
     #[error("some tests failed")]
     TestsFailed,
+    #[error("could not create a temporary directory for tests")]
+    CreateTempDirectory(#[source] std::io::Error),
 }
 
 struct Test {
@@ -36,10 +38,14 @@ fn run() -> Result<(), Error> {
     let current_directory = std::env::current_dir().map_err(Error::CurrentDirectory)?;
     let tests_directory = current_directory.join("tests");
     let snaps_directory = tests_directory.join("snaps");
+    let temp_directory = tests_directory.join("tmp");
     let mut tests = Vec::new();
     for entry in walkdir::WalkDir::new(&tests_directory) {
         let entry = entry.map_err(Error::WalkDirEntry)?;
         let entry_path = entry.path();
+        if entry_path.starts_with(&temp_directory) {
+            continue;
+        }
         if Some(OsStr::new("wast")) == entry_path.extension() {
             tests.push(Test {
                 path: entry.path().into(),
@@ -62,6 +68,7 @@ fn run() -> Result<(), Error> {
             test_name.display().to_string(),
             test_path.into(),
             snaps_directory.clone(),
+            temp_directory.clone(),
         );
         context.run();
         if context.failed() {
