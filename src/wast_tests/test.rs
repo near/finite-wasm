@@ -127,6 +127,8 @@ pub(crate) enum Error {
     AnalyseModulePanic(String, PathBuf),
     #[error("could not instrument the test module")]
     Instrument(#[source] instrument::Error),
+    #[error("could not write out the instrumented test module to a temporary file at {1:?}")]
+    WriteTempTest(#[source] std::io::Error, PathBuf),
 }
 
 impl Error {
@@ -146,7 +148,8 @@ impl Error {
             | Error::DiffSnap(_)
             | Error::AnalyseModule(_, _, _)
             | Error::AnalyseModulePanic(_, _)
-            | Error::Instrument(_) => {}
+            | Error::Instrument(_)
+            | Error::WriteTempTest(_, _) => {}
             Error::ParseBuffer(s) => set_wast_path(s, path),
             Error::ParseWast(s) => set_wast_path(s, path),
             Error::EncodeModule(s, _) => set_wast_path(s, path),
@@ -181,16 +184,23 @@ pub(crate) struct TestContext {
     test_name: String,
     test_path: PathBuf,
     snap_base: PathBuf,
+    tmp_base: PathBuf,
     pub(crate) output: Vec<u8>,
     status: Status,
 }
 
 impl<'a> TestContext {
-    pub(crate) fn new(test_name: String, test_path: PathBuf, snap_base: PathBuf) -> Self {
+    pub(crate) fn new(
+        test_name: String,
+        test_path: PathBuf,
+        snap_base: PathBuf,
+        tmp_base: PathBuf,
+    ) -> Self {
         Self {
             test_name,
             test_path,
             snap_base,
+            tmp_base,
             output: vec![],
             status: Status::None,
         }
@@ -225,16 +235,17 @@ impl<'a> TestContext {
     }
 
     pub(crate) fn run(&mut self) {
-        if let Err(mut e) = self.run_analysis() {
-            return self.fail_test_error(&mut e);
-        }
+        let instrumented_wast = match self.run_analysis() {
+            Ok(instrumented_wast) => instrumented_wast,
+            Err(mut e) => return self.fail_test_error(&mut e),
+        };
 
         // Run the interpreter here with the wast file in some sort of a tracing mode (needs to
         // be implemented inside the interpreter).
         //
         // The output is probably going to be extremely verbose, but hey, it doesn’t result in
         // excessive effort at least, does it?
-        let output = match self.exec_interpreter(InterpreterMode::GasTrace) {
+        let output = match self.exec_interpreter(InterpreterMode::GasTrace, instrumented_wast) {
             Ok(o) => o,
             Err(mut e) => return self.fail_test_error(&mut e),
         };
@@ -251,14 +262,21 @@ impl<'a> TestContext {
         self.pass();
     }
 
-    fn run_analysis(&mut self) -> Result<(), Error> {
+    fn run_analysis(&mut self) -> Result<String, Error> {
         let mut test_contents = String::new();
         read(&mut test_contents, &self.test_path)?;
         let mut lexer = wast::lexer::Lexer::new(&test_contents);
         lexer.allow_confusing_unicode(true);
         let buf = wast::parser::ParseBuffer::new_with_lexer(lexer).map_err(Error::ParseBuffer)?;
         let wast: wast::Wast = wast::parser::parse(&buf).map_err(Error::ParseWast)?;
-        for (directive_index, directive) in wast.directives.into_iter().enumerate() {
+        let mut output_wast = String::new();
+        let mut iter = wast.directives.into_iter().enumerate().peekable();
+        while let Some((directive_index, directive)) = iter.next() {
+            let start_offset = directive.span().offset() - 1;
+            let end_offset = iter
+                .peek()
+                .map(|(_, d)| d.span().offset() - 1)
+                .unwrap_or(test_contents.len());
             let (id, module) = match directive {
                 wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(mut module))) => {
                     let id = module.id.map_or_else(
@@ -284,7 +302,10 @@ impl<'a> TestContext {
 
                 // Ignore the “operations”, we only care about module analysis results.
                 wast::WastDirective::Register { .. } => continue,
-                wast::WastDirective::Invoke(_) => continue,
+                wast::WastDirective::Invoke(_) => {
+                    output_wast.push_str(&test_contents[start_offset..end_offset]);
+                    continue;
+                }
                 wast::WastDirective::AssertTrap { .. } => continue,
                 wast::WastDirective::AssertReturn { .. } => continue,
                 wast::WastDirective::AssertExhaustion { .. } => continue,
@@ -300,15 +321,22 @@ impl<'a> TestContext {
             })
             .map_err(|_| Error::AnalyseModulePanic(id.clone(), self.test_path.clone()))?
             .map_err(|e| Error::AnalyseModule(e, id.clone(), self.test_path.clone()))?;
-            let instrumented = self.instrument(&module, results).map_err(Error::Instrument)?;
+            let instrumented = self
+                .instrument(&module, results)
+                .map_err(Error::Instrument)?;
             let print = wasmprinter::print_bytes(&instrumented).expect("print");
+            output_wast.push_str(&print);
             self.compare_snapshot(&print, &format!("instrumented.{id}"))?;
         }
-        Ok(())
+        Ok(output_wast)
     }
 
-    fn exec_interpreter(&mut self, mode: InterpreterMode) -> Result<String, Error> {
-        let mut args = vec!["-i".into(), self.test_path.as_os_str().into()];
+    fn exec_interpreter(&mut self, mode: InterpreterMode, code: String) -> Result<String, Error> {
+        let test_path = self.tmp_base.join(&self.test_name);
+        let _ = std::fs::create_dir_all(&test_path.parent().unwrap());
+        std::fs::write(&test_path, code).map_err(|e| Error::WriteTempTest(e, test_path.clone()))?;
+
+        let mut args = vec!["-i".into(), test_path.into()];
         match mode {
             InterpreterMode::GasTrace => args.push("-tg".into()),
             InterpreterMode::StackTrace => args.push("-ts".into()),
