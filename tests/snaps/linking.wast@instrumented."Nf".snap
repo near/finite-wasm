@@ -6,27 +6,27 @@
   (import "Mf" "call" (func $f (;2;) (type 0)))
   (func (;3;) (type 0) (result i32)
     i64.const 0
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     call $f
     i64.const 1
-    call $finite_wasm_stack
-    call $f
-    i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (func (;4;) (type 0) (result i32)
     i64.const 1000000000004
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
     call $g
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (func $g (;5;) (type 0) (result i32)
     i64.const 1000000000004
-    call $f
-    i64.const 2
     call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 3
   )
   (export "Mf.call" (func $f))

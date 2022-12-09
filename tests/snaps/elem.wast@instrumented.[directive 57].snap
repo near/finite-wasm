@@ -29,6 +29,6 @@
   )
   (table (;0;) 10 funcref)
   (export "call-overwritten" (func 4))
-  (elem (;0;) (i32.const 9) func)
-  (elem (;1;) (i32.const 9) func)
+  (elem (;0;) (i32.const 9) func $const-i32-a)
+  (elem (;1;) (i32.const 9) func $const-i32-b)
 )

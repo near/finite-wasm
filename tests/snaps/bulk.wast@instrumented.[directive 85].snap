@@ -57,6 +57,6 @@
   (export "init_passive" (func 4))
   (export "drop_active" (func 5))
   (export "init_active" (func 6))
-  (elem $p (;0;) func)
-  (elem $a (;1;) (i32.const 0) func)
+  (elem $p (;0;) funcref (ref.func $f))
+  (elem $a (;1;) (i32.const 0) func $f)
 )

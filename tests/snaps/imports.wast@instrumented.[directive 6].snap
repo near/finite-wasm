@@ -6,13 +6,13 @@
   (import "spectest" "print_i32" (func $imported_print (;2;) (type 0)))
   (func (;3;) (type 0) (param $i i32)
     i64.const 0
-    call $imported_print
-    i64.const 2
     call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
     local.get $i
     call $imported_print
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (export "print_i32" (func 3))
 )

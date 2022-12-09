@@ -6,10 +6,10 @@
   (import "spectest" "global_i32" (global $g (;0;) i32))
   (func $f (;2;) (type 0)
     i64.const 1000000000000
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
   )
   (table (;0;) 1000 funcref)
-  (elem (;0;) (global.get $g) func)
+  (elem (;0;) (global.get $g) func $f)
 )

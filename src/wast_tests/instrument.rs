@@ -68,7 +68,9 @@ impl<'a> crate::test::TestContext {
                     for import in imports {
                         let import = import.expect("imports should already have been parsed!");
                         let import_ty = match import.ty {
-                            wp::TypeRef::Func(i) => we::EntityType::Function(i),
+                            wp::TypeRef::Func(i) => {
+                                we::EntityType::Function(i)
+                            },
                             wp::TypeRef::Table(t) => we::EntityType::Table(we::TableType {
                                 element_type: valtype(t.element_type),
                                 minimum: t.initial,
@@ -141,7 +143,7 @@ impl<'a> crate::test::TestContext {
                                 }
                             },
                             element_type: valtype(elem.ty),
-                            elements: we::Elements::Functions(&[]),
+                            elements: items,
                         });
                     }
                     raw_sections.push(section_placeholder(new_element_section.id()));
@@ -151,8 +153,6 @@ impl<'a> crate::test::TestContext {
                 }
                 wp::Payload::CodeSectionEntry(reader) => {
                     maybe_add_imports(&mut new_type_section, &mut new_import_section);
-                    let stack_fn = new_import_section.len() - 1;
-                    let gas_fn = new_import_section.len() - 2;
                     let locals = reader
                         .get_locals_reader()
                         .expect("TODO")
@@ -166,7 +166,7 @@ impl<'a> crate::test::TestContext {
                     new_function.instruction(&we::Instruction::I64Const(
                         results.function_stack_sizes[code_idx] as i64,
                     ));
-                    new_function.instruction(&we::Instruction::Call(stack_fn));
+                    new_function.instruction(&we::Instruction::Call(1));
                     let gas_offsets = &results.gas_offsets[code_idx];
                     let gas_costs = &results.gas_costs[code_idx];
                     let gas_kinds = &results.gas_kinds[code_idx];
@@ -183,7 +183,7 @@ impl<'a> crate::test::TestContext {
                             let ((_, g), k) = instrumentation_points.next().unwrap();
                             if !matches!(k, InstructionKind::Unreachable) {
                                 new_function.instruction(&we::Instruction::I64Const(*g as i64));
-                                new_function.instruction(&we::Instruction::Call(gas_fn));
+                                new_function.instruction(&we::Instruction::Call(0));
                             }
                         }
                         match op {

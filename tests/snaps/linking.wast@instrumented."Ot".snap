@@ -8,21 +8,21 @@
   (import "Mt" "tab" (table (;0;) 5 funcref))
   (func $i (;3;) (type 0) (result i32)
     i64.const 0
-    call $i
+    call $finite_wasm_stack
     i64.const 2
-    call $h
+    call $finite_wasm_gas
     i32.const 6
   )
   (func (;4;) (type 1) (param i32) (result i32)
     i64.const 1000000000004
-    call $i
+    call $finite_wasm_stack
     i64.const 2
-    call $h
+    call $finite_wasm_gas
     local.get 0
     call_indirect (type 0)
     i64.const 1
-    call $h
+    call $finite_wasm_gas
   )
   (export "call" (func 4))
-  (elem (;0;) (i32.const 1) func)
+  (elem (;0;) (i32.const 1) func $i $h)
 )

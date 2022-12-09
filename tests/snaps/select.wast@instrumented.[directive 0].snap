@@ -680,6 +680,6 @@
   (export "as-compare-left" (func 45))
   (export "as-compare-right" (func 46))
   (export "as-convert-operand" (func 47))
-  (elem (;0;) (i32.const 0) func)
-  (elem (;1;) (table $t) (i32.const 0) func)
+  (elem (;0;) (i32.const 0) func $dummy)
+  (elem (;1;) (table $t) (i32.const 0) func $func)
 )

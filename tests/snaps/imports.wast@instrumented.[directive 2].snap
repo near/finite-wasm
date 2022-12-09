@@ -29,51 +29,51 @@
   (func (;18;) (type $func_i32) (param $i i32)
     (local $x f32)
     i64.const 0
-    call 17
+    call $finite_wasm_stack
     i64.const 5
-    call 16
+    call $finite_wasm_gas
     local.get $i
     f32.convert_i32_s
     local.set $x
     local.get $i
     call 2
     i64.const 5
-    call 16
+    call $finite_wasm_gas
     local.get $i
     i32.const 1
     i32.add
     f32.const 0x1.5p+5 (;=42;)
     call $print_i32_f32
     i64.const 2
-    call 16
+    call $finite_wasm_gas
     local.get $i
     call $print_i32
     i64.const 2
-    call 16
+    call $finite_wasm_gas
     local.get $i
     call $print_i32-2
     i64.const 2
-    call 16
+    call $finite_wasm_gas
     local.get $x
     call $print_f32
     i64.const 3
-    call 16
+    call $finite_wasm_gas
     local.get $i
     i32.const 0
     call_indirect (type $func_i32)
     i64.const 1
-    call 16
+    call $finite_wasm_gas
   )
   (func (;19;) (type $func_i64) (param $i i64)
     (local $x f64)
     i64.const 0
-    call 17
+    call $finite_wasm_stack
     i64.const 2
-    call 16
+    call $finite_wasm_gas
     local.get $i
     call $i64->i64
     i64.const 7
-    call 16
+    call $finite_wasm_gas
     f64.convert_i64_s
     local.set $x
     local.get $x
@@ -82,20 +82,20 @@
     f64.const 0x1.a8p+5 (;=53;)
     call $print_f64_f64
     i64.const 2
-    call 16
+    call $finite_wasm_gas
     local.get $x
     call $print_f64
     i64.const 2
-    call 16
+    call $finite_wasm_gas
     local.get $x
     call $print_f64-2
     i64.const 3
-    call 16
+    call $finite_wasm_gas
     local.get $x
     i32.const 1
     call_indirect (type $func_f64)
     i64.const 1
-    call 16
+    call $finite_wasm_gas
   )
   (table (;0;) 2 2 funcref)
   (export "p1" (func 11))
@@ -106,5 +106,5 @@
   (export "p6" (func 15))
   (export "print32" (func 18))
   (export "print64" (func 19))
-  (elem (;0;) (i32.const 0) func)
+  (elem (;0;) (i32.const 0) func $print_i32 $print_f64)
 )

@@ -8,18 +8,18 @@
   (import "M" "f" (func $f (;2;) (type 0)))
   (func $g (;3;) (type 0) (param $x i32) (result i32)
     i64.const 0
-    call $f
-    i64.const 4
     call $finite_wasm_stack
+    i64.const 4
+    call $finite_wasm_gas
     local.get $x
     i32.const 1
     i32.add
   )
   (func (;4;) (type 1)
     i64.const 1000000000008
-    call $f
-    i64.const 5
     call $finite_wasm_stack
+    i64.const 5
+    call $finite_wasm_gas
     ref.func $ff1
     drop
     ref.func $ff2
@@ -27,73 +27,73 @@
   )
   (func $gf1 (;5;) (type 1)
     i64.const 1000000000032
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func $gf2 (;6;) (type 1)
     i64.const 1000000000000
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func $ff1 (;7;) (type 1)
     i64.const 1000000000000
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func $ff2 (;8;) (type 1)
     i64.const 1000000000000
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
   )
   (func (;9;) (type 2) (result i32)
     i64.const 1000000000000
-    call $f
-    i64.const 3
     call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
     ref.func $f
     ref.is_null
   )
   (func (;10;) (type 2) (result i32)
     i64.const 1000000000032
-    call $f
-    i64.const 3
     call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
     ref.func $g
     ref.is_null
   )
   (func (;11;) (type 2) (result i32)
     i64.const 1000000000032
-    call $f
-    i64.const 3
     call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
     global.get $v
     ref.is_null
   )
   (func (;12;) (type 1)
     i64.const 1000000000032
-    call $f
-    i64.const 3
     call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
     ref.func $f
     global.set $v
   )
   (func (;13;) (type 1)
     i64.const 1000000000032
-    call $f
-    i64.const 3
     call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
     ref.func $g
     global.set $v
   )
   (func (;14;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000032
-    call $f
-    i64.const 6
     call $finite_wasm_stack
+    i64.const 6
+    call $finite_wasm_gas
     i32.const 0
     ref.func $f
     table.set $t
@@ -101,13 +101,13 @@
     i32.const 0
     call_indirect (type 0)
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (func (;15;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000036
-    call $f
-    i64.const 6
     call $finite_wasm_stack
+    i64.const 6
+    call $finite_wasm_gas
     i32.const 0
     ref.func $g
     table.set $t
@@ -115,13 +115,13 @@
     i32.const 0
     call_indirect (type 0)
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (func (;16;) (type 0) (param $x i32) (result i32)
     i64.const 1000000000036
-    call $f
-    i64.const 6
     call $finite_wasm_stack
+    i64.const 6
+    call $finite_wasm_gas
     i32.const 0
     global.get $v
     table.set $t
@@ -129,7 +129,7 @@
     i32.const 0
     call_indirect (type 0)
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (table $t (;0;) 1 funcref)
   (global (;0;) funcref ref.func $f)
@@ -145,7 +145,7 @@
   (export "call-f" (func 14))
   (export "call-g" (func 15))
   (export "call-v" (func 16))
-  (elem (;0;) declare func)
-  (elem (;1;) declare func)
-  (elem (;2;) declare func)
+  (elem (;0;) declare func $gf1 $ff1)
+  (elem (;1;) declare funcref (ref.func $gf2) (ref.func $ff2))
+  (elem (;2;) declare func $f $g)
 )

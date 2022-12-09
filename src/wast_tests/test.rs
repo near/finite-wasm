@@ -326,6 +326,7 @@ impl<'a> TestContext {
                 .map_err(Error::Instrument)?;
             let print = wasmprinter::print_bytes(&instrumented).expect("print");
             output_wast.push_str(&print);
+            output_wast.push_str("\n");
             self.compare_snapshot(&print, &format!("instrumented.{id}"))?;
         }
         Ok(output_wast)
