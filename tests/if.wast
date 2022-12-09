@@ -9,8 +9,8 @@
   (func (export "empty") (param i32)
     (if (local.get 0) (then))
     (if (local.get 0) (then) (else))
-    (if $l (local.get 0) (then))
-    (if $l (local.get 0) (then) (else))
+    (if $l0 (local.get 0) (then))
+    (if $l1 (local.get 0) (then) (else))
   )
 
   (func (export "singular") (param i32) (result i32)

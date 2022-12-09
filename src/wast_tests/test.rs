@@ -301,13 +301,22 @@ impl<'a> TestContext {
                 }
 
                 // Ignore the “operations”, we only care about module analysis results.
-                wast::WastDirective::Register { .. } => continue,
+                wast::WastDirective::Register { .. } => {
+                    output_wast.push_str(&test_contents[start_offset..end_offset]);
+                    continue
+                },
                 wast::WastDirective::Invoke(_) => {
                     output_wast.push_str(&test_contents[start_offset..end_offset]);
                     continue;
                 }
-                wast::WastDirective::AssertTrap { .. } => continue,
-                wast::WastDirective::AssertReturn { .. } => continue,
+                wast::WastDirective::AssertTrap { .. } => {
+                    output_wast.push_str(&test_contents[start_offset..end_offset]);
+                    continue;
+                },
+                wast::WastDirective::AssertReturn { .. } => {
+                    output_wast.push_str(&test_contents[start_offset..end_offset]);
+                    continue;
+                }
                 wast::WastDirective::AssertExhaustion { .. } => continue,
                 wast::WastDirective::AssertException { .. } => continue,
                 // Do not attempt to process invalid modules.
