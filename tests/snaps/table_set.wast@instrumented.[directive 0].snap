@@ -78,5 +78,5 @@
   (export "set-funcref" (func 6))
   (export "set-funcref-from" (func 7))
   (export "is_null-funcref" (func 8))
-  (elem (;0;) (table $t3) (i32.const 1) func)
+  (elem (;0;) (table $t3) (i32.const 1) func $dummy)
 )

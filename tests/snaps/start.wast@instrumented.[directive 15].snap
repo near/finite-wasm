@@ -8,12 +8,12 @@
   (import "spectest" "print_i32" (func $print_i32 (;2;) (type 0)))
   (func $main (;3;) (type 1)
     i64.const 0
-    call $print_i32
-    i64.const 2
     call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 1
     call $print_i32
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
 )

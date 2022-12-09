@@ -53,5 +53,5 @@
   (table (;0;) 10 funcref)
   (export "copy" (func 5))
   (export "call" (func 6))
-  (elem (;0;) (i32.const 0) func)
+  (elem (;0;) (i32.const 0) func $zero $one $two)
 )

@@ -46,5 +46,5 @@
   (table (;0;) 3 funcref)
   (export "init" (func 4))
   (export "call" (func 5))
-  (elem (;0;) func)
+  (elem (;0;) funcref (ref.func $zero) (ref.func $one) (ref.func $zero) (ref.func $one))
 )

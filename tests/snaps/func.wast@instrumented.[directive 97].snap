@@ -149,5 +149,5 @@
   (export "signature-implicit-reused" (func 10))
   (export "signature-explicit-duplicate" (func 11))
   (export "signature-implicit-duplicate" (func 12))
-  (elem (;0;) (i32.const 0) func)
+  (elem (;0;) (i32.const 0) func $complex-sig-3 $empty-sig-2 $complex-sig-1 $complex-sig-3 $empty-sig-1 $complex-sig-4 $complex-sig-5)
 )

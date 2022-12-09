@@ -59,5 +59,5 @@
   (export "get-externref" (func 4))
   (export "get-funcref" (func $f3))
   (export "is_null-funcref" (func 6))
-  (elem (;0;) (table $t3) (i32.const 1) func)
+  (elem (;0;) (table $t3) (i32.const 1) func $dummy)
 )

@@ -7,28 +7,28 @@
   (import "spectest" "table" (table $tab (;0;) 10 20 funcref))
   (func (;2;) (type 1) (param i32) (result i32)
     i64.const 1000000000008
-    call 2
-    i64.const 2
     call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
     local.get 0
     call_indirect (type 0)
     i64.const 1
-    call $finite_wasm_stack
+    call $finite_wasm_gas
   )
   (func $f (;3;) (type 0) (result i32)
     i64.const 1000000000004
-    call 2
-    i64.const 2
     call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 11
   )
   (func $g (;4;) (type 0) (result i32)
     i64.const 1000000000004
-    call 2
-    i64.const 2
     call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
     i32.const 22
   )
   (export "call" (func 2))
-  (elem (;0;) (i32.const 1) func)
+  (elem (;0;) (i32.const 1) func $f $g)
 )

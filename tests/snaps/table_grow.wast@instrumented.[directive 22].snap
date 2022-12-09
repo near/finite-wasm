@@ -18,5 +18,5 @@
   )
   (table $t (;0;) 16 funcref)
   (export "grow" (func $f))
-  (elem (;0;) declare func)
+  (elem (;0;) declare func $f)
 )

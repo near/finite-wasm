@@ -40,6 +40,6 @@
   (table (;0;) 10 funcref)
   (export "call-7" (func 4))
   (export "call-9" (func 5))
-  (elem (;0;) (i32.const 7) func)
-  (elem (;1;) (i32.const 9) func)
+  (elem (;0;) (i32.const 7) func $const-i32-a)
+  (elem (;1;) (i32.const 9) func $const-i32-b)
 )

@@ -6,9 +6,9 @@
   (import "spectest" "table" (table (;0;) 10 funcref))
   (func $f (;2;) (type 0)
     i64.const 1000000000000
-    call $f
-    i64.const 1
     call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
   )
-  (elem (;0;) (i32.const 9) func)
+  (elem (;0;) (i32.const 9) func $f)
 )

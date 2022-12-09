@@ -160,5 +160,5 @@
   (export "f15" (func $f15))
   (export "test" (func 18))
   (export "run" (func 19))
-  (elem (;0;) func)
+  (elem (;0;) funcref (ref.func $f0) (ref.func $f1) (ref.func $f2) (ref.func $f3) (ref.func $f4) (ref.func $f5) (ref.func $f6) (ref.func $f7) (ref.func $f8) (ref.func $f9) (ref.func $f10) (ref.func $f11) (ref.func $f12) (ref.func $f13) (ref.func $f14) (ref.func $f15))
 )
