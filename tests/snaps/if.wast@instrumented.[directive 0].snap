@@ -44,14 +44,14 @@
     i64.const 2
     call $finite_wasm_gas
     local.get 0
-    if $l ;; label = @1
+    if $l0 ;; label = @1
       i64.const 1
       call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
     local.get 0
-    if $#label3<l> (@name "l") ;; label = @1
+    if $l1 ;; label = @1
       i64.const 1
       call $finite_wasm_gas
     end
