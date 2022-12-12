@@ -103,10 +103,6 @@ let func_ref inst x i at =
   | NullRef _ -> Trap.error at ("uninitialized element " ^ Int32.to_string i)
   | _ -> Crash.error at ("type mismatch for element " ^ Int32.to_string i)
 
-let func_type_of = function
-  | Func.AstFunc (t, inst, f) -> t
-  | Func.HostFunc (t, _) -> t
-
 let block_type inst bt =
   match bt with
   | VarBlockType x -> type_ inst x
@@ -164,6 +160,9 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
         let local_count = Int64.of_int (List.length fn.it.locals) in
         Int64.add arg_count local_count
       | Func.HostFunc (_, _) -> 0L
+      (* Compensate for setup and invocation of these intrinsics, as they're free *)
+      | Func.GasIntrinsic -> -2L
+      | Func.StackIntrinsic -> -2L
     )
     (* Administrative or derived and already accounted for *)
     | ReducedPlain _ -> 0L
@@ -171,6 +170,8 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
     | Trapping _ -> 0L
     | Returning _ -> 0L
     | Breaking _ -> 0L
+    (* The end instruction, pretty much *)
+    | Label (_, _, (_, [])) -> 1L
     | Label _ -> 0L
     | Frame _ -> 0L
 
@@ -178,10 +179,13 @@ let string_of_admin_instr (e: admin_instr) : string = Sexpr.to_string 120 (match
   | Plain i -> Arrange.instr (i @@ e.at)
   | ReducedPlain i -> let iex = Arrange.instr (i @@ e.at) in Sexpr.Node ("admin.reducedplain", [iex])
   | Refer _ -> Sexpr.Atom "admin.ref"
+  | Invoke Func.GasIntrinsic -> Sexpr.Atom "admin.gasintrinsic"
+  | Invoke Func.StackIntrinsic -> Sexpr.Atom "admin.stackintrinsic"
   | Invoke _ -> Sexpr.Atom "admin.invoke"
   | Trapping _ -> Sexpr.Atom "admin.trapping"
   | Returning _ -> Sexpr.Atom "admin.returning"
   | Breaking _ -> Sexpr.Atom "admin.breaking"
+  | Label (_, _, (_, [])) -> Sexpr.Atom "end"
   | Label _ -> Sexpr.Atom "admin.label"
   | Frame _ -> Sexpr.Atom "admin.frame"
   )
@@ -192,16 +196,14 @@ let apply_fees (c: config) : config =
   let e = List.hd es in
   let stack_sizes = List.append (List.map stack_value_size vs) (List.map stack_instr_size es) in
   let stack_height = List.fold_left (Int32.add) 0l stack_sizes in
-  if !Flags.trace_stack then Printf.printf "[stk] %s = %lu\n" (string_of_admin_instr e) stack_height;
+  if !Flags.trace_stack then Printf.printf "stk: %lu %s" stack_height (string_of_admin_instr e);
   let e_cost = gas_fee e vs in
-  if (Int64.unsigned_compare e_cost !gas) > 0 then
+  if (Int64.compare e_cost !gas) > 0 then
     Exhaustion.error e.at "gas pool is empty"
   else if (Int32.unsigned_compare stack_height stack_limit) > 0 then
     Exhaustion.error e.at "stack exhausted"
-  else if (Int64.unsigned_compare e_cost 0L) != 0 then
-    if !Flags.trace_gas then Printf.printf "[gas] %s = %Lu\n" (string_of_admin_instr e) e_cost;
-    (* ("[gas]" ^ (sexp_of_admin_instr' e |> to_string_hum)
-    ^ (Int64.to_string e_cost)); *)
+  else if (Int64.compare e_cost 0L) != 0 then
+    if !Flags.trace_gas then Printf.printf "gas: %Ld %s" e_cost (string_of_admin_instr e);
     gas := Int64.sub !gas e_cost;
     c
 
@@ -697,7 +699,7 @@ let rec step (c : config) : config =
       Exhaustion.error e.at "call stack exhausted"
 
     | Invoke func, vs ->
-      let FuncType (ins, out) = func_type_of func in
+      let FuncType (ins, out) = Func.type_of func in
       let n1, n2 = Lib.List32.length ins, Lib.List32.length out in
       let args, vs' = take n1 vs e.at, drop n1 vs e.at in
       (match func with
@@ -707,9 +709,22 @@ let rec step (c : config) : config =
         let instr' = [Label (n2, [], ([], List.map plain f.it.body)) @@ f.at] in
         vs', [Frame (n2, frame', ([], instr')) @@ e.at]
 
+      | Func.GasIntrinsic ->
+        (match List.hd args with
+          | Num (I64 v) -> Printf.printf "charge_gas: %Lu\n" v
+          | _ -> Crash.error e.at "wrong types of arguments");
+        vs', []
+
+      | Func.StackIntrinsic ->
+        (match List.hd args with
+          | Num (I64 v) -> Printf.printf "reserve_stack: %Lu\n" v
+          | _ -> Crash.error e.at "wrong types of arguments");
+        vs', []
+
       | Func.HostFunc (t, f) ->
         try List.rev (f (List.rev args)) @ vs', []
         with Crash (_, msg) -> Crash.error e.at msg
+
       )
   in {c with code = vs', es' @ List.tl es}
 
