@@ -7,6 +7,4 @@ let width = ref 80
 let harness = ref true
 let budget = ref 256
 let gas = ref 0xFFFFFFFFFFFFFFFL
-let stack_limit = ref 1000l
 let trace_gas = ref false
-let trace_stack = ref false

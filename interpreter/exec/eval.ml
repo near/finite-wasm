@@ -143,14 +143,6 @@ let elem_oob frame x i n =
   I64.gt_u (I64.add (I64_convert.extend_i32_u i) (I64_convert.extend_i32_u n))
     (I64_convert.extend_i32_u (Elem.size (elem frame.inst x)))
 
-let stack_instr_size (i : admin_instr) : int32 =
-  match i.it with
-    | Label _ -> 1l
-    | Frame _ -> 1l
-    | _ -> 0l
-
-let stack_value_size (v: value) : int32 = 1l
-
 let gas_fee (i: admin_instr) (vals: value list) : int64 =
   match i.it with
     | Plain _ -> 1L
@@ -164,14 +156,14 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
       | Func.GasIntrinsic -> -2L
       | Func.StackIntrinsic -> -2L
     )
+    (* The end instruction, pretty much *)
+    | Label (_, _, (_, [])) -> 1L
     (* Administrative or derived and already accounted for *)
     | ReducedPlain _ -> 0L
     | Refer _ -> 0L
     | Trapping _ -> 0L
     | Returning _ -> 0L
     | Breaking _ -> 0L
-    (* The end instruction, pretty much *)
-    | Label (_, _, (_, [])) -> 1L
     | Label _ -> 0L
     | Frame _ -> 0L
 
@@ -192,16 +184,11 @@ let string_of_admin_instr (e: admin_instr) : string = Sexpr.to_string 120 (match
 
 let apply_fees (c: config) : config =
   let {frame; code = vs, es; _} = c in
-  let { gas; stack_limit; _ } = frame.inst in
+  let { gas; _ } = frame.inst in
   let e = List.hd es in
-  let stack_sizes = List.append (List.map stack_value_size vs) (List.map stack_instr_size es) in
-  let stack_height = List.fold_left (Int32.add) 0l stack_sizes in
-  if !Flags.trace_stack then Printf.printf "stk: %lu %s" stack_height (string_of_admin_instr e);
   let e_cost = gas_fee e vs in
   if (Int64.compare e_cost !gas) > 0 then
     Exhaustion.error e.at "gas pool is empty"
-  else if (Int32.unsigned_compare stack_height stack_limit) > 0 then
-    Exhaustion.error e.at "stack exhausted"
   else if (Int64.compare e_cost 0L) != 0 then
     if !Flags.trace_gas then Printf.printf "gas: %Ld %s" e_cost (string_of_admin_instr e);
     gas := Int64.sub !gas e_cost;
@@ -746,7 +733,7 @@ let rec eval (c : config) : value stack =
 let invoke (func : func_inst) (vs : value list) : value list =
   let inst, at = match func with
     | Func.AstFunc (_, inst, f) -> !inst, f.at
-    | _ -> (new_module_inst !Flags.gas !Flags.stack_limit), no_region in
+    | _ -> (new_module_inst !Flags.gas), no_region in
   let FuncType (ins, out) = Func.type_of func in
   if List.length vs <> List.length ins then
     Crash.error at "wrong number of arguments";
@@ -861,7 +848,7 @@ let init (m : module_) (exts : extern list) : module_inst =
   in
   if List.length exts <> List.length imports then
     Link.error m.at "wrong number of imports provided for initialisation";
-  let new_mod_inst = new_module_inst !Flags.gas !Flags.stack_limit in
+  let new_mod_inst = new_module_inst !Flags.gas in
   let inst0 =
     { (List.fold_right2 (add_import m) exts imports new_mod_inst) with
       types = List.map (fun type_ -> type_.it) types }

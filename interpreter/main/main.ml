@@ -28,8 +28,6 @@ let argspec = Arg.align
     " configure call depth budget (default is " ^ string_of_int !Flags.budget ^ ")";
   "-g", Arg.String (fun n -> Flags.gas := Int64.of_string n),
     " configure the gas pool size";
-  "-s", Arg.String (fun n -> Flags.stack_limit := Int32.of_string n),
-    " configure the stack limit";
   "-w", Arg.Int (fun n -> Flags.width := n),
     " configure output width (default is " ^ string_of_int !Flags.width ^ ")";
   "-s", Arg.Set Flags.print_sig, " show module signatures";
@@ -38,7 +36,6 @@ let argspec = Arg.align
   "-d", Arg.Set Flags.dry, " dry, do not run program";
   "-t", Arg.Set Flags.trace, " trace execution";
   "-tg", Arg.Set Flags.trace_gas, " trace gas charges";
-  "-ts", Arg.Set Flags.trace_stack, " trace stack depths";
   "-v", Arg.Unit banner, " show version"
 ]
 
