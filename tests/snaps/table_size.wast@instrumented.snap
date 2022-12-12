@@ -1,0 +1,146 @@
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    table.size $t0
+  )
+  (func (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    table.size $t1
+  )
+  (func (;4;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    table.size $t2
+  )
+  (func (;5;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    table.size $t3
+  )
+  (func (;6;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null extern
+    local.get $sz
+    i64.const 1
+    call 0
+    table.grow $t0
+    i64.const 2
+    call 0
+    drop
+  )
+  (func (;7;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null extern
+    local.get $sz
+    i64.const 1
+    call 0
+    table.grow $t1
+    i64.const 2
+    call 0
+    drop
+  )
+  (func (;8;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null extern
+    local.get $sz
+    i64.const 1
+    call 0
+    table.grow $t2
+    i64.const 2
+    call 0
+    drop
+  )
+  (func (;9;) (type 1) (param $sz i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null extern
+    local.get $sz
+    i64.const 1
+    call 0
+    table.grow $t3
+    i64.const 2
+    call 0
+    drop
+  )
+  (table $t0 (;0;) 0 externref)
+  (table $t1 (;1;) 1 externref)
+  (table $t2 (;2;) 0 2 externref)
+  (table $t3 (;3;) 3 8 externref)
+  (export "size-t0" (func 2))
+  (export "size-t1" (func 3))
+  (export "size-t2" (func 4))
+  (export "size-t3" (func 5))
+  (export "grow-t0" (func 6))
+  (export "grow-t1" (func 7))
+  (export "grow-t2" (func 8))
+  (export "grow-t3" (func 9))
+)
+(assert_return (invoke "size-t0") (i32.const 0))
+(assert_return (invoke "grow-t0" (i32.const 1)))
+(assert_return (invoke "size-t0") (i32.const 1))
+(assert_return (invoke "grow-t0" (i32.const 4)))
+(assert_return (invoke "size-t0") (i32.const 5))
+(assert_return (invoke "grow-t0" (i32.const 0)))
+(assert_return (invoke "size-t0") (i32.const 5))
+
+(assert_return (invoke "size-t1") (i32.const 1))
+(assert_return (invoke "grow-t1" (i32.const 1)))
+(assert_return (invoke "size-t1") (i32.const 2))
+(assert_return (invoke "grow-t1" (i32.const 4)))
+(assert_return (invoke "size-t1") (i32.const 6))
+(assert_return (invoke "grow-t1" (i32.const 0)))
+(assert_return (invoke "size-t1") (i32.const 6))
+
+(assert_return (invoke "size-t2") (i32.const 0))
+(assert_return (invoke "grow-t2" (i32.const 3)))
+(assert_return (invoke "size-t2") (i32.const 0))
+(assert_return (invoke "grow-t2" (i32.const 1)))
+(assert_return (invoke "size-t2") (i32.const 1))
+(assert_return (invoke "grow-t2" (i32.const 0)))
+(assert_return (invoke "size-t2") (i32.const 1))
+(assert_return (invoke "grow-t2" (i32.const 4)))
+(assert_return (invoke "size-t2") (i32.const 1))
+(assert_return (invoke "grow-t2" (i32.const 1)))
+(assert_return (invoke "size-t2") (i32.const 2))
+
+(assert_return (invoke "size-t3") (i32.const 3))
+(assert_return (invoke "grow-t3" (i32.const 1)))
+(assert_return (invoke "size-t3") (i32.const 4))
+(assert_return (invoke "grow-t3" (i32.const 3)))
+(assert_return (invoke "size-t3") (i32.const 7))
+(assert_return (invoke "grow-t3" (i32.const 0)))
+(assert_return (invoke "size-t3") (i32.const 7))
+(assert_return (invoke "grow-t3" (i32.const 2)))
+(assert_return (invoke "size-t3") (i32.const 7))
+(assert_return (invoke "grow-t3" (i32.const 1)))
+(assert_return (invoke "size-t3") (i32.const 8))
+
+
+;; Type errors
+

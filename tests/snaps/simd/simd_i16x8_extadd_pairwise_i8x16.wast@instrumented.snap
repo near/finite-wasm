@@ -1,0 +1,60 @@
+(module
+  (type (;0;) (func (param v128) (result v128)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param v128) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get 0
+    i16x8.extadd_pairwise_i8x16_s
+  )
+  (func (;3;) (type 0) (param v128) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get 0
+    i16x8.extadd_pairwise_i8x16_u
+  )
+  (export "i16x8.extadd_pairwise_i8x16_s" (func 2))
+  (export "i16x8.extadd_pairwise_i8x16_u" (func 3))
+)
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
+                                                       (v128.const i16x8 0 0 0 0 0 0 0 0))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1))
+                                                       (v128.const i16x8 2 2 2 2 2 2 2 2))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1))
+                                                       (v128.const i16x8 -2 -2 -2 -2 -2 -2 -2 -2))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 126 126 126 126 126 126 126 126 126 126 126 126 126 126 126 126))
+                                                       (v128.const i16x8 252 252 252 252 252 252 252 252))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127))
+                                                       (v128.const i16x8 -254 -254 -254 -254 -254 -254 -254 -254))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128))
+                                                       (v128.const i16x8 -256 -256 -256 -256 -256 -256 -256 -256))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127))
+                                                       (v128.const i16x8 254 254 254 254 254 254 254 254))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_s" (v128.const i8x16 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255))
+                                                       (v128.const i16x8 -2 -2 -2 -2 -2 -2 -2 -2))
+
+;; i16x8.extadd_pairwise_i8x16_u
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
+                                                       (v128.const i16x8 0 0 0 0 0 0 0 0))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1))
+                                                       (v128.const i16x8 2 2 2 2 2 2 2 2))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1))
+                                                       (v128.const i16x8 510 510 510 510 510 510 510 510))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 126 126 126 126 126 126 126 126 126 126 126 126 126 126 126 126))
+                                                       (v128.const i16x8 252 252 252 252 252 252 252 252))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127 -127))
+                                                       (v128.const i16x8 258 258 258 258 258 258 258 258))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128))
+                                                       (v128.const i16x8 256 256 256 256 256 256 256 256))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127))
+                                                       (v128.const i16x8 254 254 254 254 254 254 254 254))
+(assert_return (invoke "i16x8.extadd_pairwise_i8x16_u" (v128.const i8x16 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255))
+                                                       (v128.const i16x8 510 510 510 510 510 510 510 510))
+
+;; type check

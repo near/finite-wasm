@@ -1,0 +1,810 @@
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 65280
+    i32.const 85
+    i32.const 256
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(invoke "test")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 65280) (i32.const 0))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 65280) (i32.const 65536) (i32.const 85))
+               (i32.const -1))
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 65280
+    i32.const 85
+    i32.const 257
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(assert_trap (invoke "test") "out of bounds memory access")
+
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const -256
+    i32.const 85
+    i32.const 257
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(assert_trap (invoke "test") "out of bounds memory access")
+
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 18
+    i32.const 85
+    i32.const 0
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(invoke "test")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 65536) (i32.const 0))
+               (i32.const -1))
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 65536
+    i32.const 85
+    i32.const 0
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(invoke "test")
+
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 131072
+    i32.const 85
+    i32.const 0
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(assert_trap (invoke "test") "out of bounds memory access")
+
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 1
+    i32.const 170
+    i32.const 65534
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(invoke "test")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 1) (i32.const 0))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 1) (i32.const 65535) (i32.const 170))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 65535) (i32.const 65536) (i32.const 0))
+               (i32.const -1))
+
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 18
+    i32.const 85
+    i32.const 10
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 3
+    call 0
+    i32.const 21
+    i32.const 170
+    i32.const 4
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "test" (func 3))
+)
+(invoke "test")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 18) (i32.const 0))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 18) (i32.const 21) (i32.const 85))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 21) (i32.const 25) (i32.const 170))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 25) (i32.const 28) (i32.const 85))
+               (i32.const -1))
+(assert_return (invoke "checkRange" (i32.const 28) (i32.const 65536) (i32.const 0))
+               (i32.const -1))
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func (param i32 i32 i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1) (param $offs i32) (param $val i32) (param $len i32)
+    i64.const 1000002000012
+    call 1
+    i64.const 3
+    call 0
+    local.get $offs
+    local.get $val
+    local.get $len
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "run" (func 3))
+)
+(assert_trap (invoke "run" (i32.const 65280) (i32.const 37) (i32.const 512))
+              "out of bounds memory access")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 1) (i32.const 0))
+               (i32.const -1))
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func (param i32 i32 i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1) (param $offs i32) (param $val i32) (param $len i32)
+    i64.const 1000002000012
+    call 1
+    i64.const 3
+    call 0
+    local.get $offs
+    local.get $val
+    local.get $len
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "run" (func 3))
+)
+(assert_trap (invoke "run" (i32.const 65279) (i32.const 37) (i32.const 514))
+              "out of bounds memory access")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 1) (i32.const 0))
+               (i32.const -1))
+(module
+  (type (;0;) (func (param i32 i32 i32) (result i32)))
+  (type (;1;) (func (param i32 i32 i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
+    i64.const 1000002000008
+    call 1
+    i64.const 1
+    call 0
+    loop $cont ;; label = @1
+      i64.const 4
+      call 0
+      local.get $from
+      local.get $to
+      i32.eq
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const -1
+        return
+        i64.const 1
+        call 0
+      end
+      i64.const 2
+      call 0
+      local.get $from
+      i32.load8_u
+      i64.const 3
+      call 0
+      local.get $expected
+      i32.eq
+      if ;; label = @2
+        i64.const 5
+        call 0
+        local.get $from
+        i32.const 1
+        i32.add
+        local.set $from
+        br 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+    end
+    local.get $from
+    return
+  )
+  (func (;3;) (type 1) (param $offs i32) (param $val i32) (param $len i32)
+    i64.const 1000002000012
+    call 1
+    i64.const 3
+    call 0
+    local.get $offs
+    local.get $val
+    local.get $len
+    i64.const 1
+    call 0
+    memory.fill
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 2))
+  (export "run" (func 3))
+)
+(assert_trap (invoke "run" (i32.const 65279) (i32.const 37) (i32.const 4294967295))
+              "out of bounds memory access")
+
+(assert_return (invoke "checkRange" (i32.const 0) (i32.const 1) (i32.const 0))
+               (i32.const -1))

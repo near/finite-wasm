@@ -1,0 +1,259 @@
+(module
+  (type (;0;) (func (param i64) (result i64)))
+  (type (;1;) (func (param i64) (result i64 i64)))
+  (type (;2;) (func (param i64 i64) (result i64 i64 i64)))
+  (type (;3;) (func (param i64 i64) (result i64)))
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
+  (func (;2;) (type 0) (param i64) (result i64)
+    i64.const 1000000000024
+    call $finite_wasm_stack
+    i64.const 4
+    call $finite_wasm_gas
+    local.get 0
+    i64.const 0
+    i64.eq
+    if (result i64) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
+      i64.const 1
+    else
+      i64.const 5
+      call $finite_wasm_gas
+      local.get 0
+      local.get 0
+      i64.const 1
+      i64.sub
+      call 2
+      i64.const 2
+      call $finite_wasm_gas
+      i64.mul
+    end
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (func $fac-rec-named (;3;) (type 0) (param $n i64) (result i64)
+    i64.const 1000000000024
+    call $finite_wasm_stack
+    i64.const 4
+    call $finite_wasm_gas
+    local.get $n
+    i64.const 0
+    i64.eq
+    if (result i64) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
+      i64.const 1
+    else
+      i64.const 5
+      call $finite_wasm_gas
+      local.get $n
+      local.get $n
+      i64.const 1
+      i64.sub
+      call $fac-rec-named
+      i64.const 2
+      call $finite_wasm_gas
+      i64.mul
+    end
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (func (;4;) (type 0) (param i64) (result i64)
+    (local i64 i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
+    i64.const 6
+    call $finite_wasm_gas
+    local.get 0
+    local.set 1
+    i64.const 1
+    local.set 2
+    block ;; label = @1
+      loop ;; label = @2
+        i64.const 4
+        call $finite_wasm_gas
+        local.get 1
+        i64.const 0
+        i64.eq
+        if ;; label = @3
+          i64.const 1
+          call $finite_wasm_gas
+          br 2 (;@1;)
+          i64.const 1
+          call $finite_wasm_gas
+        else
+          i64.const 9
+          call $finite_wasm_gas
+          local.get 1
+          local.get 2
+          i64.mul
+          local.set 2
+          local.get 1
+          i64.const 1
+          i64.sub
+          local.set 1
+        end
+        i64.const 1
+        call $finite_wasm_gas
+        br 0 (;@2;)
+        i64.const 2
+        call $finite_wasm_gas
+      end
+    end
+    i64.const 2
+    call $finite_wasm_gas
+    local.get 2
+  )
+  (func (;5;) (type 0) (param $n i64) (result i64)
+    (local $i i64) (local $res i64)
+    i64.const 1000002000016
+    call $finite_wasm_stack
+    i64.const 6
+    call $finite_wasm_gas
+    local.get $n
+    local.set $i
+    i64.const 1
+    local.set $res
+    block $done ;; label = @1
+      loop $loop ;; label = @2
+        i64.const 4
+        call $finite_wasm_gas
+        local.get $i
+        i64.const 0
+        i64.eq
+        if ;; label = @3
+          i64.const 1
+          call $finite_wasm_gas
+          br 2 (;@1;)
+          i64.const 1
+          call $finite_wasm_gas
+        else
+          i64.const 9
+          call $finite_wasm_gas
+          local.get $i
+          local.get $res
+          i64.mul
+          local.set $res
+          local.get $i
+          i64.const 1
+          i64.sub
+          local.set $i
+        end
+        i64.const 1
+        call $finite_wasm_gas
+        br 0 (;@2;)
+        i64.const 2
+        call $finite_wasm_gas
+      end
+    end
+    i64.const 2
+    call $finite_wasm_gas
+    local.get $res
+  )
+  (func (;6;) (type 0) (param i64) (result i64)
+    (local i64)
+    i64.const 1000001000016
+    call $finite_wasm_stack
+    i64.const 7
+    call $finite_wasm_gas
+    i64.const 1
+    local.set 1
+    block ;; label = @1
+      local.get 0
+      i64.const 2
+      i64.lt_s
+      br_if 0 (;@1;)
+      i64.const 1
+      call $finite_wasm_gas
+      loop ;; label = @2
+        i64.const 12
+        call $finite_wasm_gas
+        local.get 1
+        local.get 0
+        i64.mul
+        local.set 1
+        local.get 0
+        i64.const -1
+        i64.add
+        local.set 0
+        local.get 0
+        i64.const 1
+        i64.gt_s
+        br_if 0 (;@2;)
+        i64.const 2
+        call $finite_wasm_gas
+      end
+    end
+    i64.const 2
+    call $finite_wasm_gas
+    local.get 1
+  )
+  (func $pick0 (;7;) (type 1) (param i64) (result i64 i64)
+    i64.const 1000000000016
+    call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
+    local.get 0
+    local.get 0
+  )
+  (func $pick1 (;8;) (type 2) (param i64 i64) (result i64 i64 i64)
+    i64.const 1000001000024
+    call $finite_wasm_stack
+    i64.const 4
+    call $finite_wasm_gas
+    local.get 0
+    local.get 1
+    local.get 0
+  )
+  (func (;9;) (type 0) (param i64) (result i64)
+    i64.const 1000000000048
+    call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_gas
+    i64.const 1
+    local.get 0
+    loop $l (type 3) (param i64 i64) (result i64) ;; label = @1
+      i64.const 1
+      call $finite_wasm_gas
+      call $pick1
+      i64.const 1
+      call $finite_wasm_gas
+      call $pick1
+      i64.const 2
+      call $finite_wasm_gas
+      i64.mul
+      call $pick1
+      i64.const 3
+      call $finite_wasm_gas
+      i64.const 1
+      i64.sub
+      call $pick0
+      i64.const 3
+      call $finite_wasm_gas
+      i64.const 0
+      i64.gt_u
+      br_if 0 (;@1;)
+      i64.const 2
+      call $finite_wasm_gas
+      drop
+      return
+      i64.const 2
+      call $finite_wasm_gas
+    end
+  )
+  (export "fac-rec" (func 2))
+  (export "fac-rec-named" (func $fac-rec-named))
+  (export "fac-iter" (func 4))
+  (export "fac-iter-named" (func 5))
+  (export "fac-opt" (func 6))
+  (export "fac-ssa" (func 9))
+)
+(assert_return (invoke "fac-rec" (i64.const 25)) (i64.const 7034535277573963776))
+(assert_return (invoke "fac-iter" (i64.const 25)) (i64.const 7034535277573963776))
+(assert_return (invoke "fac-rec-named" (i64.const 25)) (i64.const 7034535277573963776))
+(assert_return (invoke "fac-iter-named" (i64.const 25)) (i64.const 7034535277573963776))
+(assert_return (invoke "fac-opt" (i64.const 25)) (i64.const 7034535277573963776))
+(assert_return (invoke "fac-ssa" (i64.const 25)) (i64.const 7034535277573963776))
+

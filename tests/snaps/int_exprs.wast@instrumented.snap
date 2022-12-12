@@ -1,0 +1,1062 @@
+(module
+  (type (;0;) (func (param i32 i32) (result i32)))
+  (type (;1;) (func (param i64 i64) (result i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (param $y i32) (result i32)
+    i64.const 1000001000012
+    call 1
+    i64.const 8
+    call 0
+    local.get $x
+    i32.const 1
+    i32.add
+    local.get $y
+    i32.const 1
+    i32.add
+    i32.lt_s
+  )
+  (func (;3;) (type 0) (param $x i32) (param $y i32) (result i32)
+    i64.const 1000001000012
+    call 1
+    i64.const 8
+    call 0
+    local.get $x
+    i32.const 1
+    i32.add
+    local.get $y
+    i32.const 1
+    i32.add
+    i32.lt_u
+  )
+  (func (;4;) (type 1) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000024
+    call 1
+    i64.const 8
+    call 0
+    local.get $x
+    i64.const 1
+    i64.add
+    local.get $y
+    i64.const 1
+    i64.add
+    i64.lt_s
+  )
+  (func (;5;) (type 1) (param $x i64) (param $y i64) (result i32)
+    i64.const 1000001000024
+    call 1
+    i64.const 8
+    call 0
+    local.get $x
+    i64.const 1
+    i64.add
+    local.get $y
+    i64.const 1
+    i64.add
+    i64.lt_u
+  )
+  (export "i32.no_fold_cmp_s_offset" (func 2))
+  (export "i32.no_fold_cmp_u_offset" (func 3))
+  (export "i64.no_fold_cmp_s_offset" (func 4))
+  (export "i64.no_fold_cmp_u_offset" (func 5))
+)
+(assert_return (invoke "i32.no_fold_cmp_s_offset" (i32.const 0x7fffffff) (i32.const 0)) (i32.const 1))
+(assert_return (invoke "i32.no_fold_cmp_u_offset" (i32.const 0xffffffff) (i32.const 0)) (i32.const 1))
+(assert_return (invoke "i64.no_fold_cmp_s_offset" (i64.const 0x7fffffffffffffff) (i64.const 0)) (i32.const 1))
+(assert_return (invoke "i64.no_fold_cmp_u_offset" (i64.const 0xffffffffffffffff) (i64.const 0)) (i32.const 1))
+
+;; Test that wrap(extend_s(x)) is not folded to x.
+
+(module
+  (type (;0;) (func (param i64) (result i64)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
+    i64.const 4
+    call 0
+    local.get $x
+    i32.wrap_i64
+    i64.extend_i32_s
+  )
+  (export "i64.no_fold_wrap_extend_s" (func 2))
+)
+(assert_return (invoke "i64.no_fold_wrap_extend_s" (i64.const 0x0010203040506070)) (i64.const 0x0000000040506070))
+(assert_return (invoke "i64.no_fold_wrap_extend_s" (i64.const 0x00a0b0c0d0e0f0a0)) (i64.const 0xffffffffd0e0f0a0))
+
+;; Test that wrap(extend_u(x)) is not folded to x.
+
+(module
+  (type (;0;) (func (param i64) (result i64)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param $x i64) (result i64)
+    i64.const 1000000000008
+    call 1
+    i64.const 4
+    call 0
+    local.get $x
+    i32.wrap_i64
+    i64.extend_i32_u
+  )
+  (export "i64.no_fold_wrap_extend_u" (func 2))
+)
+(assert_return (invoke "i64.no_fold_wrap_extend_u" (i64.const 0x0010203040506070)) (i64.const 0x0000000040506070))
+
+;; Test that x<<n>>n is not folded to x.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i32.const 1
+    i32.shl
+    i32.const 1
+    i32.shr_s
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i32.const 1
+    i32.shl
+    i32.const 1
+    i32.shr_u
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i64.const 1
+    i64.shl
+    i64.const 1
+    i64.shr_s
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i64.const 1
+    i64.shl
+    i64.const 1
+    i64.shr_u
+  )
+  (export "i32.no_fold_shl_shr_s" (func 2))
+  (export "i32.no_fold_shl_shr_u" (func 3))
+  (export "i64.no_fold_shl_shr_s" (func 4))
+  (export "i64.no_fold_shl_shr_u" (func 5))
+)
+(assert_return (invoke "i32.no_fold_shl_shr_s" (i32.const 0x80000000)) (i32.const 0))
+(assert_return (invoke "i32.no_fold_shl_shr_u" (i32.const 0x80000000)) (i32.const 0))
+(assert_return (invoke "i64.no_fold_shl_shr_s" (i64.const 0x8000000000000000)) (i64.const 0))
+(assert_return (invoke "i64.no_fold_shl_shr_u" (i64.const 0x8000000000000000)) (i64.const 0))
+
+;; Test that x>>n<<n is not folded to x.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i32.const 1
+    i32.shr_s
+    i32.const 1
+    i32.shl
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i32.const 1
+    i32.shr_u
+    i32.const 1
+    i32.shl
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i64.const 1
+    i64.shr_s
+    i64.const 1
+    i64.shl
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 6
+    call 0
+    local.get $x
+    i64.const 1
+    i64.shr_u
+    i64.const 1
+    i64.shl
+  )
+  (export "i32.no_fold_shr_s_shl" (func 2))
+  (export "i32.no_fold_shr_u_shl" (func 3))
+  (export "i64.no_fold_shr_s_shl" (func 4))
+  (export "i64.no_fold_shr_u_shl" (func 5))
+)
+(assert_return (invoke "i32.no_fold_shr_s_shl" (i32.const 1)) (i32.const 0))
+(assert_return (invoke "i32.no_fold_shr_u_shl" (i32.const 1)) (i32.const 0))
+(assert_return (invoke "i64.no_fold_shr_s_shl" (i64.const 1)) (i64.const 0))
+(assert_return (invoke "i64.no_fold_shr_u_shl" (i64.const 1)) (i64.const 0))
+
+;; Test that x/n*n is not folded to x.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 6
+    i32.div_s
+    i64.const 3
+    call 0
+    i32.const 6
+    i32.mul
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 6
+    i32.div_u
+    i64.const 3
+    call 0
+    i32.const 6
+    i32.mul
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 6
+    i64.div_s
+    i64.const 3
+    call 0
+    i64.const 6
+    i64.mul
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 6
+    i64.div_u
+    i64.const 3
+    call 0
+    i64.const 6
+    i64.mul
+  )
+  (export "i32.no_fold_div_s_mul" (func 2))
+  (export "i32.no_fold_div_u_mul" (func 3))
+  (export "i64.no_fold_div_s_mul" (func 4))
+  (export "i64.no_fold_div_u_mul" (func 5))
+)
+(assert_return (invoke "i32.no_fold_div_s_mul" (i32.const 1)) (i32.const 0))
+(assert_return (invoke "i32.no_fold_div_u_mul" (i32.const 1)) (i32.const 0))
+(assert_return (invoke "i64.no_fold_div_s_mul" (i64.const 1)) (i64.const 0))
+(assert_return (invoke "i64.no_fold_div_u_mul" (i64.const 1)) (i64.const 0))
+
+;; Test that x/x is not folded to 1.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i32.div_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i64.div_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.no_fold_div_s_self" (func 2))
+  (export "i32.no_fold_div_u_self" (func 3))
+  (export "i64.no_fold_div_s_self" (func 4))
+  (export "i64.no_fold_div_u_self" (func 5))
+)
+(assert_trap (invoke "i32.no_fold_div_s_self" (i32.const 0)) "integer divide by zero")
+(assert_trap (invoke "i32.no_fold_div_u_self" (i32.const 0)) "integer divide by zero")
+(assert_trap (invoke "i64.no_fold_div_s_self" (i64.const 0)) "integer divide by zero")
+(assert_trap (invoke "i64.no_fold_div_u_self" (i64.const 0)) "integer divide by zero")
+
+;; Test that x%x is not folded to 0.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i32.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i32.rem_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i64.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    local.get $x
+    i64.rem_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.no_fold_rem_s_self" (func 2))
+  (export "i32.no_fold_rem_u_self" (func 3))
+  (export "i64.no_fold_rem_s_self" (func 4))
+  (export "i64.no_fold_rem_u_self" (func 5))
+)
+(assert_trap (invoke "i32.no_fold_rem_s_self" (i32.const 0)) "integer divide by zero")
+(assert_trap (invoke "i32.no_fold_rem_u_self" (i32.const 0)) "integer divide by zero")
+(assert_trap (invoke "i64.no_fold_rem_s_self" (i64.const 0)) "integer divide by zero")
+(assert_trap (invoke "i64.no_fold_rem_u_self" (i64.const 0)) "integer divide by zero")
+
+;; Test that x*n/n is not folded to x.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 5
+    call 0
+    local.get $x
+    i32.const 6
+    i32.mul
+    i32.const 6
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 5
+    call 0
+    local.get $x
+    i32.const 6
+    i32.mul
+    i32.const 6
+    i32.div_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 5
+    call 0
+    local.get $x
+    i64.const 6
+    i64.mul
+    i64.const 6
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 5
+    call 0
+    local.get $x
+    i64.const 6
+    i64.mul
+    i64.const 6
+    i64.div_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.no_fold_mul_div_s" (func 2))
+  (export "i32.no_fold_mul_div_u" (func 3))
+  (export "i64.no_fold_mul_div_s" (func 4))
+  (export "i64.no_fold_mul_div_u" (func 5))
+)
+(assert_return (invoke "i32.no_fold_mul_div_s" (i32.const 0x80000000)) (i32.const 0))
+(assert_return (invoke "i32.no_fold_mul_div_u" (i32.const 0x80000000)) (i32.const 0))
+(assert_return (invoke "i64.no_fold_mul_div_s" (i64.const 0x8000000000000000)) (i64.const 0))
+(assert_return (invoke "i64.no_fold_mul_div_u" (i64.const 0x8000000000000000)) (i64.const 0))
+
+;; Test that x/n where n is a known power of 2 is not folded to shr_s.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 2
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 2
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (export "i32.no_fold_div_s_2" (func 2))
+  (export "i64.no_fold_div_s_2" (func 3))
+)
+(assert_return (invoke "i32.no_fold_div_s_2" (i32.const -11)) (i32.const -5))
+(assert_return (invoke "i64.no_fold_div_s_2" (i64.const -11)) (i64.const -5))
+
+;; Test that x%n where n is a known power of 2 is not folded to and.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 2
+    i32.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 2
+    i64.rem_s
+    i64.const 1
+    call 0
+  )
+  (export "i32.no_fold_rem_s_2" (func 2))
+  (export "i64.no_fold_rem_s_2" (func 3))
+)
+(assert_return (invoke "i32.no_fold_rem_s_2" (i32.const -11)) (i32.const -1))
+(assert_return (invoke "i64.no_fold_rem_s_2" (i64.const -11)) (i64.const -1))
+
+;; Test that x/0 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 0
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 0
+    i32.div_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 0
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 0
+    i64.div_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.div_s_0" (func 2))
+  (export "i32.div_u_0" (func 3))
+  (export "i64.div_s_0" (func 4))
+  (export "i64.div_u_0" (func 5))
+)
+(assert_trap (invoke "i32.div_s_0" (i32.const 71)) "integer divide by zero")
+(assert_trap (invoke "i32.div_u_0" (i32.const 71)) "integer divide by zero")
+(assert_trap (invoke "i64.div_s_0" (i64.const 71)) "integer divide by zero")
+(assert_trap (invoke "i64.div_u_0" (i64.const 71)) "integer divide by zero")
+
+;; Test that x/3 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 3
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 3
+    i32.div_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 3
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 3
+    i64.div_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.div_s_3" (func 2))
+  (export "i32.div_u_3" (func 3))
+  (export "i64.div_s_3" (func 4))
+  (export "i64.div_u_3" (func 5))
+)
+(assert_return (invoke "i32.div_s_3" (i32.const 71)) (i32.const 23))
+(assert_return (invoke "i32.div_s_3" (i32.const 0x60000000)) (i32.const 0x20000000))
+(assert_return (invoke "i32.div_u_3" (i32.const 71)) (i32.const 23))
+(assert_return (invoke "i32.div_u_3" (i32.const 0xc0000000)) (i32.const 0x40000000))
+(assert_return (invoke "i64.div_s_3" (i64.const 71)) (i64.const 23))
+(assert_return (invoke "i64.div_s_3" (i64.const 0x3000000000000000)) (i64.const 0x1000000000000000))
+(assert_return (invoke "i64.div_u_3" (i64.const 71)) (i64.const 23))
+(assert_return (invoke "i64.div_u_3" (i64.const 0xc000000000000000)) (i64.const 0x4000000000000000))
+
+;; Test that x/5 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 5
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 5
+    i32.div_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 5
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 5
+    i64.div_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.div_s_5" (func 2))
+  (export "i32.div_u_5" (func 3))
+  (export "i64.div_s_5" (func 4))
+  (export "i64.div_u_5" (func 5))
+)
+(assert_return (invoke "i32.div_s_5" (i32.const 71)) (i32.const 14))
+(assert_return (invoke "i32.div_s_5" (i32.const 0x50000000)) (i32.const 0x10000000))
+(assert_return (invoke "i32.div_u_5" (i32.const 71)) (i32.const 14))
+(assert_return (invoke "i32.div_u_5" (i32.const 0xa0000000)) (i32.const 0x20000000))
+(assert_return (invoke "i64.div_s_5" (i64.const 71)) (i64.const 14))
+(assert_return (invoke "i64.div_s_5" (i64.const 0x5000000000000000)) (i64.const 0x1000000000000000))
+(assert_return (invoke "i64.div_u_5" (i64.const 71)) (i64.const 14))
+(assert_return (invoke "i64.div_u_5" (i64.const 0xa000000000000000)) (i64.const 0x2000000000000000))
+
+;; Test that x/7 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 7
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 7
+    i32.div_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 7
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 7
+    i64.div_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.div_s_7" (func 2))
+  (export "i32.div_u_7" (func 3))
+  (export "i64.div_s_7" (func 4))
+  (export "i64.div_u_7" (func 5))
+)
+(assert_return (invoke "i32.div_s_7" (i32.const 71)) (i32.const 10))
+(assert_return (invoke "i32.div_s_7" (i32.const 0x70000000)) (i32.const 0x10000000))
+(assert_return (invoke "i32.div_u_7" (i32.const 71)) (i32.const 10))
+(assert_return (invoke "i32.div_u_7" (i32.const 0xe0000000)) (i32.const 0x20000000))
+(assert_return (invoke "i64.div_s_7" (i64.const 71)) (i64.const 10))
+(assert_return (invoke "i64.div_s_7" (i64.const 0x7000000000000000)) (i64.const 0x1000000000000000))
+(assert_return (invoke "i64.div_u_7" (i64.const 71)) (i64.const 10))
+(assert_return (invoke "i64.div_u_7" (i64.const 0xe000000000000000)) (i64.const 0x2000000000000000))
+
+;; Test that x%3 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 3
+    i32.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 3
+    i32.rem_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 3
+    i64.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 3
+    i64.rem_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.rem_s_3" (func 2))
+  (export "i32.rem_u_3" (func 3))
+  (export "i64.rem_s_3" (func 4))
+  (export "i64.rem_u_3" (func 5))
+)
+(assert_return (invoke "i32.rem_s_3" (i32.const 71)) (i32.const 2))
+(assert_return (invoke "i32.rem_s_3" (i32.const 0x60000000)) (i32.const 0))
+(assert_return (invoke "i32.rem_u_3" (i32.const 71)) (i32.const 2))
+(assert_return (invoke "i32.rem_u_3" (i32.const 0xc0000000)) (i32.const 0))
+(assert_return (invoke "i64.rem_s_3" (i64.const 71)) (i64.const 2))
+(assert_return (invoke "i64.rem_s_3" (i64.const 0x3000000000000000)) (i64.const 0))
+(assert_return (invoke "i64.rem_u_3" (i64.const 71)) (i64.const 2))
+(assert_return (invoke "i64.rem_u_3" (i64.const 0xc000000000000000)) (i64.const 0))
+
+;; Test that x%5 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 5
+    i32.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 5
+    i32.rem_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 5
+    i64.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 5
+    i64.rem_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.rem_s_5" (func 2))
+  (export "i32.rem_u_5" (func 3))
+  (export "i64.rem_s_5" (func 4))
+  (export "i64.rem_u_5" (func 5))
+)
+(assert_return (invoke "i32.rem_s_5" (i32.const 71)) (i32.const 1))
+(assert_return (invoke "i32.rem_s_5" (i32.const 0x50000000)) (i32.const 0))
+(assert_return (invoke "i32.rem_u_5" (i32.const 71)) (i32.const 1))
+(assert_return (invoke "i32.rem_u_5" (i32.const 0xa0000000)) (i32.const 0))
+(assert_return (invoke "i64.rem_s_5" (i64.const 71)) (i64.const 1))
+(assert_return (invoke "i64.rem_s_5" (i64.const 0x5000000000000000)) (i64.const 0))
+(assert_return (invoke "i64.rem_u_5" (i64.const 71)) (i64.const 1))
+(assert_return (invoke "i64.rem_u_5" (i64.const 0xa000000000000000)) (i64.const 0))
+
+;; Test that x%7 works.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 7
+    i32.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const 7
+    i32.rem_u
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 7
+    i64.rem_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const 7
+    i64.rem_u
+    i64.const 1
+    call 0
+  )
+  (export "i32.rem_s_7" (func 2))
+  (export "i32.rem_u_7" (func 3))
+  (export "i64.rem_s_7" (func 4))
+  (export "i64.rem_u_7" (func 5))
+)
+(assert_return (invoke "i32.rem_s_7" (i32.const 71)) (i32.const 1))
+(assert_return (invoke "i32.rem_s_7" (i32.const 0x70000000)) (i32.const 0))
+(assert_return (invoke "i32.rem_u_7" (i32.const 71)) (i32.const 1))
+(assert_return (invoke "i32.rem_u_7" (i32.const 0xe0000000)) (i32.const 0))
+(assert_return (invoke "i64.rem_s_7" (i64.const 71)) (i64.const 1))
+(assert_return (invoke "i64.rem_s_7" (i64.const 0x7000000000000000)) (i64.const 0))
+(assert_return (invoke "i64.rem_u_7" (i64.const 71)) (i64.const 1))
+(assert_return (invoke "i64.rem_u_7" (i64.const 0xe000000000000000)) (i64.const 0))
+
+;; Test that x/-1 is not folded to -x.
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64) (result i64)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $x i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i32.const -1
+    i32.div_s
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 1) (param $x i64) (result i64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get $x
+    i64.const -1
+    i64.div_s
+    i64.const 1
+    call 0
+  )
+  (export "i32.no_fold_div_neg1" (func 2))
+  (export "i64.no_fold_div_neg1" (func 3))
+)
+(assert_trap (invoke "i32.no_fold_div_neg1" (i32.const 0x80000000)) "integer overflow")
+(assert_trap (invoke "i64.no_fold_div_neg1" (i64.const 0x8000000000000000)) "integer overflow")

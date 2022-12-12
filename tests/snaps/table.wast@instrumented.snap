@@ -1,0 +1,32 @@
+(module
+  (table (;0;) 0 funcref)
+)
+(module
+  (table (;0;) 1 funcref)
+)
+(module
+  (table (;0;) 0 0 funcref)
+)
+(module
+  (table (;0;) 0 1 funcref)
+)
+(module
+  (table (;0;) 1 256 funcref)
+)
+(module
+  (table (;0;) 0 65536 funcref)
+)
+(module
+  (table (;0;) 0 4294967295 funcref)
+)
+(module
+  (table (;0;) 0 funcref)
+  (table (;1;) 0 funcref)
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "table" (table (;0;) 0 funcref))
+  (table (;1;) 0 funcref)
+)
