@@ -20,11 +20,6 @@ pub(crate) struct DiffError {
     path: Option<PathBuf>,
 }
 
-pub enum InterpreterMode {
-    GasTrace,
-    StackTrace,
-}
-
 impl DiffError {
     fn diff(old: &str, new: &str) -> Option<Self> {
         if old == new {
@@ -245,7 +240,7 @@ impl<'a> TestContext {
         //
         // The output is probably going to be extremely verbose, but hey, it doesn’t result in
         // excessive effort at least, does it?
-        let output = match self.exec_interpreter(InterpreterMode::GasTrace, instrumented_wast) {
+        let output = match self.exec_interpreter(instrumented_wast) {
             Ok(o) => o,
             Err(mut e) => return self.fail_test_error(&mut e),
         };
@@ -303,8 +298,8 @@ impl<'a> TestContext {
                 // Ignore the “operations”, we only care about module analysis results.
                 wast::WastDirective::Register { .. } => {
                     output_wast.push_str(&test_contents[start_offset..end_offset]);
-                    continue
-                },
+                    continue;
+                }
                 wast::WastDirective::Invoke(_) => {
                     output_wast.push_str(&test_contents[start_offset..end_offset]);
                     continue;
@@ -312,7 +307,7 @@ impl<'a> TestContext {
                 wast::WastDirective::AssertTrap { .. } => {
                     output_wast.push_str(&test_contents[start_offset..end_offset]);
                     continue;
-                },
+                }
                 wast::WastDirective::AssertReturn { .. } => {
                     output_wast.push_str(&test_contents[start_offset..end_offset]);
                     continue;
@@ -341,17 +336,12 @@ impl<'a> TestContext {
         Ok(output_wast)
     }
 
-    fn exec_interpreter(&mut self, mode: InterpreterMode, code: String) -> Result<String, Error> {
+    fn exec_interpreter(&mut self, code: String) -> Result<String, Error> {
         let test_path = self.tmp_base.join(&self.test_name);
         let _ = std::fs::create_dir_all(&test_path.parent().unwrap());
         std::fs::write(&test_path, code).map_err(|e| Error::WriteTempTest(e, test_path.clone()))?;
 
-        let mut args = vec!["-i".into(), test_path.into()];
-        match mode {
-            InterpreterMode::GasTrace => args.push("-tg".into()),
-            InterpreterMode::StackTrace => args.push("-ts".into()),
-        };
-
+        let args = vec!["-tg".into(), "-i".into(), test_path.into()];
         // TODO: basedir is this the project root, not cwd
         let process = std::process::Command::new("interpreter/wasm")
             .stdin(std::process::Stdio::null())

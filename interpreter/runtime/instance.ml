@@ -11,7 +11,6 @@ type module_inst =
   datas : data_inst list;
   exports : export_inst list;
   gas: int64 ref;
-  stack_limit: int32;
 }
 
 and func_inst = module_inst ref Func.t
@@ -55,9 +54,9 @@ let () =
 
 (* Auxiliary functions *)
 
-let new_module_inst (gas : int64) (stack: int32) =
+let new_module_inst (gas : int64) =
   { types = []; funcs = []; tables = []; memories = []; globals = [];
-    elems = []; datas = []; exports = []; gas = ref gas; stack_limit = stack; }
+    elems = []; datas = []; exports = []; gas = ref gas; }
 
 let extern_type_of = function
   | ExternFunc func -> ExternFuncType (Func.type_of func)
