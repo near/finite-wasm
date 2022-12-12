@@ -1,0 +1,366 @@
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+  (export "b" (func 2))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+  (export "b" (func 3))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+  (export "b" (func 2))
+  (export "c" (func 2))
+)
+(module
+  (type (;0;) (func (param i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param i32)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+  (export "b" (func 2))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (func $a (;2;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (export "a" (func $a))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (func $a (;2;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (export "a" (func $a))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+  )
+  (export "a" (func 2))
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (func $a (;2;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (export "a" (func $a))
+)
+(module $Func
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (func $f (;2;) (type 0) (param $n i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
+    i64.const 4
+    call $finite_wasm_gas
+    local.get $n
+    i32.const 1
+    i32.add
+    return
+  )
+  (export "e" (func $f))
+)
+(assert_return (invoke "e" (i32.const 42)) (i32.const 43))
+(assert_return (invoke $Func "e" (i32.const 42)) (i32.const 43))
+(module)
+(module $Other1)
+(assert_return (invoke $Func "e" (i32.const 42)) (i32.const 43))
+
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    i32.const 42
+  )
+  (export "a" (func 2))
+  (export "b" (func 2))
+  (export "c" (func 2))
+)
+(assert_return (invoke "a") (i32.const 42))
+(assert_return (invoke "b") (i32.const 42))
+(assert_return (invoke "c") (i32.const 42))
+
+(module
+  (global (;0;) i32 i32.const 0)
+  (export "a" (global 0))
+)
+(module
+  (global (;0;) i32 i32.const 0)
+  (export "a" (global 0))
+  (export "b" (global 0))
+)
+(module
+  (global (;0;) i32 i32.const 0)
+  (global (;1;) i32 i32.const 0)
+  (export "a" (global 0))
+  (export "b" (global 1))
+)
+(module
+  (global (;0;) i32 i32.const 0)
+  (export "a" (global 0))
+)
+(module
+  (global (;0;) i32 i32.const 0)
+  (export "a" (global 0))
+)
+(module
+  (global $a (;0;) i32 i32.const 0)
+  (export "a" (global $a))
+)
+(module
+  (global $a (;0;) i32 i32.const 0)
+  (export "a" (global $a))
+)
+(module
+  (global (;0;) i32 i32.const 0)
+  (export "a" (global 0))
+)
+(module
+  (global $a (;0;) i32 i32.const 0)
+  (export "a" (global $a))
+)
+(module $Global
+  (global $g (;0;) i32 i32.const 42)
+  (export "e" (global $g))
+)
+(assert_return (get "e") (i32.const 42))
+(assert_return (get $Global "e") (i32.const 42))
+(module)
+(module $Other2)
+(assert_return (get $Global "e") (i32.const 42))
+
+(module
+  (table (;0;) 0 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table (;0;) 0 funcref)
+  (export "a" (table 0))
+  (export "b" (table 0))
+)
+(module
+  (table (;0;) 0 funcref)
+  (table (;1;) 0 funcref)
+  (export "a" (table 0))
+  (export "b" (table 1))
+)
+(module
+  (table (;0;) 0 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table (;0;) 0 1 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table (;0;) 0 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table (;0;) 0 1 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table $a (;0;) 0 funcref)
+  (export "a" (table $a))
+)
+(module
+  (table $a (;0;) 0 1 funcref)
+  (export "a" (table $a))
+)
+(module
+  (table $a (;0;) 0 funcref)
+  (export "a" (table $a))
+)
+(module
+  (table $a (;0;) 0 1 funcref)
+  (export "a" (table $a))
+)
+(module
+  (table (;0;) 0 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table (;0;) 0 1 funcref)
+  (export "a" (table 0))
+)
+(module
+  (table $a (;0;) 0 funcref)
+  (export "a" (table $a))
+)
+(module
+  (table $a (;0;) 0 1 funcref)
+  (export "a" (table $a))
+)
+(module
+  (memory (;0;) 0)
+  (export "a" (memory 0))
+)
+(module
+  (memory (;0;) 0)
+  (export "a" (memory 0))
+  (export "b" (memory 0))
+)
+(module
+  (memory (;0;) 0)
+  (export "a" (memory 0))
+)
+(module
+  (memory (;0;) 0 1)
+  (export "a" (memory 0))
+)
+(module
+  (memory (;0;) 0)
+  (export "a" (memory 0))
+)
+(module
+  (memory (;0;) 0 1)
+  (export "a" (memory 0))
+)
+(module
+  (memory $a (;0;) 0)
+  (export "a" (memory $a))
+)
+(module
+  (memory $a (;0;) 0 1)
+  (export "a" (memory $a))
+)
+(module
+  (memory $a (;0;) 0)
+  (export "a" (memory $a))
+)
+(module
+  (memory $a (;0;) 0 1)
+  (export "a" (memory $a))
+)
+(module
+  (memory (;0;) 0)
+  (export "a" (memory 0))
+)
+(module
+  (memory (;0;) 0 1)
+  (export "a" (memory 0))
+)
+(module
+  (memory $a (;0;) 0)
+  (export "a" (memory $a))
+)
+(module
+  (memory $a (;0;) 0 1)
+  (export "a" (memory $a))
+)

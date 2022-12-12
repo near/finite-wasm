@@ -1,0 +1,235 @@
+(module
+  (type (;0;) (func (param i32) (result externref)))
+  (type (;1;) (func (param i32 externref)))
+  (type (;2;) (func (param i32 externref) (result i32)))
+  (type (;3;) (func (result i32)))
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0) (param $i i32) (result externref)
+    i64.const 1000000000032
+    call 1
+    i64.const 3
+    call 0
+    local.get $i
+    table.get $t
+  )
+  (func (;3;) (type 1) (param $i i32) (param $r externref)
+    i64.const 1000001000036
+    call 1
+    i64.const 4
+    call 0
+    local.get $i
+    local.get $r
+    table.set $t
+  )
+  (func (;4;) (type 2) (param $sz i32) (param $init externref) (result i32)
+    i64.const 1000001000036
+    call 1
+    i64.const 2
+    call 0
+    local.get $init
+    local.get $sz
+    i64.const 1
+    call 0
+    table.grow $t
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 3) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    table.size $t
+  )
+  (table $t (;0;) 0 externref)
+  (export "get" (func 2))
+  (export "set" (func 3))
+  (export "grow" (func 4))
+  (export "size" (func 5))
+)
+(assert_return (invoke "size") (i32.const 0))
+(assert_trap (invoke "set" (i32.const 0) (ref.extern 2)) "out of bounds table access")
+(assert_trap (invoke "get" (i32.const 0)) "out of bounds table access")
+
+(assert_return (invoke "grow" (i32.const 1) (ref.null extern)) (i32.const 0))
+(assert_return (invoke "size") (i32.const 1))
+(assert_return (invoke "get" (i32.const 0)) (ref.null extern))
+(assert_return (invoke "set" (i32.const 0) (ref.extern 2)))
+(assert_return (invoke "get" (i32.const 0)) (ref.extern 2))
+(assert_trap (invoke "set" (i32.const 1) (ref.extern 2)) "out of bounds table access")
+(assert_trap (invoke "get" (i32.const 1)) "out of bounds table access")
+
+(assert_return (invoke "grow" (i32.const 4) (ref.extern 3)) (i32.const 1))
+(assert_return (invoke "size") (i32.const 5))
+(assert_return (invoke "get" (i32.const 0)) (ref.extern 2))
+(assert_return (invoke "set" (i32.const 0) (ref.extern 2)))
+(assert_return (invoke "get" (i32.const 0)) (ref.extern 2))
+(assert_return (invoke "get" (i32.const 1)) (ref.extern 3))
+(assert_return (invoke "get" (i32.const 4)) (ref.extern 3))
+(assert_return (invoke "set" (i32.const 4) (ref.extern 4)))
+(assert_return (invoke "get" (i32.const 4)) (ref.extern 4))
+(assert_trap (invoke "set" (i32.const 5) (ref.extern 2)) "out of bounds table access")
+(assert_trap (invoke "get" (i32.const 5)) "out of bounds table access")
+
+
+;; Reject growing to size outside i32 value range
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (func $f (;2;) (type 0) (result i32)
+    i64.const 1000000000036
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    ref.func $f
+    i32.const -16
+    i64.const 1
+    call $finite_wasm_gas
+    table.grow $t
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (table $t (;0;) 16 funcref)
+  (export "grow" (func $f))
+  (elem (;0;) declare func $f)
+)
+(assert_return (invoke "grow") (i32.const -1))
+
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param i32) (result i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null extern
+    local.get 0
+    i64.const 1
+    call 0
+    table.grow $t
+    i64.const 1
+    call 0
+  )
+  (table $t (;0;) 0 externref)
+  (export "grow" (func 2))
+)
+(assert_return (invoke "grow" (i32.const 0)) (i32.const 0))
+(assert_return (invoke "grow" (i32.const 1)) (i32.const 0))
+(assert_return (invoke "grow" (i32.const 0)) (i32.const 1))
+(assert_return (invoke "grow" (i32.const 2)) (i32.const 1))
+(assert_return (invoke "grow" (i32.const 800)) (i32.const 3))
+
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param i32) (result i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null extern
+    local.get 0
+    i64.const 1
+    call 0
+    table.grow $t
+    i64.const 1
+    call 0
+  )
+  (table $t (;0;) 0 10 externref)
+  (export "grow" (func 2))
+)
+(assert_return (invoke "grow" (i32.const 0)) (i32.const 0))
+(assert_return (invoke "grow" (i32.const 1)) (i32.const 0))
+(assert_return (invoke "grow" (i32.const 1)) (i32.const 1))
+(assert_return (invoke "grow" (i32.const 2)) (i32.const 2))
+(assert_return (invoke "grow" (i32.const 6)) (i32.const 4))
+(assert_return (invoke "grow" (i32.const 0)) (i32.const 10))
+(assert_return (invoke "grow" (i32.const 1)) (i32.const -1))
+(assert_return (invoke "grow" (i32.const 0x10000)) (i32.const -1))
+
+
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i32 i32) (result funcref)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param i32) (result i32)
+    i64.const 1000000000036
+    call 1
+    i64.const 2
+    call 0
+    ref.null func
+    local.get 0
+    i64.const 1
+    call 0
+    table.grow $t
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 1) (param i32 i32) (result funcref)
+    (local funcref)
+    i64.const 1000002000032
+    call 1
+    i64.const 4
+    call 0
+    ref.func 3
+    local.set 2
+    block ;; label = @1
+      loop ;; label = @2
+        i64.const 7
+        call 0
+        local.get 0
+        table.get $t
+        local.set 2
+        local.get 2
+        ref.is_null
+        i32.eqz
+        br_if 1 (;@1;)
+        i64.const 4
+        call 0
+        local.get 0
+        local.get 1
+        i32.ge_u
+        br_if 1 (;@1;)
+        i64.const 8
+        call 0
+        local.get 0
+        i32.const 1
+        i32.add
+        local.set 0
+        local.get 0
+        local.get 1
+        i32.le_u
+        br_if 0 (;@2;)
+        i64.const 2
+        call 0
+      end
+    end
+    i64.const 2
+    call 0
+    local.get 2
+  )
+  (table $t (;0;) 10 funcref)
+  (export "grow" (func 2))
+  (export "check-table-null" (func 3))
+  (elem (;0;) declare func 3)
+)
+(assert_return (invoke "check-table-null" (i32.const 0) (i32.const 9)) (ref.null func))
+(assert_return (invoke "grow" (i32.const 10)) (i32.const 10))
+(assert_return (invoke "check-table-null" (i32.const 0) (i32.const 19)) (ref.null func))
+
+
+;; Type errors
+

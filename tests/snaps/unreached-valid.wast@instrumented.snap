@@ -1,0 +1,138 @@
+(module
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (result i32)))
+  (type (;3;) (func (result i64)))
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0) (param $cond i32) (result i32)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    i32.const 0
+    local.get $cond
+    select
+  )
+  (func (;3;) (type 0) (param $cond i32) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    unreachable
+    local.get $cond
+    select
+  )
+  (func (;4;) (type 1)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    select
+    unreachable
+    i32.const 0
+    select
+    unreachable
+    i32.const 0
+    i32.const 0
+    select
+    unreachable
+    i32.const 0
+    i32.const 0
+    i32.const 0
+    select
+    unreachable
+    f32.const 0x0p+0 (;=0;)
+    i32.const 0
+    select
+    unreachable
+  )
+  (func (;5;) (type 2) (result i32)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    select
+    i32.add
+  )
+  (func (;6;) (type 3) (result i64)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    i64.const 0
+    i32.const 0
+    select
+    i64.add
+  )
+  (func (;7;) (type 1)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    select
+    i32.eqz
+    drop
+  )
+  (func (;8;) (type 1)
+    i64.const 1000000000000
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    select
+    ref.is_null
+    drop
+  )
+  (export "select-trap-left" (func 2))
+  (export "select-trap-right" (func 3))
+  (export "select-unreached" (func 4))
+  (export "select_unreached_result_1" (func 5))
+  (export "select_unreached_result_2" (func 6))
+  (export "unreachable-num" (func 7))
+  (export "unreachable-ref" (func 8))
+)
+(assert_trap (invoke "select-trap-left" (i32.const 1)) "unreachable")
+(assert_trap (invoke "select-trap-left" (i32.const 0)) "unreachable")
+(assert_trap (invoke "select-trap-right" (i32.const 1)) "unreachable")
+(assert_trap (invoke "select-trap-right" (i32.const 0)) "unreachable")
+
+;; Validation after unreachable
+
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    block (result f64) ;; label = @1
+      block (result f32) ;; label = @2
+        unreachable
+        i32.const 1
+        br_table 0 (;@2;) 1 (;@1;) 1 (;@1;)
+        i64.const 1
+        call 0
+      end
+      i64.const 3
+      call 0
+      drop
+      f64.const 0x0p+0 (;=0;)
+    end
+    i64.const 2
+    call 0
+    drop
+  )
+  (export "meet-bottom" (func 2))
+)
+(assert_trap (invoke "meet-bottom") "unreachable")

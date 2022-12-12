@@ -1,0 +1,94 @@
+(module
+  (type (;0;) (func (param v128) (result v128)))
+  (type (;1;) (func (result v128)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param v128) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get 0
+    i64x2.abs
+  )
+  (func (;3;) (type 1) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    v128.const i32x4 0x00000000 0x80000000 0xffffffff 0x7fffffff
+    i64x2.abs
+  )
+  (export "i64x2.abs" (func 2))
+  (export "i64x2.abs_with_const_0" (func 3))
+)
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 1 1))
+                                   (v128.const i64x2 1 1))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -1 -1))
+                                   (v128.const i64x2 1 1))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 18446744073709551615 18446744073709551615))
+                                   (v128.const i64x2 1 1))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 0xffffffffffffffff 0xffffffffffffffff))
+                                   (v128.const i64x2 0x1 0x1))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 9223372036854775808 9223372036854775808))
+                                   (v128.const i64x2 9223372036854775808 9223372036854775808))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -9223372036854775808 -9223372036854775808))
+                                   (v128.const i64x2 9223372036854775808 9223372036854775808))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -0x8000000000000000 -0x8000000000000000))
+                                   (v128.const i64x2 0x8000000000000000 0x8000000000000000))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 0x8000000000000000 0x8000000000000000))
+                                   (v128.const i64x2 0x8000000000000000 0x8000000000000000))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 01_2_3 01_2_3))
+                                   (v128.const i64x2 01_2_3 01_2_3))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -01_2_3 -01_2_3))
+                                   (v128.const i64x2 123 123))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 0x80 0x80))
+                                   (v128.const i64x2 0x80 0x80))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -0x80 -0x80))
+                                   (v128.const i64x2 0x80 0x80))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 0x0_8_0 0x0_8_0))
+                                   (v128.const i64x2 0x0_8_0 0x0_8_0))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -0x0_8_0 -0x0_8_0))
+                                   (v128.const i64x2 0x80 0x80))
+
+;; Const vs const
+(assert_return (invoke "i64x2.abs_with_const_0") (v128.const i64x2 9223372036854775808 9223372036854775807))
+
+;; Param vs const
+
+;; Test different lanes go through different if-then clauses
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -9223372036854775808 9223372036854775807))
+                                   (v128.const i64x2 9223372036854775808 9223372036854775807))
+
+;; Test opposite signs of zero
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -0 -0))
+                                   (v128.const i64x2 -0 -0))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 +0 0))
+                                   (v128.const i64x2 +0 0))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 -0 -0))
+                                   (v128.const i64x2 -0 -0))
+(assert_return (invoke "i64x2.abs" (v128.const i64x2 +0 +0))
+                                   (v128.const i64x2 +0 +0))
+
+;; Unknown operators
+
+;; Type check
+(module
+  (type (;0;) (func (param v128) (result v128)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param v128) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 4
+    call 0
+    local.get 0
+    i64x2.abs
+    i64x2.abs
+  )
+  (export "i64x2.abs-i64x2.abs" (func 2))
+)
+(assert_return (invoke "i64x2.abs-i64x2.abs" (v128.const i64x2 -1 -1))
+                                             (v128.const i64x2 1 1))

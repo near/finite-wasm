@@ -1,0 +1,615 @@
+(module $Mf
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+    call $g
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (func $g (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    i32.const 2
+  )
+  (export "call" (func 2))
+)
+(register "Mf" $Mf)
+
+(module $Nf
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (import "Mf" "call" (func $f (;2;) (type 0)))
+  (func (;3;) (type 0) (result i32)
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+    call $f
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (func (;4;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+    call $g
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (func $g (;5;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    i32.const 3
+  )
+  (export "Mf.call" (func $f))
+  (export "call Mf.call" (func 3))
+  (export "call" (func 4))
+)
+(assert_return (invoke $Mf "call") (i32.const 2))
+(assert_return (invoke $Nf "Mf.call") (i32.const 2))
+(assert_return (invoke $Nf "call") (i32.const 3))
+(assert_return (invoke $Nf "call Mf.call") (i32.const 2))
+
+(module
+  (type (;0;) (func (param i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (import "spectest" "print_i32" (func $f (;2;) (type 0)))
+  (export "print" (func $f))
+)
+(register "reexport_f")
+(module $Mg
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    global.get $glob
+  )
+  (func (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    global.get $mut_glob
+  )
+  (func (;4;) (type 1) (param i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 3
+    call 0
+    local.get 0
+    global.set $mut_glob
+  )
+  (global $glob (;0;) i32 i32.const 42)
+  (global $mut_glob (;1;) (mut i32) i32.const 142)
+  (export "glob" (global $glob))
+  (export "get" (func 2))
+  (export "mut_glob" (global $mut_glob))
+  (export "get_mut" (func 3))
+  (export "set_mut" (func 4))
+)
+(register "Mg" $Mg)
+
+(module $Ng
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "Mg" "glob" (global $x (;0;) i32))
+  (import "Mg" "mut_glob" (global $mut_glob (;1;) (mut i32)))
+  (import "Mg" "get" (func $f (;2;) (type 0)))
+  (import "Mg" "get_mut" (func $get_mut (;3;) (type 0)))
+  (import "Mg" "set_mut" (func $set_mut (;4;) (type 1)))
+  (func (;5;) (type 0) (result i32)
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    global.get $glob
+  )
+  (global $glob (;2;) i32 i32.const 43)
+  (export "Mg.glob" (global $x))
+  (export "Mg.get" (func $f))
+  (export "glob" (global $glob))
+  (export "get" (func 5))
+  (export "Mg.mut_glob" (global $mut_glob))
+  (export "Mg.get_mut" (func $get_mut))
+  (export "Mg.set_mut" (func $set_mut))
+)
+(assert_return (get $Mg "glob") (i32.const 42))
+(assert_return (get $Ng "Mg.glob") (i32.const 42))
+(assert_return (get $Ng "glob") (i32.const 43))
+(assert_return (invoke $Mg "get") (i32.const 42))
+(assert_return (invoke $Ng "Mg.get") (i32.const 42))
+(assert_return (invoke $Ng "get") (i32.const 43))
+
+(assert_return (get $Mg "mut_glob") (i32.const 142))
+(assert_return (get $Ng "Mg.mut_glob") (i32.const 142))
+(assert_return (invoke $Mg "get_mut") (i32.const 142))
+(assert_return (invoke $Ng "Mg.get_mut") (i32.const 142))
+
+(assert_return (invoke $Mg "set_mut" (i32.const 241)))
+(assert_return (get $Mg "mut_glob") (i32.const 241))
+(assert_return (get $Ng "Mg.mut_glob") (i32.const 241))
+(assert_return (invoke $Mg "get_mut") (i32.const 241))
+(assert_return (invoke $Ng "Mg.get_mut") (i32.const 241))
+
+
+(module $Mref_ex
+  (global (;0;) funcref ref.null func)
+  (global (;1;) (mut funcref) ref.null func)
+  (global (;2;) externref ref.null extern)
+  (global (;3;) (mut externref) ref.null extern)
+  (export "g-const-func" (global 0))
+  (export "g-var-func" (global 1))
+  (export "g-const-extern" (global 2))
+  (export "g-var-extern" (global 3))
+)
+(register "Mref_ex" $Mref_ex)
+
+(module $Mref_im
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "Mref_ex" "g-const-func" (global (;0;) funcref))
+  (import "Mref_ex" "g-const-extern" (global (;1;) externref))
+  (import "Mref_ex" "g-var-func" (global (;2;) (mut funcref)))
+  (import "Mref_ex" "g-var-extern" (global (;3;) (mut externref)))
+)
+(module $Mt
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func))
+  (type (;2;) (func (param i32) (result i32)))
+  (type (;3;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
+  (func $g (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    i32.const 4
+  )
+  (func (;3;) (type 0) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    i32.const -4
+  )
+  (func (;4;) (type 2) (param i32) (result i32)
+    i64.const 1000000000008
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    local.get 0
+    call_indirect (type 0)
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (table (;0;) 10 funcref)
+  (export "tab" (table 0))
+  (export "h" (func 3))
+  (export "call" (func 4))
+  (elem (;0;) (i32.const 2) func $g $g $g $g)
+)
+(register "Mt" $Mt)
+
+(module $Nt
+  (type (;0;) (func))
+  (type (;1;) (func (result i32)))
+  (type (;2;) (func (param i32) (result i32)))
+  (type (;3;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
+  (import "Mt" "call" (func $f (;2;) (type 2)))
+  (import "Mt" "h" (func $h (;3;) (type 1)))
+  (func $g (;4;) (type 1) (result i32)
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    i32.const 5
+  )
+  (func (;5;) (type 2) (param i32) (result i32)
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    local.get 0
+    call $f
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (func (;6;) (type 2) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    local.get 0
+    call_indirect (type 1)
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (table (;0;) 5 5 funcref)
+  (export "Mt.call" (func $f))
+  (export "call Mt.call" (func 5))
+  (export "call" (func 6))
+  (elem (;0;) (i32.const 0) func $g $g $g $h $f)
+)
+(assert_return (invoke $Mt "call" (i32.const 2)) (i32.const 4))
+(assert_return (invoke $Nt "Mt.call" (i32.const 2)) (i32.const 4))
+(assert_return (invoke $Nt "call" (i32.const 2)) (i32.const 5))
+(assert_return (invoke $Nt "call Mt.call" (i32.const 2)) (i32.const 4))
+
+(assert_trap (invoke $Mt "call" (i32.const 1)) "uninitialized element")
+(assert_trap (invoke $Nt "Mt.call" (i32.const 1)) "uninitialized element")
+(assert_return (invoke $Nt "call" (i32.const 1)) (i32.const 5))
+(assert_trap (invoke $Nt "call Mt.call" (i32.const 1)) "uninitialized element")
+
+(assert_trap (invoke $Mt "call" (i32.const 0)) "uninitialized element")
+(assert_trap (invoke $Nt "Mt.call" (i32.const 0)) "uninitialized element")
+(assert_return (invoke $Nt "call" (i32.const 0)) (i32.const 5))
+(assert_trap (invoke $Nt "call Mt.call" (i32.const 0)) "uninitialized element")
+
+(assert_trap (invoke $Mt "call" (i32.const 20)) "undefined element")
+(assert_trap (invoke $Nt "Mt.call" (i32.const 20)) "undefined element")
+(assert_trap (invoke $Nt "call" (i32.const 7)) "undefined element")
+(assert_trap (invoke $Nt "call Mt.call" (i32.const 20)) "undefined element")
+
+(assert_return (invoke $Nt "call" (i32.const 3)) (i32.const -4))
+(assert_trap (invoke $Nt "call" (i32.const 4)) "indirect call type mismatch")
+
+(module $Ot
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32) (result i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "Mt" "h" (func $h (;2;) (type 0)))
+  (import "Mt" "tab" (table (;0;) 5 funcref))
+  (func $i (;3;) (type 0) (result i32)
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    i32.const 6
+  )
+  (func (;4;) (type 1) (param i32) (result i32)
+    i64.const 1000000000004
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    local.get 0
+    call_indirect (type 0)
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (export "call" (func 4))
+  (elem (;0;) (i32.const 1) func $i $h)
+)
+(assert_return (invoke $Mt "call" (i32.const 3)) (i32.const 4))
+(assert_return (invoke $Nt "Mt.call" (i32.const 3)) (i32.const 4))
+(assert_return (invoke $Nt "call Mt.call" (i32.const 3)) (i32.const 4))
+(assert_return (invoke $Ot "call" (i32.const 3)) (i32.const 4))
+
+(assert_return (invoke $Mt "call" (i32.const 2)) (i32.const -4))
+(assert_return (invoke $Nt "Mt.call" (i32.const 2)) (i32.const -4))
+(assert_return (invoke $Nt "call" (i32.const 2)) (i32.const 5))
+(assert_return (invoke $Nt "call Mt.call" (i32.const 2)) (i32.const -4))
+(assert_return (invoke $Ot "call" (i32.const 2)) (i32.const -4))
+
+(assert_return (invoke $Mt "call" (i32.const 1)) (i32.const 6))
+(assert_return (invoke $Nt "Mt.call" (i32.const 1)) (i32.const 6))
+(assert_return (invoke $Nt "call" (i32.const 1)) (i32.const 5))
+(assert_return (invoke $Nt "call Mt.call" (i32.const 1)) (i32.const 6))
+(assert_return (invoke $Ot "call" (i32.const 1)) (i32.const 6))
+
+(assert_trap (invoke $Mt "call" (i32.const 0)) "uninitialized element")
+(assert_trap (invoke $Nt "Mt.call" (i32.const 0)) "uninitialized element")
+(assert_return (invoke $Nt "call" (i32.const 0)) (i32.const 5))
+(assert_trap (invoke $Nt "call Mt.call" (i32.const 0)) "uninitialized element")
+(assert_trap (invoke $Ot "call" (i32.const 0)) "uninitialized element")
+
+(assert_trap (invoke $Ot "call" (i32.const 20)) "undefined element")
+
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (import "Mt" "tab" (table (;0;) 0 funcref))
+  (func $f (;2;) (type 0)
+    i64.const 1000000000000
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (elem (;0;) (i32.const 9) func $f)
+)
+(module $G1
+  (global (;0;) i32 i32.const 5)
+  (export "g" (global 0))
+)
+(register "G1" $G1)
+(module $G2
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "G1" "g" (global (;0;) i32))
+  (global (;1;) i32 global.get 0)
+  (export "g" (global 1))
+)
+(assert_return (get $G2 "g") (i32.const 5))
+
+(assert_trap
+  (module
+    (table (import "Mt" "tab") 0 funcref)
+    (elem (i32.const 10) $f)
+    (func $f)
+  )
+  "out of bounds table access"
+)
+
+(assert_trap (invoke $Mt "call" (i32.const 7)) "uninitialized element")
+
+;; Unlike in the v1 spec, active element segments stored before an
+;; out-of-bounds access persist after the instantiation failure.
+(assert_trap
+  (module
+    (table (import "Mt" "tab") 10 funcref)
+    (func $f (result i32) (i32.const 0))
+    (elem (i32.const 7) $f)
+    (elem (i32.const 8) $f $f $f $f $f)  ;; (partially) out of bounds
+  )
+  "out of bounds table access"
+)
+(assert_return (invoke $Mt "call" (i32.const 7)) (i32.const 0))
+(assert_trap (invoke $Mt "call" (i32.const 8)) "uninitialized element")
+
+(assert_trap
+  (module
+    (table (import "Mt" "tab") 10 funcref)
+    (func $f (result i32) (i32.const 0))
+    (elem (i32.const 7) $f)
+    (memory 1)
+    (data (i32.const 0x10000) "d")  ;; out of bounds
+  )
+  "out of bounds memory access"
+)
+(assert_return (invoke $Mt "call" (i32.const 7)) (i32.const 0))
+
+
+(module $Mtable_ex
+  (table $t1 (;0;) 1 funcref)
+  (table $t2 (;1;) 1 externref)
+  (export "t-func" (table $t1))
+  (export "t-extern" (table $t2))
+)
+(register "Mtable_ex" $Mtable_ex)
+
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "Mtable_ex" "t-func" (table (;0;) 1 funcref))
+  (import "Mtable_ex" "t-extern" (table (;1;) 1 externref))
+)
+(module $Mm
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param $a i32) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    local.get $a
+    i32.load8_u
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 5)
+  (export "mem" (memory 0))
+  (export "load" (func 2))
+  (data (;0;) (i32.const 10) "\00\01\02\03\04\05\06\07\08\09")
+)
+(register "Mm" $Mm)
+
+(module $Nm
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 1)))
+  (import "Mm" "load" (func $loadM (;2;) (type 0)))
+  (func (;3;) (type 0) (param $a i32) (result i32)
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_gas
+    local.get $a
+    i32.load8_u
+    i64.const 1
+    call $finite_wasm_gas
+  )
+  (memory (;0;) 1)
+  (export "Mm.load" (func $loadM))
+  (export "load" (func 3))
+  (data (;0;) (i32.const 10) "\f0\f1\f2\f3\f4\f5")
+)
+(assert_return (invoke $Mm "load" (i32.const 12)) (i32.const 2))
+(assert_return (invoke $Nm "Mm.load" (i32.const 12)) (i32.const 2))
+(assert_return (invoke $Nm "load" (i32.const 12)) (i32.const 0xf2))
+
+(module $Om
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "Mm" "mem" (memory (;0;) 1))
+  (func (;2;) (type 0) (param $a i32) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    local.get $a
+    i32.load8_u
+    i64.const 1
+    call 0
+  )
+  (export "load" (func 2))
+  (data (;0;) (i32.const 5) "\a0\a1\a2\a3\a4\a5\a6\a7")
+)
+(assert_return (invoke $Mm "load" (i32.const 12)) (i32.const 0xa7))
+(assert_return (invoke $Nm "Mm.load" (i32.const 12)) (i32.const 0xa7))
+(assert_return (invoke $Nm "load" (i32.const 12)) (i32.const 0xf2))
+(assert_return (invoke $Om "load" (i32.const 12)) (i32.const 0xa7))
+
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "Mm" "mem" (memory (;0;) 0))
+  (data (;0;) (i32.const 65535) "a")
+)
+(assert_trap
+  (module
+    (memory (import "Mm" "mem") 0)
+    (data (i32.const 0x10000) "a")
+  )
+  "out of bounds memory access"
+)
+
+(module $Pm
+  (type (;0;) (func (param i32) (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "Mm" "mem" (memory (;0;) 1 8))
+  (func (;2;) (type 0) (param $a i32) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 1
+    call 0
+    local.get $a
+    i64.const 1
+    call 0
+    memory.grow
+    i64.const 1
+    call 0
+  )
+  (export "grow" (func 2))
+)
+(assert_return (invoke $Pm "grow" (i32.const 0)) (i32.const 1))
+(assert_return (invoke $Pm "grow" (i32.const 2)) (i32.const 1))
+(assert_return (invoke $Pm "grow" (i32.const 0)) (i32.const 3))
+(assert_return (invoke $Pm "grow" (i32.const 1)) (i32.const 3))
+(assert_return (invoke $Pm "grow" (i32.const 1)) (i32.const 4))
+(assert_return (invoke $Pm "grow" (i32.const 0)) (i32.const 5))
+(assert_return (invoke $Pm "grow" (i32.const 1)) (i32.const -1))
+(assert_return (invoke $Pm "grow" (i32.const 0)) (i32.const 5))
+
+(assert_return (invoke $Mm "load" (i32.const 0)) (i32.const 0))
+
+;; Unlike in v1 spec, active data segments written before an
+;; out-of-bounds access persist after the instantiation failure.
+(assert_trap
+  (module
+    ;; Note: the memory is 5 pages large by the time we get here.
+    (memory (import "Mm" "mem") 1)
+    (data (i32.const 0) "abc")
+    (data (i32.const 327670) "zzzzzzzzzzzzzzzzzz") ;; (partially) out of bounds
+  )
+  "out of bounds memory access"
+)
+(assert_return (invoke $Mm "load" (i32.const 0)) (i32.const 97))
+(assert_return (invoke $Mm "load" (i32.const 327670)) (i32.const 0))
+
+(assert_trap
+  (module
+    (memory (import "Mm" "mem") 1)
+    (data (i32.const 0) "abc")
+    (table 0 funcref)
+    (func)
+    (elem (i32.const 0) 0)  ;; out of bounds
+  )
+  "out of bounds table access"
+)
+(assert_return (invoke $Mm "load" (i32.const 0)) (i32.const 97))
+
+;; Store is modified if the start function traps.
+(module $Ms
+  (type $t (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type $t) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    i32.load8_u
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type $t) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    call_indirect (type $t)
+    i64.const 1
+    call 0
+  )
+  (table (;0;) 1 funcref)
+  (memory (;0;) 1)
+  (export "memory" (memory 0))
+  (export "table" (table 0))
+  (export "get memory[0]" (func 2))
+  (export "get table[0]" (func 3))
+)
+(register "Ms" $Ms)
+
+(assert_trap
+  (module
+    (import "Ms" "memory" (memory 1))
+    (import "Ms" "table" (table 1 funcref))
+    (data (i32.const 0) "hello")
+    (elem (i32.const 0) $f)
+    (func $f (result i32)
+      (i32.const 0xdead)
+    )
+    (func $main
+      (unreachable)
+    )
+    (start $main)
+  )
+  "unreachable"
+)
+
+(assert_return (invoke $Ms "get memory[0]") (i32.const 104))  ;; 'h'
+(assert_return (invoke $Ms "get table[0]") (i32.const 0xdead))

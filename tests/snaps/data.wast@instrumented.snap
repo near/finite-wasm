@@ -1,0 +1,304 @@
+(module
+  (memory $m (;0;) 1)
+  (data (;0;) (i32.const 0) "")
+  (data (;1;) (i32.const 1) "abcd")
+  (data (;2;) (i32.const 0) "")
+  (data (;3;) (i32.const 0) "abc")
+  (data (;4;) (i32.const 0) "")
+  (data (;5;) (i32.const 1) "abcd")
+  (data (;6;) (i32.const 0) "")
+  (data (;7;) (i32.const 0) "abc")
+  (data (;8;) (i32.const 0) "")
+  (data (;9;) (i32.const 1) "abcd")
+  (data (;10;) (i32.const 0) "")
+  (data (;11;) (i32.const 0) "abc")
+  (data $d1 (;12;) (i32.const 0) "")
+  (data $d2 (;13;) (i32.const 1) "abcd")
+  (data $d3 (;14;) (i32.const 0) "")
+  (data $d4 (;15;) (i32.const 0) "abc")
+  (data $d5 (;16;) (i32.const 0) "")
+  (data $d6 (;17;) (i32.const 1) "abcd")
+  (data $d7 (;18;) (i32.const 0) "")
+  (data $d8 (;19;) (i32.const 0) "abc")
+  (data $d9 (;20;) (i32.const 0) "")
+  (data $d10 (;21;) (i32.const 1) "abcd")
+  (data $d11 (;22;) (i32.const 0) "")
+  (data $d12 (;23;) (i32.const 0) "abc")
+)
+(module
+  (memory (;0;) 1)
+  (data (;0;) (i32.const 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (i32.const 0) "a")
+)
+(module
+  (memory (;0;) 1)
+  (data (;0;) (i32.const 0) "a")
+  (data (;1;) (i32.const 3) "b")
+  (data (;2;) (i32.const 100) "cde")
+  (data (;3;) (i32.const 5) "x")
+  (data (;4;) (i32.const 3) "c")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (i32.const 0) "a")
+  (data (;1;) (i32.const 1) "b")
+  (data (;2;) (i32.const 2) "cde")
+  (data (;3;) (i32.const 3) "f")
+  (data (;4;) (i32.const 2) "g")
+  (data (;5;) (i32.const 1) "h")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "global_i32" (global (;0;) i32))
+  (memory (;0;) 1)
+  (data (;0;) (global.get 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "global_i32" (global (;0;) i32))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (global.get 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "global_i32" (global $g (;0;) i32))
+  (memory (;0;) 1)
+  (data (;0;) (global.get $g) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "global_i32" (global $g (;0;) i32))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (global.get $g) "a")
+)
+(module
+  (memory (;0;) 1)
+  (data (;0;) (i32.const 0) "a")
+  (data (;1;) (i32.const 65535) "b")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (i32.const 0) "a")
+  (data (;1;) (i32.const 65535) "b")
+)
+(module
+  (memory (;0;) 2)
+  (data (;0;) (i32.const 131071) "a")
+)
+(module
+  (memory (;0;) 0)
+  (data (;0;) (i32.const 0) "")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 0))
+  (data (;0;) (i32.const 0) "")
+)
+(module
+  (memory (;0;) 0 0)
+  (data (;0;) (i32.const 0) "")
+)
+(module
+  (memory (;0;) 1)
+  (data (;0;) (i32.const 65536) "")
+)
+(module
+  (memory (;0;) 0)
+  (data (;0;) (i32.const 0) "")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 0))
+  (data (;0;) (i32.const 0) "")
+)
+(module
+  (memory (;0;) 0 0)
+  (data (;0;) (i32.const 0) "")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 0))
+  (data (;0;) (i32.const 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 0 3))
+  (data (;0;) (i32.const 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "global_i32" (global (;0;) i32))
+  (import "spectest" "memory" (memory (;0;) 0))
+  (data (;0;) (global.get 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "global_i32" (global (;0;) i32))
+  (import "spectest" "memory" (memory (;0;) 0 3))
+  (data (;0;) (global.get 0) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 0))
+  (data (;0;) (i32.const 1) "a")
+)
+(module
+  (type (;0;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 0)))
+  (import "spectest" "memory" (memory (;0;) 0 3))
+  (data (;0;) (i32.const 1) "a")
+)
+(assert_trap
+  (module
+    (memory 0)
+    (data (i32.const 0) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 0 0)
+    (data (i32.const 0) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 0 1)
+    (data (i32.const 0) "a")
+  )
+  "out of bounds memory access"
+)
+(assert_trap
+  (module
+    (memory 0)
+    (data (i32.const 1))
+  )
+  "out of bounds memory access"
+)
+(assert_trap
+  (module
+    (memory 0 1)
+    (data (i32.const 1))
+  )
+  "out of bounds memory access"
+)
+
+;; This seems to cause a time-out on Travis.
+(;assert_unlinkable
+  (module
+    (memory 0x10000)
+    (data (i32.const 0xffffffff) "ab")
+  )
+  ""  ;; either out of memory or out of bounds
+;)
+
+(assert_trap
+  (module
+    (global (import "spectest" "global_i32") i32)
+    (memory 0)
+    (data (global.get 0) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 1 2)
+    (data (i32.const 0x1_0000) "a")
+  )
+  "out of bounds memory access"
+)
+(assert_trap
+  (module
+    (import "spectest" "memory" (memory 1))
+    (data (i32.const 0x1_0000) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 2)
+    (data (i32.const 0x2_0000) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 2 3)
+    (data (i32.const 0x2_0000) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 1)
+    (data (i32.const -1) "a")
+  )
+  "out of bounds memory access"
+)
+(assert_trap
+  (module
+    (import "spectest" "memory" (memory 1))
+    (data (i32.const -1) "a")
+  )
+  "out of bounds memory access"
+)
+
+(assert_trap
+  (module
+    (memory 2)
+    (data (i32.const -100) "a")
+  )
+  "out of bounds memory access"
+)
+(assert_trap
+  (module
+    (import "spectest" "memory" (memory 1))
+    (data (i32.const -100) "a")
+  )
+  "out of bounds memory access"
+)
+
+;; Data without memory
+

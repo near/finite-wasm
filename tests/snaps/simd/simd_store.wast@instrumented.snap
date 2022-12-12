@@ -1,0 +1,328 @@
+(module
+  (type (;0;) (func (result v128)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x03020100 0x07060504 0x0b0a0908 0x0f0e0d0c
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00010000 0x00030002 0x00050004 0x00070006
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x30393039 0x30393039 0x30393039 0x30393039
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x12341234 0x12341234 0x12341234 0x12341234
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;6;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;7;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x075bcd15 0x075bcd15 0x075bcd15 0x075bcd15
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;8;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x12345678 0x12345678 0x12345678 0x12345678
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;9;) (type 0) (result v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x3f800000 0x40000000 0x40400000
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+  (export "v128.store_i8x16" (func 2))
+  (export "v128.store_i16x8" (func 3))
+  (export "v128.store_i16x8_2" (func 4))
+  (export "v128.store_i16x8_3" (func 5))
+  (export "v128.store_i32x4" (func 6))
+  (export "v128.store_i32x4_2" (func 7))
+  (export "v128.store_i32x4_3" (func 8))
+  (export "v128.store_f32x4" (func 9))
+)
+(assert_return (invoke "v128.store_i8x16") (v128.const i8x16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
+(assert_return (invoke "v128.store_i16x8") (v128.const i16x8 0 1 2 3 4 5 6 7))
+(assert_return (invoke "v128.store_i16x8_2") (v128.const i16x8 12345 12345 12345 12345 12345 12345 12345 12345))
+(assert_return (invoke "v128.store_i16x8_3") (v128.const i16x8 0x1234 0x1234 0x1234 0x1234 0x1234 0x1234 0x1234 0x1234))
+(assert_return (invoke "v128.store_i32x4") (v128.const i32x4 0 1 2 3))
+(assert_return (invoke "v128.store_i32x4_2") (v128.const i32x4 123456789 123456789 123456789 123456789))
+(assert_return (invoke "v128.store_i32x4_3") (v128.const i32x4 0x12345678 0x12345678 0x12345678 0x12345678))
+(assert_return (invoke "v128.store_f32x4") (v128.const f32x4 0 1 2 3))
+
+
+;; v128.store operator as the argument of control constructs and instructions
+
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 4
+    call 0
+    block ;; label = @1
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 2
+      call 0
+    end
+  )
+  (func (;3;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 4
+    call 0
+    loop ;; label = @1
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 2
+      call 0
+    end
+  )
+  (func (;4;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 4
+    call 0
+    block ;; label = @1
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 1
+      call 0
+      br 0 (;@1;)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 4
+    call 0
+    block ;; label = @1
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 2
+      call 0
+      i32.const 1
+      br_if 0 (;@1;)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+  )
+  (func (;6;) (type 0)
+    i64.const 1000000000024
+    call 1
+    i64.const 5
+    call 0
+    block ;; label = @1
+      i32.const 6
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 1
+      call 0
+      br_if 0 (;@1;)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+  )
+  (func (;7;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 4
+    call 0
+    block ;; label = @1
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 2
+      call 0
+      i32.const 1
+      br_table 0 (;@1;)
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+  )
+  (func (;8;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+    v128.store
+    i64.const 1
+    call 0
+    return
+  )
+  (func (;9;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 2
+    call 0
+    i32.const 1
+    if ;; label = @1
+      i64.const 3
+      call 0
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+  )
+  (func (;10;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    if ;; label = @1
+      i64.const 1
+      call 0
+    else
+      i64.const 3
+      call 0
+      i32.const 0
+      v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000
+      v128.store
+      i64.const 1
+      call 0
+    end
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+  (export "as-block-value" (func 2))
+  (export "as-loop-value" (func 3))
+  (export "as-br-value" (func 4))
+  (export "as-br_if-value" (func 5))
+  (export "as-br_if-value-cond" (func 6))
+  (export "as-br_table-value" (func 7))
+  (export "as-return-value" (func 8))
+  (export "as-if-then" (func 9))
+  (export "as-if-else" (func 10))
+)
+(assert_return (invoke "as-block-value"))
+(assert_return (invoke "as-loop-value"))
+(assert_return (invoke "as-br-value"))
+(assert_return (invoke "as-br_if-value"))
+(assert_return (invoke "as-br_if-value-cond"))
+(assert_return (invoke "as-br_table-value"))
+(assert_return (invoke "as-return-value"))
+(assert_return (invoke "as-if-then"))
+(assert_return (invoke "as-if-else"))
+
+
+;; Unknown operator(e.g. v128.store8, v128.store16, v128.store32)
+

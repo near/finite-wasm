@@ -1,0 +1,398 @@
+(module
+  (memory (;0;) 0)
+)
+(module
+  (memory (;0;) 1)
+)
+(module
+  (memory (;0;) 0 0)
+)
+(module
+  (memory (;0;) 0 1)
+)
+(module
+  (memory (;0;) 1 256)
+)
+(module
+  (memory (;0;) 0 65536)
+)
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (memory (;0;) 0 0)
+  (export "memsize" (func 2))
+  (data (;0;) (i32.const 0) "")
+)
+(assert_return (invoke "memsize") (i32.const 0))
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (memory (;0;) 0 0)
+  (export "memsize" (func 2))
+  (data (;0;) (i32.const 0) "")
+)
+(assert_return (invoke "memsize") (i32.const 0))
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (memory (;0;) 1 1)
+  (export "memsize" (func 2))
+  (data (;0;) (i32.const 0) "x")
+)
+(assert_return (invoke "memsize") (i32.const 1))
+
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (result f64)))
+  (type (;2;) (func (param i32) (result i32)))
+  (type (;3;) (func (param i64) (result i64)))
+  (type (;4;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000020
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    i32.load8_u
+    i64.const 4
+    call 0
+    i32.const 65
+    i32.eq
+    i32.const 3
+    i32.load8_u
+    i64.const 5
+    call 0
+    i32.const 167
+    i32.eq
+    i32.and
+    i32.const 6
+    i32.load8_u
+    i64.const 4
+    call 0
+    i32.const 0
+    i32.eq
+    i32.const 19
+    i32.load8_u
+    i64.const 6
+    call 0
+    i32.const 0
+    i32.eq
+    i32.and
+    i32.and
+    i32.const 20
+    i32.load8_u
+    i64.const 4
+    call 0
+    i32.const 87
+    i32.eq
+    i32.const 23
+    i32.load8_u
+    i64.const 5
+    call 0
+    i32.const 77
+    i32.eq
+    i32.and
+    i32.const 24
+    i32.load8_u
+    i64.const 4
+    call 0
+    i32.const 0
+    i32.eq
+    i32.const 1023
+    i32.load8_u
+    i64.const 6
+    call 0
+    i32.const 0
+    i32.eq
+    i32.and
+    i32.and
+    i32.and
+  )
+  (func (;3;) (type 1) (result f64)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    i64.const -12345
+    i64.store
+    i64.const 2
+    call 0
+    i32.const 8
+    f64.load
+    i64.const 4
+    call 0
+    i64.const -12345
+    f64.reinterpret_i64
+    f64.eq
+    if ;; label = @1
+      i64.const 2
+      call 0
+      f64.const 0x0p+0 (;=0;)
+      return
+      i64.const 1
+      call 0
+    end
+    i64.const 3
+    call 0
+    i32.const 9
+    i64.const 0
+    i64.store align=1
+    i64.const 3
+    call 0
+    i32.const 15
+    i32.const 16453
+    i32.store16 align=1
+    i64.const 2
+    call 0
+    i32.const 9
+    f64.load align=1
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 2) (param $i i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i32.store8
+    i64.const 2
+    call 0
+    i32.const 8
+    i32.load8_s
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 2) (param $i i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i32.store8
+    i64.const 2
+    call 0
+    i32.const 8
+    i32.load8_u
+    i64.const 1
+    call 0
+  )
+  (func (;6;) (type 2) (param $i i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i32.store16
+    i64.const 2
+    call 0
+    i32.const 8
+    i32.load16_s
+    i64.const 1
+    call 0
+  )
+  (func (;7;) (type 2) (param $i i32) (result i32)
+    i64.const 1000000000008
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i32.store16
+    i64.const 2
+    call 0
+    i32.const 8
+    i32.load16_u
+    i64.const 1
+    call 0
+  )
+  (func (;8;) (type 3) (param $i i64) (result i64)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i64.store8
+    i64.const 2
+    call 0
+    i32.const 8
+    i64.load8_s
+    i64.const 1
+    call 0
+  )
+  (func (;9;) (type 3) (param $i i64) (result i64)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i64.store8
+    i64.const 2
+    call 0
+    i32.const 8
+    i64.load8_u
+    i64.const 1
+    call 0
+  )
+  (func (;10;) (type 3) (param $i i64) (result i64)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i64.store16
+    i64.const 2
+    call 0
+    i32.const 8
+    i64.load16_s
+    i64.const 1
+    call 0
+  )
+  (func (;11;) (type 3) (param $i i64) (result i64)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i64.store16
+    i64.const 2
+    call 0
+    i32.const 8
+    i64.load16_u
+    i64.const 1
+    call 0
+  )
+  (func (;12;) (type 3) (param $i i64) (result i64)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i64.store32
+    i64.const 2
+    call 0
+    i32.const 8
+    i64.load32_s
+    i64.const 1
+    call 0
+  )
+  (func (;13;) (type 3) (param $i i64) (result i64)
+    i64.const 1000000000012
+    call 1
+    i64.const 3
+    call 0
+    i32.const 8
+    local.get $i
+    i64.store32
+    i64.const 2
+    call 0
+    i32.const 8
+    i64.load32_u
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+  (export "data" (func 2))
+  (export "cast" (func 3))
+  (export "i32_load8_s" (func 4))
+  (export "i32_load8_u" (func 5))
+  (export "i32_load16_s" (func 6))
+  (export "i32_load16_u" (func 7))
+  (export "i64_load8_s" (func 8))
+  (export "i64_load8_u" (func 9))
+  (export "i64_load16_s" (func 10))
+  (export "i64_load16_u" (func 11))
+  (export "i64_load32_s" (func 12))
+  (export "i64_load32_u" (func 13))
+  (data (;0;) (i32.const 0) "ABC\a7D")
+  (data (;1;) (i32.const 20) "WASM")
+)
+(assert_return (invoke "data") (i32.const 1))
+(assert_return (invoke "cast") (f64.const 42.0))
+
+(assert_return (invoke "i32_load8_s" (i32.const -1)) (i32.const -1))
+(assert_return (invoke "i32_load8_u" (i32.const -1)) (i32.const 255))
+(assert_return (invoke "i32_load16_s" (i32.const -1)) (i32.const -1))
+(assert_return (invoke "i32_load16_u" (i32.const -1)) (i32.const 65535))
+
+(assert_return (invoke "i32_load8_s" (i32.const 100)) (i32.const 100))
+(assert_return (invoke "i32_load8_u" (i32.const 200)) (i32.const 200))
+(assert_return (invoke "i32_load16_s" (i32.const 20000)) (i32.const 20000))
+(assert_return (invoke "i32_load16_u" (i32.const 40000)) (i32.const 40000))
+
+(assert_return (invoke "i32_load8_s" (i32.const 0xfedc6543)) (i32.const 0x43))
+(assert_return (invoke "i32_load8_s" (i32.const 0x3456cdef)) (i32.const 0xffffffef))
+(assert_return (invoke "i32_load8_u" (i32.const 0xfedc6543)) (i32.const 0x43))
+(assert_return (invoke "i32_load8_u" (i32.const 0x3456cdef)) (i32.const 0xef))
+(assert_return (invoke "i32_load16_s" (i32.const 0xfedc6543)) (i32.const 0x6543))
+(assert_return (invoke "i32_load16_s" (i32.const 0x3456cdef)) (i32.const 0xffffcdef))
+(assert_return (invoke "i32_load16_u" (i32.const 0xfedc6543)) (i32.const 0x6543))
+(assert_return (invoke "i32_load16_u" (i32.const 0x3456cdef)) (i32.const 0xcdef))
+
+(assert_return (invoke "i64_load8_s" (i64.const -1)) (i64.const -1))
+(assert_return (invoke "i64_load8_u" (i64.const -1)) (i64.const 255))
+(assert_return (invoke "i64_load16_s" (i64.const -1)) (i64.const -1))
+(assert_return (invoke "i64_load16_u" (i64.const -1)) (i64.const 65535))
+(assert_return (invoke "i64_load32_s" (i64.const -1)) (i64.const -1))
+(assert_return (invoke "i64_load32_u" (i64.const -1)) (i64.const 4294967295))
+
+(assert_return (invoke "i64_load8_s" (i64.const 100)) (i64.const 100))
+(assert_return (invoke "i64_load8_u" (i64.const 200)) (i64.const 200))
+(assert_return (invoke "i64_load16_s" (i64.const 20000)) (i64.const 20000))
+(assert_return (invoke "i64_load16_u" (i64.const 40000)) (i64.const 40000))
+(assert_return (invoke "i64_load32_s" (i64.const 20000)) (i64.const 20000))
+(assert_return (invoke "i64_load32_u" (i64.const 40000)) (i64.const 40000))
+
+(assert_return (invoke "i64_load8_s" (i64.const 0xfedcba9856346543)) (i64.const 0x43))
+(assert_return (invoke "i64_load8_s" (i64.const 0x3456436598bacdef)) (i64.const 0xffffffffffffffef))
+(assert_return (invoke "i64_load8_u" (i64.const 0xfedcba9856346543)) (i64.const 0x43))
+(assert_return (invoke "i64_load8_u" (i64.const 0x3456436598bacdef)) (i64.const 0xef))
+(assert_return (invoke "i64_load16_s" (i64.const 0xfedcba9856346543)) (i64.const 0x6543))
+(assert_return (invoke "i64_load16_s" (i64.const 0x3456436598bacdef)) (i64.const 0xffffffffffffcdef))
+(assert_return (invoke "i64_load16_u" (i64.const 0xfedcba9856346543)) (i64.const 0x6543))
+(assert_return (invoke "i64_load16_u" (i64.const 0x3456436598bacdef)) (i64.const 0xcdef))
+(assert_return (invoke "i64_load32_s" (i64.const 0xfedcba9856346543)) (i64.const 0x56346543))
+(assert_return (invoke "i64_load32_s" (i64.const 0x3456436598bacdef)) (i64.const 0xffffffff98bacdef))
+(assert_return (invoke "i64_load32_u" (i64.const 0xfedcba9856346543)) (i64.const 0x56346543))
+(assert_return (invoke "i64_load32_u" (i64.const 0x3456436598bacdef)) (i64.const 0x98bacdef))
+
+;; Duplicate identifier errors
+

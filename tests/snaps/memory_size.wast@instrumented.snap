@@ -1,0 +1,163 @@
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (func (;3;) (type 1) (param $sz i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 1
+    call 0
+    local.get $sz
+    i64.const 1
+    call 0
+    memory.grow
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 0)
+  (export "size" (func 2))
+  (export "grow" (func 3))
+)
+(assert_return (invoke "size") (i32.const 0))
+(assert_return (invoke "grow" (i32.const 1)))
+(assert_return (invoke "size") (i32.const 1))
+(assert_return (invoke "grow" (i32.const 4)))
+(assert_return (invoke "size") (i32.const 5))
+(assert_return (invoke "grow" (i32.const 0)))
+(assert_return (invoke "size") (i32.const 5))
+
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (func (;3;) (type 1) (param $sz i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 1
+    call 0
+    local.get $sz
+    i64.const 1
+    call 0
+    memory.grow
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+  (export "size" (func 2))
+  (export "grow" (func 3))
+)
+(assert_return (invoke "size") (i32.const 1))
+(assert_return (invoke "grow" (i32.const 1)))
+(assert_return (invoke "size") (i32.const 2))
+(assert_return (invoke "grow" (i32.const 4)))
+(assert_return (invoke "size") (i32.const 6))
+(assert_return (invoke "grow" (i32.const 0)))
+(assert_return (invoke "size") (i32.const 6))
+
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (func (;3;) (type 1) (param $sz i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 1
+    call 0
+    local.get $sz
+    i64.const 1
+    call 0
+    memory.grow
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 0 2)
+  (export "size" (func 2))
+  (export "grow" (func 3))
+)
+(assert_return (invoke "size") (i32.const 0))
+(assert_return (invoke "grow" (i32.const 3)))
+(assert_return (invoke "size") (i32.const 0))
+(assert_return (invoke "grow" (i32.const 1)))
+(assert_return (invoke "size") (i32.const 1))
+(assert_return (invoke "grow" (i32.const 0)))
+(assert_return (invoke "size") (i32.const 1))
+(assert_return (invoke "grow" (i32.const 4)))
+(assert_return (invoke "size") (i32.const 1))
+(assert_return (invoke "grow" (i32.const 1)))
+(assert_return (invoke "size") (i32.const 2))
+
+(module
+  (type (;0;) (func (result i32)))
+  (type (;1;) (func (param i32)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (result i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 2
+    call 0
+    memory.size
+  )
+  (func (;3;) (type 1) (param $sz i32)
+    i64.const 1000000000004
+    call 1
+    i64.const 1
+    call 0
+    local.get $sz
+    i64.const 1
+    call 0
+    memory.grow
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 3 8)
+  (export "size" (func 2))
+  (export "grow" (func 3))
+)
+(assert_return (invoke "size") (i32.const 3))
+(assert_return (invoke "grow" (i32.const 1)))
+(assert_return (invoke "size") (i32.const 4))
+(assert_return (invoke "grow" (i32.const 3)))
+(assert_return (invoke "size") (i32.const 7))
+(assert_return (invoke "grow" (i32.const 0)))
+(assert_return (invoke "size") (i32.const 7))
+(assert_return (invoke "grow" (i32.const 2)))
+(assert_return (invoke "size") (i32.const 7))
+(assert_return (invoke "grow" (i32.const 1)))
+(assert_return (invoke "size") (i32.const 8))
+
+
+;; Type errors
+

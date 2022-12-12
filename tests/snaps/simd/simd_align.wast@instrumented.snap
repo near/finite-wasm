@@ -1,0 +1,909 @@
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load align=8
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store align=1
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store align=2
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store align=4
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store align=8
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_s align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_s align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_s align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_s
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_u align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_u align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_u align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8x8_u
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_s align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_s align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_s align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_s
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_u align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_u align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_u align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16x4_u
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_s align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_s align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_s align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_s
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_u align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_u align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_u align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32x2_u
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load8_splat
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16_splat align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load16_splat
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32_splat align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32_splat align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load32_splat
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load64_splat align=1
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load64_splat align=2
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load64_splat align=4
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load64_splat
+    i64.const 2
+    call 0
+    drop
+  )
+  (memory (;0;) 1)
+)
+(module
+  (type (;0;) (func (param i32) (result v128)))
+  (type (;1;) (func (param i32 v128)))
+  (type (;2;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0) (param $address i32) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 2
+    call 0
+    local.get $address
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 1) (param $address i32) (param $value v128)
+    i64.const 1000001000020
+    call 1
+    i64.const 3
+    call 0
+    local.get $address
+    local.get $value
+    v128.store
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1 1)
+  (export "v128.load align=16" (func 2))
+  (export "v128.store align=16" (func 3))
+)
+(assert_return (invoke "v128.load align=16" (i32.const 0)) (v128.const i32x4 0 0 0 0))
+(assert_return (invoke "v128.load align=16" (i32.const 1)) (v128.const i32x4 0 0 0 0))
+(assert_return (invoke "v128.store align=16" (i32.const 1) (v128.const i8x16 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16)))
+(assert_return (invoke "v128.load align=16" (i32.const 0)) (v128.const i8x16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
+
+;; Test aligned and unaligned read/write
+
+(module
+  (type (;0;) (func (result v128)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (result v128)
+    (local v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x03020100 0x07060504 0x0b0a0908 0x0f0e0d0c
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (func (;3;) (type 0) (result v128)
+    (local v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00010000 0x00030002 0x00050004 0x00070006
+    v128.store align=2
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load align=2
+    i64.const 1
+    call 0
+  )
+  (func (;4;) (type 0) (result v128)
+    (local v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load align=2
+    i64.const 1
+    call 0
+  )
+  (func (;5;) (type 0) (result v128)
+    (local v128)
+    i64.const 1000000000020
+    call 1
+    i64.const 3
+    call 0
+    i32.const 0
+    v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
+    v128.store align=2
+    i64.const 2
+    call 0
+    i32.const 0
+    v128.load
+    i64.const 1
+    call 0
+  )
+  (memory (;0;) 1)
+  (export "v128_unaligned_read_and_write" (func 2))
+  (export "v128_aligned_read_and_write" (func 3))
+  (export "v128_aligned_read_and_unaligned_write" (func 4))
+  (export "v128_unaligned_read_and_aligned_write" (func 5))
+)
+(assert_return (invoke "v128_unaligned_read_and_write") (v128.const i8x16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
+(assert_return (invoke "v128_aligned_read_and_write") (v128.const i16x8 0 1 2 3 4 5 6 7))
+(assert_return (invoke "v128_aligned_read_and_unaligned_write") (v128.const i32x4 0 1 2 3))
+(assert_return (invoke "v128_unaligned_read_and_aligned_write") (v128.const i32x4 0 1 2 3))

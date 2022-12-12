@@ -1,0 +1,60 @@
+(module
+  (type (;0;) (func (param v128) (result v128)))
+  (type (;1;) (func (param i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (func (;2;) (type 0) (param v128) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get 0
+    i32x4.extadd_pairwise_i16x8_s
+  )
+  (func (;3;) (type 0) (param v128) (result v128)
+    i64.const 1000000000016
+    call 1
+    i64.const 3
+    call 0
+    local.get 0
+    i32x4.extadd_pairwise_i16x8_u
+  )
+  (export "i32x4.extadd_pairwise_i16x8_s" (func 2))
+  (export "i32x4.extadd_pairwise_i16x8_u" (func 3))
+)
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 0 0 0 0 0 0 0 0))
+                                                       (v128.const i32x4 0 0 0 0))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 1 1 1 1 1 1 1 1))
+                                                       (v128.const i32x4 2 2 2 2))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 -1 -1 -1 -1 -1 -1 -1 -1))
+                                                       (v128.const i32x4 -2 -2 -2 -2))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 32766 32766 32766 32766 32766 32766 32766 32766))
+                                                       (v128.const i32x4 65532 65532 65532 65532))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 -32767 -32767 -32767 -32767 -32767 -32767 -32767 -32767))
+                                                       (v128.const i32x4 -65534 -65534 -65534 -65534))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 -32768 -32768 -32768 -32768 -32768 -32768 -32768 -32768))
+                                                       (v128.const i32x4 -65536 -65536 -65536 -65536))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 32767 32767 32767 32767 32767 32767 32767 32767))
+                                                       (v128.const i32x4 65534 65534 65534 65534))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_s" (v128.const i16x8 65535 65535 65535 65535 65535 65535 65535 65535))
+                                                       (v128.const i32x4 -2 -2 -2 -2))
+
+;; i32x4.extadd_pairwise_i16x8_u
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 0 0 0 0 0 0 0 0))
+                                                       (v128.const i32x4 0 0 0 0))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 1 1 1 1 1 1 1 1))
+                                                       (v128.const i32x4 2 2 2 2))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 -1 -1 -1 -1 -1 -1 -1 -1))
+                                                       (v128.const i32x4 131070 131070 131070 131070))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 32766 32766 32766 32766 32766 32766 32766 32766))
+                                                       (v128.const i32x4 65532 65532 65532 65532))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 -32767 -32767 -32767 -32767 -32767 -32767 -32767 -32767))
+                                                       (v128.const i32x4 65538 65538 65538 65538))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 -32768 -32768 -32768 -32768 -32768 -32768 -32768 -32768))
+                                                       (v128.const i32x4 65536 65536 65536 65536))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 32767 32767 32767 32767 32767 32767 32767 32767))
+                                                       (v128.const i32x4 65534 65534 65534 65534))
+(assert_return (invoke "i32x4.extadd_pairwise_i16x8_u" (v128.const i16x8 65535 65535 65535 65535 65535 65535 65535 65535))
+                                                       (v128.const i32x4 131070 131070 131070 131070))
+
+;; type check

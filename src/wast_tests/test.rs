@@ -235,6 +235,10 @@ impl<'a> TestContext {
             Err(mut e) => return self.fail_test_error(&mut e),
         };
 
+        if let Err(mut e) = self.compare_snapshot(&instrumented_wast, "instrumented") {
+            return self.fail_test_error(&mut e);
+        }
+
         // Run the interpreter here with the wast file in some sort of a tracing mode (needs to
         // be implemented inside the interpreter).
         //
@@ -331,7 +335,6 @@ impl<'a> TestContext {
             let print = wasmprinter::print_bytes(&instrumented).expect("print");
             output_wast.push_str(&print);
             output_wast.push_str("\n");
-            self.compare_snapshot(&print, &format!("instrumented.{id}"))?;
         }
         Ok(output_wast)
     }
