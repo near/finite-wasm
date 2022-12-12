@@ -145,19 +145,6 @@
     select
   )
   (func (;15;) (type 8) (param i32) (result i32)
-    i64.const 1000000000020
-    call $finite_wasm_stack
-    i64.const 8
-    call $finite_wasm_gas
-    i32.const 2
-    i32.const 3
-    i32.const 0
-    i32.const 1
-    local.get 0
-    select
-    select
-  )
-  (func (;16;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 6
@@ -175,7 +162,7 @@
       call $finite_wasm_gas
     end
   )
-  (func (;17;) (type 8) (param i32) (result i32)
+  (func (;16;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 2
@@ -193,7 +180,7 @@
       call $finite_wasm_gas
     end
   )
-  (func (;18;) (type 8) (param i32) (result i32)
+  (func (;17;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 2
@@ -211,7 +198,7 @@
       select
     end
   )
-  (func (;19;) (type 9) (param i32)
+  (func (;18;) (type 9) (param i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 5
@@ -230,7 +217,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;20;) (type 8) (param i32) (result i32)
+  (func (;19;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 2
@@ -251,7 +238,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;21;) (type 8) (param i32) (result i32)
+  (func (;20;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 2
@@ -272,7 +259,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;22;) (type 8) (param i32) (result i32)
+  (func (;21;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 7
@@ -290,7 +277,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;23;) (type 8) (param i32) (result i32)
+  (func (;22;) (type 8) (param i32) (result i32)
     i64.const 1000000000016
     call $finite_wasm_stack
     i64.const 7
@@ -308,7 +295,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;24;) (type 8) (param i32) (result i32)
+  (func (;23;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 7
@@ -326,7 +313,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;25;) (type 8) (param i32) (result i32)
+  (func (;24;) (type 8) (param i32) (result i32)
     i64.const 1000000000016
     call $finite_wasm_stack
     i64.const 7
@@ -344,14 +331,14 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func $func (;26;) (type $check) (param i32 i32) (result i32)
+  (func $func (;25;) (type $check) (param i32 i32) (result i32)
     i64.const 1000001000004
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
     local.get 0
   )
-  (func (;27;) (type 8) (param i32) (result i32)
+  (func (;26;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 8
@@ -362,6 +349,23 @@
       local.get 0
       select
       i32.const 1
+      i32.const 0
+      call_indirect $t (type $check)
+      i64.const 2
+      call $finite_wasm_gas
+    end
+  )
+  (func (;27;) (type 8) (param i32) (result i32)
+    i64.const 1000000000016
+    call $finite_wasm_stack
+    i64.const 8
+    call $finite_wasm_gas
+    block (result i32) ;; label = @1
+      i32.const 1
+      i32.const 2
+      i32.const 3
+      local.get 0
+      select
       i32.const 0
       call_indirect $t (type $check)
       i64.const 2
@@ -369,23 +373,6 @@
     end
   )
   (func (;28;) (type 8) (param i32) (result i32)
-    i64.const 1000000000016
-    call $finite_wasm_stack
-    i64.const 8
-    call $finite_wasm_gas
-    block (result i32) ;; label = @1
-      i32.const 1
-      i32.const 2
-      i32.const 3
-      local.get 0
-      select
-      i32.const 0
-      call_indirect $t (type $check)
-      i64.const 2
-      call $finite_wasm_gas
-    end
-  )
-  (func (;29;) (type 8) (param i32) (result i32)
     i64.const 1000000000020
     call $finite_wasm_stack
     i64.const 8
@@ -402,7 +389,7 @@
       call $finite_wasm_gas
     end
   )
-  (func (;30;) (type 9) (param i32)
+  (func (;29;) (type 9) (param i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 6
@@ -416,7 +403,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;31;) (type 9) (param i32)
+  (func (;30;) (type 9) (param i32)
     i64.const 1000000000016
     call $finite_wasm_stack
     i64.const 6
@@ -430,7 +417,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;32;) (type 8) (param i32) (result i32)
+  (func (;31;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 4
@@ -445,14 +432,14 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func $f (;33;) (type 8) (param i32) (result i32)
+  (func $f (;32;) (type 8) (param i32) (result i32)
     i64.const 1000000000004
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
     local.get 0
   )
-  (func (;34;) (type 8) (param i32) (result i32)
+  (func (;33;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 5
@@ -465,7 +452,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;35;) (type 8) (param i32) (result i32)
+  (func (;34;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 5
@@ -476,7 +463,7 @@
     select
     return
   )
-  (func (;36;) (type 9) (param i32)
+  (func (;35;) (type 9) (param i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 6
@@ -487,7 +474,7 @@
     select
     drop
   )
-  (func (;37;) (type 8) (param i32) (result i32)
+  (func (;36;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 6
@@ -504,7 +491,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;38;) (type 8) (param i32) (result i32)
+  (func (;37;) (type 8) (param i32) (result i32)
     (local i32)
     i64.const 1000001000012
     call $finite_wasm_stack
@@ -517,7 +504,7 @@
     local.set 0
     local.get 0
   )
-  (func (;39;) (type 8) (param i32) (result i32)
+  (func (;38;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 6
@@ -528,7 +515,7 @@
     select
     local.tee 0
   )
-  (func (;40;) (type 8) (param i32) (result i32)
+  (func (;39;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 7
@@ -540,7 +527,7 @@
     global.set $a
     global.get $a
   )
-  (func (;41;) (type 8) (param i32) (result i32)
+  (func (;40;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 5
@@ -553,7 +540,7 @@
     i64.const 1
     call $finite_wasm_gas
   )
-  (func (;42;) (type 8) (param i32) (result i32)
+  (func (;41;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 6
@@ -564,7 +551,7 @@
     select
     i32.eqz
   )
-  (func (;43;) (type 8) (param i32) (result i32)
+  (func (;42;) (type 8) (param i32) (result i32)
     i64.const 1000000000016
     call $finite_wasm_stack
     i64.const 10
@@ -579,7 +566,7 @@
     select
     i32.mul
   )
-  (func (;44;) (type 8) (param i32) (result i32)
+  (func (;43;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 8
@@ -592,7 +579,7 @@
       i32.eqz
     end
   )
-  (func (;45;) (type 8) (param i32) (result i32)
+  (func (;44;) (type 8) (param i32) (result i32)
     i64.const 1000000000012
     call $finite_wasm_stack
     i64.const 9
@@ -606,7 +593,7 @@
       i32.le_s
     end
   )
-  (func (;46;) (type 8) (param i32) (result i32)
+  (func (;45;) (type 8) (param i32) (result i32)
     i64.const 1000000000016
     call $finite_wasm_stack
     i64.const 9
@@ -620,7 +607,7 @@
       i32.ne
     end
   )
-  (func (;47;) (type 8) (param i32) (result i32)
+  (func (;46;) (type 8) (param i32) (result i32)
     i64.const 1000000000020
     call $finite_wasm_stack
     i64.const 8
@@ -649,37 +636,36 @@
   (export "select-externref" (func 12))
   (export "as-select-first" (func 13))
   (export "as-select-mid" (func 14))
-  (export "as-select-last" (func 15))
-  (export "as-loop-first" (func 16))
-  (export "as-loop-mid" (func 17))
-  (export "as-loop-last" (func 18))
-  (export "as-if-condition" (func 19))
-  (export "as-if-then" (func 20))
-  (export "as-if-else" (func 21))
-  (export "as-br_if-first" (func 22))
-  (export "as-br_if-last" (func 23))
-  (export "as-br_table-first" (func 24))
-  (export "as-br_table-last" (func 25))
-  (export "as-call_indirect-first" (func 27))
-  (export "as-call_indirect-mid" (func 28))
-  (export "as-call_indirect-last" (func 29))
-  (export "as-store-first" (func 30))
-  (export "as-store-last" (func 31))
-  (export "as-memory.grow-value" (func 32))
-  (export "as-call-value" (func 34))
-  (export "as-return-value" (func 35))
-  (export "as-drop-operand" (func 36))
-  (export "as-br-value" (func 37))
-  (export "as-local.set-value" (func 38))
-  (export "as-local.tee-value" (func 39))
-  (export "as-global.set-value" (func 40))
-  (export "as-load-operand" (func 41))
-  (export "as-unary-operand" (func 42))
-  (export "as-binary-operand" (func 43))
-  (export "as-test-operand" (func 44))
-  (export "as-compare-left" (func 45))
-  (export "as-compare-right" (func 46))
-  (export "as-convert-operand" (func 47))
+  (export "as-loop-first" (func 15))
+  (export "as-loop-mid" (func 16))
+  (export "as-loop-last" (func 17))
+  (export "as-if-condition" (func 18))
+  (export "as-if-then" (func 19))
+  (export "as-if-else" (func 20))
+  (export "as-br_if-first" (func 21))
+  (export "as-br_if-last" (func 22))
+  (export "as-br_table-first" (func 23))
+  (export "as-br_table-last" (func 24))
+  (export "as-call_indirect-first" (func 26))
+  (export "as-call_indirect-mid" (func 27))
+  (export "as-call_indirect-last" (func 28))
+  (export "as-store-first" (func 29))
+  (export "as-store-last" (func 30))
+  (export "as-memory.grow-value" (func 31))
+  (export "as-call-value" (func 33))
+  (export "as-return-value" (func 34))
+  (export "as-drop-operand" (func 35))
+  (export "as-br-value" (func 36))
+  (export "as-local.set-value" (func 37))
+  (export "as-local.tee-value" (func 38))
+  (export "as-global.set-value" (func 39))
+  (export "as-load-operand" (func 40))
+  (export "as-unary-operand" (func 41))
+  (export "as-binary-operand" (func 42))
+  (export "as-test-operand" (func 43))
+  (export "as-compare-left" (func 44))
+  (export "as-compare-right" (func 45))
+  (export "as-convert-operand" (func 46))
   (elem (;0;) (i32.const 0) func $dummy)
   (elem (;1;) (table $t) (i32.const 0) func $func)
 )

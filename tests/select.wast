@@ -44,9 +44,6 @@
   (func (export "as-select-mid") (param i32) (result i32)
     (select (i32.const 2) (select (i32.const 0) (i32.const 1) (local.get 0)) (i32.const 3))
   )
-  (func (export "as-select-last") (param i32) (result i32)
-    (select (i32.const 2) (i32.const 3) (select (i32.const 0) (i32.const 1) (local.get 0)))
-  )
 
   (func (export "as-loop-first") (param i32) (result i32)
     (loop (result i32) (select (i32.const 2) (i32.const 3) (local.get 0)) (call $dummy) (call $dummy))
@@ -244,8 +241,6 @@
 (assert_return (invoke "as-select-first" (i32.const 1)) (i32.const 0))
 (assert_return (invoke "as-select-mid" (i32.const 0)) (i32.const 2))
 (assert_return (invoke "as-select-mid" (i32.const 1)) (i32.const 2))
-(assert_return (invoke "as-select-last" (i32.const 0)) (i32.const 2))
-(assert_return (invoke "as-select-last" (i32.const 1)) (i32.const 3))
 
 (assert_return (invoke "as-loop-first" (i32.const 0)) (i32.const 3))
 (assert_return (invoke "as-loop-first" (i32.const 1)) (i32.const 2))
