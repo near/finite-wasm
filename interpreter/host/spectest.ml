@@ -34,18 +34,10 @@ let print (FuncType (_, out)) vs =
   flush_all ();
   List.map default_value out
 
-let gas _ vs = match vs with
-  | [v] -> []
-  | _ -> raise (Invalid_argument "invalid finite_wasm_gas invocation")
-let stack _ vs = match vs with
-  | [v] -> []
-  | _ -> raise (Invalid_argument "invalid finite_wasm_stack invocation")
-
-
 let lookup name t =
   match Utf8.encode name, t with
-  | "finite_wasm_gas", _ -> ExternFunc (func gas (FuncType ([NumType I64Type], [])))
-  | "finite_wasm_stack", _ -> ExternFunc (func stack (FuncType ([NumType I64Type], [])))
+  | "finite_wasm_gas", _ -> ExternFunc Func.GasIntrinsic
+  | "finite_wasm_stack", _ -> ExternFunc Func.StackIntrinsic
   | "print", _ -> ExternFunc (func print (FuncType ([], [])))
   | "print_i32", _ -> ExternFunc (func print (FuncType ([NumType I32Type], [])))
   | "print_i64", _ -> ExternFunc (func print (FuncType ([NumType I64Type], [])))
