@@ -1,12 +1,12 @@
+use rayon::prelude::*;
 use std::error;
 use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::PathBuf;
-use rayon::prelude::*;
 
+mod instrument;
 #[cfg(test)]
 mod test;
-mod instrument;
 
 #[derive(thiserror::Error, Debug)]
 enum Error {
@@ -39,6 +39,7 @@ fn run() -> Result<(), Error> {
     let tests_directory = current_directory.join("tests");
     let snaps_directory = tests_directory.join("snaps");
     let temp_directory = tests_directory.join("tmp");
+    let filter = std::env::args().nth(1);
     let mut tests = Vec::new();
     for entry in walkdir::WalkDir::new(&tests_directory) {
         let entry = entry.map_err(Error::WalkDirEntry)?;
@@ -46,9 +47,19 @@ fn run() -> Result<(), Error> {
         if entry_path.starts_with(&temp_directory) {
             continue;
         }
+        let test_name = entry_path
+            .strip_prefix(&tests_directory)
+            .unwrap_or(&entry_path)
+            .display()
+            .to_string();
+        if let Some(filter) = &filter {
+            if !test_name.contains(filter) {
+                continue;
+            }
+        }
         if Some(OsStr::new("wast")) == entry_path.extension() {
             tests.push(Test {
-                path: entry.path().into(),
+                path: entry_path.into(),
             });
         }
     }
@@ -63,9 +74,11 @@ fn run() -> Result<(), Error> {
         let test_name = test
             .path
             .strip_prefix(&tests_directory)
-            .unwrap_or(&test.path);
+            .unwrap_or(&test.path)
+            .display()
+            .to_string();
         let mut context = test::TestContext::new(
-            test_name.display().to_string(),
+            test_name,
             test_path.into(),
             snaps_directory.clone(),
             temp_directory.clone(),
