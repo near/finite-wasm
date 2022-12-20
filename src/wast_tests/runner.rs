@@ -4,6 +4,7 @@ use std::io::{self, Write};
 use std::path::PathBuf;
 use rayon::prelude::*;
 
+#[cfg(test)]
 mod test;
 mod instrument;
 
@@ -17,8 +18,6 @@ enum Error {
     WriteTestOutput(#[source] std::io::Error),
     #[error("some tests failed")]
     TestsFailed,
-    #[error("could not create a temporary directory for tests")]
-    CreateTempDirectory(#[source] std::io::Error),
 }
 
 struct Test {
@@ -55,7 +54,7 @@ fn run() -> Result<(), Error> {
     }
 
     println!("running {} tests", tests.len());
-    let mut failures = std::sync::atomic::AtomicU16::new(0);
+    let failures = std::sync::atomic::AtomicU16::new(0);
     tests.par_iter_mut().try_for_each(|test| {
         let test_path = test
             .path
