@@ -124,6 +124,8 @@ pub(crate) enum Error {
     Instrument(#[source] instrument::Error),
     #[error("could not write out the instrumented test module to a temporary file at {1:?}")]
     WriteTempTest(#[source] std::io::Error, PathBuf),
+    #[error("interpreter (= {0}) and analysis (= {1}) disagree on gas consumption")]
+    GasMismatch(i64, i64),
 }
 
 impl Error {
@@ -144,6 +146,7 @@ impl Error {
             | Error::AnalyseModule(_, _, _)
             | Error::AnalyseModulePanic(_, _)
             | Error::Instrument(_)
+            | Error::GasMismatch(_, _)
             | Error::WriteTempTest(_, _) => {}
             Error::ParseBuffer(s) => set_wast_path(s, path),
             Error::ParseWast(s) => set_wast_path(s, path),
@@ -249,6 +252,10 @@ impl<'a> TestContext {
             Err(mut e) => return self.fail_test_error(&mut e),
         };
 
+        if let Err(mut e) = self.validate_interpreter_output(&output) {
+            return self.fail_test_error(&mut e);
+        }
+
         // NB: some of the reference snapshots end up at upwards of 250M in size. We can’t
         // reasonably store that in the repository, but we should still be good with storing
         // snapshots of the actual implementation and running the reference interpreter every time.
@@ -259,6 +266,46 @@ impl<'a> TestContext {
         drop(output);
 
         self.pass();
+    }
+
+    fn validate_interpreter_output(&mut self, interpreter_out: &str) -> Result<(), Error> {
+        fn parse_prefix_num(s: &[u8]) -> Option<i64> {
+            match <i64 as atoi::FromRadix10Signed>::from_radix_10_signed(s) {
+                (_, 0) => None,
+                (n, _) => Some(n),
+            }
+        }
+
+        let mut total_gas = 0;
+        let mut gas_charged = 0;
+        for line in interpreter_out.lines() {
+            let Some((kind, rest)) = line.split_once(": ") else {
+                continue;
+            };
+
+            match kind {
+                "gas" => {
+                    let count = parse_prefix_num(rest.as_bytes()).unwrap();
+                    total_gas += count;
+                }
+                "charge_gas" => {
+                    let count = parse_prefix_num(rest.as_bytes()).unwrap();
+                    gas_charged += count;
+                }
+                "reserve_stack" => {
+                    let count = parse_prefix_num(rest.as_bytes()).unwrap();
+                    drop(count);
+                }
+                _ => {
+                    continue;
+                }
+            }
+        }
+
+        if total_gas != gas_charged {
+            return Err(Error::GasMismatch(total_gas, gas_charged));
+        }
+        Ok(())
     }
 
     fn run_analysis(&mut self) -> Result<String, Error> {
