@@ -2,6 +2,7 @@ use std::error;
 use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::PathBuf;
+use rayon::prelude::*;
 
 mod test;
 mod instrument;
@@ -54,8 +55,8 @@ fn run() -> Result<(), Error> {
     }
 
     println!("running {} tests", tests.len());
-    let mut failures = 0;
-    for test in &mut tests {
+    let mut failures = std::sync::atomic::AtomicU16::new(0);
+    tests.par_iter_mut().try_for_each(|test| {
         let test_path = test
             .path
             .strip_prefix(&current_directory)
@@ -72,15 +73,16 @@ fn run() -> Result<(), Error> {
         );
         context.run();
         if context.failed() {
-            failures += 1;
+            failures.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
         }
         std::io::stderr()
             .lock()
             .write_all(&context.output)
             .map_err(Error::WriteTestOutput)?;
-    }
+        Ok::<_, Error>(())
+    })?;
 
-    if failures != 0 {
+    if failures.load(std::sync::atomic::Ordering::SeqCst) != 0 {
         Err(Error::TestsFailed)
     } else {
         Ok(())

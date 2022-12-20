@@ -4,10 +4,12 @@
   (type (;2;) (func (param f64 f64) (result f64)))
   (type (;3;) (func (param f64) (result f64)))
   (type (;4;) (func (param i64)))
+  (type (;5;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -16,7 +18,8 @@
     f32.add
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -25,7 +28,8 @@
     f32.sub
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -34,7 +38,8 @@
     f32.mul
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -43,7 +48,8 @@
     f32.div
   )
   (func (;6;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -51,7 +57,8 @@
     f32.sqrt
   )
   (func (;7;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -59,7 +66,8 @@
     f32.abs
   )
   (func (;8;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -67,7 +75,8 @@
     f32.neg
   )
   (func (;9;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -76,7 +85,8 @@
     f32.copysign
   )
   (func (;10;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -84,7 +94,8 @@
     f32.ceil
   )
   (func (;11;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -92,7 +103,8 @@
     f32.floor
   )
   (func (;12;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -100,7 +112,8 @@
     f32.trunc
   )
   (func (;13;) (type 1) (param $x f32) (result f32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -108,7 +121,8 @@
     f32.nearest
   )
   (func (;14;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -117,7 +131,8 @@
     f32.min
   )
   (func (;15;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -126,7 +141,8 @@
     f32.max
   )
   (func (;16;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -135,7 +151,8 @@
     f64.add
   )
   (func (;17;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -144,7 +161,8 @@
     f64.sub
   )
   (func (;18;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -153,7 +171,8 @@
     f64.mul
   )
   (func (;19;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -162,7 +181,8 @@
     f64.div
   )
   (func (;20;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -170,7 +190,8 @@
     f64.sqrt
   )
   (func (;21;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -178,7 +199,8 @@
     f64.abs
   )
   (func (;22;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -186,7 +208,8 @@
     f64.neg
   )
   (func (;23;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -195,7 +218,8 @@
     f64.copysign
   )
   (func (;24;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -203,7 +227,8 @@
     f64.ceil
   )
   (func (;25;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -211,7 +236,8 @@
     f64.floor
   )
   (func (;26;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -219,7 +245,8 @@
     f64.trunc
   )
   (func (;27;) (type 3) (param $x f64) (result f64)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -227,7 +254,8 @@
     f64.nearest
   )
   (func (;28;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -236,7 +264,8 @@
     f64.min
   )
   (func (;29;) (type 2) (param $x f64) (param $y f64) (result f64)
-    i64.const 1000001000016
+    i64.const 16
+    i64.const 1
     call 1
     i64.const 4
     call 0

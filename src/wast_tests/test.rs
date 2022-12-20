@@ -477,10 +477,7 @@ impl max_stack::Config for DefaultStackConfig {
         &self,
         locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
     ) -> u64 {
-        // NB: These sizes have been chosen to make it easier to tell what contributes
-        // to locals and what contributes to the operand stack.
-        let locals = u64::from(locals.max_index().copied().unwrap_or(0)) * 1_000_000;
-        1_000_000_000_000 + locals
+        u64::from(locals.max_index().copied().unwrap_or(0))
     }
 }
 

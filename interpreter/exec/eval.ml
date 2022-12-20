@@ -154,7 +154,7 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
       | Func.HostFunc (_, _) -> 0L
       (* Compensate for setup and invocation of these intrinsics, as they're free *)
       | Func.GasIntrinsic -> -2L
-      | Func.StackIntrinsic -> -2L
+      | Func.StackIntrinsic -> -3L
     )
     (* The end instruction, pretty much *)
     | Label (_, _, (_, [])) -> 1L

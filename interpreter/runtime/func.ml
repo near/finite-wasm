@@ -15,4 +15,4 @@ let type_of = function
   | AstFunc (ft, _, _) -> ft
   | HostFunc (ft, _) -> ft
   | GasIntrinsic -> (FuncType ([NumType I64Type], []))
-  | StackIntrinsic -> (FuncType ([NumType I64Type], []))
+  | StackIntrinsic -> (FuncType ([NumType I64Type; NumType I64Type], []))

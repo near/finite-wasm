@@ -2,10 +2,12 @@
   (type (;0;) (func (param i32 i32) (result i32)))
   (type (;1;) (func (param i32) (result i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -14,7 +16,8 @@
     i32.add
   )
   (func (;3;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -23,7 +26,8 @@
     i32.sub
   )
   (func (;4;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -32,7 +36,8 @@
     i32.mul
   )
   (func (;5;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -43,7 +48,8 @@
     call 0
   )
   (func (;6;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -54,7 +60,8 @@
     call 0
   )
   (func (;7;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -65,7 +72,8 @@
     call 0
   )
   (func (;8;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -76,7 +84,8 @@
     call 0
   )
   (func (;9;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -85,7 +94,8 @@
     i32.and
   )
   (func (;10;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -94,7 +104,8 @@
     i32.or
   )
   (func (;11;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -103,7 +114,8 @@
     i32.xor
   )
   (func (;12;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -112,7 +124,8 @@
     i32.shl
   )
   (func (;13;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -121,7 +134,8 @@
     i32.shr_s
   )
   (func (;14;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -130,7 +144,8 @@
     i32.shr_u
   )
   (func (;15;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -139,7 +154,8 @@
     i32.rotl
   )
   (func (;16;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -148,7 +164,8 @@
     i32.rotr
   )
   (func (;17;) (type 1) (param $x i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -156,7 +173,8 @@
     i32.clz
   )
   (func (;18;) (type 1) (param $x i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -164,7 +182,8 @@
     i32.ctz
   )
   (func (;19;) (type 1) (param $x i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -172,7 +191,8 @@
     i32.popcnt
   )
   (func (;20;) (type 1) (param $x i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -180,7 +200,8 @@
     i32.extend8_s
   )
   (func (;21;) (type 1) (param $x i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -188,7 +209,8 @@
     i32.extend16_s
   )
   (func (;22;) (type 1) (param $x i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -196,7 +218,8 @@
     i32.eqz
   )
   (func (;23;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -205,7 +228,8 @@
     i32.eq
   )
   (func (;24;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -214,7 +238,8 @@
     i32.ne
   )
   (func (;25;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -223,7 +248,8 @@
     i32.lt_s
   )
   (func (;26;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -232,7 +258,8 @@
     i32.lt_u
   )
   (func (;27;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -241,7 +268,8 @@
     i32.le_s
   )
   (func (;28;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -250,7 +278,8 @@
     i32.le_u
   )
   (func (;29;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -259,7 +288,8 @@
     i32.gt_s
   )
   (func (;30;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -268,7 +298,8 @@
     i32.gt_u
   )
   (func (;31;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -277,7 +308,8 @@
     i32.ge_s
   )
   (func (;32;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call 1
     i64.const 4
     call 0

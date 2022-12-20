@@ -2,10 +2,12 @@
   (type (;0;) (func))
   (type (;1;) (func (result i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -14,7 +16,8 @@
     unreachable
   )
   (func (;3;) (type 0)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -23,7 +26,8 @@
     br 0 (;@0;)
   )
   (func (;4;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -33,7 +37,8 @@
     br 0 (;@0;)
   )
   (func (;5;) (type 0)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -47,7 +52,8 @@
     drop
   )
   (func (;6;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -62,7 +68,8 @@
     drop
   )
   (func (;7;) (type 0)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -72,7 +79,8 @@
     br_table 0 (;@0;)
   )
   (func (;8;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -83,7 +91,8 @@
     br_table 0 (;@0;)
   )
   (func (;9;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -93,7 +102,8 @@
     return
   )
   (func (;10;) (type 0)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -106,7 +116,8 @@
     end
   )
   (func (;11;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -122,7 +133,8 @@
     i32.const 9
   )
   (func (;12;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -138,7 +150,8 @@
     call 0
   )
   (func (;13;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -157,7 +170,8 @@
     i32.const 9
   )
   (func (;14;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -176,7 +190,8 @@
     call 0
   )
   (func (;15;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -193,7 +208,8 @@
     i32.const 9
   )
   (func (;16;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -210,7 +226,8 @@
     call 0
   )
   (func (;17;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -224,7 +241,8 @@
     end
   )
   (func (;18;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -239,7 +257,8 @@
     end
   )
   (func (;19;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -258,7 +277,8 @@
     i32.const 9
   )
   (func (;20;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -276,7 +296,8 @@
     call 0
   )
   (func (;21;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -297,7 +318,8 @@
     i32.const 9
   )
   (func (;22;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 7
     call 0
@@ -318,7 +340,8 @@
     call 0
   )
   (func (;23;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -338,7 +361,8 @@
     i32.const 9
   )
   (func (;24;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 7
     call 0
@@ -357,7 +381,8 @@
     call 0
   )
   (func (;25;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -373,7 +398,8 @@
     end
   )
   (func (;26;) (type 1) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -382,7 +408,8 @@
     i64.eqz
   )
   (func (;27;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -398,7 +425,8 @@
     call 0
   )
   (func (;28;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -416,7 +444,8 @@
     call 0
   )
   (func (;29;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -433,7 +462,8 @@
     call 0
   )
   (func (;30;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -443,7 +473,8 @@
     i64.eqz
   )
   (func (;31;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -453,7 +484,8 @@
     i64.eq
   )
   (func (;32;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -470,7 +502,8 @@
     call 0
   )
   (func (;33;) (type 1) (result i32)
-    i64.const 1000000000024
+    i64.const 24
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -489,7 +522,8 @@
     call 0
   )
   (func (;34;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -507,7 +541,8 @@
     call 0
   )
   (func (;35;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -518,7 +553,8 @@
     i64.eq
   )
   (func (;36;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -529,7 +565,8 @@
     select
   )
   (func (;37;) (type 1) (result i32)
-    i64.const 1000000000024
+    i64.const 24
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -547,7 +584,8 @@
     call 0
   )
   (func (;38;) (type 1) (result i32)
-    i64.const 1000000000020
+    i64.const 20
+    i64.const 0
     call 1
     i64.const 7
     call 0
@@ -567,7 +605,8 @@
     call 0
   )
   (func (;39;) (type 1) (result i32)
-    i64.const 1000000000028
+    i64.const 28
+    i64.const 0
     call 1
     i64.const 7
     call 0
@@ -586,7 +625,8 @@
     call 0
   )
   (func (;40;) (type 1) (result i32)
-    i64.const 1000000000024
+    i64.const 24
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -598,7 +638,8 @@
     select
   )
   (func (;41;) (type 1) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -610,7 +651,8 @@
     end
   )
   (func (;42;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -625,7 +667,8 @@
     call 0
   )
   (func (;43;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -642,7 +685,8 @@
     call 0
   )
   (func (;44;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -658,7 +702,8 @@
     call 0
   )
   (func (;45;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -671,7 +716,8 @@
     end
   )
   (func (;46;) (type 1) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -683,7 +729,8 @@
     end
   )
   (func (;47;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 5
     call 0
@@ -700,7 +747,8 @@
     call 0
   )
   (func (;48;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -719,7 +767,8 @@
     call 0
   )
   (func (;49;) (type 1) (result i32)
-    i64.const 1000000000012
+    i64.const 12
+    i64.const 0
     call 1
     i64.const 6
     call 0
@@ -737,7 +786,8 @@
     call 0
   )
   (func (;50;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call 1
     i64.const 4
     call 0

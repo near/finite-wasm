@@ -4,10 +4,12 @@
   (type (;2;) (func (result f32)))
   (type (;3;) (func (param i32) (result i32)))
   (type (;4;) (func (param i64)))
+  (type (;5;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
-  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
   (func (;2;) (type 0)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -33,7 +35,8 @@
     call $finite_wasm_gas
   )
   (func (;3;) (type 1) (result i32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -54,7 +57,8 @@
   )
   (func (;4;) (type 1) (result i32)
     (local $t i32) (local $s i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -79,7 +83,8 @@
   )
   (func (;5;) (type 2) (result f32)
     (local $t f32)
-    i64.const 1000000000008
+    i64.const 8
+    i64.const 0
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -101,7 +106,8 @@
     local.get $t
   )
   (func $malloc (;6;) (type 3) (param $size i32) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -109,7 +115,8 @@
   )
   (func (;7;) (type 1) (result i32)
     (local $x i32) (local $y i32)
-    i64.const 1000001000008
+    i64.const 8
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas

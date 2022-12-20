@@ -5,16 +5,19 @@
   (type (;3;) (func (param i32) (result funcref)))
   (type (;4;) (func (param i32) (result i32)))
   (type (;5;) (func (param i64)))
+  (type (;6;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 5)))
-  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 6)))
   (func $dummy (;2;) (type 0)
-    i64.const 1000000000000
+    i64.const 0
+    i64.const 0
     call $finite_wasm_stack
     i64.const 1
     call $finite_wasm_gas
   )
   (func (;3;) (type 1) (param $r externref)
-    i64.const 1000000000036
+    i64.const 36
+    i64.const 0
     call $finite_wasm_stack
     i64.const 8
     call $finite_wasm_gas
@@ -27,7 +30,8 @@
     table.set $t3
   )
   (func (;4;) (type 2) (param $i i32) (result externref)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -35,7 +39,8 @@
     table.get $t2
   )
   (func $f3 (;5;) (type 3) (param $i i32) (result funcref)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -43,7 +48,8 @@
     table.get $t3
   )
   (func (;6;) (type 4) (param $i i32) (result i32)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
