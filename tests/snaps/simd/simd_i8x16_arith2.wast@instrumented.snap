@@ -3,10 +3,12 @@
   (type (;1;) (func (param v128) (result v128)))
   (type (;2;) (func (result v128)))
   (type (;3;) (func (param i64)))
+  (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -15,7 +17,8 @@
     i8x16.min_s
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -24,7 +27,8 @@
     i8x16.min_u
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -33,7 +37,8 @@
     i8x16.max_s
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -42,7 +47,8 @@
     i8x16.max_u
   )
   (func (;6;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -51,7 +57,8 @@
     i8x16.avgr_u
   )
   (func (;7;) (type 1) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -59,7 +66,8 @@
     i8x16.abs
   )
   (func (;8;) (type 1) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -67,7 +75,8 @@
     i8x16.popcnt
   )
   (func (;9;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -76,7 +85,8 @@
     i8x16.min_s
   )
   (func (;10;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -85,7 +95,8 @@
     i8x16.min_s
   )
   (func (;11;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -94,7 +105,8 @@
     i8x16.min_u
   )
   (func (;12;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -103,7 +115,8 @@
     i8x16.min_u
   )
   (func (;13;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -112,7 +125,8 @@
     i8x16.max_s
   )
   (func (;14;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -121,7 +135,8 @@
     i8x16.max_s
   )
   (func (;15;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -130,7 +145,8 @@
     i8x16.max_u
   )
   (func (;16;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -139,7 +155,8 @@
     i8x16.max_u
   )
   (func (;17;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -148,7 +165,8 @@
     i8x16.avgr_u
   )
   (func (;18;) (type 2) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -157,7 +175,8 @@
     i8x16.avgr_u
   )
   (func (;19;) (type 2) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -165,7 +184,8 @@
     i8x16.abs
   )
   (func (;20;) (type 2) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -173,7 +193,8 @@
     i8x16.popcnt
   )
   (func (;21;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -182,7 +203,8 @@
     i8x16.min_s
   )
   (func (;22;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -191,7 +213,8 @@
     i8x16.min_s
   )
   (func (;23;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -200,7 +223,8 @@
     i8x16.min_u
   )
   (func (;24;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -209,7 +233,8 @@
     i8x16.min_u
   )
   (func (;25;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -218,7 +243,8 @@
     i8x16.max_s
   )
   (func (;26;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -227,7 +253,8 @@
     i8x16.max_s
   )
   (func (;27;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -236,7 +263,8 @@
     i8x16.max_u
   )
   (func (;28;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -245,7 +273,8 @@
     i8x16.max_u
   )
   (func (;29;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -254,7 +283,8 @@
     i8x16.avgr_u
   )
   (func (;30;) (type 1) (param v128) (result v128)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -640,10 +670,12 @@
   (type (;1;) (func (param v128 v128) (result v128)))
   (type (;2;) (func (param v128) (result v128)))
   (type (;3;) (func (param i64)))
+  (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -654,7 +686,8 @@
     i8x16.min_s
   )
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -665,7 +698,8 @@
     i8x16.min_s
   )
   (func (;4;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -676,7 +710,8 @@
     i8x16.min_s
   )
   (func (;5;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -687,7 +722,8 @@
     i8x16.min_s
   )
   (func (;6;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -698,7 +734,8 @@
     i8x16.min_s
   )
   (func (;7;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -708,7 +745,8 @@
     i8x16.min_s
   )
   (func (;8;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -718,7 +756,8 @@
     i8x16.abs
   )
   (func (;9;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -728,7 +767,8 @@
     i8x16.min_s
   )
   (func (;10;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -738,7 +778,8 @@
     i8x16.popcnt
   )
   (func (;11;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -749,7 +790,8 @@
     i8x16.min_u
   )
   (func (;12;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -760,7 +802,8 @@
     i8x16.min_u
   )
   (func (;13;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -771,7 +814,8 @@
     i8x16.min_u
   )
   (func (;14;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -782,7 +826,8 @@
     i8x16.min_u
   )
   (func (;15;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -793,7 +838,8 @@
     i8x16.min_u
   )
   (func (;16;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -803,7 +849,8 @@
     i8x16.min_u
   )
   (func (;17;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -813,7 +860,8 @@
     i8x16.abs
   )
   (func (;18;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -823,7 +871,8 @@
     i8x16.min_u
   )
   (func (;19;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -833,7 +882,8 @@
     i8x16.popcnt
   )
   (func (;20;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -844,7 +894,8 @@
     i8x16.max_s
   )
   (func (;21;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -855,7 +906,8 @@
     i8x16.max_s
   )
   (func (;22;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -866,7 +918,8 @@
     i8x16.max_s
   )
   (func (;23;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -877,7 +930,8 @@
     i8x16.max_s
   )
   (func (;24;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -888,7 +942,8 @@
     i8x16.max_s
   )
   (func (;25;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -898,7 +953,8 @@
     i8x16.max_s
   )
   (func (;26;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -908,7 +964,8 @@
     i8x16.abs
   )
   (func (;27;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -918,7 +975,8 @@
     i8x16.max_s
   )
   (func (;28;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -928,7 +986,8 @@
     i8x16.popcnt
   )
   (func (;29;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -939,7 +998,8 @@
     i8x16.max_u
   )
   (func (;30;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -950,7 +1010,8 @@
     i8x16.max_u
   )
   (func (;31;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -961,7 +1022,8 @@
     i8x16.max_u
   )
   (func (;32;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -972,7 +1034,8 @@
     i8x16.max_u
   )
   (func (;33;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -983,7 +1046,8 @@
     i8x16.max_u
   )
   (func (;34;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -993,7 +1057,8 @@
     i8x16.max_u
   )
   (func (;35;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1003,7 +1068,8 @@
     i8x16.abs
   )
   (func (;36;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1013,7 +1079,8 @@
     i8x16.max_u
   )
   (func (;37;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1023,7 +1090,8 @@
     i8x16.popcnt
   )
   (func (;38;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -1034,7 +1102,8 @@
     i8x16.avgr_u
   )
   (func (;39;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -1045,7 +1114,8 @@
     i8x16.avgr_u
   )
   (func (;40;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -1056,7 +1126,8 @@
     i8x16.avgr_u
   )
   (func (;41;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -1067,7 +1138,8 @@
     i8x16.avgr_u
   )
   (func (;42;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 1000002000032
+    i64.const 32
+    i64.const 2
     call 1
     i64.const 6
     call 0
@@ -1078,7 +1150,8 @@
     i8x16.avgr_u
   )
   (func (;43;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1088,7 +1161,8 @@
     i8x16.avgr_u
   )
   (func (;44;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1098,7 +1172,8 @@
     i8x16.abs
   )
   (func (;45;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1108,7 +1183,8 @@
     i8x16.avgr_u
   )
   (func (;46;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -1118,7 +1194,8 @@
     i8x16.popcnt
   )
   (func (;47;) (type 2) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -1127,7 +1204,8 @@
     i8x16.abs
   )
   (func (;48;) (type 2) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -1136,7 +1214,8 @@
     i8x16.abs
   )
   (func (;49;) (type 2) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -1145,7 +1224,8 @@
     i8x16.popcnt
   )
   (func (;50;) (type 2) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0

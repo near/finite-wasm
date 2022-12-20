@@ -2,17 +2,20 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 2
     call 0
     memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 1
     call 0
@@ -40,17 +43,20 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 2
     call 0
     memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 1
     call 0
@@ -78,17 +84,20 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 2
     call 0
     memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 1
     call 0
@@ -120,17 +129,20 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 2
     call 0
     memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 1000000000004
+    i64.const 4
+    i64.const 0
     call 1
     i64.const 1
     call 0

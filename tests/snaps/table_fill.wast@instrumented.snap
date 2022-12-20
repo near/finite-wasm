@@ -2,10 +2,12 @@
   (type (;0;) (func (param i32 externref i32)))
   (type (;1;) (func (param i32) (result externref)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $i i32) (param $r externref) (param $n i32)
-    i64.const 1000002000040
+    i64.const 40
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -19,7 +21,8 @@
     call 0
   )
   (func (;3;) (type 1) (param $i i32) (result externref)
-    i64.const 1000000000032
+    i64.const 32
+    i64.const 0
     call 1
     i64.const 3
     call 0

@@ -2,10 +2,12 @@
   (type (;0;) (func (param v128) (result v128)))
   (type (;1;) (func (param v128 v128) (result v128)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -13,7 +15,8 @@
     f32x4.convert_i32x4_s
   )
   (func (;3;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -21,7 +24,8 @@
     f32x4.convert_i32x4_u
   )
   (func (;4;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -29,7 +33,8 @@
     f64x2.convert_low_i32x4_s
   )
   (func (;5;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -37,7 +42,8 @@
     f64x2.convert_low_i32x4_u
   )
   (func (;6;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -46,7 +52,8 @@
     i8x16.narrow_i16x8_s
   )
   (func (;7;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -55,7 +62,8 @@
     i8x16.narrow_i16x8_u
   )
   (func (;8;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -64,7 +72,8 @@
     i16x8.narrow_i32x4_s
   )
   (func (;9;) (type 1) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 4
     call 0
@@ -73,7 +82,8 @@
     i16x8.narrow_i32x4_u
   )
   (func (;10;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -81,7 +91,8 @@
     f64x2.promote_low_f32x4
   )
   (func (;11;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -672,10 +683,12 @@
 (module
   (type (;0;) (func (param v128 v128) (result v128)))
   (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -685,7 +698,8 @@
     f32x4.convert_i32x4_s
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -695,7 +709,8 @@
     f32x4.convert_i32x4_s
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -705,7 +720,8 @@
     f32x4.convert_i32x4_u
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -715,7 +731,8 @@
     i16x8.extend_low_i8x16_s
   )
   (func (;6;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -725,7 +742,8 @@
     i16x8.extend_low_i8x16_s
   )
   (func (;7;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -735,7 +753,8 @@
     i16x8.extend_low_i8x16_s
   )
   (func (;8;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -745,7 +764,8 @@
     i16x8.extend_low_i8x16_s
   )
   (func (;9;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -755,7 +775,8 @@
     i16x8.extend_low_i8x16_u
   )
   (func (;10;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -765,7 +786,8 @@
     i16x8.extend_low_i8x16_u
   )
   (func (;11;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -775,7 +797,8 @@
     i16x8.extend_low_i8x16_u
   )
   (func (;12;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -785,7 +808,8 @@
     i16x8.extend_low_i8x16_u
   )
   (func (;13;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -795,7 +819,8 @@
     i32x4.extend_low_i16x8_s
   )
   (func (;14;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -805,7 +830,8 @@
     i32x4.extend_low_i16x8_s
   )
   (func (;15;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -815,7 +841,8 @@
     i32x4.extend_low_i16x8_s
   )
   (func (;16;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -825,7 +852,8 @@
     i32x4.extend_low_i16x8_s
   )
   (func (;17;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -835,7 +863,8 @@
     i32x4.extend_low_i16x8_u
   )
   (func (;18;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -845,7 +874,8 @@
     i32x4.extend_low_i16x8_u
   )
   (func (;19;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0
@@ -855,7 +885,8 @@
     i32x4.extend_low_i16x8_u
   )
   (func (;20;) (type 0) (param v128 v128) (result v128)
-    i64.const 1000001000032
+    i64.const 32
+    i64.const 1
     call 1
     i64.const 5
     call 0

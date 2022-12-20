@@ -2,10 +2,12 @@
   (type (;0;) (func (param i32) (result v128)))
   (type (;1;) (func (result v128)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -15,7 +17,8 @@
     call 0
   )
   (func (;3;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -25,7 +28,8 @@
     call 0
   )
   (func (;4;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -35,7 +39,8 @@
     call 0
   )
   (func (;5;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -45,7 +50,8 @@
     call 0
   )
   (func (;6;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -55,7 +61,8 @@
     call 0
   )
   (func (;7;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -65,7 +72,8 @@
     call 0
   )
   (func (;8;) (type 1) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -75,7 +83,8 @@
     call 0
   )
   (func (;9;) (type 1) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -85,7 +94,8 @@
     call 0
   )
   (func (;10;) (type 1) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -95,7 +105,8 @@
     call 0
   )
   (func (;11;) (type 1) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -105,7 +116,8 @@
     call 0
   )
   (func (;12;) (type 1) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -115,7 +127,8 @@
     call 0
   )
   (func (;13;) (type 1) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -125,7 +138,8 @@
     call 0
   )
   (func (;14;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -135,7 +149,8 @@
     call 0
   )
   (func (;15;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -145,7 +160,8 @@
     call 0
   )
   (func (;16;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -155,7 +171,8 @@
     call 0
   )
   (func (;17;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -165,7 +182,8 @@
     call 0
   )
   (func (;18;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -175,7 +193,8 @@
     call 0
   )
   (func (;19;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -185,7 +204,8 @@
     call 0
   )
   (func (;20;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -195,7 +215,8 @@
     call 0
   )
   (func (;21;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -205,7 +226,8 @@
     call 0
   )
   (func (;22;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -215,7 +237,8 @@
     call 0
   )
   (func (;23;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -225,7 +248,8 @@
     call 0
   )
   (func (;24;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -235,7 +259,8 @@
     call 0
   )
   (func (;25;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -245,7 +270,8 @@
     call 0
   )
   (func (;26;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -255,7 +281,8 @@
     call 0
   )
   (func (;27;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -265,7 +292,8 @@
     call 0
   )
   (func (;28;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -275,7 +303,8 @@
     call 0
   )
   (func (;29;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -285,7 +314,8 @@
     call 0
   )
   (func (;30;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -295,7 +325,8 @@
     call 0
   )
   (func (;31;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -305,7 +336,8 @@
     call 0
   )
   (func (;32;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -315,7 +347,8 @@
     call 0
   )
   (func (;33;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -325,7 +358,8 @@
     call 0
   )
   (func (;34;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -335,7 +369,8 @@
     call 0
   )
   (func (;35;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -345,7 +380,8 @@
     call 0
   )
   (func (;36;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -355,7 +391,8 @@
     call 0
   )
   (func (;37;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -365,7 +402,8 @@
     call 0
   )
   (func (;38;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -375,7 +413,8 @@
     call 0
   )
   (func (;39;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -385,7 +424,8 @@
     call 0
   )
   (func (;40;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -395,7 +435,8 @@
     call 0
   )
   (func (;41;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -405,7 +446,8 @@
     call 0
   )
   (func (;42;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -415,7 +457,8 @@
     call 0
   )
   (func (;43;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -425,7 +468,8 @@
     call 0
   )
   (func (;44;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -435,7 +479,8 @@
     call 0
   )
   (func (;45;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -445,7 +490,8 @@
     call 0
   )
   (func (;46;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -455,7 +501,8 @@
     call 0
   )
   (func (;47;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -465,7 +512,8 @@
     call 0
   )
   (func (;48;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -475,7 +523,8 @@
     call 0
   )
   (func (;49;) (type 0) (param $0 i32) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -618,10 +667,12 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (result i32)))
   (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -635,7 +686,8 @@
     end
   )
   (func (;3;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -649,7 +701,8 @@
     end
   )
   (func (;4;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -663,7 +716,8 @@
     end
   )
   (func (;5;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -677,7 +731,8 @@
     end
   )
   (func (;6;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -691,7 +746,8 @@
     end
   )
   (func (;7;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 4
     call 0
@@ -705,7 +761,8 @@
     end
   )
   (func (;8;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -722,7 +779,8 @@
     call 0
   )
   (func (;9;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -739,7 +797,8 @@
     call 0
   )
   (func (;10;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -756,7 +815,8 @@
     call 0
   )
   (func (;11;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -773,7 +833,8 @@
     call 0
   )
   (func (;12;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -790,7 +851,8 @@
     call 0
   )
   (func (;13;) (type 0) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -807,7 +869,8 @@
     call 0
   )
   (func (;14;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -818,7 +881,8 @@
     i8x16.extract_lane_s 0
   )
   (func (;15;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -829,7 +893,8 @@
     i8x16.extract_lane_s 0
   )
   (func (;16;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -840,7 +905,8 @@
     i8x16.extract_lane_s 0
   )
   (func (;17;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -851,7 +917,8 @@
     i8x16.extract_lane_s 0
   )
   (func (;18;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0
@@ -862,7 +929,8 @@
     i8x16.extract_lane_s 0
   )
   (func (;19;) (type 1) (result i32)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 2
     call 0

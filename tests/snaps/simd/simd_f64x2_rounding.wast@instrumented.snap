@@ -1,10 +1,12 @@
 (module
   (type (;0;) (func (param v128) (result v128)))
   (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -12,7 +14,8 @@
     f64x2.ceil
   )
   (func (;3;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -20,7 +23,8 @@
     f64x2.floor
   )
   (func (;4;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0
@@ -28,7 +32,8 @@
     f64x2.trunc
   )
   (func (;5;) (type 0) (param v128) (result v128)
-    i64.const 1000000000016
+    i64.const 16
+    i64.const 0
     call 1
     i64.const 3
     call 0

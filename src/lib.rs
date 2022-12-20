@@ -53,9 +53,15 @@ pub enum Error {
 /// This analysis collects information necessary to implement all of the transformations in one go,
 /// so that re-parsing the module multiple times is not necessary.
 pub struct Module {
-    /// The sizes of the stack frame (the maximum amount of stack used at any given time during the
-    /// execution of the function) for each function.
-    pub function_stack_sizes: Vec<u64>,
+    /// The sizes of the stack frame for each function in the module.
+    ///
+    /// This includes the things like the function label and the locals that are 0-initialized.
+    pub function_frame_sizes: Vec<u64>,
+    /// The maximum size of the operand stack for each function in the module.
+    ///
+    /// Throughout the execution the sum of sizes of the operands on the function’s operand stack
+    /// will differ, but will never exceed the number here.
+    pub function_operand_stack_sizes: Vec<u64>,
 
     /// The table of offsets for gas instrumentation points
     pub gas_offsets: Vec<Box<[usize]>>,
@@ -71,7 +77,8 @@ impl Module {
     ) -> Result<Self, Error> {
         let mut types = vec![];
         let mut functions = vec![];
-        let mut function_stack_sizes = vec![];
+        let mut function_frame_sizes = vec![];
+        let mut function_operand_stack_sizes = vec![];
         let mut globals = vec![];
         let mut tables = vec![];
         // Reused between functions for speeds.
@@ -96,7 +103,8 @@ impl Module {
                         match import.ty {
                             wasmparser::TypeRef::Func(f) => {
                                 functions.push(f);
-                                function_stack_sizes.push(0);
+                                function_frame_sizes.push(0);
+                                function_operand_stack_sizes.push(0);
                             }
                             wasmparser::TypeRef::Global(g) => {
                                 globals.push(g.content_type);
@@ -141,10 +149,10 @@ impl Module {
                     kinds.clear();
                     costs.clear();
 
-                    // We use the length of `function_stack_sizes` to _also_ act as a counter for
+                    // We use the length of `function_frame_sizes` to _also_ act as a counter for
                     // how many code section entries we have seen so far. This allows us to match
                     // up the function information with its type and such.
-                    let function_id_usize = function_stack_sizes.len();
+                    let function_id_usize = function_frame_sizes.len();
                     let function_id =
                         u32::try_from(function_id_usize).map_err(|_| Error::TooManyFunctions)?;
                     let type_id = *functions
@@ -186,7 +194,7 @@ impl Module {
                     let mut stack_visitor = max_stack_cfg.map(|config| {
                         // This includes accounting for any possible return pointer tracking,
                         // parameters and locals (which all are considered locals in wasm).
-                        function_stack_sizes.push(config.size_of_function_activation(&locals));
+                        function_frame_sizes.push(config.size_of_function_activation(&locals));
                         max_stack::StackSizeVisitor {
                             offset: 0,
 
@@ -242,10 +250,7 @@ impl Module {
                         let stack_result = stack_result.map_err(Error::MaxStack)?;
                         gas_result.map_err(Error::Gas)?;
                         if let Some(stack_size) = stack_result {
-                            let size = function_stack_sizes
-                                .last_mut()
-                                .expect("should have frame size already pushed if analyzing stack");
-                            *size += stack_size;
+                            function_operand_stack_sizes.push(stack_size);
                         }
                     }
 
@@ -263,7 +268,8 @@ impl Module {
             }
         }
         Ok(Self {
-            function_stack_sizes,
+            function_frame_sizes,
+            function_operand_stack_sizes,
             gas_costs,
             gas_kinds,
             gas_offsets,

@@ -26,6 +26,7 @@ impl<'a> crate::test::TestContext {
                 // By adding the type at the end of the type section we guarantee that any other
                 // type references remain valid.
                 ts.function([we::ValType::I64], []);
+                ts.function([we::ValType::I64, we::ValType::I64], []);
                 // By inserting the imports at the beginning of the import section we make the new
                 // function index mapping trivial (it is always just an increment by 2)
                 is.import(
@@ -36,7 +37,7 @@ impl<'a> crate::test::TestContext {
                 is.import(
                     "spectest",
                     "finite_wasm_stack",
-                    we::EntityType::Function(instrument_fn_ty),
+                    we::EntityType::Function(instrument_fn_ty + 1),
                 );
             }
         };
@@ -164,7 +165,10 @@ impl<'a> crate::test::TestContext {
                     // Reserve the stack.
                     let code_idx = new_code_section.len() as usize;
                     new_function.instruction(&we::Instruction::I64Const(
-                        results.function_stack_sizes[code_idx] as i64,
+                        results.function_operand_stack_sizes[code_idx] as i64,
+                    ));
+                    new_function.instruction(&we::Instruction::I64Const(
+                        results.function_frame_sizes[code_idx] as i64,
                     ));
                     new_function.instruction(&we::Instruction::Call(1));
                     let gas_offsets = &results.gas_offsets[code_idx];
