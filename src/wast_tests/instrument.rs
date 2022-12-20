@@ -1,7 +1,7 @@
 use finite_wasm::{Module, gas::InstructionKind};
 use wasm_encoder as we;
 use wasmparser as wp;
-use we::{ConstExpr, Section};
+use we::Section;
 
 const PLACEHOLDER_FOR_NAMES: u8 = !0;
 

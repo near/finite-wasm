@@ -372,7 +372,7 @@ impl<'a> TestContext {
             };
 
             let results = std::panic::catch_unwind(|| {
-                finite_wasm::Module::new(&module, Some(&DefaultStackConfig), Some(DefaultGasConfig))
+                Module::new(&module, Some(&DefaultStackConfig), Some(DefaultGasConfig))
             })
             .map_err(|_| Error::AnalyseModulePanic(id.clone(), self.test_path.clone()))?
             .map_err(|e| Error::AnalyseModule(e, id.clone(), self.test_path.clone()))?;
