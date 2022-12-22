@@ -26,7 +26,7 @@
     call $finite_wasm_gas
   )
   (func (;5;) (type 4) (result i32)
-    i64.const 0
+    i64.const 4
     i64.const 0
     call $finite_wasm_stack
     i64.const 2
@@ -34,8 +34,8 @@
     i32.const 13
   )
   (func (;6;) (type $T) (param i32) (result i32)
-    i64.const 4
-    i64.const 0
+    i64.const 8
+    i64.const 1
     call $finite_wasm_stack
     i64.const 4
     call $finite_wasm_gas
@@ -45,7 +45,7 @@
   )
   (func (;7;) (type $T) (param $a i32) (result i32)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 4
     call $finite_wasm_gas
@@ -54,8 +54,8 @@
     i32.sub
   )
   (func (;8;) (type $U) (param i32)
-    i64.const 8
-    i64.const 0
+    i64.const 4
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -124,7 +124,7 @@
   )
   (func (;7;) (type 2) (param $i i32) (result i32)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -135,7 +135,7 @@
   )
   (func (;8;) (type 2) (param $i i32) (result i32)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -196,7 +196,7 @@
   )
   (func (;4;) (type 1) (param $i i32) (result i32)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas

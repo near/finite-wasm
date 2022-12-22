@@ -18,7 +18,7 @@
   )
   (func (;3;) (type 1) (param $i i32) (param $v i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call $finite_wasm_stack
     i64.const 1
     call $finite_wasm_gas
@@ -34,7 +34,7 @@
   )
   (func (;4;) (type 2) (param $i i32) (result i32)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 1
     call $finite_wasm_gas
@@ -49,7 +49,7 @@
   )
   (func (;5;) (type 2) (param i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 1
     call $finite_wasm_gas
@@ -94,7 +94,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 9)))
   (func (;2;) (type 0) (param $a i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -105,7 +105,7 @@
   )
   (func (;3;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -116,7 +116,7 @@
   )
   (func (;4;) (type 2) (param $a i32) (result f32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -127,7 +127,7 @@
   )
   (func (;5;) (type 3) (param $a i32) (result f64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -138,7 +138,7 @@
   )
   (func (;6;) (type 0) (param $a i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -149,7 +149,7 @@
   )
   (func (;7;) (type 0) (param $a i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -160,7 +160,7 @@
   )
   (func (;8;) (type 0) (param $a i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -171,7 +171,7 @@
   )
   (func (;9;) (type 0) (param $a i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -182,7 +182,7 @@
   )
   (func (;10;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -193,7 +193,7 @@
   )
   (func (;11;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -204,7 +204,7 @@
   )
   (func (;12;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -215,7 +215,7 @@
   )
   (func (;13;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -226,7 +226,7 @@
   )
   (func (;14;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -237,7 +237,7 @@
   )
   (func (;15;) (type 1) (param $a i32) (result i64)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -248,7 +248,7 @@
   )
   (func (;16;) (type 4) (param $a i32) (param $v i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -260,7 +260,7 @@
   )
   (func (;17;) (type 5) (param $a i32) (param $v i64)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -272,7 +272,7 @@
   )
   (func (;18;) (type 6) (param $a i32) (param $v f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -284,7 +284,7 @@
   )
   (func (;19;) (type 7) (param $a i32) (param $v f64)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -296,7 +296,7 @@
   )
   (func (;20;) (type 4) (param $a i32) (param $v i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -308,7 +308,7 @@
   )
   (func (;21;) (type 4) (param $a i32) (param $v i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -320,7 +320,7 @@
   )
   (func (;22;) (type 5) (param $a i32) (param $v i64)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -332,7 +332,7 @@
   )
   (func (;23;) (type 5) (param $a i32) (param $v i64)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -344,7 +344,7 @@
   )
   (func (;24;) (type 5) (param $a i32) (param $v i64)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0

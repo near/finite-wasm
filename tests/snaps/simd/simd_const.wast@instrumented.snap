@@ -5098,7 +5098,7 @@
   )
   (func $f (;7;) (type $sig) (param v128 v128 v128) (result v128)
     i64.const 16
-    i64.const 2
+    i64.const 3
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -5226,7 +5226,7 @@
   )
   (func $f2 (;17;) (type $sig) (param v128 v128 v128) (result v128)
     i64.const 16
-    i64.const 2
+    i64.const 3
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -5360,7 +5360,7 @@
   (func (;2;) (type 0) (param $0 v128) (result v128)
     (local v128 v128 v128 v128)
     i64.const 16
-    i64.const 4
+    i64.const 5
     call 1
     i64.const 4
     call 0
@@ -5371,7 +5371,7 @@
   (func (;3;) (type 0) (param $0 v128) (result v128)
     (local v128 v128 v128 v128)
     i64.const 16
-    i64.const 4
+    i64.const 5
     call 1
     i64.const 10
     call 0
@@ -5388,7 +5388,7 @@
   (func (;4;) (type 0) (param $0 v128) (result v128)
     (local v128 v128 v128 v128)
     i64.const 16
-    i64.const 4
+    i64.const 5
     call 1
     i64.const 10
     call 0
@@ -5405,7 +5405,7 @@
   (func (;5;) (type 1) (result v128)
     (local v128)
     i64.const 16
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -5437,7 +5437,7 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
   (func $set_g0 (;2;) (type 0) (param $0 v128)
     i64.const 16
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -5446,7 +5446,7 @@
   )
   (func $set_g1_g2 (;3;) (type 1) (param $0 v128) (param $1 v128)
     i64.const 16
-    i64.const 1
+    i64.const 2
     call $finite_wasm_stack
     i64.const 5
     call $finite_wasm_gas
@@ -5457,7 +5457,7 @@
   )
   (func $set_g0_g1_g2_g3 (;4;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (param $3 v128)
     i64.const 32
-    i64.const 3
+    i64.const 4
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas

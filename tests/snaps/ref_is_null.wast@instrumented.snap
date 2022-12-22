@@ -10,7 +10,7 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 6)))
   (func $f1 (;2;) (type 0) (param $x funcref) (result i32)
     i64.const 32
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -19,7 +19,7 @@
   )
   (func $f2 (;3;) (type 1) (param $x externref) (result i32)
     i64.const 32
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -35,7 +35,7 @@
   )
   (func (;5;) (type 3) (param $r externref)
     i64.const 36
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 4
     call $finite_wasm_gas
@@ -58,7 +58,7 @@
   )
   (func (;7;) (type 4) (param $x i32) (result i32)
     i64.const 32
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -70,7 +70,7 @@
   )
   (func (;8;) (type 4) (param $x i32) (result i32)
     i64.const 32
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas

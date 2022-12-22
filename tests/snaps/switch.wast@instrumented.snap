@@ -9,7 +9,7 @@
   (func (;2;) (type 0) (param $i i32) (result i32)
     (local $j i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 14
     call 0
@@ -89,7 +89,7 @@
   (func (;3;) (type 1) (param $i i64) (result i64)
     (local $j i64)
     i64.const 16
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 15
     call 0
@@ -162,7 +162,7 @@
   )
   (func (;4;) (type 0) (param $i i32) (result i32)
     i64.const 24
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 14
     call 0

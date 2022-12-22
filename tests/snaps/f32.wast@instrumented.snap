@@ -7,7 +7,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -17,7 +17,7 @@
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -27,7 +27,7 @@
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -37,7 +37,7 @@
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -47,7 +47,7 @@
   )
   (func (;6;) (type 1) (param $x f32) (result f32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -56,7 +56,7 @@
   )
   (func (;7;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -66,7 +66,7 @@
   )
   (func (;8;) (type 0) (param $x f32) (param $y f32) (result f32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -76,7 +76,7 @@
   )
   (func (;9;) (type 1) (param $x f32) (result f32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -85,7 +85,7 @@
   )
   (func (;10;) (type 1) (param $x f32) (result f32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -94,7 +94,7 @@
   )
   (func (;11;) (type 1) (param $x f32) (result f32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -103,7 +103,7 @@
   )
   (func (;12;) (type 1) (param $x f32) (result f32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0

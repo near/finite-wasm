@@ -7,7 +7,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128) (result v128)
     i64.const 16
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -85,7 +85,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param v128) (result v128)
     i64.const 16
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 4
     call 0

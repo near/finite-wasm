@@ -7,7 +7,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -17,7 +17,7 @@
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -27,7 +27,7 @@
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -37,7 +37,7 @@
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 4
     call 0
@@ -47,7 +47,7 @@
   )
   (func (;6;) (type 1) (param v128) (result v128)
     i64.const 16
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -56,7 +56,7 @@
   )
   (func (;7;) (type 1) (param v128) (result v128)
     i64.const 16
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 3
     call 0
@@ -5388,7 +5388,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5400,7 +5400,7 @@
   )
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5412,7 +5412,7 @@
   )
   (func (;4;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5424,7 +5424,7 @@
   )
   (func (;5;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5436,7 +5436,7 @@
   )
   (func (;6;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5448,7 +5448,7 @@
   )
   (func (;7;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5460,7 +5460,7 @@
   )
   (func (;8;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5472,7 +5472,7 @@
   )
   (func (;9;) (type 0) (param v128 v128 v128) (result v128)
     i64.const 32
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 6
     call 0
@@ -5484,7 +5484,7 @@
   )
   (func (;10;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5495,7 +5495,7 @@
   )
   (func (;11;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5506,7 +5506,7 @@
   )
   (func (;12;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5517,7 +5517,7 @@
   )
   (func (;13;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5528,7 +5528,7 @@
   )
   (func (;14;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5539,7 +5539,7 @@
   )
   (func (;15;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5550,7 +5550,7 @@
   )
   (func (;16;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0
@@ -5561,7 +5561,7 @@
   )
   (func (;17;) (type 1) (param v128 v128) (result v128)
     i64.const 32
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 5
     call 0

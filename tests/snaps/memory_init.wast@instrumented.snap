@@ -15,7 +15,7 @@
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -90,7 +90,7 @@
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -165,7 +165,7 @@
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -290,7 +290,7 @@
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call 1
     i64.const 2
     call 0
@@ -703,7 +703,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 1
     call 0
@@ -748,7 +748,7 @@
   )
   (func (;3;) (type 1) (param $offs i32) (param $len i32)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -780,7 +780,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 1
     call 0
@@ -825,7 +825,7 @@
   )
   (func (;3;) (type 1) (param $offs i32) (param $len i32)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -857,7 +857,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 1
     call 0
@@ -902,7 +902,7 @@
   )
   (func (;3;) (type 1) (param $offs i32) (param $len i32)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -934,7 +934,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 1
     call 0
@@ -979,7 +979,7 @@
   )
   (func (;3;) (type 1) (param $offs i32) (param $len i32)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -1011,7 +1011,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 1
     call 0
@@ -1056,7 +1056,7 @@
   )
   (func (;3;) (type 1) (param $offs i32) (param $len i32)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0
@@ -1088,7 +1088,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
-    i64.const 2
+    i64.const 3
     call 1
     i64.const 1
     call 0
@@ -1133,7 +1133,7 @@
   )
   (func (;3;) (type 1) (param $offs i32) (param $len i32)
     i64.const 12
-    i64.const 1
+    i64.const 2
     call 1
     i64.const 3
     call 0

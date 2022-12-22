@@ -4845,8 +4845,8 @@
   (import "spectest" "print_i32" (func (;2;) (type 0)))
   (import "spectest" "print_i32" (func (;3;) (type 0)))
   (func (;4;) (type 1) (param i32 i32)
-    i64.const 0
-    i64.const 0
+    i64.const 4
+    i64.const 2
     call 1
     i64.const 2
     call 0

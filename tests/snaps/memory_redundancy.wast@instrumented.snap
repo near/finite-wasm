@@ -58,7 +58,7 @@
   (func (;4;) (type 1) (result i32)
     (local $t i32) (local $s i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -84,7 +84,7 @@
   (func (;5;) (type 2) (result f32)
     (local $t f32)
     i64.const 8
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 3
     call $finite_wasm_gas
@@ -107,7 +107,7 @@
   )
   (func $malloc (;6;) (type 3) (param $size i32) (result i32)
     i64.const 4
-    i64.const 0
+    i64.const 1
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas
@@ -116,7 +116,7 @@
   (func (;7;) (type 1) (result i32)
     (local $x i32) (local $y i32)
     i64.const 8
-    i64.const 1
+    i64.const 2
     call $finite_wasm_stack
     i64.const 2
     call $finite_wasm_gas

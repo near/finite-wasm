@@ -477,7 +477,7 @@ impl max_stack::Config for DefaultStackConfig {
         &self,
         locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
     ) -> u64 {
-        u64::from(locals.max_index().copied().unwrap_or(0))
+        u64::from(locals.max_index().map(|&v| v + 1).unwrap_or(0))
     }
 }
 
