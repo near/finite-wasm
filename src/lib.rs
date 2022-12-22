@@ -9,6 +9,8 @@ mod instruction_categories;
 pub mod max_stack;
 mod visitors;
 
+pub use wasmparser;
+
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("could not parse a part of the WASM payload")]
@@ -53,17 +55,17 @@ pub enum Error {
 /// This analysis collects information necessary to implement all of the transformations in one go,
 /// so that re-parsing the module multiple times is not necessary.
 pub struct Module {
-    /// The sizes of the stack frame for each function in the module.
+    /// The sizes of the stack frame for each function in the module, *excluding* imports.
     ///
     /// This includes the things like the function label and the locals that are 0-initialized.
     pub function_frame_sizes: Vec<u64>,
-    /// The maximum size of the operand stack for each function in the module.
+    /// The maximum size of the operand stack for each function in the module, *excluding* imports.
     ///
     /// Throughout the execution the sum of sizes of the operands on the function’s operand stack
     /// will differ, but will never exceed the number here.
     pub function_operand_stack_sizes: Vec<u64>,
 
-    /// The table of offsets for gas instrumentation points
+    /// The table of offsets for gas instrumentation points, *excluding* imports.
     pub gas_offsets: Vec<Box<[usize]>>,
     pub gas_costs: Vec<Box<[u64]>>,
     pub gas_kinds: Vec<Box<[InstructionKind]>>,
@@ -92,6 +94,7 @@ impl Module {
         let mut gas_offsets = vec![];
         let mut gas_costs = vec![];
         let mut gas_kinds = vec![];
+        let mut current_fn_id = 0u32;
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
@@ -103,8 +106,7 @@ impl Module {
                         match import.ty {
                             wasmparser::TypeRef::Func(f) => {
                                 functions.push(f);
-                                function_frame_sizes.push(0);
-                                function_operand_stack_sizes.push(0);
+                                current_fn_id = current_fn_id.checked_add(1).ok_or(Error::TooManyFunctions)?;
                             }
                             wasmparser::TypeRef::Global(g) => {
                                 globals.push(g.content_type);
@@ -149,15 +151,11 @@ impl Module {
                     kinds.clear();
                     costs.clear();
 
-                    // We use the length of `function_frame_sizes` to _also_ act as a counter for
-                    // how many code section entries we have seen so far. This allows us to match
-                    // up the function information with its type and such.
-                    let function_id_usize = function_frame_sizes.len();
-                    let function_id =
-                        u32::try_from(function_id_usize).map_err(|_| Error::TooManyFunctions)?;
+                    let function_id_usize =
+                        usize::try_from(current_fn_id).expect("failed converting from u32 to usize");
                     let type_id = *functions
                         .get(function_id_usize)
-                        .ok_or(Error::FunctionIndex(function_id))?;
+                        .ok_or(Error::FunctionIndex(current_fn_id))?;
                     let type_id_usize =
                         usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
                     let fn_type = types.get(type_id_usize).ok_or(Error::TypeIndex(type_id))?;
@@ -167,7 +165,7 @@ impl Module {
                             for param in fnty.params() {
                                 locals
                                     .try_push_more(1, *param)
-                                    .map_err(|e| Error::TooManyLocals(e, function_id))?;
+                                    .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
                             }
                         }
                     }
@@ -175,7 +173,7 @@ impl Module {
                         let local = local.map_err(Error::ParseLocals)?;
                         locals
                             .try_push_more(local.0, local.1)
-                            .map_err(|e| Error::TooManyLocals(e, function_id))?;
+                            .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
                     }
 
                     let mut gas_visitor = gas_cfg.as_mut().map(|config| gas::GasVisitor {
@@ -263,6 +261,7 @@ impl Module {
                         gas_kinds.push(kinds.drain(..).collect());
                         gas_costs.push(costs.drain(..).collect());
                     }
+                    current_fn_id = current_fn_id.checked_add(1).ok_or(Error::TooManyFunctions)?;
                 }
                 _ => (),
             }
