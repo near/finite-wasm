@@ -302,6 +302,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     trapping_insn!(fn visit_memory_atomic_notify(mem: wasmparser::MemArg));
     trapping_insn!(fn visit_memory_atomic_wait32(mem: wasmparser::MemArg));
     trapping_insn!(fn visit_memory_atomic_wait64(mem: wasmparser::MemArg));
+    trapping_insn!(fn visit_table_set(table: u32));
+    trapping_insn!(fn visit_table_get(table: u32));
 
     fn visit_unreachable(&mut self) -> Self::Output {
         let cost = self.model.visit_unreachable();
@@ -335,8 +337,6 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     pure_insn!(fn visit_nop());
     pure_insn!(fn visit_table_size(table: u32));
     pure_insn!(fn visit_memory_size(mem: u32, idk: u8));
-    pure_insn!(fn visit_table_set(table: u32));
-    pure_insn!(fn visit_table_get(table: u32));
     pure_insn!(fn visit_global_set(global: u32));
     pure_insn!(fn visit_global_get(global: u32));
     pure_insn!(fn visit_local_set(local: u32));

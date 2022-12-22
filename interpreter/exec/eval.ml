@@ -72,13 +72,15 @@ type config =
   frame : frame;
   code : code;
   budget : int;  (* to model stack overflow *)
+  trace_gas : bool;
 }
 
 let frame inst locals = {inst; locals}
 let config inst vs es =
-  {frame = frame inst []; code = vs, es; budget = !Flags.budget}
+  {frame = frame inst []; code = vs, es; budget = !Flags.budget; trace_gas = !Flags.trace_gas}
 
 let plain e = Plain e.it @@ e.at
+let reduced_plain e = ReducedPlain e.it @@ e.at
 
 let lookup category list x =
   try Lib.List32.nth list x.it with Failure _ ->
@@ -190,7 +192,7 @@ let apply_fees (c: config) : config =
   if (Int64.compare e_cost !gas) > 0 then
     Exhaustion.error e.at "gas pool is empty"
   else if (Int64.compare e_cost 0L) != 0 then
-    if !Flags.trace_gas then Printf.printf "gas: %Ld %s" e_cost (string_of_admin_instr e);
+    if c.trace_gas then Printf.printf "gas: %Ld %s" e_cost (string_of_admin_instr e);
     gas := Int64.sub !gas e_cost;
     c
 
@@ -679,7 +681,7 @@ let rec step (c : config) : config =
       take n vs0 e.at @ vs, []
 
     | Frame (n, frame', code'), vs ->
-      let c' = step {frame = frame'; code = code'; budget = c.budget - 1} in
+      let c' = step { c with frame = frame'; code = code'; budget = c.budget - 1 } in
       vs, [Frame (n, c'.frame, c'.code) @@ e.at]
 
     | Invoke func, vs when c.budget = 0 ->
@@ -703,8 +705,8 @@ let rec step (c : config) : config =
         vs', []
 
       | Func.StackIntrinsic ->
-        (match List.hd args with
-          | Num (I64 v) -> Printf.printf "reserve_stack: %Lu\n" v
+        (match args with
+          | [Num (I64 a1); Num (I64 a2)] -> Printf.printf "reserve_stack: %Lu %Lu\n" a2 a1
           | _ -> Crash.error e.at "wrong types of arguments");
         vs', []
 
@@ -744,7 +746,7 @@ let invoke (func : func_inst) (vs : value list) : value list =
     Exhaustion.error at "call stack exhausted"
 
 let eval_const (inst : module_inst) (const : const) : value =
-  let c = config inst [] (List.map plain const.it) in
+  let c = config inst [] (List.map reduced_plain const.it) in
   match eval c with
   | [v] -> v
   | vs -> Crash.error const.at "wrong number of results on stack"
@@ -873,5 +875,6 @@ let init (m : module_) (exts : extern list) : module_inst =
   let es_elem = List.concat (Lib.List32.mapi run_elem elems) in
   let es_data = List.concat (Lib.List32.mapi run_data datas) in
   let es_start = Lib.Option.get (Lib.Option.map run_start start) [] in
-  ignore (eval (config inst [] (List.map plain (es_elem @ es_data @ es_start))));
+  let c = config inst [] (List.map reduced_plain (es_elem @ es_data @ es_start)) in
+  ignore (eval c);
   inst

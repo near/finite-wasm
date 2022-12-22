@@ -293,8 +293,14 @@ impl<'a> TestContext {
                     gas_charged += count;
                 }
                 "reserve_stack" => {
-                    let count = parse_prefix_num(rest.as_bytes()).unwrap();
-                    drop(count);
+                    if let Some((l, r)) = rest.split_once(" ") {
+                        let _ops_size = parse_prefix_num(l.as_bytes()).unwrap();
+                        let frame_size = parse_prefix_num(r.as_bytes()).unwrap();
+                        // The reference interpreter charges 1 gas for each local and argument.
+                        gas_charged += frame_size;
+                    } else {
+                        continue;
+                    }
                 }
                 _ => {
                     continue;
