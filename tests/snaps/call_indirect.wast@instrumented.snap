@@ -1599,3 +1599,121 @@
 
 ;; Invalid syntax
 
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (result i32)))
+  (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (func (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+  )
+  (func (;3;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    nop
+  )
+  (func (;4;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    call_indirect (type 0)
+  )
+  (func (;5;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    call_indirect (type 0)
+  )
+  (func (;6;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    call_indirect (type 0)
+    call_indirect (type 0)
+  )
+  (func (;7;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+  )
+  (func (;8;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+  )
+  (func (;9;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    call_indirect (type 0)
+  )
+  (func (;10;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    call_indirect (type 0)
+  )
+  (func (;11;) (type 1) (result i32)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    select
+  )
+  (func (;12;) (type 1) (result i32)
+    i64.const 0
+    i64.const 0
+    call 1
+    i64.const 1
+    call 0
+    unreachable
+    call_indirect (type 0)
+    select
+    call_indirect (type 0)
+  )
+  (table (;0;) 1 funcref)
+)
