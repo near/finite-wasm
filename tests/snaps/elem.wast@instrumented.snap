@@ -345,110 +345,176 @@
   )
   (elem (;0;) (i32.const 1) func $f)
 )
-(assert_trap
-  (module
-    (table 0 funcref)
-    (func $f)
-    (elem (i32.const 0) $f)
-  )
-  "out of bounds table access"
-)
 
-(assert_trap
-  (module
-    (table 0 0 funcref)
-    (func $f)
-    (elem (i32.const 0) $f)
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
   )
-  "out of bounds table access"
-)
+  (table (;0;) 0 funcref)
+  (elem (;0;) (i32.const 0) func $f)
+) "out of bounds table access")
 
-(assert_trap
-  (module
-    (table 0 1 funcref)
-    (func $f)
-    (elem (i32.const 0) $f)
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
   )
-  "out of bounds table access"
-)
+  (table (;0;) 0 0 funcref)
+  (elem (;0;) (i32.const 0) func $f)
+) "out of bounds table access")
 
-(assert_trap
-  (module
-    (table 0 funcref)
-    (elem (i32.const 1))
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
   )
-  "out of bounds table access"
-)
-(assert_trap
-  (module
-    (table 10 funcref)
-    (func $f)
-    (elem (i32.const 10) $f)
-  )
-  "out of bounds table access"
-)
-(assert_trap
-  (module
-    (import "spectest" "table" (table 10 funcref))
-    (func $f)
-    (elem (i32.const 10) $f)
-  )
-  "out of bounds table access"
-)
+  (table (;0;) 0 1 funcref)
+  (elem (;0;) (i32.const 0) func $f)
+) "out of bounds table access")
 
-(assert_trap
-  (module
-    (table 10 20 funcref)
-    (func $f)
-    (elem (i32.const 10) $f)
-  )
-  "out of bounds table access"
-)
-(assert_trap
-  (module
-    (import "spectest" "table" (table 10 funcref))
-    (func $f)
-    (elem (i32.const 10) $f)
-  )
-  "out of bounds table access"
-)
+(assert_trap (module
+  (table (;0;) 0 funcref)
+  (elem (;0;) (i32.const 1) func)
+) "out of bounds table access")
 
-(assert_trap
-  (module
-    (table 10 funcref)
-    (func $f)
-    (elem (i32.const -1) $f)
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
   )
-  "out of bounds table access"
-)
-(assert_trap
-  (module
-    (import "spectest" "table" (table 10 funcref))
-    (func $f)
-    (elem (i32.const -1) $f)
-  )
-  "out of bounds table access"
-)
+  (table (;0;) 10 funcref)
+  (elem (;0;) (i32.const 10) func $f)
+) "out of bounds table access")
 
-(assert_trap
-  (module
-    (table 10 funcref)
-    (func $f)
-    (elem (i32.const -10) $f)
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "spectest" "table" (table (;0;) 10 funcref))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
   )
-  "out of bounds table access"
-)
-(assert_trap
-  (module
-    (import "spectest" "table" (table 10 funcref))
-    (func $f)
-    (elem (i32.const -10) $f)
+  (elem (;0;) (i32.const 10) func $f)
+) "out of bounds table access")
+
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
   )
-  "out of bounds table access"
-)
+  (table (;0;) 10 20 funcref)
+  (elem (;0;) (i32.const 10) func $f)
+) "out of bounds table access")
 
-;; Implicitly dropped elements
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "spectest" "table" (table (;0;) 10 funcref))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
+  )
+  (elem (;0;) (i32.const 10) func $f)
+) "out of bounds table access")
 
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
+  )
+  (table (;0;) 10 funcref)
+  (elem (;0;) (i32.const -1) func $f)
+) "out of bounds table access")
+
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "spectest" "table" (table (;0;) 10 funcref))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
+  )
+  (elem (;0;) (i32.const -1) func $f)
+) "out of bounds table access")
+
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
+  )
+  (table (;0;) 10 funcref)
+  (elem (;0;) (i32.const -10) func $f)
+) "out of bounds table access")
+
+(assert_trap (module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "spectest" "table" (table (;0;) 10 funcref))
+  (func $f (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
+  )
+  (elem (;0;) (i32.const -10) func $f)
+) "out of bounds table access")
 (module
   (type (;0;) (func))
   (type (;1;) (func (param i64)))

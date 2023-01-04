@@ -329,7 +329,7 @@ impl<'a> TestContext {
                 .peek()
                 .map(|(_, d)| d.span().offset() - 1)
                 .unwrap_or(test_contents.len());
-            let (id, module) = match directive {
+            match directive {
                 wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(mut module))) => {
                     let id = module.id.map_or_else(
                         || format!("[directive {directive_index}]"),
@@ -338,7 +338,10 @@ impl<'a> TestContext {
                     let module = module
                         .encode()
                         .map_err(|e| Error::EncodeModule(e, id.clone()))?;
-                    (id, module)
+                    let instrumented = self.instrument_module(&id, &module)?;
+                    let print = wasmprinter::print_bytes(&instrumented).expect("print");
+                    output_wast.push_str(&print);
+                    output_wast.push_str("\n");
                 }
                 wast::WastDirective::Wat(wast::QuoteWat::QuoteModule(_, _)) => {
                     unreachable!("doesn’t actually occur in our test suite");
@@ -361,8 +364,34 @@ impl<'a> TestContext {
                     output_wast.push_str(&test_contents[start_offset..end_offset]);
                     continue;
                 }
-                wast::WastDirective::AssertTrap { .. } => {
-                    output_wast.push_str(&test_contents[start_offset..end_offset]);
+                wast::WastDirective::AssertTrap { exec, message, .. } => {
+                    match exec {
+                        wast::WastExecute::Invoke(_) => {
+                            output_wast.push_str(&test_contents[start_offset..end_offset]);
+                        }
+                        wast::WastExecute::Wat(wast::Wat::Module(mut module)) => {
+                            let id = module.id.map_or_else(
+                                || format!("[directive {directive_index}]"),
+                                |id| format!("{id:?}"),
+                            );
+                            let module = module
+                                .encode()
+                                .map_err(|e| Error::EncodeModule(e, id.clone()))?;
+                            let instrumented = self.instrument_module(&id, &module)?;
+                            output_wast.push_str("\n(assert_trap ");
+                            let print = wasmprinter::print_bytes(&instrumented).expect("print");
+                            output_wast.push_str(&print);
+                            output_wast.push_str(" \"");
+                            output_wast.push_str(message);
+                            output_wast.push_str("\")\n");
+                        }
+                        wast::WastExecute::Wat(wast::Wat::Component(_)) => {
+                            unreachable!("components are not supported");
+                        }
+                        wast::WastExecute::Get { .. } => {
+                            output_wast.push_str(&test_contents[start_offset..end_offset]);
+                        }
+                    }
                     continue;
                 }
                 wast::WastDirective::AssertReturn { .. } => {
@@ -376,20 +405,17 @@ impl<'a> TestContext {
                 wast::WastDirective::AssertInvalid { .. } => continue,
                 wast::WastDirective::AssertUnlinkable { .. } => continue,
             };
-
-            let results = std::panic::catch_unwind(|| {
-                Module::new(&module, Some(&DefaultStackConfig), Some(DefaultGasConfig))
-            })
-            .map_err(|_| Error::AnalyseModulePanic(id.clone(), self.test_path.clone()))?
-            .map_err(|e| Error::AnalyseModule(e, id.clone(), self.test_path.clone()))?;
-            let instrumented = self
-                .instrument(&module, results)
-                .map_err(Error::Instrument)?;
-            let print = wasmprinter::print_bytes(&instrumented).expect("print");
-            output_wast.push_str(&print);
-            output_wast.push_str("\n");
         }
         Ok(output_wast)
+    }
+
+    fn instrument_module(&mut self, id: &str, code: &[u8]) -> Result<Vec<u8>, Error> {
+        let results = std::panic::catch_unwind(|| {
+            Module::new(&code, Some(&DefaultStackConfig), Some(DefaultGasConfig))
+        })
+        .map_err(|_| Error::AnalyseModulePanic(id.into(), self.test_path.clone()))?
+        .map_err(|e| Error::AnalyseModule(e, id.into(), self.test_path.clone()))?;
+        self.instrument(&code, results).map_err(Error::Instrument)
     }
 
     fn exec_interpreter(&mut self, code: String) -> Result<String, Error> {

@@ -165,8 +165,20 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "print" (func $print (;2;) (type 0)))
 )
-(assert_trap
-  (module (func $main (unreachable)) (start $main))
-  "unreachable"
-)
 
+(assert_trap (module
+  (start $main)
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (func $main (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_gas
+    unreachable
+  )
+) "unreachable")

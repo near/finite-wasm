@@ -198,122 +198,90 @@
   (import "spectest" "memory" (memory (;0;) 0 3))
   (data (;0;) (i32.const 1) "a")
 )
-(assert_trap
-  (module
-    (memory 0)
-    (data (i32.const 0) "a")
-  )
-  "out of bounds memory access"
-)
 
-(assert_trap
-  (module
-    (memory 0 0)
-    (data (i32.const 0) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (memory (;0;) 0)
+  (data (;0;) (i32.const 0) "a")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (memory 0 1)
-    (data (i32.const 0) "a")
-  )
-  "out of bounds memory access"
-)
-(assert_trap
-  (module
-    (memory 0)
-    (data (i32.const 1))
-  )
-  "out of bounds memory access"
-)
-(assert_trap
-  (module
-    (memory 0 1)
-    (data (i32.const 1))
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (memory (;0;) 0 0)
+  (data (;0;) (i32.const 0) "a")
+) "out of bounds memory access")
 
-;; This seems to cause a time-out on Travis.
-(;assert_unlinkable
-  (module
-    (memory 0x10000)
-    (data (i32.const 0xffffffff) "ab")
-  )
-  ""  ;; either out of memory or out of bounds
-;)
+(assert_trap (module
+  (memory (;0;) 0 1)
+  (data (;0;) (i32.const 0) "a")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (global (import "spectest" "global_i32") i32)
-    (memory 0)
-    (data (global.get 0) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (memory (;0;) 0)
+  (data (;0;) (i32.const 1) "")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (memory 1 2)
-    (data (i32.const 0x1_0000) "a")
-  )
-  "out of bounds memory access"
-)
-(assert_trap
-  (module
-    (import "spectest" "memory" (memory 1))
-    (data (i32.const 0x1_0000) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (memory (;0;) 0 1)
+  (data (;0;) (i32.const 1) "")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (memory 2)
-    (data (i32.const 0x2_0000) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (type (;0;) (func (param i64)))
+  (type (;1;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "global_i32" (global (;0;) i32))
+  (memory (;0;) 0)
+  (data (;0;) (global.get 0) "a")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (memory 2 3)
-    (data (i32.const 0x2_0000) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (memory (;0;) 1 2)
+  (data (;0;) (i32.const 65536) "a")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (memory 1)
-    (data (i32.const -1) "a")
-  )
-  "out of bounds memory access"
-)
-(assert_trap
-  (module
-    (import "spectest" "memory" (memory 1))
-    (data (i32.const -1) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (type (;0;) (func (param i64)))
+  (type (;1;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (i32.const 65536) "a")
+) "out of bounds memory access")
 
-(assert_trap
-  (module
-    (memory 2)
-    (data (i32.const -100) "a")
-  )
-  "out of bounds memory access"
-)
-(assert_trap
-  (module
-    (import "spectest" "memory" (memory 1))
-    (data (i32.const -100) "a")
-  )
-  "out of bounds memory access"
-)
+(assert_trap (module
+  (memory (;0;) 2)
+  (data (;0;) (i32.const 131072) "a")
+) "out of bounds memory access")
 
-;; Data without memory
+(assert_trap (module
+  (memory (;0;) 2 3)
+  (data (;0;) (i32.const 131072) "a")
+) "out of bounds memory access")
 
+(assert_trap (module
+  (memory (;0;) 1)
+  (data (;0;) (i32.const -1) "a")
+) "out of bounds memory access")
+
+(assert_trap (module
+  (type (;0;) (func (param i64)))
+  (type (;1;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (i32.const -1) "a")
+) "out of bounds memory access")
+
+(assert_trap (module
+  (memory (;0;) 2)
+  (data (;0;) (i32.const -100) "a")
+) "out of bounds memory access")
+
+(assert_trap (module
+  (type (;0;) (func (param i64)))
+  (type (;1;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "memory" (memory (;0;) 1))
+  (data (;0;) (i32.const -100) "a")
+) "out of bounds memory access")
