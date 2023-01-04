@@ -463,28 +463,28 @@ impl<'a> TestContext {
         snap_file
             .read_to_string(&mut snap_contents)
             .map_err(|e| Error::ReadSnap(e, snap_path.clone()))?;
-        if let Some(error) = DiffError::diff(&snap_contents, &directive_output) {
-            if !should_update {
+        if !should_update {
+            if let Some(error) = DiffError::diff(&snap_contents, &directive_output) {
                 self.output.extend_from_slice(
                     "note: run with SNAP_UPDATE environment variable to update\n".as_bytes(),
                 );
                 Err(Error::DiffSnap(error.with_path(snap_path)))
             } else {
-                snap_file
-                    .set_len(0)
-                    .map_err(|e| Error::TruncateSnap(e, snap_path.clone()))?;
-                // TRICKY: If we don’t seek, the file will be filled with 0-bytes up to the
-                // current position (we read the file’s contents just now!) before the data is
-                // written...
-                snap_file
-                    .seek(SeekFrom::Start(0))
-                    .map_err(|e| Error::SeekSnap(e, snap_path.clone()))?;
-                snap_file
-                    .write_all(directive_output.as_bytes())
-                    .map_err(|e| Error::WriteSnap(e, snap_path))?;
                 Ok(())
             }
         } else {
+            snap_file
+                .set_len(0)
+                .map_err(|e| Error::TruncateSnap(e, snap_path.clone()))?;
+            // TRICKY: If we don’t seek, the file will be filled with 0-bytes up to the
+            // current position (we read the file’s contents just now!) before the data is
+            // written...
+            snap_file
+                .seek(SeekFrom::Start(0))
+                .map_err(|e| Error::SeekSnap(e, snap_path.clone()))?;
+            snap_file
+                .write_all(directive_output.as_bytes())
+                .map_err(|e| Error::WriteSnap(e, snap_path))?;
             Ok(())
         }
     }
