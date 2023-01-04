@@ -19,7 +19,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.extend_i32_s
@@ -28,7 +28,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.extend_i32_u
@@ -37,7 +37,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.wrap_i64
@@ -50,8 +50,6 @@
     call 0
     local.get $x
     i32.trunc_f32_s
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2) (param $x f32) (result i32)
     i64.const 4
@@ -61,8 +59,6 @@
     call 0
     local.get $x
     i32.trunc_f32_u
-    i64.const 1
-    call 0
   )
   (func (;7;) (type 3) (param $x f64) (result i32)
     i64.const 8
@@ -72,8 +68,6 @@
     call 0
     local.get $x
     i32.trunc_f64_s
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 3) (param $x f64) (result i32)
     i64.const 8
@@ -83,8 +77,6 @@
     call 0
     local.get $x
     i32.trunc_f64_u
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 4) (param $x f32) (result i64)
     i64.const 8
@@ -94,8 +86,6 @@
     call 0
     local.get $x
     i64.trunc_f32_s
-    i64.const 1
-    call 0
   )
   (func (;10;) (type 4) (param $x f32) (result i64)
     i64.const 8
@@ -105,8 +95,6 @@
     call 0
     local.get $x
     i64.trunc_f32_u
-    i64.const 1
-    call 0
   )
   (func (;11;) (type 5) (param $x f64) (result i64)
     i64.const 8
@@ -116,8 +104,6 @@
     call 0
     local.get $x
     i64.trunc_f64_s
-    i64.const 1
-    call 0
   )
   (func (;12;) (type 5) (param $x f64) (result i64)
     i64.const 8
@@ -127,14 +113,12 @@
     call 0
     local.get $x
     i64.trunc_f64_u
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param $x f32) (result i32)
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.trunc_sat_f32_s
@@ -143,7 +127,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.trunc_sat_f32_u
@@ -152,7 +136,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.trunc_sat_f64_s
@@ -161,7 +145,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.trunc_sat_f64_u
@@ -170,7 +154,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.trunc_sat_f32_s
@@ -179,7 +163,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.trunc_sat_f32_u
@@ -188,7 +172,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.trunc_sat_f64_s
@@ -197,7 +181,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.trunc_sat_f64_u
@@ -206,7 +190,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f32.convert_i32_s
@@ -215,7 +199,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f32.convert_i64_s
@@ -224,7 +208,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f64.convert_i32_s
@@ -233,7 +217,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f64.convert_i64_s
@@ -242,7 +226,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f32.convert_i32_u
@@ -251,7 +235,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f32.convert_i64_u
@@ -260,7 +244,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f64.convert_i32_u
@@ -269,7 +253,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f64.convert_i64_u
@@ -278,7 +262,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f64.promote_f32
@@ -287,7 +271,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f32.demote_f64
@@ -296,7 +280,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f32.reinterpret_i32
@@ -305,7 +289,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     f64.reinterpret_i64
@@ -314,7 +298,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.reinterpret_f32
@@ -323,7 +307,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i64.reinterpret_f64

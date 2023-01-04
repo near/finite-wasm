@@ -31,8 +31,6 @@
     i32.const 12
     i32.const 0
     i32.store
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;3;) (type 1) (result i32)
     i64.const 8
@@ -52,8 +50,6 @@
     call $finite_wasm_gas
     i32.const 8
     i32.load
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;4;) (type 1) (result i32)
     (local $t i32) (local $s i32)
@@ -74,7 +70,7 @@
     call $finite_wasm_gas
     i32.const 8
     i32.load
-    i64.const 5
+    i64.const 4
     call $finite_wasm_gas
     local.set $s
     local.get $t
@@ -101,7 +97,7 @@
     i32.const 8
     i32.const 0
     i32.store
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $t
   )
@@ -109,7 +105,7 @@
     i64.const 4
     i64.const 1
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 16
   )
@@ -142,8 +138,6 @@
     call $finite_wasm_gas
     local.get $x
     i32.load
-    i64.const 1
-    call $finite_wasm_gas
   )
   (memory (;0;) 1 1)
   (export "zero_everything" (func 2))

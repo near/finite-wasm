@@ -8,7 +8,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -16,7 +16,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -24,7 +24,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -32,7 +32,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -40,7 +40,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -69,7 +69,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -77,7 +77,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -85,7 +85,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -93,7 +93,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -101,7 +101,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -109,7 +109,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     nop
   )
@@ -121,8 +121,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -132,8 +130,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -226,7 +222,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -234,7 +230,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -242,7 +238,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -250,7 +246,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -258,7 +254,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -274,8 +270,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -285,8 +279,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -296,8 +288,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -390,7 +380,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -398,7 +388,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -406,7 +396,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -414,7 +404,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -422,7 +412,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -438,8 +428,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -449,8 +437,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -460,8 +446,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -554,7 +538,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -562,7 +546,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -570,7 +554,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -578,7 +562,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -586,7 +570,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -602,8 +586,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -613,8 +595,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -624,8 +604,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -718,7 +696,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -726,7 +704,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -734,7 +712,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -742,7 +720,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -750,7 +728,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -766,8 +744,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -777,8 +753,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -788,8 +762,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -882,7 +854,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -890,7 +862,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -898,7 +870,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -906,7 +878,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -914,7 +886,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -930,8 +902,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -941,8 +911,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -952,8 +920,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -1046,7 +1012,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -1054,7 +1020,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -1062,7 +1028,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -1070,7 +1036,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -1078,7 +1044,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -1094,8 +1060,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1105,8 +1069,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1116,8 +1078,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -1210,7 +1170,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -1218,7 +1178,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -1226,7 +1186,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -1234,7 +1194,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -1242,7 +1202,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -1258,8 +1218,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1269,8 +1227,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1280,8 +1236,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -1374,7 +1328,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -1382,7 +1336,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -1390,7 +1344,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -1398,7 +1352,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -1406,7 +1360,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -1422,8 +1376,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1433,8 +1385,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1444,8 +1394,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -1538,7 +1486,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -1546,7 +1494,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -1554,7 +1502,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -1562,7 +1510,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -1570,7 +1518,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -1578,7 +1526,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     nop
   )
@@ -1590,8 +1538,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1601,8 +1547,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -1695,7 +1639,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -1703,7 +1647,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -1711,7 +1655,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -1719,7 +1663,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -1727,7 +1671,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -1743,8 +1687,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1754,8 +1696,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1765,8 +1705,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -1859,7 +1797,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -1867,7 +1805,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -1875,7 +1813,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -1883,7 +1821,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -1891,7 +1829,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -1907,8 +1845,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1918,8 +1854,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -1929,8 +1863,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -2023,7 +1955,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -2031,7 +1963,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -2039,7 +1971,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -2047,7 +1979,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -2055,7 +1987,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -2071,8 +2003,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2082,8 +2012,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2093,8 +2021,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -2187,7 +2113,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -2195,7 +2121,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -2203,7 +2129,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -2211,7 +2137,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -2219,7 +2145,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -2235,8 +2161,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2246,8 +2170,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2257,8 +2179,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -2351,7 +2271,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -2359,7 +2279,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -2367,7 +2287,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -2375,7 +2295,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -2383,7 +2303,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -2399,8 +2319,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2410,8 +2328,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2421,8 +2337,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -2515,7 +2429,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -2523,7 +2437,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -2531,7 +2445,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -2539,7 +2453,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -2547,7 +2461,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -2563,8 +2477,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2574,8 +2486,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2585,8 +2495,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -2679,7 +2587,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -2687,7 +2595,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -2695,7 +2603,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -2703,7 +2611,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -2711,7 +2619,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -2727,8 +2635,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2738,8 +2644,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2749,8 +2653,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -2843,7 +2745,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -2851,7 +2753,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -2859,7 +2761,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -2867,7 +2769,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -2875,7 +2777,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -2891,8 +2793,6 @@
     i64.const 1
     call 0
     table.copy $t0 $t1
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2902,8 +2802,6 @@
     call 0
     local.get 0
     call_indirect $t1 (type 0)
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -2913,8 +2811,6 @@
     call 0
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3001,7 +2897,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3009,7 +2905,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3017,7 +2913,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3025,7 +2921,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3033,7 +2929,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3041,7 +2937,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3049,7 +2945,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3057,7 +2953,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3065,7 +2961,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3073,7 +2969,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3089,8 +2985,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3113,7 +3007,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3121,7 +3015,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3129,7 +3023,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3137,7 +3031,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3145,7 +3039,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3153,7 +3047,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3161,7 +3055,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3169,7 +3063,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3177,7 +3071,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3185,7 +3079,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3201,8 +3095,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3225,7 +3117,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3233,7 +3125,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3241,7 +3133,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3249,7 +3141,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3257,7 +3149,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3265,7 +3157,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3273,7 +3165,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3281,7 +3173,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3289,7 +3181,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3297,7 +3189,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3313,8 +3205,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3337,7 +3227,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3345,7 +3235,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3353,7 +3243,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3361,7 +3251,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3369,7 +3259,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3377,7 +3267,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3385,7 +3275,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3393,7 +3283,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3401,7 +3291,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3409,7 +3299,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3425,8 +3315,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3449,7 +3337,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3457,7 +3345,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3465,7 +3353,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3473,7 +3361,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3481,7 +3369,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3489,7 +3377,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3497,7 +3385,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3505,7 +3393,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3513,7 +3401,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3521,7 +3409,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3537,8 +3425,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3561,7 +3447,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3569,7 +3455,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3577,7 +3463,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3585,7 +3471,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3593,7 +3479,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3601,7 +3487,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3609,7 +3495,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3617,7 +3503,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3625,7 +3511,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3633,7 +3519,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3649,8 +3535,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3673,7 +3557,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3681,7 +3565,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3689,7 +3573,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3697,7 +3581,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3705,7 +3589,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3713,7 +3597,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3721,7 +3605,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3729,7 +3613,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3737,7 +3621,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3745,7 +3629,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3761,8 +3645,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3785,7 +3667,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3793,7 +3675,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3801,7 +3683,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3809,7 +3691,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3817,7 +3699,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3825,7 +3707,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3833,7 +3715,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3841,7 +3723,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3849,7 +3731,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3857,7 +3739,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3873,8 +3755,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -3897,7 +3777,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -3905,7 +3785,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -3913,7 +3793,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -3921,7 +3801,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -3929,7 +3809,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -3937,7 +3817,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -3945,7 +3825,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -3953,7 +3833,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -3961,7 +3841,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -3969,7 +3849,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -3985,8 +3865,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4009,7 +3887,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4017,7 +3895,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4025,7 +3903,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4033,7 +3911,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4041,7 +3919,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4049,7 +3927,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4057,7 +3935,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4065,7 +3943,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4073,7 +3951,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4081,7 +3959,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4097,8 +3975,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4121,7 +3997,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4129,7 +4005,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4137,7 +4013,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4145,7 +4021,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4153,7 +4029,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4161,7 +4037,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4169,7 +4045,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4177,7 +4053,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4185,7 +4061,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4193,7 +4069,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4209,8 +4085,6 @@
     i64.const 1
     call 0
     table.copy
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4233,7 +4107,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4241,7 +4115,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4249,7 +4123,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4257,7 +4131,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4265,7 +4139,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4273,7 +4147,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4281,7 +4155,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4289,7 +4163,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4297,7 +4171,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4305,7 +4179,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4321,8 +4195,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4345,7 +4217,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4353,7 +4225,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4361,7 +4233,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4369,7 +4241,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4377,7 +4249,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4385,7 +4257,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4393,7 +4265,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4401,7 +4273,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4409,7 +4281,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4417,7 +4289,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4433,8 +4305,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4457,7 +4327,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4465,7 +4335,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4473,7 +4343,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4481,7 +4351,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4489,7 +4359,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4497,7 +4367,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4505,7 +4375,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4513,7 +4383,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4521,7 +4391,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4529,7 +4399,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4545,8 +4415,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4569,7 +4437,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4577,7 +4445,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4585,7 +4453,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4593,7 +4461,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4601,7 +4469,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4609,7 +4477,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4617,7 +4485,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4625,7 +4493,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4633,7 +4501,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4641,7 +4509,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4657,8 +4525,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4681,7 +4547,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4689,7 +4555,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4697,7 +4563,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4705,7 +4571,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4713,7 +4579,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4721,7 +4587,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4729,7 +4595,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4737,7 +4603,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4745,7 +4611,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4753,7 +4619,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4769,8 +4635,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4793,7 +4657,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4801,7 +4665,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4809,7 +4673,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4817,7 +4681,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4825,7 +4689,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4833,7 +4697,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4841,7 +4705,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4849,7 +4713,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4857,7 +4721,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4865,7 +4729,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4881,8 +4745,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -4905,7 +4767,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -4913,7 +4775,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -4921,7 +4783,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -4929,7 +4791,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -4937,7 +4799,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -4945,7 +4807,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -4953,7 +4815,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -4961,7 +4823,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -4969,7 +4831,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -4977,7 +4839,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -4993,8 +4855,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -5017,7 +4877,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -5025,7 +4885,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -5033,7 +4893,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -5041,7 +4901,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -5049,7 +4909,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -5057,7 +4917,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -5065,7 +4925,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -5073,7 +4933,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -5081,7 +4941,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -5089,7 +4949,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -5105,8 +4965,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -5129,7 +4987,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -5137,7 +4995,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -5145,7 +5003,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -5153,7 +5011,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -5161,7 +5019,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -5169,7 +5027,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -5177,7 +5035,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -5185,7 +5043,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -5193,7 +5051,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -5201,7 +5059,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -5217,8 +5075,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -5241,7 +5097,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -5249,7 +5105,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -5257,7 +5113,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -5265,7 +5121,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -5273,7 +5129,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -5281,7 +5137,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -5289,7 +5145,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -5297,7 +5153,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -5305,7 +5161,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -5313,7 +5169,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -5329,8 +5185,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -5353,7 +5207,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 0
   )
@@ -5361,7 +5215,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 1
   )
@@ -5369,7 +5223,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 2
   )
@@ -5377,7 +5231,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -5385,7 +5239,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 4
   )
@@ -5393,7 +5247,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 5
   )
@@ -5401,7 +5255,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 6
   )
@@ -5409,7 +5263,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 7
   )
@@ -5417,7 +5271,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 8
   )
@@ -5425,7 +5279,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 9
   )
@@ -5441,8 +5295,6 @@
     i64.const 1
     call 0
     table.copy $t1 $t0
-    i64.const 1
-    call 0
   )
   (table $t0 (;0;) 30 30 funcref)
   (table $t1 (;1;) 30 30 funcref)
@@ -5466,7 +5318,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -5474,7 +5326,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -5482,7 +5334,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -5490,7 +5342,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -5498,7 +5350,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -5506,7 +5358,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -5514,7 +5366,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -5522,7 +5374,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -5530,7 +5382,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -5538,7 +5390,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -5546,7 +5398,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -5554,7 +5406,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -5562,7 +5414,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -5570,7 +5422,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -5578,7 +5430,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -5586,7 +5438,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -5598,8 +5450,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -5613,8 +5463,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -5684,7 +5532,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -5692,7 +5540,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -5700,7 +5548,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -5708,7 +5556,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -5716,7 +5564,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -5724,7 +5572,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -5732,7 +5580,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -5740,7 +5588,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -5748,7 +5596,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -5756,7 +5604,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -5764,7 +5612,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -5772,7 +5620,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -5780,7 +5628,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -5788,7 +5636,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -5796,7 +5644,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -5804,7 +5652,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -5816,8 +5664,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -5831,8 +5677,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -5902,7 +5746,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -5910,7 +5754,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -5918,7 +5762,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -5926,7 +5770,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -5934,7 +5778,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -5942,7 +5786,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -5950,7 +5794,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -5958,7 +5802,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -5966,7 +5810,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -5974,7 +5818,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -5982,7 +5826,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -5990,7 +5834,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -5998,7 +5842,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -6006,7 +5850,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -6014,7 +5858,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -6022,7 +5866,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -6034,8 +5878,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -6049,8 +5891,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -6120,7 +5960,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -6128,7 +5968,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -6136,7 +5976,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -6144,7 +5984,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -6152,7 +5992,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -6160,7 +6000,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -6168,7 +6008,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -6176,7 +6016,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -6184,7 +6024,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -6192,7 +6032,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -6200,7 +6040,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -6208,7 +6048,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -6216,7 +6056,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -6224,7 +6064,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -6232,7 +6072,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -6240,7 +6080,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -6252,8 +6092,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -6267,8 +6105,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -6338,7 +6174,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -6346,7 +6182,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -6354,7 +6190,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -6362,7 +6198,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -6370,7 +6206,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -6378,7 +6214,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -6386,7 +6222,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -6394,7 +6230,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -6402,7 +6238,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -6410,7 +6246,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -6418,7 +6254,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -6426,7 +6262,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -6434,7 +6270,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -6442,7 +6278,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -6450,7 +6286,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -6458,7 +6294,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -6470,8 +6306,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -6485,8 +6319,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -6556,7 +6388,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -6564,7 +6396,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -6572,7 +6404,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -6580,7 +6412,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -6588,7 +6420,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -6596,7 +6428,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -6604,7 +6436,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -6612,7 +6444,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -6620,7 +6452,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -6628,7 +6460,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -6636,7 +6468,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -6644,7 +6476,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -6652,7 +6484,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -6660,7 +6492,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -6668,7 +6500,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -6676,7 +6508,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -6688,8 +6520,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -6703,8 +6533,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -6774,7 +6602,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -6782,7 +6610,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -6790,7 +6618,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -6798,7 +6626,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -6806,7 +6634,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -6814,7 +6642,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -6822,7 +6650,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -6830,7 +6658,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -6838,7 +6666,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -6846,7 +6674,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -6854,7 +6682,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -6862,7 +6690,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -6870,7 +6698,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -6878,7 +6706,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -6886,7 +6714,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -6894,7 +6722,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -6906,8 +6734,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -6921,8 +6747,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -6992,7 +6816,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -7000,7 +6824,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -7008,7 +6832,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -7016,7 +6840,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -7024,7 +6848,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -7032,7 +6856,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -7040,7 +6864,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -7048,7 +6872,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -7056,7 +6880,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -7064,7 +6888,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -7072,7 +6896,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -7080,7 +6904,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -7088,7 +6912,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -7096,7 +6920,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -7104,7 +6928,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -7112,7 +6936,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -7124,8 +6948,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -7139,8 +6961,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -7210,7 +7030,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -7218,7 +7038,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -7226,7 +7046,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -7234,7 +7054,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -7242,7 +7062,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -7250,7 +7070,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -7258,7 +7078,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -7266,7 +7086,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -7274,7 +7094,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -7282,7 +7102,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -7290,7 +7110,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -7298,7 +7118,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -7306,7 +7126,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -7314,7 +7134,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -7322,7 +7142,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -7330,7 +7150,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -7342,8 +7162,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -7357,8 +7175,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 32 64 funcref)
   (export "f0" (func $f0))
@@ -7428,7 +7244,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -7436,7 +7252,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -7444,7 +7260,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -7452,7 +7268,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -7460,7 +7276,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -7468,7 +7284,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -7476,7 +7292,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -7484,7 +7300,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -7492,7 +7308,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -7500,7 +7316,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -7508,7 +7324,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -7516,7 +7332,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -7524,7 +7340,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -7532,7 +7348,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -7540,7 +7356,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -7548,7 +7364,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -7560,8 +7376,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -7575,8 +7389,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 128 128 funcref)
   (export "f0" (func $f0))
@@ -7742,7 +7554,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -7750,7 +7562,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -7758,7 +7570,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -7766,7 +7578,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -7774,7 +7586,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -7782,7 +7594,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -7790,7 +7602,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 6
   )
@@ -7798,7 +7610,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 7
   )
@@ -7806,7 +7618,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 8
   )
@@ -7814,7 +7626,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 9
   )
@@ -7822,7 +7634,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 10
   )
@@ -7830,7 +7642,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 11
   )
@@ -7838,7 +7650,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 12
   )
@@ -7846,7 +7658,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -7854,7 +7666,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 14
   )
@@ -7862,7 +7674,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 15
   )
@@ -7874,8 +7686,6 @@
     call $finite_wasm_gas
     local.get $n
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;19;) (type 2) (param $targetOffs i32) (param $srcOffs i32) (param $len i32)
     i64.const 12
@@ -7889,8 +7699,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 128 128 funcref)
   (export "f0" (func $f0))

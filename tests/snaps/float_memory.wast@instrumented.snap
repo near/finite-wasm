@@ -14,8 +14,6 @@
     call 0
     i32.const 0
     f32.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (result i32)
     i64.const 4
@@ -25,8 +23,6 @@
     call 0
     i32.const 0
     i32.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2)
     i64.const 8
@@ -37,8 +33,6 @@
     i32.const 0
     f32.const nan:0x200000 (;=NaN;)
     f32.store
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2)
     i64.const 8
@@ -49,8 +43,6 @@
     i32.const 0
     i32.const 2141192192
     i32.store
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2)
     i64.const 8
@@ -61,8 +53,6 @@
     i32.const 0
     i32.const 0
     i32.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "f32.load" (func 2))
@@ -103,8 +93,6 @@
     call 0
     i32.const 0
     f64.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (result i64)
     i64.const 8
@@ -114,8 +102,6 @@
     call 0
     i32.const 0
     i64.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2)
     i64.const 12
@@ -126,8 +112,6 @@
     i32.const 0
     f64.const nan:0x4000000000000 (;=NaN;)
     f64.store
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2)
     i64.const 12
@@ -138,8 +122,6 @@
     i32.const 0
     i64.const 9219994337134247936
     i64.store
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2)
     i64.const 12
@@ -150,8 +132,6 @@
     i32.const 0
     i64.const 0
     i64.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "f64.load" (func 2))
@@ -194,8 +174,6 @@
     call 0
     i32.const 1
     f32.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (result i32)
     i64.const 4
@@ -205,8 +183,6 @@
     call 0
     i32.const 1
     i32.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2)
     i64.const 8
@@ -217,8 +193,6 @@
     i32.const 1
     f32.const nan:0x200000 (;=NaN;)
     f32.store
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2)
     i64.const 8
@@ -229,8 +203,6 @@
     i32.const 1
     i32.const 2141192192
     i32.store
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2)
     i64.const 8
@@ -241,8 +213,6 @@
     i32.const 1
     i32.const 0
     i32.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "f32.load" (func 2))
@@ -283,8 +253,6 @@
     call 0
     i32.const 1
     f64.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (result i64)
     i64.const 8
@@ -294,8 +262,6 @@
     call 0
     i32.const 1
     i64.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2)
     i64.const 12
@@ -306,8 +272,6 @@
     i32.const 1
     f64.const nan:0x4000000000000 (;=NaN;)
     f64.store
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2)
     i64.const 12
@@ -318,8 +282,6 @@
     i32.const 1
     i64.const 9219994337134247936
     i64.store
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2)
     i64.const 12
@@ -330,8 +292,6 @@
     i32.const 1
     i64.const 0
     i64.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "f64.load" (func 2))
@@ -374,8 +334,6 @@
     call 0
     i32.const 0
     f32.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (result i32)
     i64.const 4
@@ -385,8 +343,6 @@
     call 0
     i32.const 0
     i32.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2)
     i64.const 8
@@ -397,8 +353,6 @@
     i32.const 0
     f32.const nan:0x500001 (;=NaN;)
     f32.store
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2)
     i64.const 8
@@ -409,8 +363,6 @@
     i32.const 0
     i32.const 2144337921
     i32.store
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2)
     i64.const 8
@@ -421,8 +373,6 @@
     i32.const 0
     i32.const 0
     i32.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "f32.load" (func 2))
@@ -463,8 +413,6 @@
     call 0
     i32.const 0
     f64.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (result i64)
     i64.const 8
@@ -474,8 +422,6 @@
     call 0
     i32.const 0
     i64.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2)
     i64.const 12
@@ -486,8 +432,6 @@
     i32.const 0
     f64.const nan:0xc000000000001 (;=NaN;)
     f64.store
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2)
     i64.const 12
@@ -498,8 +442,6 @@
     i32.const 0
     i64.const 9222246136947933185
     i64.store
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2)
     i64.const 12
@@ -510,8 +452,6 @@
     i32.const 0
     i64.const 0
     i64.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "f64.load" (func 2))

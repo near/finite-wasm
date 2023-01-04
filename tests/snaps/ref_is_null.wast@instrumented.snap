@@ -12,7 +12,7 @@
     i64.const 32
     i64.const 1
     call $finite_wasm_stack
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     local.get $x
     ref.is_null
@@ -21,7 +21,7 @@
     i64.const 32
     i64.const 1
     call $finite_wasm_stack
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     local.get $x
     ref.is_null
@@ -30,8 +30,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;5;) (type 3) (param $r externref)
     i64.const 36
@@ -42,8 +40,6 @@
     i32.const 1
     local.get $r
     table.set $t2
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;6;) (type 2)
     i64.const 36
@@ -59,8 +55,6 @@
     i32.const 1
     ref.null extern
     table.set $t2
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;7;) (type 4) (param $x i32) (result i32)
     i64.const 32
@@ -73,8 +67,6 @@
     i64.const 1
     call $finite_wasm_gas
     call $f1
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;8;) (type 4) (param $x i32) (result i32)
     i64.const 32
@@ -87,8 +79,6 @@
     i64.const 1
     call $finite_wasm_gas
     call $f2
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table $t1 (;0;) 2 funcref)
   (table $t2 (;1;) 2 externref)

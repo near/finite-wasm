@@ -359,6 +359,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     // the frame created by the matching insn.
     fn visit_end(&mut self) -> Self::Output {
         let cost = self.model.visit_end();
+        assert!(cost == 0, "the `end` instruction costs aren’t handled right, set it to 0");
         let kind = match self.current_frame.kind {
             BranchTargetKind::Forward => InstructionKind::ControlFlow,
             BranchTargetKind::Backward(_) => InstructionKind::Pure,
@@ -382,6 +383,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     // Branch Target (unconditionally)
     fn visit_else(&mut self) -> Self::Output {
         let cost = self.model.visit_else();
+        assert!(cost == 0, "the `else` instruction costs aren’t handled right, set it to 0");
         // `else` is already a taken branch target from `if` (if the condition is false).
         self.end_frame();
         // `else` is both a branch and a branch target, depending on how it was reached.

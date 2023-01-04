@@ -9,7 +9,7 @@
     i64.const 12
     i64.const 2
     call 1
-    i64.const 8
+    i64.const 7
     call 0
     local.get $x
     i32.const 1
@@ -23,7 +23,7 @@
     i64.const 12
     i64.const 2
     call 1
-    i64.const 8
+    i64.const 7
     call 0
     local.get $x
     i32.const 1
@@ -37,7 +37,7 @@
     i64.const 24
     i64.const 2
     call 1
-    i64.const 8
+    i64.const 7
     call 0
     local.get $x
     i64.const 1
@@ -51,7 +51,7 @@
     i64.const 24
     i64.const 2
     call 1
-    i64.const 8
+    i64.const 7
     call 0
     local.get $x
     i64.const 1
@@ -83,7 +83,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     i32.wrap_i64
@@ -106,7 +106,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     i32.wrap_i64
@@ -129,7 +129,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i32.const 1
@@ -141,7 +141,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i32.const 1
@@ -153,7 +153,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i64.const 1
@@ -165,7 +165,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i64.const 1
@@ -196,7 +196,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i32.const 1
@@ -208,7 +208,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i32.const 1
@@ -220,7 +220,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i64.const 1
@@ -232,7 +232,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $x
     i64.const 1
@@ -268,7 +268,7 @@
     local.get $x
     i32.const 6
     i32.div_s
-    i64.const 3
+    i64.const 2
     call 0
     i32.const 6
     i32.mul
@@ -282,7 +282,7 @@
     local.get $x
     i32.const 6
     i32.div_u
-    i64.const 3
+    i64.const 2
     call 0
     i32.const 6
     i32.mul
@@ -296,7 +296,7 @@
     local.get $x
     i64.const 6
     i64.div_s
-    i64.const 3
+    i64.const 2
     call 0
     i64.const 6
     i64.mul
@@ -310,7 +310,7 @@
     local.get $x
     i64.const 6
     i64.div_u
-    i64.const 3
+    i64.const 2
     call 0
     i64.const 6
     i64.mul
@@ -343,8 +343,6 @@
     local.get $x
     local.get $x
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -355,8 +353,6 @@
     local.get $x
     local.get $x
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -367,8 +363,6 @@
     local.get $x
     local.get $x
     i64.div_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -379,8 +373,6 @@
     local.get $x
     local.get $x
     i64.div_u
-    i64.const 1
-    call 0
   )
   (export "i32.no_fold_div_s_self" (func 2))
   (export "i32.no_fold_div_u_self" (func 3))
@@ -410,8 +402,6 @@
     local.get $x
     local.get $x
     i32.rem_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -422,8 +412,6 @@
     local.get $x
     local.get $x
     i32.rem_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -434,8 +422,6 @@
     local.get $x
     local.get $x
     i64.rem_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -446,8 +432,6 @@
     local.get $x
     local.get $x
     i64.rem_u
-    i64.const 1
-    call 0
   )
   (export "i32.no_fold_rem_s_self" (func 2))
   (export "i32.no_fold_rem_u_self" (func 3))
@@ -479,8 +463,6 @@
     i32.mul
     i32.const 6
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -493,8 +475,6 @@
     i32.mul
     i32.const 6
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -507,8 +487,6 @@
     i64.mul
     i64.const 6
     i64.div_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -521,8 +499,6 @@
     i64.mul
     i64.const 6
     i64.div_u
-    i64.const 1
-    call 0
   )
   (export "i32.no_fold_mul_div_s" (func 2))
   (export "i32.no_fold_mul_div_u" (func 3))
@@ -552,8 +528,6 @@
     local.get $x
     i32.const 2
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -564,8 +538,6 @@
     local.get $x
     i64.const 2
     i64.div_s
-    i64.const 1
-    call 0
   )
   (export "i32.no_fold_div_s_2" (func 2))
   (export "i64.no_fold_div_s_2" (func 3))
@@ -591,8 +563,6 @@
     local.get $x
     i32.const 2
     i32.rem_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -603,8 +573,6 @@
     local.get $x
     i64.const 2
     i64.rem_s
-    i64.const 1
-    call 0
   )
   (export "i32.no_fold_rem_s_2" (func 2))
   (export "i64.no_fold_rem_s_2" (func 3))
@@ -630,8 +598,6 @@
     local.get $x
     i32.const 0
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -642,8 +608,6 @@
     local.get $x
     i32.const 0
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -654,8 +618,6 @@
     local.get $x
     i64.const 0
     i64.div_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -666,8 +628,6 @@
     local.get $x
     i64.const 0
     i64.div_u
-    i64.const 1
-    call 0
   )
   (export "i32.div_s_0" (func 2))
   (export "i32.div_u_0" (func 3))
@@ -697,8 +657,6 @@
     local.get $x
     i32.const 3
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -709,8 +667,6 @@
     local.get $x
     i32.const 3
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -721,8 +677,6 @@
     local.get $x
     i64.const 3
     i64.div_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -733,8 +687,6 @@
     local.get $x
     i64.const 3
     i64.div_u
-    i64.const 1
-    call 0
   )
   (export "i32.div_s_3" (func 2))
   (export "i32.div_u_3" (func 3))
@@ -768,8 +720,6 @@
     local.get $x
     i32.const 5
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -780,8 +730,6 @@
     local.get $x
     i32.const 5
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -792,8 +740,6 @@
     local.get $x
     i64.const 5
     i64.div_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -804,8 +750,6 @@
     local.get $x
     i64.const 5
     i64.div_u
-    i64.const 1
-    call 0
   )
   (export "i32.div_s_5" (func 2))
   (export "i32.div_u_5" (func 3))
@@ -839,8 +783,6 @@
     local.get $x
     i32.const 7
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -851,8 +793,6 @@
     local.get $x
     i32.const 7
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -863,8 +803,6 @@
     local.get $x
     i64.const 7
     i64.div_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -875,8 +813,6 @@
     local.get $x
     i64.const 7
     i64.div_u
-    i64.const 1
-    call 0
   )
   (export "i32.div_s_7" (func 2))
   (export "i32.div_u_7" (func 3))
@@ -910,8 +846,6 @@
     local.get $x
     i32.const 3
     i32.rem_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -922,8 +856,6 @@
     local.get $x
     i32.const 3
     i32.rem_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -934,8 +866,6 @@
     local.get $x
     i64.const 3
     i64.rem_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -946,8 +876,6 @@
     local.get $x
     i64.const 3
     i64.rem_u
-    i64.const 1
-    call 0
   )
   (export "i32.rem_s_3" (func 2))
   (export "i32.rem_u_3" (func 3))
@@ -981,8 +909,6 @@
     local.get $x
     i32.const 5
     i32.rem_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -993,8 +919,6 @@
     local.get $x
     i32.const 5
     i32.rem_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -1005,8 +929,6 @@
     local.get $x
     i64.const 5
     i64.rem_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -1017,8 +939,6 @@
     local.get $x
     i64.const 5
     i64.rem_u
-    i64.const 1
-    call 0
   )
   (export "i32.rem_s_5" (func 2))
   (export "i32.rem_u_5" (func 3))
@@ -1052,8 +972,6 @@
     local.get $x
     i32.const 7
     i32.rem_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $x i32) (result i32)
     i64.const 8
@@ -1064,8 +982,6 @@
     local.get $x
     i32.const 7
     i32.rem_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -1076,8 +992,6 @@
     local.get $x
     i64.const 7
     i64.rem_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -1088,8 +1002,6 @@
     local.get $x
     i64.const 7
     i64.rem_u
-    i64.const 1
-    call 0
   )
   (export "i32.rem_s_7" (func 2))
   (export "i32.rem_u_7" (func 3))
@@ -1123,8 +1035,6 @@
     local.get $x
     i32.const -1
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $x i64) (result i64)
     i64.const 16
@@ -1135,8 +1045,6 @@
     local.get $x
     i64.const -1
     i64.div_s
-    i64.const 1
-    call 0
   )
   (export "i32.no_fold_div_neg1" (func 2))
   (export "i64.no_fold_div_neg1" (func 3))

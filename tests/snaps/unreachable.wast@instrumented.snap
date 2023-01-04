@@ -14,15 +14,11 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $dummy3 (;3;) (type $sig) (param i32 i32 i32)
     i64.const 0
     i64.const 3
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;4;) (type 2) (result i32)
     i64.const 0
@@ -108,8 +104,6 @@
     block (result i32) ;; label = @1
       unreachable
       i32.const 2
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;13;) (type 2) (result i32)
@@ -124,8 +118,6 @@
       call $finite_wasm_gas
       unreachable
       i32.const 2
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;14;) (type 1)
@@ -140,8 +132,6 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;15;) (type 2) (result i32)
@@ -156,8 +146,6 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;16;) (type 2) (result i32)
@@ -173,11 +161,7 @@
       i32.const 1
       br 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;17;) (type 2) (result i32)
     i64.const 4
@@ -188,8 +172,6 @@
     loop (result i32) ;; label = @1
       unreachable
       i32.const 2
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;18;) (type 2) (result i32)
@@ -204,8 +186,6 @@
       call $finite_wasm_gas
       unreachable
       i32.const 2
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;19;) (type 1)
@@ -220,8 +200,6 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;20;) (type 2) (result i32)
@@ -238,12 +216,8 @@
         i32.const 1
         br 1 (;@1;)
         unreachable
-        i64.const 2
-        call $finite_wasm_gas
       end
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;21;) (type 2) (result i32)
     i64.const 4
@@ -254,11 +228,7 @@
     block (result i32) ;; label = @1
       unreachable
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;22;) (type 1)
     i64.const 0
@@ -269,11 +239,7 @@
     block ;; label = @1
       unreachable
       br_if 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;23;) (type 2) (result i32)
     i64.const 4
@@ -287,11 +253,7 @@
       br_if 0 (;@1;)
       drop
       i32.const 7
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;24;) (type 2) (result i32)
     i64.const 4
@@ -305,11 +267,7 @@
       br_if 0 (;@1;)
       drop
       i32.const 7
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;25;) (type 1)
     i64.const 0
@@ -320,11 +278,7 @@
     block ;; label = @1
       unreachable
       br_table 0 (;@1;) 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;26;) (type 2) (result i32)
     i64.const 4
@@ -337,11 +291,7 @@
       i32.const 1
       br_table 0 (;@1;) 0 (;@1;) 0 (;@1;)
       i32.const 7
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;27;) (type 2) (result i32)
     i64.const 4
@@ -354,14 +304,8 @@
         unreachable
         i32.const 1
         br_table 0 (;@2;) 1 (;@1;)
-        i64.const 1
-        call $finite_wasm_gas
       end
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;28;) (type 2) (result i32)
     i64.const 4
@@ -374,11 +318,7 @@
       unreachable
       br_table 0 (;@1;) 0 (;@1;)
       i32.const 7
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;29;) (type 2) (result i32)
     i64.const 4
@@ -390,11 +330,7 @@
       unreachable
       br_table 0 (;@1;) 0 (;@1;)
       i32.const 8
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;30;) (type 4) (result i64)
     i64.const 0
@@ -429,15 +365,11 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;33;) (type 5) (param i32 i32) (result i32)
     i64.const 4
@@ -447,18 +379,14 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       local.get 1
     else
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;34;) (type 5) (param i32 i32) (result i32)
     i64.const 4
@@ -471,10 +399,8 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get 1
   )
@@ -818,87 +744,4 @@
   (export "as-memory.grow-size" (func 61))
   (elem (;0;) (i32.const 0) func $dummy3)
 )
-(assert_trap (invoke "type-i32") "unreachable")
-(assert_trap (invoke "type-i64") "unreachable")
-(assert_trap (invoke "type-f32") "unreachable")
-(assert_trap (invoke "type-f64") "unreachable")
-
-(assert_trap (invoke "as-func-first") "unreachable")
-(assert_trap (invoke "as-func-mid") "unreachable")
-(assert_trap (invoke "as-func-last") "unreachable")
-(assert_trap (invoke "as-func-value") "unreachable")
-
-(assert_trap (invoke "as-block-first") "unreachable")
-(assert_trap (invoke "as-block-mid") "unreachable")
-(assert_trap (invoke "as-block-last") "unreachable")
-(assert_trap (invoke "as-block-value") "unreachable")
-(assert_return (invoke "as-block-broke") (i32.const 1))
-
-(assert_trap (invoke "as-loop-first") "unreachable")
-(assert_trap (invoke "as-loop-mid") "unreachable")
-(assert_trap (invoke "as-loop-last") "unreachable")
-(assert_return (invoke "as-loop-broke") (i32.const 1))
-
-(assert_trap (invoke "as-br-value") "unreachable")
-
-(assert_trap (invoke "as-br_if-cond") "unreachable")
-(assert_trap (invoke "as-br_if-value") "unreachable")
-(assert_trap (invoke "as-br_if-value-cond") "unreachable")
-
-(assert_trap (invoke "as-br_table-index") "unreachable")
-(assert_trap (invoke "as-br_table-value") "unreachable")
-(assert_trap (invoke "as-br_table-value-2") "unreachable")
-(assert_trap (invoke "as-br_table-value-index") "unreachable")
-(assert_trap (invoke "as-br_table-value-and-index") "unreachable")
-
-(assert_trap (invoke "as-return-value") "unreachable")
-
-(assert_trap (invoke "as-if-cond") "unreachable")
-(assert_trap (invoke "as-if-then" (i32.const 1) (i32.const 6)) "unreachable")
-(assert_return (invoke "as-if-then" (i32.const 0) (i32.const 6)) (i32.const 6))
-(assert_trap (invoke "as-if-else" (i32.const 0) (i32.const 6)) "unreachable")
 (assert_return (invoke "as-if-else" (i32.const 1) (i32.const 6)) (i32.const 6))
-(assert_trap (invoke "as-if-then-no-else" (i32.const 1) (i32.const 6)) "unreachable")
-(assert_return (invoke "as-if-then-no-else" (i32.const 0) (i32.const 6)) (i32.const 6))
-
-(assert_trap (invoke "as-select-first" (i32.const 0) (i32.const 6)) "unreachable")
-(assert_trap (invoke "as-select-first" (i32.const 1) (i32.const 6)) "unreachable")
-(assert_trap (invoke "as-select-second" (i32.const 0) (i32.const 6)) "unreachable")
-(assert_trap (invoke "as-select-second" (i32.const 1) (i32.const 6)) "unreachable")
-(assert_trap (invoke "as-select-cond") "unreachable")
-
-(assert_trap (invoke "as-call-first") "unreachable")
-(assert_trap (invoke "as-call-mid") "unreachable")
-(assert_trap (invoke "as-call-last") "unreachable")
-
-(assert_trap (invoke "as-call_indirect-func") "unreachable")
-(assert_trap (invoke "as-call_indirect-first") "unreachable")
-(assert_trap (invoke "as-call_indirect-mid") "unreachable")
-(assert_trap (invoke "as-call_indirect-last") "unreachable")
-
-(assert_trap (invoke "as-local.set-value") "unreachable")
-(assert_trap (invoke "as-local.tee-value") "unreachable")
-(assert_trap (invoke "as-global.set-value") "unreachable")
-
-(assert_trap (invoke "as-load-address") "unreachable")
-(assert_trap (invoke "as-loadN-address") "unreachable")
-
-(assert_trap (invoke "as-store-address") "unreachable")
-(assert_trap (invoke "as-store-value") "unreachable")
-(assert_trap (invoke "as-storeN-address") "unreachable")
-(assert_trap (invoke "as-storeN-value") "unreachable")
-
-(assert_trap (invoke "as-unary-operand") "unreachable")
-
-(assert_trap (invoke "as-binary-left") "unreachable")
-(assert_trap (invoke "as-binary-right") "unreachable")
-
-(assert_trap (invoke "as-test-operand") "unreachable")
-
-(assert_trap (invoke "as-compare-left") "unreachable")
-(assert_trap (invoke "as-compare-right") "unreachable")
-
-(assert_trap (invoke "as-convert-operand") "unreachable")
-
-(assert_trap (invoke "as-memory.grow-size") "unreachable")
-

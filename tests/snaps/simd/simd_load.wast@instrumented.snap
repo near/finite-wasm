@@ -12,8 +12,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "v128.load" (func 2))
@@ -40,7 +38,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )
@@ -68,7 +66,7 @@
     call 0
     i32.const 0
     v128.load offset=16
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.eq
   )
@@ -93,7 +91,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     v128.not
   )
@@ -105,7 +103,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.all_true
   )
@@ -139,7 +137,7 @@
     call 0
     i32.const 32
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     v128.bitselect
   )
@@ -165,7 +163,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 3
+    i64.const 2
     call 0
     i32.const 1
     i8x16.shl
@@ -199,7 +197,7 @@
     i8x16.add
     i32.const 16
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.sub
   )
@@ -228,7 +226,7 @@
     call 0
     i32.const 16
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     f32x4.mul
   )
@@ -253,7 +251,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     f32x4.abs
   )
@@ -281,7 +279,7 @@
     call 0
     i32.const 1
     v128.load offset=16
-    i64.const 2
+    i64.const 1
     call 0
     f32x4.min
   )
@@ -306,7 +304,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     i32x4.trunc_sat_f32x4_s
   )
@@ -330,7 +328,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     f32x4.convert_i32x4_u
   )
@@ -358,7 +356,7 @@
     call 0
     i32.const 1
     v128.load offset=15
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.swizzle
   )
@@ -387,11 +385,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "as-br-value" (func 2))

@@ -15,8 +15,6 @@
     call 0
     local.get $i
     table.get $t
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $i i32) (param $r externref)
     i64.const 36
@@ -27,8 +25,6 @@
     local.get $i
     local.get $r
     table.set $t
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2) (param $sz i32) (param $init externref) (result i32)
     i64.const 36
@@ -41,14 +37,12 @@
     i64.const 1
     call 0
     table.grow $t
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 3) (result i32)
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     table.size $t
   )
@@ -101,8 +95,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.grow $t
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table $t (;0;) 16 funcref)
   (export "grow" (func $f))
@@ -128,8 +120,6 @@
     i64.const 1
     call 0
     table.grow $t
-    i64.const 1
-    call 0
   )
   (table $t (;0;) 0 externref)
   (export "grow" (func 2))
@@ -158,8 +148,6 @@
     i64.const 1
     call 0
     table.grow $t
-    i64.const 1
-    call 0
   )
   (table $t (;0;) 0 10 externref)
   (export "grow" (func 2))
@@ -192,8 +180,6 @@
     i64.const 1
     call 0
     table.grow $t
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32 i32) (result funcref)
     (local funcref)
@@ -233,11 +219,9 @@
         local.get 1
         i32.le_u
         br_if 0 (;@2;)
-        i64.const 2
-        call 0
       end
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get 2
   )

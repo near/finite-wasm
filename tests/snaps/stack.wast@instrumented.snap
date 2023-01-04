@@ -28,10 +28,8 @@
           i64.const 1
           call $finite_wasm_gas
           br 2 (;@1;)
-          i64.const 1
-          call $finite_wasm_gas
         else
-          i64.const 9
+          i64.const 8
           call $finite_wasm_gas
           local.get $i
           local.get $res
@@ -45,11 +43,9 @@
         i64.const 1
         call $finite_wasm_gas
         br 0 (;@2;)
-        i64.const 2
-        call $finite_wasm_gas
       end
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $res
   )
@@ -75,10 +71,8 @@
           i64.const 1
           call $finite_wasm_gas
           br 2 (;@1;)
-          i64.const 1
-          call $finite_wasm_gas
         else
-          i64.const 9
+          i64.const 8
           call $finite_wasm_gas
           local.get $i
           local.get $res
@@ -92,11 +86,9 @@
         i64.const 1
         call $finite_wasm_gas
         br 0 (;@2;)
-        i64.const 2
-        call $finite_wasm_gas
       end
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $res
   )
@@ -122,10 +114,8 @@
           i64.const 1
           call $finite_wasm_gas
           br 2 (;@1;)
-          i64.const 1
-          call $finite_wasm_gas
         else
-          i64.const 9
+          i64.const 8
           call $finite_wasm_gas
           local.get $i
           local.get $res
@@ -139,11 +129,9 @@
         i64.const 1
         call $finite_wasm_gas
         br 0 (;@2;)
-        i64.const 2
-        call $finite_wasm_gas
       end
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $res
   )
@@ -169,10 +157,8 @@
           i64.const 1
           call $finite_wasm_gas
           br 2 (;@1;)
-          i64.const 1
-          call $finite_wasm_gas
         else
-          i64.const 9
+          i64.const 8
           call $finite_wasm_gas
           local.get $i
           local.get $res
@@ -186,11 +172,9 @@
         i64.const 1
         call $finite_wasm_gas
         br 0 (;@2;)
-        i64.const 2
-        call $finite_wasm_gas
       end
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $res
   )
@@ -216,10 +200,8 @@
           i64.const 1
           call $finite_wasm_gas
           br 2 (;@1;)
-          i64.const 1
-          call $finite_wasm_gas
         else
-          i64.const 9
+          i64.const 8
           call $finite_wasm_gas
           local.get $i
           local.get $res
@@ -233,11 +215,9 @@
         i64.const 1
         call $finite_wasm_gas
         br 0 (;@2;)
-        i64.const 2
-        call $finite_wasm_gas
       end
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $res
   )
@@ -246,7 +226,7 @@
     i64.const 8
     i64.const 1
     call $finite_wasm_stack
-    i64.const 6
+    i64.const 5
     call $finite_wasm_gas
     i32.const 1
     global.get $temp
@@ -261,7 +241,7 @@
     i64.const 1
     call $finite_wasm_gas
     call $add_one_to_global
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     drop
   )
@@ -278,7 +258,7 @@
     i64.const 1
     call $finite_wasm_gas
     call $add_one_to_global_and_drop
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.add
   )
@@ -317,13 +297,13 @@
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 4
+      i64.const 3
       call 0
     end
     loop ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -332,8 +312,6 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -343,28 +321,24 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 3
     call 0
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 4
+      i64.const 3
       call 0
     end
     loop ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -373,8 +347,6 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -384,15 +356,11 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 4
     call 0
@@ -400,14 +368,14 @@
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 5
+      i64.const 4
       call 0
     end
     loop ;; label = @1
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -417,8 +385,6 @@
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -429,30 +395,26 @@
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 1
-      call 0
     else
       i64.const 3
       call 0
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 1
-      call 0
     end
     i64.const 3
     call 0
     block (result i32) ;; label = @1
       i32.const 0
       call_indirect (type 2)
-      i64.const 5
+      i64.const 4
       call 0
     end
     drop
     loop (result i32) ;; label = @1
       i32.const 0
       call_indirect (type 2)
-      i64.const 4
+      i64.const 3
       call 0
     end
     drop
@@ -462,15 +424,11 @@
       call 0
       i32.const 0
       call_indirect (type 2)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type 2)
-      i64.const 1
-      call 0
     end
     i64.const 4
     call 0
@@ -478,13 +436,13 @@
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 4
+      i64.const 3
       call 0
     end
     loop ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -493,8 +451,6 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -504,28 +460,24 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 3
     call 0
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 4
+      i64.const 3
       call 0
     end
     loop ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -534,8 +486,6 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -545,28 +495,24 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 3
     call 0
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 4
+      i64.const 3
       call 0
     end
     loop ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -575,8 +521,6 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -586,15 +530,11 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 4
     call 0
@@ -602,14 +542,14 @@
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 5
+      i64.const 4
       call 0
     end
     loop ;; label = @1
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -619,8 +559,6 @@
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -631,30 +569,26 @@
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 1
-      call 0
     else
       i64.const 3
       call 0
       i32.const 0
       i32.const 0
       call_indirect (type 1)
-      i64.const 1
-      call 0
     end
     i64.const 3
     call 0
     block (result i32) ;; label = @1
       i32.const 0
       call_indirect (type 2)
-      i64.const 5
+      i64.const 4
       call 0
     end
     drop
     loop (result i32) ;; label = @1
       i32.const 0
       call_indirect (type 2)
-      i64.const 4
+      i64.const 3
       call 0
     end
     drop
@@ -664,15 +598,11 @@
       call 0
       i32.const 0
       call_indirect (type 2)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type 2)
-      i64.const 1
-      call 0
     end
     i64.const 4
     call 0
@@ -680,13 +610,13 @@
     block ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 4
+      i64.const 3
       call 0
     end
     loop ;; label = @1
       i32.const 0
       call_indirect (type $proc)
-      i64.const 3
+      i64.const 2
       call 0
     end
     i32.const 0
@@ -695,8 +625,6 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
@@ -706,22 +634,16 @@
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     else
       i64.const 2
       call 0
       i32.const 0
       call_indirect (type $proc)
-      i64.const 1
-      call 0
     end
     i64.const 2
     call 0
     i32.const 0
     call_indirect (type $proc)
-    i64.const 1
-    call 0
   )
   (table (;0;) 1 funcref)
 )

@@ -9,7 +9,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     nop
   )
@@ -21,8 +21,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -83,8 +81,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -94,8 +90,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -156,8 +150,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -167,8 +159,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -229,8 +219,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -240,8 +228,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -302,8 +288,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -313,8 +297,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -375,8 +357,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -386,8 +366,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -448,8 +426,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -459,8 +435,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -521,8 +495,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -532,8 +504,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "memory0" (memory 0))
@@ -594,8 +564,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -605,8 +573,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -986,8 +952,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -997,8 +961,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -1379,8 +1341,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -1390,8 +1350,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -1771,8 +1729,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -1782,8 +1738,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -2164,8 +2118,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -2175,8 +2127,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -2556,8 +2506,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -2567,8 +2515,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -2948,8 +2894,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -2959,8 +2903,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -3340,8 +3282,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -3351,8 +3291,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -3732,8 +3670,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -3743,8 +3679,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -4124,8 +4058,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -4135,8 +4067,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "mem" (memory 0))
@@ -4516,8 +4446,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -4527,8 +4455,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "mem" (memory 0))
@@ -4916,8 +4842,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
@@ -4936,8 +4860,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -4955,10 +4877,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -5004,8 +4924,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
@@ -5024,8 +4942,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -5043,10 +4959,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -5083,8 +4997,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5109,8 +5021,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5135,8 +5045,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5161,8 +5069,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5204,8 +5110,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
@@ -5224,8 +5128,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -5243,10 +5145,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -5280,8 +5180,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5306,8 +5204,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5332,8 +5228,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5358,8 +5252,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5384,8 +5276,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -5410,8 +5300,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "test" (func 2))
@@ -7029,8 +6917,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $from i32) (param $to i32) (param $expected i32) (result i32)
     i64.const 8
@@ -7049,8 +6935,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -7068,10 +6952,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from

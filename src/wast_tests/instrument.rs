@@ -185,7 +185,7 @@ impl<'a> crate::test::TestContext {
                         let end_offset = operators.original_position();
                         if instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
                             let ((_, g), k) = instrumentation_points.next().unwrap();
-                            if !matches!(k, InstructionKind::Unreachable) {
+                            if !matches!(k, InstructionKind::Unreachable) && *g != 0 {
                                 new_function.instruction(&we::Instruction::I64Const(*g as i64));
                                 new_function.instruction(&we::Instruction::Call(0));
                             }

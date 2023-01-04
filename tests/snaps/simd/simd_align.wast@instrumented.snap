@@ -12,7 +12,7 @@
     call 0
     i32.const 0
     v128.load align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -32,7 +32,7 @@
     call 0
     i32.const 0
     v128.load align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -52,7 +52,7 @@
     call 0
     i32.const 0
     v128.load align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -72,7 +72,7 @@
     call 0
     i32.const 0
     v128.load align=8
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -92,7 +92,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -113,8 +113,6 @@
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.store align=1
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
 )
@@ -133,8 +131,6 @@
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.store align=2
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
 )
@@ -153,8 +149,6 @@
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.store align=4
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
 )
@@ -173,8 +167,6 @@
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.store align=8
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
 )
@@ -193,8 +185,6 @@
     i32.const 0
     v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     v128.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
 )
@@ -212,7 +202,7 @@
     call 0
     i32.const 0
     v128.load8x8_s align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -232,7 +222,7 @@
     call 0
     i32.const 0
     v128.load8x8_s align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -252,7 +242,7 @@
     call 0
     i32.const 0
     v128.load8x8_s align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -272,7 +262,7 @@
     call 0
     i32.const 0
     v128.load8x8_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -292,7 +282,7 @@
     call 0
     i32.const 0
     v128.load8x8_u align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -312,7 +302,7 @@
     call 0
     i32.const 0
     v128.load8x8_u align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -332,7 +322,7 @@
     call 0
     i32.const 0
     v128.load8x8_u align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -352,7 +342,7 @@
     call 0
     i32.const 0
     v128.load8x8_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -372,7 +362,7 @@
     call 0
     i32.const 0
     v128.load16x4_s align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -392,7 +382,7 @@
     call 0
     i32.const 0
     v128.load16x4_s align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -412,7 +402,7 @@
     call 0
     i32.const 0
     v128.load16x4_s align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -432,7 +422,7 @@
     call 0
     i32.const 0
     v128.load16x4_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -452,7 +442,7 @@
     call 0
     i32.const 0
     v128.load16x4_u align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -472,7 +462,7 @@
     call 0
     i32.const 0
     v128.load16x4_u align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -492,7 +482,7 @@
     call 0
     i32.const 0
     v128.load16x4_u align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -512,7 +502,7 @@
     call 0
     i32.const 0
     v128.load16x4_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -532,7 +522,7 @@
     call 0
     i32.const 0
     v128.load32x2_s align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -552,7 +542,7 @@
     call 0
     i32.const 0
     v128.load32x2_s align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -572,7 +562,7 @@
     call 0
     i32.const 0
     v128.load32x2_s align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -592,7 +582,7 @@
     call 0
     i32.const 0
     v128.load32x2_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -612,7 +602,7 @@
     call 0
     i32.const 0
     v128.load32x2_u align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -632,7 +622,7 @@
     call 0
     i32.const 0
     v128.load32x2_u align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -652,7 +642,7 @@
     call 0
     i32.const 0
     v128.load32x2_u align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -672,7 +662,7 @@
     call 0
     i32.const 0
     v128.load32x2_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -692,7 +682,7 @@
     call 0
     i32.const 0
     v128.load8_splat
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -712,7 +702,7 @@
     call 0
     i32.const 0
     v128.load16_splat align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -732,7 +722,7 @@
     call 0
     i32.const 0
     v128.load16_splat
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -752,7 +742,7 @@
     call 0
     i32.const 0
     v128.load32_splat align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -772,7 +762,7 @@
     call 0
     i32.const 0
     v128.load32_splat align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -792,7 +782,7 @@
     call 0
     i32.const 0
     v128.load32_splat
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -812,7 +802,7 @@
     call 0
     i32.const 0
     v128.load64_splat align=1
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -832,7 +822,7 @@
     call 0
     i32.const 0
     v128.load64_splat align=2
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -852,7 +842,7 @@
     call 0
     i32.const 0
     v128.load64_splat align=4
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -872,7 +862,7 @@
     call 0
     i32.const 0
     v128.load64_splat
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -893,8 +883,6 @@
     call 0
     local.get $address
     v128.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $address i32) (param $value v128)
     i64.const 20
@@ -905,8 +893,6 @@
     local.get $address
     local.get $value
     v128.store
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "v128.load align=16" (func 2))
@@ -939,8 +925,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (result v128)
     (local v128)
@@ -956,8 +940,6 @@
     call 0
     i32.const 0
     v128.load align=2
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 0) (result v128)
     (local v128)
@@ -973,8 +955,6 @@
     call 0
     i32.const 0
     v128.load align=2
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 0) (result v128)
     (local v128)
@@ -990,8 +970,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "v128_unaligned_read_and_write" (func 2))

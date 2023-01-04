@@ -8,7 +8,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     v128.any_true
@@ -17,7 +17,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i8x16.all_true
@@ -26,7 +26,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i8x16.bitmask
@@ -35,7 +35,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     v128.any_true
@@ -44,7 +44,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i16x8.all_true
@@ -53,7 +53,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i16x8.bitmask
@@ -62,7 +62,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     v128.any_true
@@ -71,7 +71,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i32x4.all_true
@@ -80,7 +80,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i32x4.bitmask
@@ -89,7 +89,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i64x2.all_true
@@ -98,7 +98,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     i64x2.bitmask
@@ -299,16 +299,14 @@
     local.get 0
     v128.any_true
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param v128) (result i32)
     i64.const 16
@@ -319,16 +317,14 @@
     local.get 0
     v128.any_true
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 0) (param v128) (result i32)
     i64.const 16
@@ -339,16 +335,14 @@
     local.get 0
     v128.any_true
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 0) (param v128) (result i32)
     i64.const 16
@@ -359,16 +353,14 @@
     local.get 0
     i8x16.all_true
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 0) (param v128) (result i32)
     i64.const 16
@@ -379,16 +371,14 @@
     local.get 0
     i16x8.all_true
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;7;) (type 0) (param v128) (result i32)
     i64.const 16
@@ -399,22 +389,20 @@
     local.get 0
     i32x4.all_true
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 0) (param v128) (result i32)
     i64.const 24
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 1
     i32.const 0
@@ -426,7 +414,7 @@
     i64.const 24
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 1
     i32.const 0
@@ -438,7 +426,7 @@
     i64.const 24
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 1
     i32.const 0
@@ -450,7 +438,7 @@
     i64.const 24
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 1
     i32.const 0
@@ -462,7 +450,7 @@
     i64.const 24
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 1
     i32.const 0
@@ -474,7 +462,7 @@
     i64.const 24
     i64.const 1
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 1
     i32.const 0
@@ -497,12 +485,12 @@
       local.get $0
       v128.any_true
       br_if 0 (;@1;)
-      i64.const 3
+      i64.const 2
       call 0
       i32.const 0
       local.set $1
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get $1
   )
@@ -521,12 +509,12 @@
       local.get $0
       v128.any_true
       br_if 0 (;@1;)
-      i64.const 3
+      i64.const 2
       call 0
       i32.const 0
       local.set $1
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get $1
   )
@@ -545,12 +533,12 @@
       local.get $0
       v128.any_true
       br_if 0 (;@1;)
-      i64.const 3
+      i64.const 2
       call 0
       i32.const 0
       local.set $1
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get $1
   )
@@ -569,12 +557,12 @@
       local.get $0
       i8x16.all_true
       br_if 0 (;@1;)
-      i64.const 3
+      i64.const 2
       call 0
       i32.const 0
       local.set $1
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get $1
   )
@@ -593,12 +581,12 @@
       local.get $0
       i16x8.all_true
       br_if 0 (;@1;)
-      i64.const 3
+      i64.const 2
       call 0
       i32.const 0
       local.set $1
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get $1
   )
@@ -617,12 +605,12 @@
       local.get $0
       i32x4.all_true
       br_if 0 (;@1;)
-      i64.const 3
+      i64.const 2
       call 0
       i32.const 0
       local.set $1
     end
-    i64.const 2
+    i64.const 1
     call 0
     local.get $1
   )
@@ -630,7 +618,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -642,7 +630,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -654,7 +642,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -666,7 +654,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -678,7 +666,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -690,7 +678,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -702,7 +690,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -714,7 +702,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -726,7 +714,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     v128.any_true
@@ -738,7 +726,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i8x16.all_true
@@ -750,7 +738,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i16x8.all_true
@@ -762,7 +750,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i32x4.all_true
@@ -774,7 +762,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i8x16.all_true
@@ -786,7 +774,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i16x8.all_true
@@ -798,7 +786,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i32x4.all_true
@@ -810,7 +798,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i8x16.all_true
@@ -822,7 +810,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i16x8.all_true
@@ -834,7 +822,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     i32x4.all_true
@@ -846,7 +834,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     v128.not
@@ -856,7 +844,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     v128.not
@@ -866,7 +854,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     v128.not
@@ -876,7 +864,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -887,7 +875,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -898,7 +886,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -909,7 +897,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -920,7 +908,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -931,7 +919,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -942,7 +930,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -953,7 +941,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -964,7 +952,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -975,7 +963,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     local.get $1
@@ -987,7 +975,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     local.get $1
@@ -999,7 +987,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     local.get $1
@@ -1011,7 +999,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     v128.not
@@ -1021,7 +1009,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     v128.not
@@ -1031,7 +1019,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     v128.not
@@ -1041,7 +1029,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1052,7 +1040,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1063,7 +1051,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1074,7 +1062,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1085,7 +1073,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1096,7 +1084,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1107,7 +1095,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1118,7 +1106,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1129,7 +1117,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -1140,7 +1128,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     local.get $1
@@ -1152,7 +1140,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     local.get $1
@@ -1164,7 +1152,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get $0
     local.get $1

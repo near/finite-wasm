@@ -8,9 +8,25 @@
     i64.const 0
     i64.const 0
     call 1
+    i64.const 1
+    call 0
+    nop
+  )
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
+  (func (;2;) (type 0)
+    i64.const 0
+    i64.const 0
+    call 1
     i64.const 2
     call 0
     nop
+    nop
   )
 )
 (module
@@ -23,7 +39,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     nop
     nop
@@ -39,23 +55,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 3
-    call 0
-    nop
-    nop
-  )
-)
-(module
-  (type (;0;) (func))
-  (type (;1;) (func (param i64)))
-  (type (;2;) (func (param i64 i64)))
-  (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-    i64.const 3
+    i64.const 2
     call 0
     nop
     nop
@@ -71,7 +71,7 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     nop
   )
@@ -102,8 +102,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (table (;0;) 1 funcref)
   (elem (;0;) (i32.const 0) func 2)
@@ -118,8 +116,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 1 funcref)
   (elem (;0;) (i32.const 0) func $f)
@@ -146,8 +142,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
 )
 (module
@@ -160,7 +154,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     nop
   )
@@ -175,7 +169,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     nop
   )
@@ -190,8 +184,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
 )
 (module
@@ -227,11 +219,7 @@
     block $l ;; label = @1
       i32.const 0
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
 )
 (module
@@ -249,11 +237,7 @@
     block $l ;; label = @1
       i32.const 0
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
 )
 (module
@@ -271,11 +255,7 @@
     block $l ;; label = @1
       i32.const 0
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
 )
 (module
@@ -293,11 +273,7 @@
     block $l0 ;; label = @1
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
 )
 (module
@@ -315,11 +291,7 @@
     block $l$l ;; label = @1
       i32.const 0
       br_table 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
 )
 (module

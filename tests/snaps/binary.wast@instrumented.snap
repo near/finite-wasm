@@ -79,8 +79,6 @@
     i64.const 0
     i64.const 2
     call 1
-    i64.const 1
-    call 0
   )
 )
 (module)
@@ -95,8 +93,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (table (;0;) 0 funcref)
   (memory (;0;) 0)
@@ -112,8 +108,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (table (;0;) 0 funcref)
   (memory (;0;) 0)
@@ -140,15 +134,11 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0)
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
 )
 (module
@@ -161,8 +151,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (table (;0;) 1 funcref)
 )
@@ -188,11 +176,7 @@
         call 0
         i32.const 1
         br_table 2 (;@0;)
-        i64.const 1
-        call 0
       end
-      i64.const 2
-      call 0
     end
   )
 )
@@ -207,7 +191,5 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
 )

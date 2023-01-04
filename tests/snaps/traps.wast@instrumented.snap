@@ -14,7 +14,7 @@
     local.get $x
     local.get $y
     i32.div_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -27,7 +27,7 @@
     local.get $x
     local.get $y
     i32.div_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -40,7 +40,7 @@
     local.get $x
     local.get $y
     i64.div_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -53,7 +53,7 @@
     local.get $x
     local.get $y
     i64.div_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -85,7 +85,7 @@
     local.get $x
     local.get $y
     i32.rem_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -98,7 +98,7 @@
     local.get $x
     local.get $y
     i32.rem_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -111,7 +111,7 @@
     local.get $x
     local.get $y
     i64.rem_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -124,7 +124,7 @@
     local.get $x
     local.get $y
     i64.rem_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -153,7 +153,7 @@
     call 0
     local.get $x
     i32.trunc_f32_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -165,7 +165,7 @@
     call 0
     local.get $x
     i32.trunc_f32_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -177,7 +177,7 @@
     call 0
     local.get $x
     i32.trunc_f64_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -189,7 +189,7 @@
     call 0
     local.get $x
     i32.trunc_f64_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -201,7 +201,7 @@
     call 0
     local.get $x
     i64.trunc_f32_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -213,7 +213,7 @@
     call 0
     local.get $x
     i64.trunc_f32_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -225,7 +225,7 @@
     call 0
     local.get $x
     i64.trunc_f64_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -237,7 +237,7 @@
     call 0
     local.get $x
     i64.trunc_f64_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -273,7 +273,7 @@
     call 0
     local.get $i
     i32.load
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -285,7 +285,7 @@
     call 0
     local.get $i
     i32.load16_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -297,7 +297,7 @@
     call 0
     local.get $i
     i32.load16_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -309,7 +309,7 @@
     call 0
     local.get $i
     i32.load8_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -321,7 +321,7 @@
     call 0
     local.get $i
     i32.load8_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -333,7 +333,7 @@
     call 0
     local.get $i
     i64.load
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -345,7 +345,7 @@
     call 0
     local.get $i
     i64.load32_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -357,7 +357,7 @@
     call 0
     local.get $i
     i64.load32_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -369,7 +369,7 @@
     call 0
     local.get $i
     i64.load16_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -381,7 +381,7 @@
     call 0
     local.get $i
     i64.load16_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -393,7 +393,7 @@
     call 0
     local.get $i
     i64.load8_s
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -405,7 +405,7 @@
     call 0
     local.get $i
     i64.load8_u
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -417,7 +417,7 @@
     call 0
     local.get $i
     f32.load
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )
@@ -429,7 +429,7 @@
     call 0
     local.get $i
     f64.load
-    i64.const 2
+    i64.const 1
     call 0
     drop
   )

@@ -18,7 +18,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -27,7 +27,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -36,7 +36,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -45,7 +45,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -53,7 +53,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -61,7 +61,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -69,7 +69,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -77,7 +77,7 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     local.get 0
   )
@@ -86,7 +86,7 @@
     i64.const 8
     i64.const 9
     call 1
-    i64.const 28
+    i64.const 27
     call 0
     local.get 0
     i64.eqz
@@ -121,7 +121,7 @@
     i64.const 72
     i64.const 9
     call 1
-    i64.const 31
+    i64.const 30
     call 0
     f32.const 0x1.6p+2 (;=5.5;)
     local.set 5
@@ -158,7 +158,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 2
     call 0
     block (result i32) ;; label = @1
       local.get 0
@@ -168,7 +168,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 2
     call 0
     loop (result i32) ;; label = @1
       local.get 0
@@ -183,11 +183,7 @@
     block (result i32) ;; label = @1
       local.get 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;15;) (type 4) (param i32) (result i32)
     i64.const 8
@@ -199,11 +195,7 @@
       local.get 0
       i32.const 1
       br_if 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;16;) (type 4) (param i32) (result i32)
     i64.const 8
@@ -215,11 +207,7 @@
       local.get 0
       local.get 0
       br_if 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;17;) (type 4) (param i32) (result i32)
     i64.const 4
@@ -234,24 +222,18 @@
           br_table 0 (;@3;) 1 (;@2;) 2 (;@1;)
           i32.const 0
           return
-          i64.const 1
-          call 0
         end
         i64.const 2
         call 0
         i32.const 1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
       i32.const 2
       return
-      i64.const 1
-      call 0
     end
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 3
   )
@@ -272,16 +254,14 @@
     call 0
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       local.get 0
     else
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 0
     end
-    i64.const 1
-    call 0
   )
   (func (;20;) (type 4) (param i32) (result i32)
     i64.const 4
@@ -291,16 +271,14 @@
     call 0
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call 0
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call 0
       local.get 0
     end
-    i64.const 1
-    call 0
   )
   (export "type-local-i32" (func 2))
   (export "type-local-i64" (func 3))

@@ -13,8 +13,6 @@
     call 0
     local.get $0
     v128.load8x8_s
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -24,8 +22,6 @@
     call 0
     local.get $0
     v128.load8x8_u
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -35,8 +31,6 @@
     call 0
     local.get $0
     v128.load16x4_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -46,8 +40,6 @@
     call 0
     local.get $0
     v128.load16x4_u
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -57,8 +49,6 @@
     call 0
     local.get $0
     v128.load32x2_s
-    i64.const 1
-    call 0
   )
   (func (;7;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -68,8 +58,6 @@
     call 0
     local.get $0
     v128.load32x2_u
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 1) (result v128)
     i64.const 16
@@ -79,8 +67,6 @@
     call 0
     i32.const 0
     v128.load8x8_s
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 1) (result v128)
     i64.const 16
@@ -90,8 +76,6 @@
     call 0
     i32.const 8
     v128.load8x8_u
-    i64.const 1
-    call 0
   )
   (func (;10;) (type 1) (result v128)
     i64.const 16
@@ -101,8 +85,6 @@
     call 0
     i32.const 10
     v128.load16x4_s
-    i64.const 1
-    call 0
   )
   (func (;11;) (type 1) (result v128)
     i64.const 16
@@ -112,8 +94,6 @@
     call 0
     i32.const 20
     v128.load16x4_u
-    i64.const 1
-    call 0
   )
   (func (;12;) (type 1) (result v128)
     i64.const 16
@@ -123,8 +103,6 @@
     call 0
     i32.const 65520
     v128.load32x2_s
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 1) (result v128)
     i64.const 16
@@ -134,8 +112,6 @@
     call 0
     i32.const 65526
     v128.load32x2_u
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -145,8 +121,6 @@
     call 0
     local.get $0
     v128.load8x8_s
-    i64.const 1
-    call 0
   )
   (func (;15;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -156,8 +130,6 @@
     call 0
     local.get $0
     v128.load8x8_s align=1
-    i64.const 1
-    call 0
   )
   (func (;16;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -167,8 +139,6 @@
     call 0
     local.get $0
     v128.load8x8_s align=1
-    i64.const 1
-    call 0
   )
   (func (;17;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -178,8 +148,6 @@
     call 0
     local.get $0
     v128.load8x8_s offset=1 align=1
-    i64.const 1
-    call 0
   )
   (func (;18;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -189,8 +157,6 @@
     call 0
     local.get $0
     v128.load8x8_s offset=10 align=4
-    i64.const 1
-    call 0
   )
   (func (;19;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -200,8 +166,6 @@
     call 0
     local.get $0
     v128.load8x8_s offset=20
-    i64.const 1
-    call 0
   )
   (func (;20;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -211,8 +175,6 @@
     call 0
     local.get $0
     v128.load8x8_u
-    i64.const 1
-    call 0
   )
   (func (;21;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -222,8 +184,6 @@
     call 0
     local.get $0
     v128.load8x8_u align=1
-    i64.const 1
-    call 0
   )
   (func (;22;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -233,8 +193,6 @@
     call 0
     local.get $0
     v128.load8x8_u align=1
-    i64.const 1
-    call 0
   )
   (func (;23;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -244,8 +202,6 @@
     call 0
     local.get $0
     v128.load8x8_u offset=1 align=1
-    i64.const 1
-    call 0
   )
   (func (;24;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -255,8 +211,6 @@
     call 0
     local.get $0
     v128.load8x8_u offset=10 align=4
-    i64.const 1
-    call 0
   )
   (func (;25;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -266,8 +220,6 @@
     call 0
     local.get $0
     v128.load8x8_u offset=20
-    i64.const 1
-    call 0
   )
   (func (;26;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -277,8 +229,6 @@
     call 0
     local.get $0
     v128.load16x4_s
-    i64.const 1
-    call 0
   )
   (func (;27;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -288,8 +238,6 @@
     call 0
     local.get $0
     v128.load16x4_s align=1
-    i64.const 1
-    call 0
   )
   (func (;28;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -299,8 +247,6 @@
     call 0
     local.get $0
     v128.load16x4_s align=1
-    i64.const 1
-    call 0
   )
   (func (;29;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -310,8 +256,6 @@
     call 0
     local.get $0
     v128.load16x4_s offset=1 align=1
-    i64.const 1
-    call 0
   )
   (func (;30;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -321,8 +265,6 @@
     call 0
     local.get $0
     v128.load16x4_s offset=10 align=4
-    i64.const 1
-    call 0
   )
   (func (;31;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -332,8 +274,6 @@
     call 0
     local.get $0
     v128.load16x4_s offset=20
-    i64.const 1
-    call 0
   )
   (func (;32;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -343,8 +283,6 @@
     call 0
     local.get $0
     v128.load16x4_u
-    i64.const 1
-    call 0
   )
   (func (;33;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -354,8 +292,6 @@
     call 0
     local.get $0
     v128.load16x4_u align=1
-    i64.const 1
-    call 0
   )
   (func (;34;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -365,8 +301,6 @@
     call 0
     local.get $0
     v128.load16x4_u align=1
-    i64.const 1
-    call 0
   )
   (func (;35;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -376,8 +310,6 @@
     call 0
     local.get $0
     v128.load16x4_u offset=1 align=1
-    i64.const 1
-    call 0
   )
   (func (;36;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -387,8 +319,6 @@
     call 0
     local.get $0
     v128.load16x4_u offset=10 align=4
-    i64.const 1
-    call 0
   )
   (func (;37;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -398,8 +328,6 @@
     call 0
     local.get $0
     v128.load16x4_u offset=20
-    i64.const 1
-    call 0
   )
   (func (;38;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -409,8 +337,6 @@
     call 0
     local.get $0
     v128.load32x2_s
-    i64.const 1
-    call 0
   )
   (func (;39;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -420,8 +346,6 @@
     call 0
     local.get $0
     v128.load32x2_s align=1
-    i64.const 1
-    call 0
   )
   (func (;40;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -431,8 +355,6 @@
     call 0
     local.get $0
     v128.load32x2_s align=1
-    i64.const 1
-    call 0
   )
   (func (;41;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -442,8 +364,6 @@
     call 0
     local.get $0
     v128.load32x2_s offset=1 align=1
-    i64.const 1
-    call 0
   )
   (func (;42;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -453,8 +373,6 @@
     call 0
     local.get $0
     v128.load32x2_s offset=10 align=4
-    i64.const 1
-    call 0
   )
   (func (;43;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -464,8 +382,6 @@
     call 0
     local.get $0
     v128.load32x2_s offset=20
-    i64.const 1
-    call 0
   )
   (func (;44;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -475,8 +391,6 @@
     call 0
     local.get $0
     v128.load32x2_u
-    i64.const 1
-    call 0
   )
   (func (;45;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -486,8 +400,6 @@
     call 0
     local.get $0
     v128.load32x2_u align=1
-    i64.const 1
-    call 0
   )
   (func (;46;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -497,8 +409,6 @@
     call 0
     local.get $0
     v128.load32x2_u align=1
-    i64.const 1
-    call 0
   )
   (func (;47;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -508,8 +418,6 @@
     call 0
     local.get $0
     v128.load32x2_u offset=1 align=1
-    i64.const 1
-    call 0
   )
   (func (;48;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -519,8 +427,6 @@
     call 0
     local.get $0
     v128.load32x2_u offset=10 align=4
-    i64.const 1
-    call 0
   )
   (func (;49;) (type 0) (param $0 i32) (result v128)
     i64.const 16
@@ -530,8 +436,6 @@
     call 0
     local.get $0
     v128.load32x2_u offset=20
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "v128.load8x8_s" (func 2))
@@ -680,8 +584,6 @@
       block (result v128) ;; label = @2
         i32.const 0
         v128.load8x8_s
-        i64.const 3
-        call 0
       end
     end
   )
@@ -695,8 +597,6 @@
       block (result v128) ;; label = @2
         i32.const 1
         v128.load8x8_u
-        i64.const 3
-        call 0
       end
     end
   )
@@ -710,8 +610,6 @@
       block (result v128) ;; label = @2
         i32.const 2
         v128.load16x4_s
-        i64.const 3
-        call 0
       end
     end
   )
@@ -725,8 +623,6 @@
       block (result v128) ;; label = @2
         i32.const 3
         v128.load16x4_u
-        i64.const 3
-        call 0
       end
     end
   )
@@ -740,8 +636,6 @@
       block (result v128) ;; label = @2
         i32.const 4
         v128.load32x2_s
-        i64.const 3
-        call 0
       end
     end
   )
@@ -755,8 +649,6 @@
       block (result v128) ;; label = @2
         i32.const 5
         v128.load32x2_u
-        i64.const 3
-        call 0
       end
     end
   )
@@ -772,11 +664,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 0) (result v128)
     i64.const 16
@@ -790,11 +678,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;10;) (type 0) (result v128)
     i64.const 16
@@ -808,11 +692,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;11;) (type 0) (result v128)
     i64.const 16
@@ -826,11 +706,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;12;) (type 0) (result v128)
     i64.const 16
@@ -844,11 +720,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 0) (result v128)
     i64.const 16
@@ -862,11 +734,7 @@
       i64.const 1
       call 0
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;14;) (type 1) (result i32)
     i64.const 16
@@ -876,7 +744,7 @@
     call 0
     i32.const 12
     v128.load8x8_s
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )
@@ -888,7 +756,7 @@
     call 0
     i32.const 13
     v128.load8x8_u
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )
@@ -900,7 +768,7 @@
     call 0
     i32.const 14
     v128.load16x4_s
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )
@@ -912,7 +780,7 @@
     call 0
     i32.const 15
     v128.load16x4_u
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )
@@ -924,7 +792,7 @@
     call 0
     i32.const 16
     v128.load32x2_s
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )
@@ -936,7 +804,7 @@
     call 0
     i32.const 17
     v128.load32x2_u
-    i64.const 2
+    i64.const 1
     call 0
     i8x16.extract_lane_s 0
   )

@@ -20,8 +20,6 @@
     i32.const 1
     i32.add
     i32.store8
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $get (;3;) (type 1) (result i32)
     i64.const 4
@@ -48,8 +46,6 @@
     i64.const 1
     call $finite_wasm_gas
     call $inc
-    i64.const 1
-    call $finite_wasm_gas
   )
   (memory (;0;) 1 1)
   (export "inc" (func $inc))
@@ -84,8 +80,6 @@
     i32.const 1
     i32.add
     i32.store8
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $get (;3;) (type 1) (result i32)
     i64.const 4
@@ -112,8 +106,6 @@
     i64.const 1
     call $finite_wasm_gas
     call $inc
-    i64.const 1
-    call $finite_wasm_gas
   )
   (memory (;0;) 1 1)
   (export "inc" (func $inc))
@@ -143,8 +135,6 @@
     call $finite_wasm_gas
     i32.const 1
     call $print_i32
-    i64.const 1
-    call $finite_wasm_gas
   )
 )
 (module
@@ -164,8 +154,6 @@
     call $finite_wasm_gas
     i32.const 2
     call $print_i32
-    i64.const 1
-    call $finite_wasm_gas
   )
 )
 (module

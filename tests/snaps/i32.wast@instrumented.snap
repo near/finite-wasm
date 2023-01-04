@@ -9,7 +9,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -19,7 +19,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -29,7 +29,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -44,8 +44,6 @@
     local.get $x
     local.get $y
     i32.div_s
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 0) (param $x i32) (param $y i32) (result i32)
     i64.const 8
@@ -56,8 +54,6 @@
     local.get $x
     local.get $y
     i32.div_u
-    i64.const 1
-    call 0
   )
   (func (;7;) (type 0) (param $x i32) (param $y i32) (result i32)
     i64.const 8
@@ -68,8 +64,6 @@
     local.get $x
     local.get $y
     i32.rem_s
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 0) (param $x i32) (param $y i32) (result i32)
     i64.const 8
@@ -80,14 +74,12 @@
     local.get $x
     local.get $y
     i32.rem_u
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 0) (param $x i32) (param $y i32) (result i32)
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -97,7 +89,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -107,7 +99,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -117,7 +109,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -127,7 +119,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -137,7 +129,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -147,7 +139,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -157,7 +149,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -167,7 +159,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.clz
@@ -176,7 +168,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.ctz
@@ -185,7 +177,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.popcnt
@@ -194,7 +186,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.extend8_s
@@ -203,7 +195,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.extend16_s
@@ -212,7 +204,7 @@
     i64.const 4
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $x
     i32.eqz
@@ -221,7 +213,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -231,7 +223,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -241,7 +233,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -251,7 +243,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -261,7 +253,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -271,7 +263,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -281,7 +273,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -291,7 +283,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -301,7 +293,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -311,7 +303,7 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y

@@ -17,8 +17,6 @@
     i64.const 1
     call 0
     table.fill $t
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param $i i32) (result externref)
     i64.const 32
@@ -28,8 +26,6 @@
     call 0
     local.get $i
     table.get $t
-    i64.const 1
-    call 0
   )
   (table $t (;0;) 10 externref)
   (export "fill" (func 2))

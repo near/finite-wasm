@@ -10,7 +10,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get $0
     v128.not
@@ -19,7 +19,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     local.get $1
@@ -29,7 +29,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     local.get $1
@@ -39,7 +39,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     local.get $1
@@ -49,7 +49,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get $0
     local.get $1
@@ -60,7 +60,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $0
     local.get $1
@@ -480,7 +480,7 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         v128.not
@@ -499,13 +499,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         v128.and
@@ -524,13 +524,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         v128.or
@@ -549,13 +549,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         v128.xor
@@ -574,19 +574,19 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 2
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         v128.bitselect
@@ -605,13 +605,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         v128.andnot
@@ -627,7 +627,7 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.not
     v128.not
@@ -674,7 +674,7 @@
     call 0
     i32.const 1
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.and
     v128.and
@@ -721,7 +721,7 @@
     call 0
     i32.const 1
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.or
     v128.or
@@ -768,7 +768,7 @@
     call 0
     i32.const 1
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.xor
     v128.xor
@@ -897,7 +897,7 @@
     call 0
     i32.const 2
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.bitselect
     v128.bitselect
@@ -944,7 +944,7 @@
     call 0
     i32.const 1
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.andnot
     v128.andnot
@@ -987,7 +987,7 @@
     call 0
     i32.const 1
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     v128.andnot
     v128.xor

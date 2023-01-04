@@ -159,7 +159,7 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
       | Func.StackIntrinsic -> -3L
     )
     (* The end instruction, pretty much *)
-    | Label (_, _, (_, [])) -> 1L
+    | Label (_, _, (_, [])) -> 0L
     (* Administrative or derived and already accounted for *)
     | ReducedPlain _ -> 0L
     | Refer _ -> 0L

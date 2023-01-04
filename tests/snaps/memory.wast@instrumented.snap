@@ -26,7 +26,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     memory.size
   )
@@ -45,7 +45,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     memory.size
   )
@@ -64,7 +64,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     memory.size
   )
@@ -137,7 +137,7 @@
     i32.eq
     i32.const 1023
     i32.load8_u
-    i64.const 6
+    i64.const 5
     call 0
     i32.const 0
     i32.eq
@@ -168,8 +168,6 @@
       call 0
       f64.const 0x0p+0 (;=0;)
       return
-      i64.const 1
-      call 0
     end
     i64.const 3
     call 0
@@ -185,8 +183,6 @@
     call 0
     i32.const 9
     f64.load align=1
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 2) (param $i i32) (result i32)
     i64.const 8
@@ -201,8 +197,6 @@
     call 0
     i32.const 8
     i32.load8_s
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 2) (param $i i32) (result i32)
     i64.const 8
@@ -217,8 +211,6 @@
     call 0
     i32.const 8
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2) (param $i i32) (result i32)
     i64.const 8
@@ -233,8 +225,6 @@
     call 0
     i32.const 8
     i32.load16_s
-    i64.const 1
-    call 0
   )
   (func (;7;) (type 2) (param $i i32) (result i32)
     i64.const 8
@@ -249,8 +239,6 @@
     call 0
     i32.const 8
     i32.load16_u
-    i64.const 1
-    call 0
   )
   (func (;8;) (type 3) (param $i i64) (result i64)
     i64.const 12
@@ -265,8 +253,6 @@
     call 0
     i32.const 8
     i64.load8_s
-    i64.const 1
-    call 0
   )
   (func (;9;) (type 3) (param $i i64) (result i64)
     i64.const 12
@@ -281,8 +267,6 @@
     call 0
     i32.const 8
     i64.load8_u
-    i64.const 1
-    call 0
   )
   (func (;10;) (type 3) (param $i i64) (result i64)
     i64.const 12
@@ -297,8 +281,6 @@
     call 0
     i32.const 8
     i64.load16_s
-    i64.const 1
-    call 0
   )
   (func (;11;) (type 3) (param $i i64) (result i64)
     i64.const 12
@@ -313,8 +295,6 @@
     call 0
     i32.const 8
     i64.load16_u
-    i64.const 1
-    call 0
   )
   (func (;12;) (type 3) (param $i i64) (result i64)
     i64.const 12
@@ -329,8 +309,6 @@
     call 0
     i32.const 8
     i64.load32_s
-    i64.const 1
-    call 0
   )
   (func (;13;) (type 3) (param $i i64) (result i64)
     i64.const 12
@@ -345,8 +323,6 @@
     call 0
     i32.const 8
     i64.load32_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "data" (func 2))

@@ -15,21 +15,17 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;4;) (type $S)
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;5;) (type 4) (result i32)
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 13
   )
@@ -37,7 +33,7 @@
     i64.const 8
     i64.const 1
     call $finite_wasm_stack
-    i64.const 4
+    i64.const 3
     call $finite_wasm_gas
     local.get 0
     i32.const 1
@@ -47,7 +43,7 @@
     i64.const 8
     i64.const 1
     call $finite_wasm_stack
-    i64.const 4
+    i64.const 3
     call $finite_wasm_gas
     local.get $a
     i32.const 2
@@ -61,8 +57,6 @@
     call $finite_wasm_gas
     local.get 0
     call $print
-    i64.const 1
-    call $finite_wasm_gas
   )
   (export "one" (func 5))
   (export "two" (func 6))
@@ -86,7 +80,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -94,7 +88,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -102,7 +96,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 3
   )
@@ -110,7 +104,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 4
   )
@@ -118,7 +112,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 5
   )
@@ -130,8 +124,6 @@
     call $finite_wasm_gas
     local.get $i
     call_indirect (type $T)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;8;) (type 2) (param $i i32) (result i32)
     i64.const 8
@@ -141,8 +133,6 @@
     call $finite_wasm_gas
     local.get $i
     call_indirect (type $U)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 7 7 funcref)
   (export "callt" (func 7))
@@ -182,7 +172,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -190,7 +180,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -202,8 +192,6 @@
     call $finite_wasm_gas
     local.get $i
     call_indirect (type $T)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 2 2 funcref)
   (export "callt" (func 4))

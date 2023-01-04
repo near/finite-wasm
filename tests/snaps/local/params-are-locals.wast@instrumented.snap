@@ -9,22 +9,18 @@
     i64.const 0
     i64.const 2
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $local_is_local (;3;) (type 0) (param $p1 i32) (param $p2 i64)
     (local i32 i64)
     i64.const 0
     i64.const 4
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $return_is_operand (;4;) (type 1) (param $p1 i32) (param $p2 i32) (result i32)
     i64.const 4
     i64.const 2
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get $p1
   )

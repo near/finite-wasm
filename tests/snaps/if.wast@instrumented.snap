@@ -23,8 +23,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;3;) (type $block-sig-3) (param i32)
     i64.const 4
@@ -34,32 +32,22 @@
     call $finite_wasm_gas
     local.get 0
     if ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
     local.get 0
     if ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
     local.get 0
     if $l0 ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
     local.get 0
     if $l1 ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;4;) (type 5) (param i32) (result i32)
     i64.const 4
@@ -69,7 +57,7 @@
     call $finite_wasm_gas
     local.get 0
     if ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       nop
     end
@@ -77,11 +65,11 @@
     call $finite_wasm_gas
     local.get 0
     if ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       nop
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       nop
     end
@@ -89,16 +77,14 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 7
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 8
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;5;) (type 6) (param i32) (result i32 i32)
     i64.const 20
@@ -117,15 +103,11 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
     local.get 0
     if ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
@@ -136,8 +118,6 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -153,8 +133,6 @@
       call $finite_wasm_gas
       i32.const 8
       call $dummy
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
@@ -166,8 +144,6 @@
       call $finite_wasm_gas
       i32.const 9
       call $dummy
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -203,8 +179,6 @@
       call $finite_wasm_gas
       i32.const 3
       call $dummy
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
@@ -236,10 +210,8 @@
       call $finite_wasm_gas
       i32.const -3
       call $dummy
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     drop
     drop
@@ -259,7 +231,7 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 4
+        i64.const 2
         call $finite_wasm_gas
         block ;; label = @3
         end
@@ -269,13 +241,11 @@
       call $finite_wasm_gas
       local.get 1
       if ;; label = @2
-        i64.const 1
-        call $finite_wasm_gas
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 4
+        i64.const 2
         call $finite_wasm_gas
         block ;; label = @3
         end
@@ -288,19 +258,17 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 9
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 10
       end
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 2
       call $finite_wasm_gas
@@ -309,7 +277,7 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 4
+        i64.const 2
         call $finite_wasm_gas
         block ;; label = @3
         end
@@ -319,13 +287,11 @@
       call $finite_wasm_gas
       local.get 1
       if ;; label = @2
-        i64.const 1
-        call $finite_wasm_gas
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 4
+        i64.const 2
         call $finite_wasm_gas
         block ;; label = @3
         end
@@ -338,22 +304,18 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 10
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 11
       end
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;7;) (type 5) (param i32) (result i32)
     i64.const 12
@@ -366,18 +328,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 4
+    i64.const 3
     call $finite_wasm_gas
     i32.const 2
     i32.const 3
@@ -395,18 +357,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     i32.const 3
     select
@@ -424,18 +386,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     select
   )
@@ -451,14 +413,14 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
@@ -468,8 +430,6 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;11;) (type 5) (param i32) (result i32)
@@ -487,22 +447,20 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;12;) (type 5) (param i32) (result i32)
@@ -523,19 +481,17 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;13;) (type 5) (param i32) (result i32)
@@ -546,11 +502,11 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
@@ -560,19 +516,17 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 2
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 3
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;14;) (type 5) (param i32) (result i32)
     i64.const 8
@@ -586,14 +540,14 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
@@ -605,11 +559,7 @@
       call $finite_wasm_gas
       i32.const 3
       return
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;15;) (type 5) (param i32) (result i32)
     i64.const 8
@@ -624,14 +574,14 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
@@ -642,11 +592,7 @@
       call $finite_wasm_gas
       i32.const 3
       return
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;16;) (type 5) (param i32) (result i32)
     i64.const 8
@@ -660,14 +606,14 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
@@ -675,11 +621,7 @@
       call $finite_wasm_gas
       i32.const 2
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;17;) (type 5) (param i32) (result i32)
     i64.const 8
@@ -694,31 +636,27 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
       i64.const 1
       call $finite_wasm_gas
       br_table 0 (;@1;) 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $func (;18;) (type $check) (param i32 i32) (result i32)
     i64.const 4
     i64.const 2
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get 0
   )
@@ -734,14 +672,14 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
@@ -750,8 +688,6 @@
       i32.const 2
       i32.const 0
       call_indirect (type $check)
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;20;) (type 5) (param i32) (result i32)
@@ -767,14 +703,14 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
@@ -782,8 +718,6 @@
       call $finite_wasm_gas
       i32.const 0
       call_indirect (type $check)
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;21;) (type 5) (param i32) (result i32)
@@ -800,22 +734,20 @@
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
         i64.const 1
         call $finite_wasm_gas
         call $dummy
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
       i64.const 1
       call $finite_wasm_gas
       call_indirect (type $check)
-      i64.const 2
-      call $finite_wasm_gas
     end
   )
   (func (;22;) (type $block-sig-3) (param i32)
@@ -829,14 +761,14 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
@@ -844,8 +776,6 @@
     call $finite_wasm_gas
     i32.const 2
     i32.store
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;23;) (type $block-sig-3) (param i32)
     i64.const 8
@@ -859,22 +789,20 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
     i64.const 1
     call $finite_wasm_gas
     i32.store
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;24;) (type 5) (param i32) (result i32)
     i64.const 4
@@ -884,25 +812,23 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
     i64.const 1
     call $finite_wasm_gas
     memory.grow
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $f (;25;) (type 5) (param i32) (result i32)
     i64.const 4
     i64.const 1
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get 0
   )
@@ -914,19 +840,17 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
     i64.const 1
     call $finite_wasm_gas
     call $f
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;27;) (type 5) (param i32) (result i32)
     i64.const 4
@@ -936,11 +860,11 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
@@ -956,15 +880,15 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     drop
   )
@@ -977,22 +901,18 @@
     block (result i32) ;; label = @1
       local.get 0
       if (result i32) ;; label = @2
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 1
       else
-        i64.const 2
+        i64.const 1
         call $finite_wasm_gas
         i32.const 0
       end
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;30;) (type 5) (param i32) (result i32)
     (local i32)
@@ -1003,15 +923,15 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     local.set 0
     local.get 0
@@ -1024,15 +944,15 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.tee 0
   )
@@ -1044,15 +964,15 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     global.set $a
     global.get $a
@@ -1065,19 +985,17 @@
     call $finite_wasm_gas
     local.get 0
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 11
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 10
     end
     i64.const 1
     call $finite_wasm_gas
     i32.load
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;34;) (type 5) (param i32) (result i32)
     i64.const 4
@@ -1090,18 +1008,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 13
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const -13
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.ctz
   )
@@ -1116,14 +1034,14 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 3
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const -3
     end
@@ -1134,18 +1052,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 4
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const -5
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.mul
   )
@@ -1160,18 +1078,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 13
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.eqz
   )
@@ -1186,14 +1104,14 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       f32.const 0x1.8p+1 (;=3;)
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       f32.const -0x1.8p+1 (;=-3;)
     end
@@ -1204,18 +1122,18 @@
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       f32.const 0x1p+2 (;=4;)
     else
       i64.const 1
       call $finite_wasm_gas
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       f32.const -0x1p+2 (;=-4;)
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     f32.gt
   )
@@ -1234,7 +1152,7 @@
       call $finite_wasm_gas
       i32.const 3
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 4
     else
@@ -1245,11 +1163,11 @@
       call $finite_wasm_gas
       i32.const 3
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const -4
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.mul
   )
@@ -1268,7 +1186,7 @@
       call $finite_wasm_gas
       f32.const 0x1.8p+1 (;=3;)
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       f32.const 0x1.8p+1 (;=3;)
     else
@@ -1279,11 +1197,11 @@
       call $finite_wasm_gas
       f32.const -0x1p+1 (;=-2;)
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       f32.const -0x1.8p+1 (;=-3;)
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     f32.gt
   )
@@ -1302,7 +1220,7 @@
       call $finite_wasm_gas
       i32.const 3
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 4
     else
@@ -1313,11 +1231,11 @@
       call $finite_wasm_gas
       i32.const -3
       call $dummy
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const -4
     end
-    i64.const 4
+    i64.const 3
     call $finite_wasm_gas
     i32.const 5
     i32.add
@@ -1335,8 +1253,6 @@
       call $finite_wasm_gas
       br 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1346,14 +1262,10 @@
       call $finite_wasm_gas
       br 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1362,15 +1274,11 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1383,8 +1291,6 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1397,14 +1303,10 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1413,8 +1315,6 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 2
       call $finite_wasm_gas
@@ -1423,8 +1323,6 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1435,8 +1333,6 @@
       i32.const 0
       br_table 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1447,14 +1343,10 @@
       i32.const 0
       br_table 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
@@ -1463,18 +1355,14 @@
       i64.const 1
       call $finite_wasm_gas
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 2
       call $finite_wasm_gas
       i32.const 0
       br_table 0 (;@1;)
       unreachable
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 19
   )
@@ -1491,19 +1379,13 @@
       i32.const 18
       br 0 (;@1;)
       i32.const 19
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 2
       call $finite_wasm_gas
       i32.const 21
       br 0 (;@1;)
       i32.const 20
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;43;) (type 10) (param i32) (result i32 i32 i64)
     i64.const 16
@@ -1522,8 +1404,6 @@
       i32.const 19
       i32.const -19
       i64.const 19
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 4
       call $finite_wasm_gas
@@ -1534,11 +1414,7 @@
       i32.const -19
       i32.const 19
       i64.const -19
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;44;) (type 5) (param i32) (result i32)
     i64.const 8
@@ -1549,18 +1425,16 @@
     i32.const 1
     local.get 0
     if (type 5) (param i32) (result i32) ;; label = @1
-      i64.const 3
+      i64.const 2
       call $finite_wasm_gas
       i32.const 2
       i32.add
     else
-      i64.const 3
+      i64.const 2
       call $finite_wasm_gas
       i32.const -2
       i32.add
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;45;) (type 5) (param i32) (result i32)
     i64.const 12
@@ -1572,16 +1446,14 @@
     i32.const 2
     local.get 0
     if (type $check) (param i32 i32) (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.add
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.sub
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;46;) (type 5) (param i32) (result i32)
     i64.const 12
@@ -1593,10 +1465,8 @@
     i32.const 2
     local.get 0
     if (type 12) (param i32 i32) (result i32 i32) ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.add
   )
@@ -1614,19 +1484,13 @@
       i32.const 2
       i32.add
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 3
       call $finite_wasm_gas
       i32.const -2
       i32.add
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;48;) (type 5) (param i32) (result i32)
     i64.const 12
@@ -1642,18 +1506,12 @@
       call $finite_wasm_gas
       i32.add
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 2
       call $finite_wasm_gas
       i32.sub
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;49;) (type 5) (param i32) (result i32)
     i64.const 12
@@ -1668,10 +1526,8 @@
       i64.const 1
       call $finite_wasm_gas
       br 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.add
   )
@@ -1680,7 +1536,7 @@
     i64.const 8
     i64.const 2
     call $finite_wasm_stack
-    i64.const 6
+    i64.const 5
     call $finite_wasm_gas
     block (result i32) ;; label = @1
       i32.const 1
@@ -1707,8 +1563,6 @@
       i32.const 100
       i32.mul
       local.set 1
-      i64.const 1
-      call $finite_wasm_gas
     else
       i64.const 13
       call $finite_wasm_gas
@@ -1729,10 +1583,8 @@
       i32.const 1000
       i32.mul
       local.set 1
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     local.get 1
   )
@@ -1769,13 +1621,11 @@
     i64.const 1
     call $finite_wasm_gas
     if (type 15) (param i64) (result i64) ;; label = @1
-      i64.const 3
+      i64.const 2
       call $finite_wasm_gas
       drop
       i64.const -1
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;53;) (type $block-sig-1)
     i64.const 20
@@ -1785,18 +1635,16 @@
     call $finite_wasm_gas
     i32.const 1
     if ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 2
     call $finite_wasm_gas
     i32.const 1
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 2
     end
@@ -1804,11 +1652,11 @@
     call $finite_wasm_gas
     i32.const 1
     if (type $block-sig-3) (param i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       drop
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       drop
     end
@@ -1819,8 +1667,6 @@
     i32.const 0
     i32.const 1
     if (type $block-sig-4) (param i32 f64 i32) (result i32 f64 i32) ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
     i64.const 5
     call $finite_wasm_gas
@@ -1829,11 +1675,11 @@
     drop
     i32.const 1
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 2
     end
@@ -1841,11 +1687,11 @@
     call $finite_wasm_gas
     i32.const 1
     if (type $block-sig-3) (param i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       drop
     else
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       drop
     end
@@ -1856,10 +1702,8 @@
     i32.const 0
     i32.const 1
     if (type $block-sig-4) (param i32 f64 i32) (result i32 f64 i32) ;; label = @1
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 4
+    i64.const 3
     call $finite_wasm_gas
     drop
     drop

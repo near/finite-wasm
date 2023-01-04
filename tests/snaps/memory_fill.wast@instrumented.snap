@@ -22,8 +22,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -41,10 +39,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -62,8 +58,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -99,8 +93,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -118,10 +110,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -139,8 +129,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -172,8 +160,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -191,10 +177,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -212,8 +196,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -245,8 +227,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -264,10 +244,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -285,8 +263,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -320,8 +296,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -339,10 +313,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -360,8 +332,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -393,8 +363,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -412,10 +380,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -433,8 +399,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -466,8 +430,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -485,10 +447,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -506,8 +466,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -546,8 +504,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -565,10 +521,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -594,8 +548,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -637,8 +589,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -656,10 +606,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -677,8 +625,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -713,8 +659,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -732,10 +676,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -753,8 +695,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))
@@ -789,8 +729,6 @@
         call 0
         i32.const -1
         return
-        i64.const 1
-        call 0
       end
       i64.const 2
       call 0
@@ -808,10 +746,8 @@
         i32.add
         local.set $from
         br 1 (;@1;)
-        i64.const 1
-        call 0
       end
-      i64.const 3
+      i64.const 2
       call 0
     end
     local.get $from
@@ -829,8 +765,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "checkRange" (func 2))

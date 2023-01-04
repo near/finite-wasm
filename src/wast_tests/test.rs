@@ -490,14 +490,26 @@ impl max_stack::Config for DefaultStackConfig {
 pub(crate) struct DefaultGasConfig;
 
 macro_rules! gas_visit {
-    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
-        $(fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
+    (visit_end => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_else => $({ $($arg:ident: $argty:ty),* })?) => {};
+    ($visit:ident => $({ $($arg:ident: $argty:ty),* })?) => {
+        fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
             1u64
-        })*
+        }
+    };
+
+    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+        $(gas_visit!{ $visit => $({ $($arg: $argty),* })? })*
     }
 }
 
 impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
     type Output = u64;
+    fn visit_end(&mut self) -> u64 {
+        0
+    }
+    fn visit_else(&mut self) -> u64 {
+        0
+    }
     wasmparser::for_each_operator!(gas_visit);
 }

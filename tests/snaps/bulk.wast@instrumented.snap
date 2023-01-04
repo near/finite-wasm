@@ -12,15 +12,11 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0)
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (table (;0;) 3 funcref)
   (elem (;0;) funcref (ref.func 2) (ref.null func) (ref.func 3))
@@ -44,8 +40,6 @@
     i64.const 1
     call 0
     memory.fill
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -55,8 +49,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "fill" (func 2))
@@ -111,8 +103,6 @@
     i64.const 1
     call 0
     memory.copy
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -122,8 +112,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1 1)
   (export "copy" (func 2))
@@ -193,8 +181,6 @@
     i64.const 1
     call 0
     memory.init 0
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 1) (param i32) (result i32)
     i64.const 4
@@ -204,8 +190,6 @@
     call 0
     local.get 0
     i32.load8_u
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "init" (func 2))
@@ -248,7 +232,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     data.drop $p
   )
@@ -264,14 +248,12 @@
     i64.const 1
     call 0
     memory.init $p
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 0)
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     data.drop $a
   )
@@ -287,8 +269,6 @@
     i64.const 1
     call 0
     memory.init $a
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "drop_passive" (func 2))
@@ -321,7 +301,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     data.drop 64
   )
@@ -401,7 +381,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     data.drop 0
   )
@@ -419,7 +399,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -427,7 +407,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -443,8 +423,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.init 0
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;5;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -454,8 +432,6 @@
     call $finite_wasm_gas
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 3 funcref)
   (export "init" (func 4))
@@ -498,14 +474,12 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;3;) (type 0)
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     elem.drop $p
   )
@@ -521,14 +495,12 @@
     i64.const 1
     call $finite_wasm_gas
     table.init $p
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;5;) (type 0)
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     elem.drop $a
   )
@@ -544,8 +516,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.init $a
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 1 funcref)
   (export "drop_passive" (func 3))
@@ -578,7 +548,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     elem.drop 64
   )
@@ -658,7 +628,7 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     elem.drop 0
   )
@@ -676,7 +646,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 0
   )
@@ -684,7 +654,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 1
   )
@@ -692,7 +662,7 @@
     i64.const 4
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
+    i64.const 1
     call $finite_wasm_gas
     i32.const 2
   )
@@ -708,8 +678,6 @@
     i64.const 1
     call $finite_wasm_gas
     table.copy
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func (;6;) (type 2) (param i32) (result i32)
     i64.const 8
@@ -719,8 +687,6 @@
     call $finite_wasm_gas
     local.get 0
     call_indirect (type 0)
-    i64.const 1
-    call $finite_wasm_gas
   )
   (table (;0;) 10 funcref)
   (export "copy" (func 5))

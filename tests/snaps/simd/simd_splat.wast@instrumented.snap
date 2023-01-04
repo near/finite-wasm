@@ -11,7 +11,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get 0
     i8x16.splat
@@ -20,7 +20,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get 0
     i16x8.splat
@@ -29,7 +29,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get 0
     i32x4.splat
@@ -38,7 +38,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get 0
     f32x4.splat
@@ -47,7 +47,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get 0
     i64x2.splat
@@ -56,7 +56,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     local.get 0
     f64x2.splat
@@ -200,8 +200,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param i32) (result v128)
     i64.const 20
@@ -217,8 +215,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (func (;4;) (type 0) (param i32) (result v128)
     i64.const 20
@@ -234,8 +230,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (func (;5;) (type 1) (param i64) (result v128)
     i64.const 20
@@ -251,8 +245,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (func (;6;) (type 2) (param f64) (result v128)
     i64.const 20
@@ -268,8 +260,6 @@
     call 0
     i32.const 0
     v128.load
-    i64.const 1
-    call 0
   )
   (memory (;0;) 1)
   (export "as-v128_store-operand-1" (func 2))
@@ -308,7 +298,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i8x16.splat
@@ -318,7 +308,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i8x16.splat
@@ -328,7 +318,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i16x8.splat
@@ -338,7 +328,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i16x8.splat
@@ -348,7 +338,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i32x4.splat
@@ -358,7 +348,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i32x4.splat
@@ -368,7 +358,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     f32x4.splat
@@ -378,7 +368,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     f32x4.splat
@@ -388,7 +378,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i8x16.splat
@@ -400,7 +390,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i64x2.splat
@@ -410,7 +400,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i64x2.splat
@@ -420,7 +410,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     f64x2.splat
@@ -430,7 +420,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     f64x2.splat
@@ -440,7 +430,7 @@
     i64.const 48
     i64.const 3
     call 1
-    i64.const 9
+    i64.const 8
     call 0
     local.get 0
     i8x16.splat
@@ -455,7 +445,7 @@
     i64.const 64
     i64.const 4
     call 1
-    i64.const 12
+    i64.const 11
     call 0
     local.get 0
     i16x8.splat
@@ -473,7 +463,7 @@
     i64.const 64
     i64.const 4
     call 1
-    i64.const 12
+    i64.const 11
     call 0
     local.get 0
     i32x4.splat
@@ -491,7 +481,7 @@
     i64.const 64
     i64.const 4
     call 1
-    i64.const 12
+    i64.const 11
     call 0
     local.get 0
     i64x2.splat
@@ -509,7 +499,7 @@
     i64.const 64
     i64.const 4
     call 1
-    i64.const 12
+    i64.const 11
     call 0
     local.get 0
     f64x2.splat
@@ -527,7 +517,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i8x16.splat
@@ -539,7 +529,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i16x8.splat
@@ -551,7 +541,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i8x16.splat
@@ -563,7 +553,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i16x8.splat
@@ -575,7 +565,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get 0
     i8x16.splat
@@ -586,7 +576,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get 0
     i16x8.splat
@@ -597,7 +587,7 @@
     i64.const 20
     i64.const 2
     call 1
-    i64.const 5
+    i64.const 4
     call 0
     local.get 0
     i32x4.splat
@@ -608,7 +598,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i8x16.splat
@@ -620,7 +610,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i16x8.splat
@@ -632,7 +622,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i32x4.splat
@@ -644,7 +634,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i8x16.splat
@@ -654,7 +644,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i16x8.splat
@@ -664,7 +654,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i32x4.splat
@@ -674,7 +664,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i64x2.splat
@@ -684,7 +674,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i8x16.splat
@@ -696,7 +686,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i16x8.splat
@@ -708,7 +698,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i32x4.splat
@@ -720,7 +710,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     i64x2.splat
@@ -732,7 +722,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     f32x4.splat
@@ -744,7 +734,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     f64x2.splat
@@ -756,7 +746,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     f32x4.splat
@@ -766,7 +756,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     f32x4.splat
@@ -778,7 +768,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 6
+    i64.const 5
     call 0
     local.get 0
     f32x4.splat
@@ -790,7 +780,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     i32x4.splat
@@ -800,7 +790,7 @@
     i64.const 16
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get 0
     f32x4.splat
@@ -924,11 +914,7 @@
       local.get 0
       i8x16.splat
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0) (param i32) (result v128)
     i64.const 16
@@ -975,11 +961,7 @@
       local.get 0
       i64x2.splat
       br 0 (;@1;)
-      i64.const 1
-      call 0
     end
-    i64.const 1
-    call 0
   )
   (func (;7;) (type 2) (param i64) (result v128)
     i64.const 16

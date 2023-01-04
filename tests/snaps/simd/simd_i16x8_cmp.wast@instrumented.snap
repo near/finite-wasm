@@ -8,7 +8,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -18,7 +18,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -28,7 +28,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -38,7 +38,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -48,7 +48,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -58,7 +58,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -68,7 +68,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -78,7 +78,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -88,7 +88,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -98,7 +98,7 @@
     i64.const 32
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     local.get $x
     local.get $y
@@ -1564,13 +1564,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         i16x8.eq
@@ -1589,13 +1589,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         i16x8.ne
@@ -1614,13 +1614,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         i16x8.lt_s
@@ -1639,13 +1639,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         i16x8.le_u
@@ -1664,13 +1664,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         i16x8.gt_u
@@ -1689,13 +1689,13 @@
         block (result v128) ;; label = @3
           i32.const 0
           v128.load
-          i64.const 4
+          i64.const 3
           call 0
         end
         block (result v128) ;; label = @3
           i32.const 1
           v128.load
-          i64.const 6
+          i64.const 2
           call 0
         end
         i16x8.ge_s
@@ -1743,7 +1743,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.eq
     i16x8.eq
@@ -1790,7 +1790,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.ne
     i16x8.ne
@@ -1837,7 +1837,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.lt_s
     i16x8.lt_s
@@ -1884,7 +1884,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.le_u
     i16x8.le_u
@@ -1931,7 +1931,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.gt_u
     i16x8.gt_u
@@ -1978,7 +1978,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.ge_s
     i16x8.ge_s
@@ -2025,7 +2025,7 @@
     call 0
     i32.const 3
     v128.load
-    i64.const 5
+    i64.const 4
     call 0
     i16x8.lt_u
     i16x8.ne

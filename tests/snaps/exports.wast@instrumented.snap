@@ -8,8 +8,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
 )
@@ -23,8 +21,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
   (export "b" (func 2))
@@ -39,15 +35,11 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (func (;3;) (type 0)
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
   (export "b" (func 3))
@@ -62,8 +54,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
 )
@@ -77,8 +67,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
   (export "b" (func 2))
@@ -94,8 +82,6 @@
     i64.const 0
     i64.const 1
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
   (export "b" (func 2))
@@ -110,8 +96,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
 )
@@ -125,8 +109,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (export "a" (func $a))
 )
@@ -140,8 +122,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (export "a" (func $a))
 )
@@ -155,8 +135,6 @@
     i64.const 0
     i64.const 0
     call 1
-    i64.const 1
-    call 0
   )
   (export "a" (func 2))
 )
@@ -170,8 +148,6 @@
     i64.const 0
     i64.const 0
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
   )
   (export "a" (func $a))
 )
@@ -210,7 +186,7 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     i32.const 42
   )

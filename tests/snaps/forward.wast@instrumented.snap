@@ -14,7 +14,7 @@
     i32.const 0
     i32.eq
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 1
     else
@@ -24,11 +24,7 @@
       i32.const 1
       i32.sub
       call $odd
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (func $odd (;3;) (type 0) (param $n i32) (result i32)
     i64.const 8
@@ -40,7 +36,7 @@
     i32.const 0
     i32.eq
     if (result i32) ;; label = @1
-      i64.const 2
+      i64.const 1
       call $finite_wasm_gas
       i32.const 0
     else
@@ -50,11 +46,7 @@
       i32.const 1
       i32.sub
       call $even
-      i64.const 1
-      call $finite_wasm_gas
     end
-    i64.const 1
-    call $finite_wasm_gas
   )
   (export "even" (func $even))
   (export "odd" (func $odd))
