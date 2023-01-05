@@ -5,7 +5,7 @@
 
 (module
   (memory 1 1)
-  
+
   (func (export "checkRange") (param $from i32) (param $to i32) (param $expected i32) (result i32)
     (loop $cont
       (if (i32.eq (local.get $from) (local.get $to))

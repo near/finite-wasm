@@ -22,13 +22,13 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     i32.const 0
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
-        i64.const 8
+        i64.const 9
         call 0
         local.get $i
         i32.const 1
@@ -54,13 +54,13 @@
     i64.const 8
     i64.const 1
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     i32.const 0
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
-        i64.const 8
+        i64.const 9
         call 0
         local.get $i
         i32.const 1
@@ -130,13 +130,13 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 4
+    i64.const 3
     call 0
     i32.const 1
     local.set $i
     block $exit (result i32) ;; label = @1
       loop $cont (result i32) ;; label = @2
-        i64.const 8
+        i64.const 9
         call 0
         local.get $i
         local.get $i
@@ -161,9 +161,9 @@
     i64.const 8
     i64.const 0
     call 1
-    i64.const 4
-    call 0
     loop $l (result i32) ;; label = @1
+      i64.const 4
+      call 0
       i32.const 1
     end
     i32.const 1
@@ -173,12 +173,12 @@
     i64.const 4
     i64.const 0
     call 1
-    i64.const 1
-    call 0
     loop (result i32) ;; label = @1
       i64.const 2
       call 0
       i32.const 0
+      i64.const 1
+      call 0
       br_if 0 (;@1;)
       i64.const 1
       call 0

@@ -1,4 +1,4 @@
-use gas::InstructionKind;
+use gas::InstrumentationKind;
 use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
 use visitors::VisitOperatorWithOffset;
@@ -68,7 +68,7 @@ pub struct Module {
     /// The table of offsets for gas instrumentation points, *excluding* imports.
     pub gas_offsets: Vec<Box<[usize]>>,
     pub gas_costs: Vec<Box<[u64]>>,
-    pub gas_kinds: Vec<Box<[InstructionKind]>>,
+    pub gas_kinds: Vec<Box<[InstrumentationKind]>>,
 }
 
 impl Module {
@@ -183,6 +183,7 @@ impl Module {
                         costs: &mut costs,
                         kinds: &mut kinds,
                         frame_stack: &mut gas_frame_stack,
+                        next_offset_cost: None,
                         current_frame: gas::Frame {
                             stack_polymorphic: false,
                             kind: gas::BranchTargetKind::UntakenForward,

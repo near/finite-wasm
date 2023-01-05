@@ -43,40 +43,50 @@ pub enum Error {
 }
 
 #[derive(Clone, Copy, Debug)]
-pub enum InstructionKind {
-    /// This instruction is largely uninteresting for the purposes of gas analysis, besides its
-    /// inherent cost.
+pub enum InstrumentationKind {
+    /// This instrumentation point precedes an instruction that is largely uninteresting for the
+    /// purposes of gas analysis, besides its inherent cost.
     ///
     /// These do not participate in branching, trapping or any other kind of data flow. Simple
     /// operations such as an addition or subtraction will typically fall under this kind.
     Pure,
 
-    /// This instruction is unreachable (usually because the stack is polymorphic at this point.)
+    /// This instrumentation point is unreachable (usually because the stack is polymorphic at this
+    /// point.)
     ///
     /// For example,
     ///
     /// ```wast
     /// block
     ///   br 0                                ;; the stack becomes polymorphic
-    ///   i32.add (i32.const 0) (i32.const 1) ;; these instructions are unreachable
-    /// end                                   ;; reachable again
+    ///                                       ;; this instrumentation point is unreachable
+    ///   i32.add (i32.const 0) (i32.const 1)
+    ///                                       ;; this instrumentation point is still unreachable
+    /// end
+    ///                                       ;; this instrumentation point is reachable again
     /// ```
-    ///
-    /// We could remove these instructions entirely when instrumenting code based on gas analysis
-    /// results.
     Unreachable,
 
-    /// This instruction is a branch target, branch, side effect, potential trap or similar
-    /// construct.
+    /// This instrumentation point precedes a branch target, branch, side effect, potential trap or
+    /// similar construct.
     ///
-    /// As a result the gas charge cannot be consolidated across this instruction. At the time this
-    /// instruction is executed the gas count must be precise and inclusive of this instruction.
-    ControlFlow,
+    /// As a result none of the succeeding instrumentation points may be merged up into this
+    /// instrumentation point, as the gas may be observed by the instruction that is going to
+    /// execute after this instruction.
+    PreControlFlow,
 
-    /// This instruction is an aggregate operation.
+    /// This instrumentation point succeeds a branch target, branch, side effect, potential trap or
+    /// similar construct.
     ///
-    /// Instructions such as `memory.fill` fall here. The amount of work they do depends on the
-    /// operands.
+    /// As a result this instrumentation point may not be merged up into the preceding
+    /// instrumentation points (but succeeding instrumentation points may still be merged into
+    /// this).
+    PostControlFlow,
+
+    /// This instrumentation point precedes an aggregate operation.
+    ///
+    /// Instructions such as `memory.fill` cause this categorization. The amount of work they do
+    /// depends on the operands.
     ///
     /// TODO: a variant for each such instruction may be warranted?
     Aggregate,
@@ -133,7 +143,14 @@ pub(crate) struct GasVisitor<'a, CostModel> {
     /// Table of instruction ranges, and the total gas cost of executing the range.
     pub(crate) offsets: &'a mut Vec<usize>,
     pub(crate) costs: &'a mut Vec<u64>,
-    pub(crate) kinds: &'a mut Vec<InstructionKind>,
+    pub(crate) kinds: &'a mut Vec<InstrumentationKind>,
+
+    /// Is there a charge we want to introduce "after" the current offset?
+    ///
+    /// Note that the implementation here depends on the fact that all instructions invoke
+    /// `charge_before` or `charge_after`, even if with a 0-cost so that there is an opportunity to
+    /// merge this cost into the table.
+    pub(crate) next_offset_cost: Option<(u64, InstrumentationKind)>,
 
     /// Information about the analyzed function’s frame stack.
     pub(crate) frame_stack: &'a mut Vec<Frame>,
@@ -141,15 +158,28 @@ pub(crate) struct GasVisitor<'a, CostModel> {
 }
 
 impl<'a, CostModel> GasVisitor<'a, CostModel> {
-    /// Visit an instruction, populating information about it within the internal tables.
-    fn visit_instruction(&mut self, kind: InstructionKind, cost: u64) {
+    /// Charge some gas before the currently analyzed instruction.
+    fn charge_before(&mut self, kind: InstrumentationKind, cost: u64) {
+        let next_offset_cost = self.next_offset_cost.take();
+        let cost = cost + next_offset_cost.map(|v| v.0).unwrap_or(0);
         self.offsets.push(self.offset);
         self.kinds.push(if self.current_frame.stack_polymorphic {
-            InstructionKind::Unreachable
+            InstrumentationKind::Unreachable
         } else {
             kind
         });
         self.costs.push(cost);
+    }
+
+    /// Charge some gas after the currently analyzed instruction.
+    ///
+    /// Note that this method works by enqueueing a charge to be added to the tables at a next call
+    /// of the `charge_before` or `charge_after` function.
+    fn charge_after(&mut self, kind: InstrumentationKind, cost: u64) {
+        if let Some((cost, kind)) = self.next_offset_cost.take() {
+            self.charge_before(kind, cost);
+        }
+        assert!(self.next_offset_cost.replace((cost, kind)).is_none());
     }
 
     /// Create a new frame on the frame stack.
@@ -205,15 +235,15 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
             BranchTargetKind::Forward => (),
             BranchTargetKind::UntakenForward => frame.kind = BranchTargetKind::Forward,
             BranchTargetKind::Backward(instruction_index) => {
-                self.kinds[instruction_index] = InstructionKind::ControlFlow
+                self.kinds[instruction_index] = InstrumentationKind::PostControlFlow
             }
         }
         Ok(())
     }
 
     fn visit_unconditional_branch(&mut self, depth: usize, cost: u64) -> Result<(), Error> {
+        self.charge_before(InstrumentationKind::PreControlFlow, cost);
         self.visit_branch(depth)?;
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -223,7 +253,7 @@ macro_rules! trapping_insn {
     (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
         fn $visit(&mut self, $($arg: $ty),*) -> Self::Output {
             let cost = self.model.$visit($($arg),*);
-            self.visit_instruction(InstructionKind::ControlFlow, cost);
+            self.charge_before(InstrumentationKind::PreControlFlow, cost);
             Ok(())
         }
     };
@@ -247,7 +277,7 @@ macro_rules! pure_insn {
     (fn $visit:ident( $($arg:ident: $ty:ty),* )) => {
         fn $visit(&mut self, $($arg: $ty),*) -> Self::Output {
             let cost = self.model.$visit($($arg),*);
-            self.visit_instruction(InstructionKind::Pure, cost);
+            self.charge_before(InstrumentationKind::Pure, cost);
             Ok(())
         }
     };
@@ -307,7 +337,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
 
     fn visit_unreachable(&mut self) -> Self::Output {
         let cost = self.model.visit_unreachable();
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.charge_before(InstrumentationKind::PreControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -347,7 +377,10 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self.model.visit_loop(blockty);
         let insn_type_index = self.kinds.len();
         // For the time being this instruction is not a branch target, and therefore is pure.
-        self.visit_instruction(InstructionKind::Pure, cost);
+        // However, we must charge for it _after_ it has been executed, just in case it is a branch
+        // target. That's because as per the WebAssembly specification, the `loop` instruction is
+        // executed on ever loop.
+        self.charge_after(InstrumentationKind::Pure, cost);
         // However, it will become a branch target if there is a branching instruction targetting
         // the frame created by this instruction. At that point we will make a point of adjusting
         // the instruction kind to a `InstructionKind::BranchTarget`.
@@ -361,12 +394,18 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self.model.visit_end();
         assert!(cost == 0, "the `end` instruction costs aren’t handled right, set it to 0");
         let kind = match self.current_frame.kind {
-            BranchTargetKind::Forward => InstructionKind::ControlFlow,
-            BranchTargetKind::Backward(_) => InstructionKind::Pure,
-            BranchTargetKind::UntakenForward => InstructionKind::Pure,
+            BranchTargetKind::Forward => InstrumentationKind::PreControlFlow,
+            BranchTargetKind::Backward(_) => InstrumentationKind::Pure,
+            BranchTargetKind::UntakenForward => InstrumentationKind::Pure,
         };
         self.end_frame();
-        self.visit_instruction(kind, cost);
+        // TODO: this needs to note if this is a `if..end` or `if..else..end` branch. In the case
+        // of the former, the code consuming analysis results needs to know to generate the `else`
+        // branch and propagate the gas cost in both branches.
+        //
+        // Note that we cannot `charge_after` here because `end` is not "executed" when a branch
+        // within the frame is executed.
+        self.charge_before(kind, cost);
         Ok(())
     }
 
@@ -375,7 +414,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self.model.visit_if(blockty);
         // `if` is already a branch instruction, it can execute the instruction that follows, or it
         // could jump to the `else` or `end` associated with this frame.
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.charge_before(InstrumentationKind::PreControlFlow, cost);
         self.new_frame(BranchTargetKind::Forward);
         Ok(())
     }
@@ -395,14 +434,14 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // false, `if` can be considered to be a branch to either this `else` or to the first
         // instruction of its body. Which interpretation makes sense here depends really on how
         // frames are handled.
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.charge_before(InstrumentationKind::PreControlFlow, cost);
         self.new_frame(BranchTargetKind::Forward);
         Ok(())
     }
 
     fn visit_block(&mut self, blockty: BlockType) -> Self::Output {
         let cost = self.model.visit_block(blockty);
-        self.visit_instruction(InstructionKind::Pure, cost);
+        self.charge_before(InstrumentationKind::Pure, cost);
         self.new_frame(BranchTargetKind::UntakenForward);
         Ok(())
     }
@@ -416,19 +455,18 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     fn visit_br_if(&mut self, relative_depth: u32) -> Self::Output {
         let frame_idx = self.frame_index(relative_depth)?;
         let cost = self.model.visit_br_if(relative_depth);
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
+        self.charge_before(InstrumentationKind::PreControlFlow, cost);
         self.visit_branch(frame_idx)
     }
 
     fn visit_br_table(&mut self, targets: BrTable<'a>) -> Self::Output {
+        let cost = self.model.visit_br_table(targets.clone());
+        self.charge_before(InstrumentationKind::PreControlFlow, cost);
         for target in targets.targets() {
             let target = target.map_err(Error::ParseBrTable)?;
             self.visit_branch(self.frame_index(target)?)?;
         }
         self.visit_branch(self.frame_index(targets.default())?)?;
-
-        let cost = self.model.visit_br_table(targets);
-        self.visit_instruction(InstructionKind::ControlFlow, cost);
         self.make_polymorphic();
         Ok(())
     }
@@ -452,13 +490,13 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
 
     fn visit_memory_grow(&mut self, mem: u32, mem_byte: u8) -> Self::Output {
         let cost = self.model.visit_memory_grow(mem, mem_byte);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
     fn visit_memory_init(&mut self, data_index: u32, mem: u32) -> Self::Output {
         let cost = self.model.visit_memory_init(data_index, mem);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
@@ -467,25 +505,25 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // instruction. In practice, though, it may involve non-trivial amount of work in the
         // runtime anyway? Validate.
         let cost = self.model.visit_data_drop(data_index);
-        self.visit_instruction(InstructionKind::Pure, cost);
+        self.charge_before(InstrumentationKind::Pure, cost);
         Ok(())
     }
 
     fn visit_memory_copy(&mut self, dst_mem: u32, src_mem: u32) -> Self::Output {
         let cost = self.model.visit_memory_copy(dst_mem, src_mem);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
     fn visit_memory_fill(&mut self, mem: u32) -> Self::Output {
         let cost = self.model.visit_memory_fill(mem);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
     fn visit_table_init(&mut self, elem_index: u32, table: u32) -> Self::Output {
         let cost = self.model.visit_table_init(elem_index, table);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
@@ -494,25 +532,25 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // instruction. In practice, though, it may involve non-trivial amount of work in the
         // runtime anyway? Validate.
         let cost = self.model.visit_elem_drop(elem_index);
-        self.visit_instruction(InstructionKind::Pure, cost);
+        self.charge_before(InstrumentationKind::Pure, cost);
         Ok(())
     }
 
     fn visit_table_copy(&mut self, dst_table: u32, src_table: u32) -> Self::Output {
         let cost = self.model.visit_table_copy(dst_table, src_table);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
     fn visit_table_fill(&mut self, table: u32) -> Self::Output {
         let cost = self.model.visit_table_fill(table);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
     fn visit_table_grow(&mut self, table: u32) -> Self::Output {
         let cost = self.model.visit_table_grow(table);
-        self.visit_instruction(InstructionKind::Aggregate, cost);
+        self.charge_before(InstrumentationKind::Aggregate, cost);
         Ok(())
     }
 
@@ -553,19 +591,20 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> crate::visitors::VisitOpera
 pub(crate) fn optimize(
     offsets: &mut Vec<usize>,
     costs: &mut Vec<u64>,
-    kinds: &mut Vec<InstructionKind>,
+    kinds: &mut Vec<InstrumentationKind>,
 ) {
     let mut previous_kind = kinds
         .first()
         .copied()
-        .unwrap_or(InstructionKind::ControlFlow);
+        .unwrap_or(InstrumentationKind::PreControlFlow);
     let mut output_idx = 0;
     for input_idx in 1..kinds.len() {
         let kind = kinds[input_idx];
         let merge_to_previous = match (kind, previous_kind) {
-            (InstructionKind::Pure, InstructionKind::Pure) => true,
-            (InstructionKind::Unreachable, InstructionKind::Unreachable) => true,
-            (InstructionKind::ControlFlow, InstructionKind::Pure) => true,
+            (InstrumentationKind::Pure, InstrumentationKind::Pure) => true,
+            (InstrumentationKind::Unreachable, InstrumentationKind::Unreachable) => true,
+            (InstrumentationKind::PreControlFlow, InstrumentationKind::Pure) => true,
+            (InstrumentationKind::Pure, InstrumentationKind::PostControlFlow) => true,
             _ => false,
         };
         previous_kind = kind;

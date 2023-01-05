@@ -64,7 +64,7 @@
     i64.const 16
     i64.const 3
     call $finite_wasm_stack
-    i64.const 6
+    i64.const 5
     call $finite_wasm_gas
     local.get 0
     local.set 1
@@ -72,7 +72,7 @@
     local.set 2
     block ;; label = @1
       loop ;; label = @2
-        i64.const 4
+        i64.const 5
         call $finite_wasm_gas
         local.get 1
         i64.const 0
@@ -107,7 +107,7 @@
     i64.const 16
     i64.const 3
     call $finite_wasm_stack
-    i64.const 6
+    i64.const 5
     call $finite_wasm_gas
     local.get $n
     local.set $i
@@ -115,7 +115,7 @@
     local.set $res
     block $done ;; label = @1
       loop $loop ;; label = @2
-        i64.const 4
+        i64.const 5
         call $finite_wasm_gas
         local.get $i
         i64.const 0
@@ -159,10 +159,8 @@
       i64.const 2
       i64.lt_s
       br_if 0 (;@1;)
-      i64.const 1
-      call $finite_wasm_gas
       loop ;; label = @2
-        i64.const 12
+        i64.const 13
         call $finite_wasm_gas
         local.get 1
         local.get 0
@@ -205,12 +203,12 @@
     i64.const 48
     i64.const 1
     call $finite_wasm_stack
-    i64.const 3
+    i64.const 2
     call $finite_wasm_gas
     i64.const 1
     local.get 0
     loop $l (type 3) (param i64 i64) (result i64) ;; label = @1
-      i64.const 1
+      i64.const 2
       call $finite_wasm_gas
       call $pick1
       i64.const 1

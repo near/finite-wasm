@@ -174,9 +174,9 @@
     i64.const 12
     i64.const 1
     call $finite_wasm_stack
-    i64.const 6
-    call $finite_wasm_gas
     loop (result i32) ;; label = @1
+      i64.const 6
+      call $finite_wasm_gas
       i32.const 2
       i32.const 3
       local.get 0
@@ -191,9 +191,9 @@
     i64.const 12
     i64.const 1
     call $finite_wasm_stack
-    i64.const 2
-    call $finite_wasm_gas
     loop (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       call $dummy
       i64.const 5
       call $finite_wasm_gas
@@ -208,9 +208,9 @@
     i64.const 12
     i64.const 1
     call $finite_wasm_stack
-    i64.const 2
-    call $finite_wasm_gas
     loop (result i32) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       call $dummy
       i64.const 1
       call $finite_wasm_gas

@@ -1892,11 +1892,11 @@
     i64.const 12
     i64.const 3
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     block $exit ;; label = @1
       loop $cont ;; label = @2
-        i64.const 3
+        i64.const 4
         call 0
         local.get $i
         local.get $i
@@ -1969,11 +1969,11 @@
     i64.const 20
     i64.const 3
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     block $exit ;; label = @1
       loop $cont ;; label = @2
-        i64.const 3
+        i64.const 4
         call 0
         local.get $i
         local.get $i
@@ -3642,11 +3642,11 @@
     i64.const 12
     i64.const 5
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     block $exit ;; label = @1
       loop $top ;; label = @2
-        i64.const 3
+        i64.const 4
         call 0
         local.get $c
         local.get $p
@@ -3685,11 +3685,11 @@
     i64.const 8
     i64.const 3
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     block $exit ;; label = @1
       loop $top ;; label = @2
-        i64.const 3
+        i64.const 4
         call 0
         local.get $sum
         local.get $p
@@ -3733,11 +3733,11 @@
     i64.const 24
     i64.const 5
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     block $exit ;; label = @1
       loop $top ;; label = @2
-        i64.const 3
+        i64.const 4
         call 0
         local.get $c
         local.get $p
@@ -3776,11 +3776,11 @@
     i64.const 16
     i64.const 3
     call 1
-    i64.const 2
+    i64.const 1
     call 0
     block $exit ;; label = @1
       loop $top ;; label = @2
-        i64.const 3
+        i64.const 4
         call 0
         local.get $sum
         local.get $p
@@ -4837,10 +4837,8 @@
     i64.const 12
     i64.const 2
     call 1
-    i64.const 1
-    call 0
     loop $label$0 ;; label = @1
-      i64.const 13
+      i64.const 14
       call 0
       local.get $0
       local.get $0
@@ -4855,11 +4853,9 @@
       f32.const 0x0p+0 (;=0;)
       f32.eq
       br_if 0 (;@1;)
-      i64.const 1
-      call 0
     end
     loop $label$2 ;; label = @1
-      i64.const 13
+      i64.const 14
       call 0
       local.get $0
       local.get $1
@@ -4883,10 +4879,8 @@
     i64.const 24
     i64.const 2
     call 1
-    i64.const 1
-    call 0
     loop $label$0 ;; label = @1
-      i64.const 13
+      i64.const 14
       call 0
       local.get $0
       local.get $0
@@ -4901,11 +4895,9 @@
       f64.const 0x0p+0 (;=0;)
       f64.eq
       br_if 0 (;@1;)
-      i64.const 1
-      call 0
     end
     loop $label$2 ;; label = @1
-      i64.const 13
+      i64.const 14
       call 0
       local.get $0
       local.get $1
@@ -5231,12 +5223,12 @@
     i64.const 8
     i64.const 2
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     f32.const 0x1p+0 (;=1;)
     local.set $x
     loop $loop ;; label = @1
-      i64.const 10
+      i64.const 11
       call 0
       local.get $x
       local.tee $result
@@ -5258,12 +5250,12 @@
     i64.const 16
     i64.const 2
     call 1
-    i64.const 3
+    i64.const 2
     call 0
     f64.const 0x1p+0 (;=1;)
     local.set $x
     loop $loop ;; label = @1
-      i64.const 10
+      i64.const 11
       call 0
       local.get $x
       local.tee $result
@@ -6060,14 +6052,14 @@
       i32.const 1
       i32.lt_s
       br_if 0 (;@1;)
-      i64.const 5
+      i64.const 4
       call 0
       f64.const 0x1p+0 (;=1;)
       local.set 2
       f64.const 0x0p+0 (;=0;)
       local.set 3
       loop ;; label = @2
-        i64.const 44
+        i64.const 45
         call 0
         local.get 1
         local.get 2

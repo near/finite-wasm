@@ -5117,9 +5117,9 @@
     i64.const 16
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
-    call $finite_wasm_gas
     loop (result v128) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       v128.const i32x4 0x00000000 0x00000001 0x00000002 0x00000003
     end
   )
@@ -5255,9 +5255,9 @@
     i64.const 16
     i64.const 0
     call $finite_wasm_stack
-    i64.const 2
-    call $finite_wasm_gas
     loop (result v128) ;; label = @1
+      i64.const 2
+      call $finite_wasm_gas
       v128.const i32x4 0x00000000 0x00000000 0x00000001 0x00000000
     end
   )
