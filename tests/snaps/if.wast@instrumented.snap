@@ -1634,12 +1634,12 @@
     i64.const 2
     call $finite_wasm_gas
     i32.const 1
-    if ;; label = @1
+    if (type $block-sig-1) ;; label = @1
     end
     i64.const 2
     call $finite_wasm_gas
     i32.const 1
-    if (result i32) ;; label = @1
+    if (type $block-sig-2) (result i32) ;; label = @1
       i64.const 1
       call $finite_wasm_gas
       i32.const 0
@@ -1674,7 +1674,7 @@
     drop
     drop
     i32.const 1
-    if (result i32) ;; label = @1
+    if (type $block-sig-2) (result i32) ;; label = @1
       i64.const 1
       call $finite_wasm_gas
       i32.const 0

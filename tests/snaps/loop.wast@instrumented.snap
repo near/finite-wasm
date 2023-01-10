@@ -1249,11 +1249,11 @@
     i64.const 16
     i64.const 0
     call $finite_wasm_stack
-    loop ;; label = @1
+    loop (type $block-sig-1) ;; label = @1
       i64.const 23
       call $finite_wasm_gas
     end
-    loop (result i32) ;; label = @1
+    loop (type $block-sig-2) (result i32) ;; label = @1
       i32.const 0
     end
     loop (type $block-sig-3) (param i32) ;; label = @1
@@ -1267,7 +1267,7 @@
     drop
     drop
     drop
-    loop (result i32) ;; label = @1
+    loop (type $block-sig-2) (result i32) ;; label = @1
       i32.const 0
     end
     loop (type $block-sig-3) (param i32) ;; label = @1

@@ -1,4 +1,4 @@
-use finite_wasm::{Module, gas::InstrumentationKind};
+use finite_wasm::{gas::InstrumentationKind, Module};
 use wasm_encoder as we;
 use wasmparser as wp;
 use we::Section;
@@ -69,9 +69,7 @@ impl<'a> crate::test::TestContext {
                     for import in imports {
                         let import = import.expect("imports should already have been parsed!");
                         let import_ty = match import.ty {
-                            wp::TypeRef::Func(i) => {
-                                we::EntityType::Function(i)
-                            },
+                            wp::TypeRef::Func(i) => we::EntityType::Function(i),
                             wp::TypeRef::Table(t) => we::EntityType::Table(we::TableType {
                                 element_type: valtype(t.element_type),
                                 minimum: t.initial,
@@ -105,28 +103,24 @@ impl<'a> crate::test::TestContext {
                 wp::Payload::ElementSection(reader) => {
                     for elem in reader {
                         let elem = elem.expect("TODO");
-                        let item_reader = elem.items.get_items_reader().expect("TODO");
-                        let func_items;
-                        let func_exprs;
-                        let offset: we::ConstExpr;
-                        let items = if item_reader.uses_exprs() {
-                            func_exprs = item_reader
-                                .into_iter()
-                                .map(|v| match v.expect("TODO") {
-                                    wp::ElementItem::Func(_) => panic!("func in expr elem?"),
-                                    wp::ElementItem::Expr(expr) => constexpr(expr),
-                                })
-                                .collect::<Vec<_>>();
-                            we::Elements::Expressions(&func_exprs)
-                        } else {
-                            func_items = item_reader
-                                .into_iter()
-                                .map(|v| match v.expect("TODO") {
-                                    wp::ElementItem::Func(f) => f + 2,
-                                    wp::ElementItem::Expr(_) => panic!("expr in non-expr elem?"),
-                                })
-                                .collect::<Vec<_>>();
-                            we::Elements::Functions(&func_items)
+                        let functions;
+                        let expressions;
+                        let offset;
+                        let items = match elem.items {
+                            wp::ElementItems::Functions(fns) => {
+                                functions = fns
+                                    .into_iter()
+                                    .map(|v| v.expect("TODO") + 2)
+                                    .collect::<Vec<_>>();
+                                we::Elements::Functions(&functions)
+                            }
+                            wp::ElementItems::Expressions(exprs) => {
+                                expressions = exprs
+                                    .into_iter()
+                                    .map(|v| constexpr(v.expect("TODO")))
+                                    .collect::<Vec<_>>();
+                                we::Elements::Expressions(&expressions)
+                            }
                         };
                         new_element_section.segment(we::ElementSegment {
                             mode: match elem.kind {
@@ -175,12 +169,14 @@ impl<'a> crate::test::TestContext {
                     let gas_costs = &results.gas_costs[code_idx];
                     let gas_kinds = &results.gas_kinds[code_idx];
 
-                    let mut instrumentation_points =
-                        gas_offsets.iter().zip(gas_costs.iter()).zip(gas_kinds.iter()).peekable();
+                    let mut instrumentation_points = gas_offsets
+                        .iter()
+                        .zip(gas_costs.iter())
+                        .zip(gas_kinds.iter())
+                        .peekable();
 
                     let mut operators = reader.get_operators_reader().expect("TODO");
                     while !operators.eof() {
-
                         let (op, offset) = operators.read_with_offset().expect("TODO");
                         let end_offset = operators.original_position();
                         if instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
@@ -232,8 +228,7 @@ impl<'a> crate::test::TestContext {
                     raw_sections.push(section_placeholder(new_global_section.id()));
                 }
                 wp::Payload::CustomSection(reader) if reader.name() == "name" => {
-                    let names = wp::NameSectionReader::new(reader.data(), reader.data_offset())
-                        .expect("TODO");
+                    let names = wp::NameSectionReader::new(reader.data(), reader.data_offset());
                     for name in names {
                         let name = name.expect("TODO");
                         match name {

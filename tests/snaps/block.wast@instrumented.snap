@@ -1016,9 +1016,9 @@
     call $finite_wasm_stack
     i64.const 23
     call $finite_wasm_gas
-    block ;; label = @1
+    block (type $block-sig-1) ;; label = @1
     end
-    block (result i32) ;; label = @1
+    block (type $block-sig-2) (result i32) ;; label = @1
       i32.const 0
     end
     block (type $block-sig-3) (param i32) ;; label = @1
@@ -1032,7 +1032,7 @@
     drop
     drop
     drop
-    block (result i32) ;; label = @1
+    block (type $block-sig-2) (result i32) ;; label = @1
       i32.const 0
     end
     block (type $block-sig-3) (param i32) ;; label = @1
