@@ -9,18 +9,19 @@
 //! | i32.const 1  | 1    | Pure   |
 //! | i32.add      | 1    | Pure   |
 //!
-//! [Kind]: InstructionKind
+//! [Kind]: InstrumentationKind
 //!
-//! In this table the instructions with certain instruction kind combinations can then be coalesced
-//! in order to reduce the number of gas instrumentation points. For example all instructions
-//! considered `Pure` can be merged together to produce a table like this:
+//! In this table the instructions with certain instrumentation kind combinations can then be
+//! coalesced in order to reduce the number of gas instrumentation points. For example all
+//! instrumentation can be merged together across all instructions considered `Pure` to produce a
+//! table like this:
 //!
 //! | Instructions                           | Cost | [Kind] |
 //! | ====================================== | ==== | ====== |
 //! | (i32.add (i32.const 0) (i32.const 1))  | 3    | Pure   |
 //!
 //! Instrumentation can then, instead of inserting a gas charge before each of the 3 instructions,
-//! insert a charge for 3 gas before the entire sequence, all without any observable difference in
+//! insert a charge of 3 gas before the entire sequence, all without any observable difference in
 //! execution semantics.
 //!
 //! **Why two passes?** A short answer is – branching. As the algorithm goes through the function
@@ -377,13 +378,13 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         let cost = self.model.visit_loop(blockty);
         let insn_type_index = self.kinds.len();
         // For the time being this instruction is not a branch target, and therefore is pure.
-        // However, we must charge for it _after_ it has been executed, just in case it is a branch
-        // target. That's because as per the WebAssembly specification, the `loop` instruction is
-        // executed on ever loop.
+        // However, we must charge for it _after_ it has been executed, just in case it becomes a
+        // branch target later. That's because as per the WebAssembly specification, the `loop`
+        // instruction is executed on every iteration.
         self.charge_after(InstrumentationKind::Pure, cost);
-        // However, it will become a branch target if there is a branching instruction targetting
-        // the frame created by this instruction. At that point we will make a point of adjusting
-        // the instruction kind to a `InstructionKind::BranchTarget`.
+        // This instruction will become a branch target if there is a branching instruction
+        // targetting the frame created by this instruction. At that point we will make a point of
+        // adjusting the instruction kind to a `InstrumentationKind::PostControlFlow`.
         self.new_frame(BranchTargetKind::Backward(insn_type_index));
         Ok(())
     }
