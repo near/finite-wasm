@@ -40,7 +40,9 @@ fn run() -> Result<(), Error> {
     let snaps_directory = tests_directory.join("snaps");
     let temp_directory = tests_directory.join("tmp");
     let filter = std::env::args().nth(1);
-    let mut tests = Vec::new();
+    let mut tests = vec![Test {
+        path: "!internal-self-test-interpreter".into(),
+    }];
     for entry in walkdir::WalkDir::new(&tests_directory) {
         let entry = entry.map_err(Error::WalkDirEntry)?;
         let entry_path = entry.path();

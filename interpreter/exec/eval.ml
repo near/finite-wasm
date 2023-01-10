@@ -155,6 +155,7 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
         Int64.add arg_count local_count
       | Func.HostFunc (_, _) -> 0L
       (* Compensate for setup and invocation of these intrinsics, as they're free *)
+      (* This is validated with the `!internal-self-test-interpreter` test *)
       | Func.GasIntrinsic -> -2L
       | Func.StackIntrinsic -> -3L
     )

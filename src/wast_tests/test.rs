@@ -233,6 +233,20 @@ impl<'a> TestContext {
     }
 
     pub(crate) fn run(&mut self) {
+        // There are some intereting properties of the interpreter that we want to verify, but
+        // those properties are hard/infeasible to validate our wast test runner infrastructure.
+        //
+        // Instead we implement an escape hatch here that allows us to run arbitrary rust code
+        // within the test context.
+        if "!internal-self-test-interpreter" == self.test_name {
+            if let Err(mut e) = self.self_test_interpreter() {
+                self.fail_test_error(&mut e);
+            } else {
+                self.pass();
+            }
+            return;
+        }
+
         let instrumented_wast = match self.run_analysis() {
             Ok(instrumented_wast) => instrumented_wast,
             Err(mut e) => return self.fail_test_error(&mut e),
@@ -251,24 +265,22 @@ impl<'a> TestContext {
             Ok(o) => o,
             Err(mut e) => return self.fail_test_error(&mut e),
         };
-
         if let Err(mut e) = self.validate_interpreter_output(&output) {
             return self.fail_test_error(&mut e);
         }
-
-        // NB: some of the reference snapshots end up at upwards of 250M in size. We can’t
-        // reasonably store that in the repository, but we should still be good with storing
-        // snapshots of the actual implementation and running the reference interpreter every time.
-        //
-        // if let Err(mut e) = self.compare_snapshot(output, "interpreter-gas") {
-        //     return self.fail_test_error(&mut e);
-        // }
-        drop(output);
-
         self.pass();
     }
 
     fn validate_interpreter_output(&mut self, interpreter_out: &str) -> Result<(), Error> {
+        let (interpreter_gas, instrumentation_gas) =
+            self.process_interpreter_output(interpreter_out)?;
+        if interpreter_gas != instrumentation_gas {
+            return Err(Error::GasMismatch(interpreter_gas, instrumentation_gas));
+        }
+        Ok(())
+    }
+
+    fn process_interpreter_output(&mut self, interpreter_out: &str) -> Result<(i64, i64), Error> {
         fn parse_prefix_num(s: &[u8]) -> Option<i64> {
             match <i64 as atoi::FromRadix10Signed>::from_radix_10_signed(s) {
                 (_, 0) => None,
@@ -276,8 +288,8 @@ impl<'a> TestContext {
             }
         }
 
-        let mut total_gas = 0;
-        let mut gas_charged = 0;
+        let mut interpreter_gas = 0;
+        let mut instrumentation_gas = 0;
         for line in interpreter_out.lines() {
             let Some((kind, rest)) = line.split_once(": ") else {
                 continue;
@@ -286,18 +298,18 @@ impl<'a> TestContext {
             match kind {
                 "gas" => {
                     let count = parse_prefix_num(rest.as_bytes()).unwrap();
-                    total_gas += count;
+                    interpreter_gas += count;
                 }
                 "charge_gas" => {
                     let count = parse_prefix_num(rest.as_bytes()).unwrap();
-                    gas_charged += count;
+                    instrumentation_gas += count;
                 }
                 "reserve_stack" => {
                     if let Some((l, r)) = rest.split_once(" ") {
                         let _ops_size = parse_prefix_num(l.as_bytes()).unwrap();
                         let frame_size = parse_prefix_num(r.as_bytes()).unwrap();
                         // The reference interpreter charges 1 gas for each local and argument.
-                        gas_charged += frame_size;
+                        instrumentation_gas += frame_size;
                     } else {
                         continue;
                     }
@@ -308,10 +320,7 @@ impl<'a> TestContext {
             }
         }
 
-        if total_gas != gas_charged {
-            return Err(Error::GasMismatch(total_gas, gas_charged));
-        }
-        Ok(())
+        Ok((interpreter_gas, instrumentation_gas))
     }
 
     fn run_analysis(&mut self) -> Result<String, Error> {
@@ -418,8 +427,33 @@ impl<'a> TestContext {
         self.instrument(&code, results).map_err(Error::Instrument)
     }
 
+    fn self_test_interpreter(&mut self) -> Result<(), Error> {
+        // Validate that the gas and stack intrinsics are considered by the interpreter to be free
+        // and charge the expected amount of gas.
+        let module = r#"(module
+          (type $gas_ty (func (param i64)))
+          (type $stack_ty (func (param i64 i64)))
+          (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (type $gas_ty)))
+          (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (type $stack_ty)))
+          (func $main (export "main")
+            (call $finite_wasm_stack (i64.const 1) (i64.const 10))
+            (call $finite_wasm_gas (i64.const 100))
+          )
+        )
+        (assert_return (invoke "main"))"#;
+        let output = self.exec_interpreter(module.into())?;
+        let (interpreter_gas, instrumentation_gas) = self.process_interpreter_output(&output)?;
+        if interpreter_gas != 0 || instrumentation_gas != 110 {
+            return Err(Error::GasMismatch(interpreter_gas, instrumentation_gas));
+        }
+        Ok(())
+    }
+
     fn exec_interpreter(&mut self, code: String) -> Result<String, Error> {
-        let test_path = self.tmp_base.join(&self.test_name);
+        let mut test_path = self.tmp_base.join(&self.test_name);
+        if test_path.extension().is_none() {
+            test_path.set_extension("wast");
+        }
         let _ = std::fs::create_dir_all(&test_path.parent().unwrap());
         std::fs::write(&test_path, code).map_err(|e| Error::WriteTempTest(e, test_path.clone()))?;
 
