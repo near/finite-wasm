@@ -4,6 +4,15 @@ use wasmparser as wp;
 use we::Section;
 
 const PLACEHOLDER_FOR_NAMES: u8 = !0;
+/// These function indices are known to be constant, as they are added at the beginning of the
+/// imports section.
+///
+/// Doing so makes it much easier to transform references to other functions (basically add 2 to
+/// all function indices)
+const GAS_INSTRUMENTATION_FN: u32 = 0;
+
+/// See [`GAS_INSTRUMENTATION_FN`].
+const STACK_INSTRUMENTATION_FN: u32 = 1;
 
 #[derive(thiserror::Error, Debug)]
 pub(crate) enum Error {}
@@ -164,7 +173,7 @@ impl<'a> crate::test::TestContext {
                     new_function.instruction(&we::Instruction::I64Const(
                         results.function_frame_sizes[code_idx] as i64,
                     ));
-                    new_function.instruction(&we::Instruction::Call(1));
+                    new_function.instruction(&we::Instruction::Call(STACK_INSTRUMENTATION_FN));
                     let gas_offsets = &results.gas_offsets[code_idx];
                     let gas_costs = &results.gas_costs[code_idx];
                     let gas_kinds = &results.gas_kinds[code_idx];
@@ -183,7 +192,8 @@ impl<'a> crate::test::TestContext {
                             let ((_, g), k) = instrumentation_points.next().unwrap();
                             if !matches!(k, InstrumentationKind::Unreachable) && *g != 0 {
                                 new_function.instruction(&we::Instruction::I64Const(*g as i64));
-                                new_function.instruction(&we::Instruction::Call(0));
+                                new_function
+                                    .instruction(&we::Instruction::Call(GAS_INSTRUMENTATION_FN));
                             }
                         }
                         match op {

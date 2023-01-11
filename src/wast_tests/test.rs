@@ -233,11 +233,12 @@ impl<'a> TestContext {
     }
 
     pub(crate) fn run(&mut self) {
-        // There are some intereting properties of the interpreter that we want to verify, but
-        // those properties are hard/infeasible to validate our wast test runner infrastructure.
+        // There are some interesting properties of the interpreter that we want to verify, but
+        // those properties are hard/infeasible to validate with our wast test runner
+        // infrastructure.
         //
-        // Instead we implement an escape hatch here that allows us to run arbitrary rust code
-        // within the test context.
+        // Instead we implement an escape hatch via the test name and allow the test suite to run
+        // arbitrary rust code within the test context.
         if "!internal-self-test-interpreter" == self.test_name {
             if let Err(mut e) = self.self_test_interpreter() {
                 self.fail_test_error(&mut e);
