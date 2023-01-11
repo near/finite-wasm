@@ -3,9 +3,36 @@
     <strong>Cheating a little to solve the halting problem at scale</strong>
 </div>
 
-Guarantee deterministic limits on time and space resources made available to the programs in a
-runtime-agnostic way. This project achieves this by instrumenting the WebAssembly module(s) in a
-well specified and sound way.
+Guarantee deterministic limits on execution time and space resources made available to the
+WebAssembly programs in a runtime-agnostic way.
+
+# Contents
+
+This projects provides a couple things:
+
+* Ammendments to the WebAssembly core module specification describing the changes to the execution
+  model such that the resource use is kept track of and limits are enforced;
+* Analyses that inspect a given WebAssembly module and produce the information necessary to enforce
+  the limits based on the amended execution model;
+* A test suite validating the implementation of analyses against a modified reference WebAssembly
+  interpreter.
+
+The results of the provided analyses can be utilized quite flexibly: to instrument the WASM code;
+to augment the machine code generated during compilation of the WASM code; to enforce the
+resource limits at the interpreter runtime; or some other way, thus achieving the portability
+properties of this project.
+
+# Using `finite-wasm`
+
+The test suite implements a rudimentary WebAssembly module transformation pass. The intent is for
+it to be just enough to validate the properties of the analyses against the reference interpreter,
+but it can definitely be taken as a base and adapted into a full production-grade transformation.
+This is probably the best way to start with.
+
+However this approach may prove to be less than satisfactory performance wise. Transforming a WASM
+module will require parsing it, modifying it and then serializing it again. While parsing the WASM
+module at least twice may be be unavoidable, the analyses are constructed such that modification
+and re-serialization of the modules is not required.
 
 # License
 

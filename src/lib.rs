@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.mkd")]
+
 use gas::InstrumentationKind;
 use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
@@ -106,7 +108,9 @@ impl Module {
                         match import.ty {
                             wasmparser::TypeRef::Func(f) => {
                                 functions.push(f);
-                                current_fn_id = current_fn_id.checked_add(1).ok_or(Error::TooManyFunctions)?;
+                                current_fn_id = current_fn_id
+                                    .checked_add(1)
+                                    .ok_or(Error::TooManyFunctions)?;
                             }
                             wasmparser::TypeRef::Global(g) => {
                                 globals.push(g.content_type);
@@ -151,8 +155,8 @@ impl Module {
                     kinds.clear();
                     costs.clear();
 
-                    let function_id_usize =
-                        usize::try_from(current_fn_id).expect("failed converting from u32 to usize");
+                    let function_id_usize = usize::try_from(current_fn_id)
+                        .expect("failed converting from u32 to usize");
                     let type_id = *functions
                         .get(function_id_usize)
                         .ok_or(Error::FunctionIndex(current_fn_id))?;
@@ -262,7 +266,9 @@ impl Module {
                         gas_kinds.push(kinds.drain(..).collect());
                         gas_costs.push(costs.drain(..).collect());
                     }
-                    current_fn_id = current_fn_id.checked_add(1).ok_or(Error::TooManyFunctions)?;
+                    current_fn_id = current_fn_id
+                        .checked_add(1)
+                        .ok_or(Error::TooManyFunctions)?;
                 }
                 _ => (),
             }
