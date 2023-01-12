@@ -160,15 +160,21 @@ pub(crate) struct GasVisitor<'a, CostModel> {
 
 impl<'a, CostModel> GasVisitor<'a, CostModel> {
     /// Charge some gas before the currently analyzed instruction.
-    fn charge_before(&mut self, kind: InstrumentationKind, cost: u64) {
-        let next_offset_cost = self.next_offset_cost.take();
-        let cost = cost + next_offset_cost.map(|v| v.0).unwrap_or(0);
-        self.offsets.push(self.offset);
-        self.kinds.push(if self.current_frame.stack_polymorphic {
+    fn charge_before(&mut self, mut kind: InstrumentationKind, mut cost: u64) {
+        if let Some((scheduled_cost, scheduled_kind)) = self.next_offset_cost.take() {
+            cost += scheduled_cost;
+            kind = match (scheduled_kind, kind) {
+                (InstrumentationKind::Pure, other) => other,
+                _ => unimplemented!("`charge_after` with {scheduled_kind:?} is not implemented"),
+            }
+        }
+        let kind = if self.current_frame.stack_polymorphic {
             InstrumentationKind::Unreachable
         } else {
             kind
-        });
+        };
+        self.offsets.push(self.offset);
+        self.kinds.push(kind);
         self.costs.push(cost);
     }
 
@@ -393,7 +399,10 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     // the frame created by the matching insn.
     fn visit_end(&mut self) -> Self::Output {
         let cost = self.model.visit_end();
-        assert!(cost == 0, "the `end` instruction costs aren’t handled right, set it to 0");
+        assert!(
+            cost == 0,
+            "the `end` instruction costs aren’t handled right, set it to 0"
+        );
         let kind = match self.current_frame.kind {
             BranchTargetKind::Forward => InstrumentationKind::PreControlFlow,
             BranchTargetKind::Backward(_) => InstrumentationKind::Pure,
@@ -403,6 +412,8 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         // TODO: this needs to note if this is a `if..end` or `if..else..end` branch. In the case
         // of the former, the code consuming analysis results needs to know to generate the `else`
         // branch and propagate the gas cost in both branches.
+        //
+        // Fixing this would allow us to remove the `assert!` here and in the `visit_else`.
         //
         // Note that we cannot `charge_after` here because `end` is not "executed" when a branch
         // within the frame is executed.
@@ -423,7 +434,10 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     // Branch Target (unconditionally)
     fn visit_else(&mut self) -> Self::Output {
         let cost = self.model.visit_else();
-        assert!(cost == 0, "the `else` instruction costs aren’t handled right, set it to 0");
+        assert!(
+            cost == 0,
+            "the `else` instruction costs aren’t handled right, set it to 0"
+        );
         // `else` is already a taken branch target from `if` (if the condition is false).
         self.end_frame();
         // `else` is both a branch and a branch target, depending on how it was reached.
@@ -589,35 +603,44 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> crate::visitors::VisitOpera
 }
 
 /// Optimize the instruction tables.
+///
+/// This reduces the number of entries in the supplied vectors while preserving the equivalence of
+/// observable program behaviours.
 pub(crate) fn optimize(
     offsets: &mut Vec<usize>,
     costs: &mut Vec<u64>,
     kinds: &mut Vec<InstrumentationKind>,
 ) {
-    let mut previous_kind = kinds
+    let mut kind_before_instruction = kinds
         .first()
         .copied()
         .unwrap_or(InstrumentationKind::PreControlFlow);
     let mut output_idx = 0;
     for input_idx in 1..kinds.len() {
-        let kind = kinds[input_idx];
-        let merge_to_previous = match (kind, previous_kind) {
+        let kind_after_instruction = kinds[input_idx];
+        let merge_across_instruction = match (kind_before_instruction, kind_after_instruction) {
+            // The changes to the remaining gas pool are not observable across a pure instruction.
             (InstrumentationKind::Pure, InstrumentationKind::Pure) => true,
+            // The unreachable code is never executed.
             (InstrumentationKind::Unreachable, InstrumentationKind::Unreachable) => true,
-            (InstrumentationKind::PreControlFlow, InstrumentationKind::Pure) => true,
-            (InstrumentationKind::Pure, InstrumentationKind::PostControlFlow) => true,
+            // The next instruction is about to be a control-flow instruction. We can still merge
+            // across the current instruction, which is pure.
+            (InstrumentationKind::Pure, InstrumentationKind::PreControlFlow) => true,
+            // The previous instruction was a control-flow instruction. The current instruction is
+            // pure, though.
+            (InstrumentationKind::PostControlFlow, InstrumentationKind::Pure) => true,
             _ => false,
         };
-        previous_kind = kind;
-        if merge_to_previous {
-            kinds[output_idx] = kind;
+        if merge_across_instruction {
+            kinds[output_idx] = kind_after_instruction;
             costs[output_idx] += costs[input_idx];
         } else {
             output_idx += 1;
-            kinds[output_idx] = kind;
+            kinds[output_idx] = kind_after_instruction;
             costs[output_idx] = costs[input_idx];
             offsets[output_idx] = offsets[input_idx];
         }
+        kind_before_instruction = kind_after_instruction;
     }
     kinds.truncate(output_idx + 1);
     costs.truncate(output_idx + 1);
