@@ -1,5 +1,4 @@
 (module
-  (start $main)
   (type (;0;) (func))
   (type (;1;) (func (result i32)))
   (type (;2;) (func (param i64)))
@@ -50,6 +49,7 @@
   (memory (;0;) 1 1)
   (export "inc" (func $inc))
   (export "get" (func $get))
+  (start $main)
   (data (;0;) (i32.const 0) "A")
 )
 (assert_return (invoke "get") (i32.const 68))
@@ -59,7 +59,6 @@
 (assert_return (invoke "get") (i32.const 70))
 
 (module
-  (start $main)
   (type (;0;) (func))
   (type (;1;) (func (result i32)))
   (type (;2;) (func (param i64)))
@@ -110,6 +109,7 @@
   (memory (;0;) 1 1)
   (export "inc" (func $inc))
   (export "get" (func $get))
+  (start $main)
   (data (;0;) (i32.const 0) "A")
 )
 (assert_return (invoke "get") (i32.const 68))
@@ -119,7 +119,6 @@
 (assert_return (invoke "get") (i32.const 70))
 
 (module
-  (start $main)
   (type (;0;) (func (param i32)))
   (type (;1;) (func))
   (type (;2;) (func (param i64)))
@@ -136,9 +135,9 @@
     i32.const 1
     call $print_i32
   )
+  (start $main)
 )
 (module
-  (start $main)
   (type (;0;) (func (param i32)))
   (type (;1;) (func))
   (type (;2;) (func (param i64)))
@@ -155,19 +154,19 @@
     i32.const 2
     call $print_i32
   )
+  (start $main)
 )
 (module
-  (start $print)
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "print" (func $print (;2;) (type 0)))
+  (start $print)
 )
 
 (assert_trap (module
-  (start $main)
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
@@ -181,4 +180,5 @@
     call $finite_wasm_gas
     unreachable
   )
+  (start $main)
 ) "unreachable")

@@ -223,25 +223,16 @@ impl Module {
                     });
                     let mut nop_gas_visitor = visitors::NoOpVisitor(Ok(()));
                     let mut nop_stack_visitor = visitors::NoOpVisitor(Ok(None));
-
-                    let mut combined_visitor = match (&mut gas_visitor, &mut stack_visitor) {
-                        (Some(ref mut g), Some(ref mut s)) => visitors::JoinVisitor(
-                            g as &mut dyn VisitOperatorWithOffset<Output = Result<(), gas::Error>>,
-                            s as &mut dyn VisitOperatorWithOffset<
-                                Output = Result<Option<u64>, max_stack::Error>,
-                            >,
-                        ),
-                        (None, None) => visitors::JoinVisitor(
-                            &mut nop_gas_visitor as &mut _,
-                            &mut nop_stack_visitor as &mut _,
-                        ),
-                        (None, Some(ref mut s)) => {
-                            visitors::JoinVisitor(&mut nop_gas_visitor as &mut _, s as &mut _)
-                        }
-                        (Some(ref mut g), None) => {
-                            visitors::JoinVisitor(g as &mut _, &mut nop_stack_visitor as &mut _)
-                        }
-                    };
+                    let mut combined_visitor = visitors::JoinVisitor(
+                        match &mut gas_visitor {
+                            Some(g) => g as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>,
+                            None => &mut nop_gas_visitor as &mut _,
+                        },
+                        match &mut stack_visitor {
+                            Some(s) => s as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>,
+                            None => &mut nop_stack_visitor as &mut _,
+                        },
+                    );
                     let mut operators = function
                         .get_operators_reader()
                         .map_err(Error::OperatorReader)?;

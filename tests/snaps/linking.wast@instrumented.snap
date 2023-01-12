@@ -645,7 +645,6 @@
 
 
 (assert_trap (module
-  (start $main)
   (type (;0;) (func (result i32)))
   (type (;1;) (func))
   (type (;2;) (func (param i64)))
@@ -670,6 +669,7 @@
     call $finite_wasm_gas
     unreachable
   )
+  (start $main)
   (elem (;0;) (i32.const 0) func $f)
   (data (;0;) (i32.const 0) "hello")
 ) "unreachable")
