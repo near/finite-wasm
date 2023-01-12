@@ -298,22 +298,21 @@ impl<'a> TestContext {
 
             match kind {
                 "gas" => {
-                    let count = parse_prefix_num(rest.as_bytes()).unwrap();
+                    let count = parse_prefix_num(rest.as_bytes()).expect("TODO");
                     interpreter_gas += count;
                 }
                 "charge_gas" => {
-                    let count = parse_prefix_num(rest.as_bytes()).unwrap();
+                    let count = parse_prefix_num(rest.as_bytes()).expect("TODO");
                     instrumentation_gas += count;
                 }
                 "reserve_stack" => {
-                    if let Some((l, r)) = rest.split_once(" ") {
-                        let _ops_size = parse_prefix_num(l.as_bytes()).unwrap();
-                        let frame_size = parse_prefix_num(r.as_bytes()).unwrap();
-                        // The reference interpreter charges 1 gas for each local and argument.
-                        instrumentation_gas += frame_size;
-                    } else {
+                    let Some((l, r)) = rest.split_once(" ") else {
                         continue;
-                    }
+                    };
+                    let _ops_size = parse_prefix_num(l.as_bytes()).expect("TODO");
+                    let frame_size = parse_prefix_num(r.as_bytes()).expect("TODO");
+                    // The reference interpreter charges 1 gas for each local and argument.
+                    instrumentation_gas += frame_size;
                 }
                 _ => {
                     continue;
@@ -431,20 +430,27 @@ impl<'a> TestContext {
     fn self_test_interpreter(&mut self) -> Result<(), Error> {
         // Validate that the gas and stack intrinsics are considered by the interpreter to be free
         // and charge the expected amount of gas.
-        let module = r#"(module
-          (type $gas_ty (func (param i64)))
-          (type $stack_ty (func (param i64 i64)))
-          (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (type $gas_ty)))
-          (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (type $stack_ty)))
-          (func $main (export "main")
-            (call $finite_wasm_stack (i64.const 1) (i64.const 10))
-            (call $finite_wasm_gas (i64.const 100))
-          )
-        )
-        (assert_return (invoke "main"))"#;
+        let charge_for_stack = 10;
+        let charge_for_gas = 100;
+        let module = format!(
+            r#"
+            (module
+              (type $gas_ty (func (param i64)))
+              (type $stack_ty (func (param i64 i64)))
+              (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (type $gas_ty)))
+              (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (type $stack_ty)))
+              (func $main (export "main")
+                (call $finite_wasm_stack (i64.const 1) (i64.const {charge_for_stack}))
+                (call $finite_wasm_gas (i64.const {charge_for_gas}))
+              )
+            )
+            (assert_return (invoke "main"))
+            "#
+        );
         let output = self.exec_interpreter(module.into())?;
         let (interpreter_gas, instrumentation_gas) = self.process_interpreter_output(&output)?;
-        if interpreter_gas != 0 || instrumentation_gas != 110 {
+        let expected_instrumentation_gas = charge_for_stack + charge_for_gas;
+        if interpreter_gas != 0 || instrumentation_gas != expected_instrumentation_gas {
             return Err(Error::GasMismatch(interpreter_gas, instrumentation_gas));
         }
         Ok(())
@@ -499,13 +505,14 @@ impl<'a> TestContext {
             .read_to_string(&mut snap_contents)
             .map_err(|e| Error::ReadSnap(e, snap_path.clone()))?;
         if !should_update {
-            if let Some(error) = DiffError::diff(&snap_contents, &directive_output) {
-                self.output.extend_from_slice(
-                    "note: run with SNAP_UPDATE environment variable to update\n".as_bytes(),
-                );
-                Err(Error::DiffSnap(error.with_path(snap_path)))
-            } else {
-                Ok(())
+            match DiffError::diff(&snap_contents, &directive_output) {
+                None => Ok(()),
+                Some(error) => {
+                    self.output.extend_from_slice(
+                        "note: run with SNAP_UPDATE environment variable to update\n".as_bytes(),
+                    );
+                    Err(Error::DiffSnap(error.with_path(snap_path)))
+                }
             }
         } else {
             snap_file

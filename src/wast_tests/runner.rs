@@ -67,7 +67,7 @@ fn run() -> Result<(), Error> {
     }
 
     println!("running {} tests", tests.len());
-    let failures = std::sync::atomic::AtomicU16::new(0);
+    let failures = std::sync::atomic::AtomicUsize::new(0);
     tests.par_iter_mut().try_for_each(|test| {
         let test_path = test
             .path
@@ -87,7 +87,7 @@ fn run() -> Result<(), Error> {
         );
         context.run();
         if context.failed() {
-            failures.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+            failures.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
         }
         std::io::stderr()
             .lock()
@@ -96,7 +96,7 @@ fn run() -> Result<(), Error> {
         Ok::<_, Error>(())
     })?;
 
-    if failures.load(std::sync::atomic::Ordering::SeqCst) != 0 {
+    if failures.load(std::sync::atomic::Ordering::Relaxed) != 0 {
         Err(Error::TestsFailed)
     } else {
         Ok(())
