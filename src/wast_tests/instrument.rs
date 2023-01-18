@@ -1,4 +1,4 @@
-use finite_wasm::{gas::InstrumentationKind, Module};
+use finite_wasm::{gas::InstrumentationKind, AnalysisOutcome};
 use wasm_encoder as we;
 use wasmparser as wp;
 use we::Section;
@@ -51,7 +51,7 @@ pub(crate) enum Error {
 }
 
 impl<'a> crate::test::TestContext {
-    pub(crate) fn instrument(&self, wasm: &[u8], analysis: Module) -> Result<Vec<u8>, Error> {
+    pub(crate) fn instrument(&self, wasm: &[u8], analysis: AnalysisOutcome) -> Result<Vec<u8>, Error> {
         let mut output = wasm_encoder::Module::new();
         let mut new_type_section = we::TypeSection::new();
         let mut new_import_section = we::ImportSection::new();
@@ -177,7 +177,7 @@ impl<'a> crate::test::TestContext {
         &self,
         reader: wp::FunctionBody,
         new_code_section: &mut we::CodeSection,
-        analysis: &Module,
+        analysis: &AnalysisOutcome,
         wasm: &[u8],
     ) -> Result<(), Error> {
         let locals = reader

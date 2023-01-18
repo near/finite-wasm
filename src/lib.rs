@@ -1,19 +1,19 @@
 #![doc = include_str!("../README.mkd")]
 
 use gas::InstrumentationKind;
+/// A re-export of the prefix_sum_vec crate. Use in implementing [`max_stack::SizeConfig`].
+pub use prefix_sum_vec;
 use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
 use visitors::VisitOperatorWithOffset;
-use wasmparser::{BinaryReaderError, BlockType, VisitOperator};
+/// A re-export of the wasmparser crate. Use in implementing [`max_stack::SizeConfig`] and [`gas::CostModel`].
+pub use wasmparser;
+use wasmparser::{BinaryReaderError, BlockType};
 
 pub mod gas;
 mod instruction_categories;
 pub mod max_stack;
 mod visitors;
-
-// Re-export crates that appear in the public interface of this crate.
-pub use wasmparser;
-pub use prefix_sum_vec;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -54,33 +54,49 @@ pub enum Error {
     Gas(#[source] gas::Error),
 }
 
-/// The results of parsing and analyzing the module.
+/// The entry-point type to set-up your finite-wasm analysis.
 ///
-/// This analysis collects information necessary to implement all of the transformations in one go,
-/// so that re-parsing the module multiple times is not necessary.
-pub struct Module {
-    /// The sizes of the stack frame for each function in the module, *excluding* imports.
-    ///
-    /// This includes the things like the function label and the locals that are 0-initialized.
-    pub function_frame_sizes: Vec<u64>,
-    /// The maximum size of the operand stack for each function in the module, *excluding* imports.
-    ///
-    /// Throughout the execution the sum of sizes of the operands on the function’s operand stack
-    /// will differ, but will never exceed the number here.
-    pub function_operand_stack_sizes: Vec<u64>,
-
-    /// The table of offsets for gas instrumentation points, *excluding* imports.
-    pub gas_offsets: Vec<Box<[usize]>>,
-    pub gas_costs: Vec<Box<[u64]>>,
-    pub gas_kinds: Vec<Box<[InstrumentationKind]>>,
+/// This type allows running any number of analyses implemented by this crate. By default, none of
+/// the analyses are run. Each can be enabled individually with methods such as
+/// [`Self::with_stack`] or [`Self::with_gas`].
+///
+/// # Examples
+///
+/// See the [crate root](crate) for an example.
+pub struct Analysis<StackConfig, GasCostModel> {
+    max_stack_cfg: StackConfig,
+    gas_cfg: GasCostModel,
 }
 
-impl Module {
-    pub fn new(
-        module: &[u8],
-        max_stack_cfg: Option<&impl max_stack::Config>,
-        mut gas_cfg: Option<impl for<'a> VisitOperator<'a, Output = u64>>,
-    ) -> Result<Self, Error> {
+impl Analysis<max_stack::NoSizeConfig, gas::NoCostModel> {
+    pub fn new() -> Self {
+        Self {
+            max_stack_cfg: max_stack::NoSizeConfig,
+            gas_cfg: gas::NoCostModel,
+        }
+    }
+}
+
+impl<SC, GC> Analysis<SC, GC> {
+    pub fn with_stack<NewSC>(self, max_stack_cfg: NewSC) -> Analysis<NewSC, GC> {
+        let Self { gas_cfg, .. } = self;
+        Analysis {
+            max_stack_cfg,
+            gas_cfg,
+        }
+    }
+
+    pub fn with_gas<NewGC>(self, gas_cfg: NewGC) -> Analysis<SC, NewGC> {
+        let Self { max_stack_cfg, .. } = self;
+        Analysis {
+            max_stack_cfg,
+            gas_cfg,
+        }
+    }
+}
+
+impl<SC: max_stack::SizeConfig, GC: for<'a> gas::CostModel<'a>> Analysis<SC, GC> {
+    pub fn analyze(&mut self, module: &[u8]) -> Result<AnalysisOutcome, Error> {
         let mut types = vec![];
         let mut functions = vec![];
         let mut function_frame_sizes = vec![];
@@ -182,28 +198,40 @@ impl Module {
                             .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
                     }
 
-                    let mut gas_visitor = gas_cfg.as_mut().map(|config| gas::GasVisitor {
-                        offset: 0,
-                        model: config,
-                        offsets: &mut offsets,
-                        costs: &mut costs,
-                        kinds: &mut kinds,
-                        frame_stack: &mut gas_frame_stack,
-                        next_offset_cost: None,
-                        current_frame: gas::Frame {
-                            stack_polymorphic: false,
-                            kind: gas::BranchTargetKind::UntakenForward,
-                        },
-                    });
+                    let mut gas_visitor;
+                    let mut nop_gas_visitor = visitors::NoOpVisitor(Ok(()));
+                    let gas_visitor = if let Some(model) = self.gas_cfg.to_visitor() {
+                        gas_visitor = gas::GasVisitor {
+                            offset: 0,
+                            model,
+                            offsets: &mut offsets,
+                            costs: &mut costs,
+                            kinds: &mut kinds,
+                            frame_stack: &mut gas_frame_stack,
+                            next_offset_cost: None,
+                            current_frame: gas::Frame {
+                                stack_polymorphic: false,
+                                kind: gas::BranchTargetKind::UntakenForward,
+                            },
+                        };
+                        &mut gas_visitor as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>
+                    } else {
+                        &mut nop_gas_visitor
+                    };
 
-                    let mut stack_visitor = max_stack_cfg.map(|config| {
+                    let mut stack_visitor;
+                    let mut nop_stack_visitor = visitors::NoOpVisitor(Ok(None));
+                    let stack_visitor = if !self.max_stack_cfg.should_run(Default::default()) {
+                        &mut nop_stack_visitor
+                    } else {
                         // This includes accounting for any possible return pointer tracking,
                         // parameters and locals (which all are considered locals in wasm).
-                        function_frame_sizes.push(config.size_of_function_activation(&locals));
-                        max_stack::StackSizeVisitor {
+                        function_frame_sizes
+                            .push(self.max_stack_cfg.size_of_function_activation(&locals));
+                        stack_visitor = max_stack::StackSizeVisitor {
                             offset: 0,
 
-                            config,
+                            config: &self.max_stack_cfg,
                             functions: &functions,
                             types: &types,
                             globals: &globals,
@@ -221,20 +249,12 @@ impl Module {
                                 block_type: BlockType::Empty,
                                 stack_polymorphic: false,
                             },
-                        }
-                    });
-                    let mut nop_gas_visitor = visitors::NoOpVisitor(Ok(()));
-                    let mut nop_stack_visitor = visitors::NoOpVisitor(Ok(None));
-                    let mut combined_visitor = visitors::JoinVisitor(
-                        match &mut gas_visitor {
-                            Some(g) => g as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>,
-                            None => &mut nop_gas_visitor as &mut _,
-                        },
-                        match &mut stack_visitor {
-                            Some(s) => s as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>,
-                            None => &mut nop_stack_visitor as &mut _,
-                        },
-                    );
+                        };
+                        &mut stack_visitor
+                            as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>
+                    };
+
+                    let mut combined_visitor = visitors::JoinVisitor(gas_visitor, stack_visitor);
                     let mut operators = function
                         .get_operators_reader()
                         .map_err(Error::OperatorReader)?;
@@ -266,7 +286,7 @@ impl Module {
                 _ => (),
             }
         }
-        Ok(Self {
+        Ok(AnalysisOutcome {
             function_frame_sizes,
             function_operand_stack_sizes,
             gas_costs,
@@ -274,4 +294,25 @@ impl Module {
             gas_offsets,
         })
     }
+}
+
+/// The results of parsing and analyzing the module.
+///
+/// This analysis collects information necessary to implement all of the transformations in one go,
+/// so that re-parsing the module multiple times is not necessary.
+pub struct AnalysisOutcome {
+    /// The sizes of the stack frame for each function in the module, *excluding* imports.
+    ///
+    /// This includes the things like the function label and the locals that are 0-initialized.
+    pub function_frame_sizes: Vec<u64>,
+    /// The maximum size of the operand stack for each function in the module, *excluding* imports.
+    ///
+    /// Throughout the execution the sum of sizes of the operands on the function’s operand stack
+    /// will differ, but will never exceed the number here.
+    pub function_operand_stack_sizes: Vec<u64>,
+
+    /// The table of offsets for gas instrumentation points, *excluding* imports.
+    pub gas_offsets: Vec<Box<[usize]>>,
+    pub gas_costs: Vec<Box<[u64]>>,
+    pub gas_kinds: Vec<Box<[InstrumentationKind]>>,
 }

@@ -33,17 +33,12 @@
 //! accurate gas count is desired.
 
 use crate::instruction_categories as gen;
+pub use cost_model::{CostModel, NoCostModel};
+pub use error::Error;
 use wasmparser::{BlockType, BrTable, VisitOperator};
 
-#[derive(thiserror::Error, Debug, Clone)]
-pub enum Error {
-    #[error("branch depth is too large at offset {0}")]
-    BranchDepthTooLarge(usize),
-    #[error("could not parse the brtable targets")]
-    ParseBrTable(#[source] wasmparser::BinaryReaderError),
-    #[error("the branch target is invalid at offset {0}")]
-    InvalidBrTarget(usize),
-}
+mod cost_model;
+mod error;
 
 /// The type of a particular instrumentation point (as denoted by its offset.)
 #[derive(Clone, Copy, Debug)]

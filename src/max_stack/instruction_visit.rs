@@ -1,4 +1,4 @@
-use super::{Config, Error, Frame, StackSizeVisitor};
+use super::{SizeConfig, Error, Frame, StackSizeVisitor};
 use crate::instruction_categories as gen;
 use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator};
 
@@ -121,7 +121,7 @@ macro_rules! instruction_category {
     };
 }
 
-impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
+impl<'a, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
     type Output = Result<Option<u64>, Error>;
 
     gen::r#const!(instruction_category);
@@ -496,7 +496,7 @@ impl<'a, 'cfg, Cfg: Config> VisitOperator<'a> for StackSizeVisitor<'cfg, Cfg> {
     }
 }
 
-impl<'a, 'cfg, Cfg: Config> crate::visitors::VisitOperatorWithOffset<'a>
+impl<'a, 'cfg, Cfg: SizeConfig> crate::visitors::VisitOperatorWithOffset<'a>
     for StackSizeVisitor<'cfg, Cfg>
 {
     fn set_offset(&mut self, offset: usize) {

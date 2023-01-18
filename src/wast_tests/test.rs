@@ -1,4 +1,4 @@
-use finite_wasm::{max_stack, Module};
+use finite_wasm::{max_stack, Analysis};
 use std::error;
 use std::ffi::OsString;
 use std::io::{Read, Seek, SeekFrom, Write};
@@ -420,7 +420,10 @@ impl<'a> TestContext {
 
     fn instrument_module(&mut self, id: &str, code: &[u8]) -> Result<Vec<u8>, Error> {
         let results = std::panic::catch_unwind(|| {
-            Module::new(&code, Some(&DefaultStackConfig), Some(DefaultGasConfig))
+            Analysis::new()
+                .with_stack(DefaultStackConfig)
+                .with_gas(DefaultGasConfig)
+                .analyze(code)
         })
         .map_err(|_| Error::AnalyseModulePanic(id.into(), self.test_path.clone()))?
         .map_err(|e| Error::AnalyseModule(e, id.into(), self.test_path.clone()))?;
@@ -533,7 +536,7 @@ impl<'a> TestContext {
 }
 
 struct DefaultStackConfig;
-impl max_stack::Config for DefaultStackConfig {
+impl max_stack::SizeConfig for DefaultStackConfig {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
         use wasmparser::ValType::*;
         match ty {

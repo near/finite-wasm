@@ -11,10 +11,46 @@ mod instruction_visit;
 #[cfg(test)]
 mod test;
 
+pub(crate) mod internal {
+    #[derive(Default)]
+    pub struct NotOverridable;
+}
+
 /// Configure size of various values that may end up on the stack.
-pub trait Config {
+pub trait SizeConfig {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u8;
     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
+
+    #[doc(hidden)]
+    fn should_run(&self, _: internal::NotOverridable) -> bool {
+        true
+    }
+}
+
+impl<'a, C: SizeConfig> SizeConfig for &'a C {
+    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
+        C::size_of_value(*self, ty)
+    }
+
+    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
+        C::size_of_function_activation(*self, locals)
+    }
+}
+
+/// Stack sizes are not configured, meaning the maximum stack analysis will not run at all.
+pub struct NoSizeConfig;
+impl SizeConfig for NoSizeConfig {
+    fn size_of_value(&self, _: wasmparser::ValType) -> u8 {
+        loop {}
+    }
+
+    fn size_of_function_activation(&self, _: &PrefixSumVec<ValType, u32>) -> u64 {
+        loop {}
+    }
+
+    fn should_run(&self, _: internal::NotOverridable) -> bool {
+        false
+    }
 }
 
 #[derive(Debug)]
@@ -97,7 +133,7 @@ pub(crate) struct StackSizeVisitor<'a, Cfg> {
 
 type Output<'a, V> = <V as VisitOperator<'a>>::Output;
 
-impl<'a, Cfg: Config> StackSizeVisitor<'a, Cfg> {
+impl<'a, Cfg: SizeConfig> StackSizeVisitor<'a, Cfg> {
     fn function_type_index(&self, function_index: u32) -> Result<u32, Error> {
         let function_index_usize = usize::try_from(function_index)
             .map_err(|e| Error::FunctionIndexRange(function_index, e))?;

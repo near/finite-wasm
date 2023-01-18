@@ -7,7 +7,7 @@ struct TestConfig {
     local_size: u8,
 }
 
-impl super::Config for TestConfig {
+impl super::SizeConfig for TestConfig {
     fn size_of_value(&self, _: wasmparser::ValType) -> u8 {
         self.value_size
     }

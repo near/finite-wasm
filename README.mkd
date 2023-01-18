@@ -34,6 +34,57 @@ module will require parsing it, modifying it and then serializing it again. Whil
 module at least twice may be be unavoidable, the analyses are constructed such that modification
 and re-serialization of the modules is not required.
 
+## Examples
+
+```rust
+use finite_wasm::{wasmparser as wp, prefix_sum_vec};
+
+struct MySizeConfig;
+impl finite_wasm::max_stack::SizeConfig for MySizeConfig {
+    fn size_of_value(&self, ty: wp::ValType) -> u8 {
+        use wp::ValType::*;
+        match ty {
+            I32 => 4,
+            I64 => 8,
+            F32 => 4,
+            F64 => 8,
+            V128 => 16,
+            FuncRef => 32,
+            ExternRef => 32,
+        }
+    }
+
+    fn size_of_function_activation(
+        &self,
+        locals: &prefix_sum_vec::PrefixSumVec<wp::ValType, u32>,
+    ) -> u64 {
+        u64::from(locals.max_index().map(|&v| v + 1).unwrap_or(0))
+    }
+}
+
+macro_rules! define_fee {
+    ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+        $(
+            fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { 1 }
+        )*
+    }
+}
+
+struct MyGasCostModel;
+impl<'a> wp::VisitOperator<'a> for MyGasCostModel {
+    type Output = u64;
+    wp::for_each_operator!(define_fee);
+}
+
+fn analyze_module(wasm_code: &[u8]) -> finite_wasm::AnalysisOutcome {
+    finite_wasm::Analysis::new()
+        .with_stack(MySizeConfig)
+        .with_gas(MyGasCostModel)
+        .analyze(wasm_code)
+        .expect("something went wrong!")
+}
+```
+
 # License
 
 This project is licensed under the MIT or Apache-2.0 license.
