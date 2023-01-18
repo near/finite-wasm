@@ -1,8 +1,6 @@
-//! Instrumentation-based implementation of the finite-wasm specification.
+//! Analysis of the maximum amount of stack used by a function.
 //!
-//! The functionality provided by this module will transform a provided WebAssembly module in a way
-//! that measures gas fees and stack depth without any special support by the runtime executing the
-//! code in question.
+//! This is a single pass linear-time algorithm.
 
 pub use self::error::Error;
 use prefix_sum_vec::PrefixSumVec;
@@ -13,6 +11,7 @@ mod instruction_visit;
 #[cfg(test)]
 mod test;
 
+/// Configure size of various values that may end up on the stack.
 pub trait Config {
     fn size_of_value(&self, ty: wasmparser::ValType) -> u8;
     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;

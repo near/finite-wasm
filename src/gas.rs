@@ -1,24 +1,26 @@
-//! # Gas analysis
+//! Analysis of the amount of time (gas) a function takes to execute.
 //!
-//! The gas analysis is a two-pass linear algorithm. This algorithm first constructs a table along
-//! the lines of
+//! The gas analysis is a two-pass linear-time algorithm. This algorithm first constructs a table
+//! along the lines of
 //!
-//! | Instructions | Cost | [Kind] |
-//! | ============ | ==== | ====== |
-//! | i32.const 0  | 1    | Pure   |
-//! | i32.const 1  | 1    | Pure   |
-//! | i32.add      | 1    | Pure   |
-//!
-//! [Kind]: InstrumentationKind
+//! <pre>
+//! | Instructions | Cost | Kind |
+//! | ============ | ==== | ==== |
+//! | i32.const 0  | 1    | Pure |
+//! | i32.const 1  | 1    | Pure |
+//! | i32.add      | 1    | Pure |
+//! </pre>
 //!
 //! In this table the instructions with certain instrumentation kind combinations can then be
 //! coalesced in order to reduce the number of gas instrumentation points. For example all
 //! instrumentation can be merged together across all instructions considered `Pure` to produce a
 //! table like this:
 //!
-//! | Instructions                           | Cost | [Kind] |
-//! | ====================================== | ==== | ====== |
-//! | (i32.add (i32.const 0) (i32.const 1))  | 3    | Pure   |
+//! <pre>
+//! | Instructions                           | Cost | Kind |
+//! | ====================================== | ==== | ==== |
+//! | (i32.add (i32.const 0) (i32.const 1))  | 3    | Pure |
+//! </pre>
 //!
 //! Instrumentation can then, instead of inserting a gas charge before each of the 3 instructions,
 //! insert a charge of 3 gas before the entire sequence, all without any observable difference in
@@ -43,6 +45,7 @@ pub enum Error {
     InvalidBrTarget(usize),
 }
 
+/// The type of a particular instrumentation point (as denoted by its offset.)
 #[derive(Clone, Copy, Debug)]
 pub enum InstrumentationKind {
     /// This instrumentation point precedes an instruction that is largely uninteresting for the
