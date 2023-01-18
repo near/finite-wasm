@@ -11,7 +11,9 @@ mod instruction_categories;
 pub mod max_stack;
 mod visitors;
 
+// Re-export crates that appear in the public interface of this crate.
 pub use wasmparser;
+pub use prefix_sum_vec;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
