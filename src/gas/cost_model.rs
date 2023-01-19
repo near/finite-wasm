@@ -12,7 +12,7 @@ pub trait CostModel<'a> {
 macro_rules! define_unreachable_visit {
     ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
         $(
-            fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { loop {} }
+            fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { std::process::abort() }
         )*
     }
 }

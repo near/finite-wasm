@@ -41,11 +41,11 @@ impl<'a, C: SizeConfig> SizeConfig for &'a C {
 pub struct NoSizeConfig;
 impl SizeConfig for NoSizeConfig {
     fn size_of_value(&self, _: wasmparser::ValType) -> u8 {
-        loop {}
+        std::process::abort()
     }
 
     fn size_of_function_activation(&self, _: &PrefixSumVec<ValType, u32>) -> u64 {
-        loop {}
+        std::process::abort()
     }
 
     fn should_run(&self, _: internal::NotOverridable) -> bool {
