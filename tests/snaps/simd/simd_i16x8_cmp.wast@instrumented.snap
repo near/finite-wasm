@@ -5,104 +5,164 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.eq
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.eq
   )
   (func (;3;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.ne
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.ne
   )
   (func (;4;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.lt_s
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.lt_s
   )
   (func (;5;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.lt_u
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.lt_u
   )
   (func (;6;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.le_s
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.le_s
   )
   (func (;7;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.le_u
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.le_u
   )
   (func (;8;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.gt_s
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.gt_s
   )
   (func (;9;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.gt_u
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.gt_u
   )
   (func (;10;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.ge_s
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.ge_s
   )
   (func (;11;) (type 0) (param $x v128) (param $y v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      i16x8.ge_u
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    i16x8.ge_u
   )
   (export "eq" (func 2))
   (export "ne" (func 3))
@@ -1554,483 +1614,561 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
-    i64.const 32
-    i64.const 0
-    call 1
-    i64.const 5
-    call 0
     block ;; label = @1
-      block (result v128) ;; label = @2
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
         block (result v128) ;; label = @3
-          i32.const 0
-          v128.load
-          i64.const 3
-          call 0
+          block (result v128) ;; label = @4
+            i32.const 0
+            v128.load
+            i64.const 3
+            call 0
+          end
+          block (result v128) ;; label = @4
+            i32.const 1
+            v128.load
+            i64.const 2
+            call 0
+          end
+          i16x8.eq
         end
-        block (result v128) ;; label = @3
-          i32.const 1
-          v128.load
-          i64.const 2
-          call 0
-        end
-        i16x8.eq
+        drop
       end
-      drop
     end
+    i64.const -32
+    i64.const 0
+    nop
+    call 1
   )
   (func (;3;) (type 0)
-    i64.const 32
-    i64.const 0
-    call 1
-    i64.const 5
-    call 0
     block ;; label = @1
-      block (result v128) ;; label = @2
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
         block (result v128) ;; label = @3
-          i32.const 0
-          v128.load
-          i64.const 3
-          call 0
+          block (result v128) ;; label = @4
+            i32.const 0
+            v128.load
+            i64.const 3
+            call 0
+          end
+          block (result v128) ;; label = @4
+            i32.const 1
+            v128.load
+            i64.const 2
+            call 0
+          end
+          i16x8.ne
         end
-        block (result v128) ;; label = @3
-          i32.const 1
-          v128.load
-          i64.const 2
-          call 0
-        end
-        i16x8.ne
+        drop
       end
-      drop
     end
+    i64.const -32
+    i64.const 0
+    nop
+    call 1
   )
   (func (;4;) (type 0)
-    i64.const 32
-    i64.const 0
-    call 1
-    i64.const 5
-    call 0
     block ;; label = @1
-      block (result v128) ;; label = @2
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
         block (result v128) ;; label = @3
-          i32.const 0
-          v128.load
-          i64.const 3
-          call 0
+          block (result v128) ;; label = @4
+            i32.const 0
+            v128.load
+            i64.const 3
+            call 0
+          end
+          block (result v128) ;; label = @4
+            i32.const 1
+            v128.load
+            i64.const 2
+            call 0
+          end
+          i16x8.lt_s
         end
-        block (result v128) ;; label = @3
-          i32.const 1
-          v128.load
-          i64.const 2
-          call 0
-        end
-        i16x8.lt_s
+        drop
       end
-      drop
     end
+    i64.const -32
+    i64.const 0
+    nop
+    call 1
   )
   (func (;5;) (type 0)
-    i64.const 32
-    i64.const 0
-    call 1
-    i64.const 5
-    call 0
     block ;; label = @1
-      block (result v128) ;; label = @2
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
         block (result v128) ;; label = @3
-          i32.const 0
-          v128.load
-          i64.const 3
-          call 0
+          block (result v128) ;; label = @4
+            i32.const 0
+            v128.load
+            i64.const 3
+            call 0
+          end
+          block (result v128) ;; label = @4
+            i32.const 1
+            v128.load
+            i64.const 2
+            call 0
+          end
+          i16x8.le_u
         end
-        block (result v128) ;; label = @3
-          i32.const 1
-          v128.load
-          i64.const 2
-          call 0
-        end
-        i16x8.le_u
+        drop
       end
-      drop
     end
+    i64.const -32
+    i64.const 0
+    nop
+    call 1
   )
   (func (;6;) (type 0)
-    i64.const 32
-    i64.const 0
-    call 1
-    i64.const 5
-    call 0
     block ;; label = @1
-      block (result v128) ;; label = @2
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
         block (result v128) ;; label = @3
-          i32.const 0
-          v128.load
-          i64.const 3
-          call 0
+          block (result v128) ;; label = @4
+            i32.const 0
+            v128.load
+            i64.const 3
+            call 0
+          end
+          block (result v128) ;; label = @4
+            i32.const 1
+            v128.load
+            i64.const 2
+            call 0
+          end
+          i16x8.gt_u
         end
-        block (result v128) ;; label = @3
-          i32.const 1
-          v128.load
-          i64.const 2
-          call 0
-        end
-        i16x8.gt_u
+        drop
       end
-      drop
     end
+    i64.const -32
+    i64.const 0
+    nop
+    call 1
   )
   (func (;7;) (type 0)
-    i64.const 32
-    i64.const 0
-    call 1
-    i64.const 5
-    call 0
     block ;; label = @1
-      block (result v128) ;; label = @2
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
         block (result v128) ;; label = @3
-          i32.const 0
-          v128.load
-          i64.const 3
-          call 0
+          block (result v128) ;; label = @4
+            i32.const 0
+            v128.load
+            i64.const 3
+            call 0
+          end
+          block (result v128) ;; label = @4
+            i32.const 1
+            v128.load
+            i64.const 2
+            call 0
+          end
+          i16x8.ge_s
         end
-        block (result v128) ;; label = @3
-          i32.const 1
-          v128.load
-          i64.const 2
-          call 0
-        end
-        i16x8.ge_s
+        drop
       end
-      drop
     end
+    i64.const -32
+    i64.const 0
+    nop
+    call 1
   )
   (func (;8;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.eq
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.eq
+      i16x8.eq
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.eq
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.eq
+      i16x8.eq
+      i16x8.eq
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.eq
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.eq
-    i16x8.eq
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.eq
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.eq
-    i16x8.eq
-    i16x8.eq
-    drop
   )
   (func (;9;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.ne
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.ne
+      i16x8.ne
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.ne
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.ne
+      i16x8.ne
+      i16x8.ne
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.ne
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.ne
-    i16x8.ne
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.ne
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.ne
-    i16x8.ne
-    i16x8.ne
-    drop
   )
   (func (;10;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.lt_s
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.lt_s
+      i16x8.lt_s
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.lt_s
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.lt_s
+      i16x8.lt_s
+      i16x8.lt_s
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.lt_s
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.lt_s
-    i16x8.lt_s
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.lt_s
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.lt_s
-    i16x8.lt_s
-    i16x8.lt_s
-    drop
   )
   (func (;11;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.le_u
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.le_u
+      i16x8.le_u
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.le_u
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.le_u
+      i16x8.le_u
+      i16x8.le_u
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.le_u
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.le_u
-    i16x8.le_u
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.le_u
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.le_u
-    i16x8.le_u
-    i16x8.le_u
-    drop
   )
   (func (;12;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.gt_u
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.gt_u
+      i16x8.gt_u
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.gt_u
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.gt_u
+      i16x8.gt_u
+      i16x8.gt_u
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.gt_u
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.gt_u
-    i16x8.gt_u
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.gt_u
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.gt_u
-    i16x8.gt_u
-    i16x8.gt_u
-    drop
   )
   (func (;13;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.ge_s
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.ge_s
+      i16x8.ge_s
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.ge_s
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.ge_s
+      i16x8.ge_s
+      i16x8.ge_s
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.ge_s
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.ge_s
-    i16x8.ge_s
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.ge_s
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.ge_s
-    i16x8.ge_s
-    i16x8.ge_s
-    drop
   )
   (func (;14;) (type 0)
-    i64.const 64
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.lt_s
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.le_u
+      i16x8.eq
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i16x8.gt_s
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i16x8.lt_u
+      i16x8.ne
+      i16x8.ge_u
+      drop
+    end
+    i64.const -64
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.lt_s
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.le_u
-    i16x8.eq
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load
-    i64.const 3
-    call 0
-    i16x8.gt_s
-    i32.const 2
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 3
-    v128.load
-    i64.const 4
-    call 0
-    i16x8.lt_u
-    i16x8.ne
-    i16x8.ge_u
-    drop
   )
   (memory (;0;) 1)
   (export "eq-in-block" (func 2))

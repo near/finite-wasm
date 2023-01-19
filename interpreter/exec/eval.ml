@@ -157,7 +157,7 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
       (* Compensate for setup and invocation of these intrinsics, as they're free *)
       (* This is validated with the `!internal-self-test-interpreter` test *)
       | Func.GasIntrinsic -> -2L
-      | Func.StackIntrinsic -> -3L
+      | Func.StackIntrinsic -> -4L
     )
     (* The end instruction, pretty much *)
     | Label (_, _, (_, [])) -> 0L
@@ -707,7 +707,11 @@ let rec step (c : config) : config =
 
       | Func.StackIntrinsic ->
         (match args with
-          | [Num (I64 a1); Num (I64 a2)] -> Printf.printf "reserve_stack: %Lu %Lu\n" a2 a1
+          | [Num (I64 a1); Num (I64 a2)] ->
+                if (Int64.compare (Int64.logor a1 a2) 0L) >= 0 then
+                    (Printf.printf "reserve_stack: %Lu %Lu\n" a2 a1)
+                else
+                    (Printf.printf "return_stack: %Lu %Lu\n" (Int64.neg a2) (Int64.neg a1))
           | _ -> Crash.error e.at "wrong types of arguments");
         vs', []
 

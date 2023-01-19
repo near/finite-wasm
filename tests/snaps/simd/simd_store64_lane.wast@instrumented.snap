@@ -7,291 +7,363 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane 0
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      local.get $address
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane 0
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    local.get $address
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;3;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane 1
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      local.get $address
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane 1
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    local.get $address
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;4;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 2
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      i32.const 0
+      local.get $x
+      v128.store64_lane 0
+      i64.const 2
+      call 0
+      i32.const 0
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    i32.const 0
-    local.get $x
-    v128.store64_lane 0
-    i64.const 2
-    call 0
-    i32.const 0
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;5;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 2
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      i32.const 0
+      local.get $x
+      v128.store64_lane offset=1 1
+      i64.const 2
+      call 0
+      i32.const 0
+      i64.load offset=1
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store offset=1
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    i32.const 0
-    local.get $x
-    v128.store64_lane offset=1 1
-    i64.const 2
-    call 0
-    i32.const 0
-    i64.load offset=1
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store offset=1
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;6;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane align=1 0
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane align=1 0
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;7;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane align=2 0
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane align=2 0
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;8;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane align=4 0
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane align=4 0
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;9;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane 0
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane 0
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;10;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane align=1 1
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store offset=1
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane align=1 1
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store offset=1
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;11;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane align=2 1
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store offset=1
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane align=2 1
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store offset=1
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;12;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane align=4 1
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store offset=1
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane align=4 1
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store offset=1
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (func (;13;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
-    i64.const 20
-    i64.const 3
+    block (result i64) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $address
+      local.get $x
+      v128.store64_lane 1
+      i64.const 2
+      call 0
+      local.get $address
+      i64.load
+      i64.const 4
+      call 0
+      local.set $ret
+      i32.const 0
+      global.get $zero
+      v128.store offset=1
+      i64.const 1
+      call 0
+      local.get $ret
+    end
+    i64.const -20
+    i64.const -3
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $address
-    local.get $x
-    v128.store64_lane 1
-    i64.const 2
-    call 0
-    local.get $address
-    i64.load
-    i64.const 4
-    call 0
-    local.set $ret
-    i32.const 0
-    global.get $zero
-    v128.store offset=1
-    i64.const 1
-    call 0
-    local.get $ret
   )
   (memory (;0;) 1)
   (global $zero (;0;) (mut v128) v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000)

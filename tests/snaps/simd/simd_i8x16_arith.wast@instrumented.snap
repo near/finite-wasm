@@ -6,33 +6,51 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128 v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      local.get 1
+      i8x16.add
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    local.get 1
-    i8x16.add
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      local.get 1
+      i8x16.sub
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    local.get 1
-    i8x16.sub
   )
   (func (;4;) (type 1) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i8x16.neg
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i8x16.neg
   )
   (export "i8x16.add" (func 2))
   (export "i8x16.sub" (func 3))
@@ -388,50 +406,74 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 32
-    i64.const 3
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get 0
+      local.get 1
+      i8x16.sub
+      local.get 2
+      i8x16.add
+    end
+    i64.const -32
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get 0
-    local.get 1
-    i8x16.sub
-    local.get 2
-    i8x16.add
   )
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
-    i64.const 32
-    i64.const 3
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get 0
+      local.get 1
+      i8x16.add
+      local.get 2
+      i8x16.sub
+    end
+    i64.const -32
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get 0
-    local.get 1
-    i8x16.add
-    local.get 2
-    i8x16.sub
   )
   (func (;4;) (type 1) (param v128 v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get 0
+      i8x16.neg
+      local.get 1
+      i8x16.add
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get 0
-    i8x16.neg
-    local.get 1
-    i8x16.add
   )
   (func (;5;) (type 1) (param v128 v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get 0
+      i8x16.neg
+      local.get 1
+      i8x16.sub
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get 0
-    i8x16.neg
-    local.get 1
-    i8x16.sub
   )
   (export "add-sub" (func 2))
   (export "sub-add" (func 3))

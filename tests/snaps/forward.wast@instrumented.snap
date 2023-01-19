@@ -5,48 +5,60 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (func $even (;2;) (type 0) (param $n i32) (result i32)
-    i64.const 8
-    i64.const 1
-    call $finite_wasm_stack
-    i64.const 4
-    call $finite_wasm_gas
-    local.get $n
-    i32.const 0
-    i32.eq
-    if (result i32) ;; label = @1
+    block (result i32) ;; label = @1
+      i64.const 8
       i64.const 1
-      call $finite_wasm_gas
-      i32.const 1
-    else
+      call $finite_wasm_stack
       i64.const 4
       call $finite_wasm_gas
       local.get $n
-      i32.const 1
-      i32.sub
-      call $odd
+      i32.const 0
+      i32.eq
+      if (result i32) ;; label = @2
+        i64.const 1
+        call $finite_wasm_gas
+        i32.const 1
+      else
+        i64.const 4
+        call $finite_wasm_gas
+        local.get $n
+        i32.const 1
+        i32.sub
+        call $odd
+      end
     end
+    i64.const -8
+    i64.const -1
+    nop
+    call $finite_wasm_stack
   )
   (func $odd (;3;) (type 0) (param $n i32) (result i32)
-    i64.const 8
-    i64.const 1
-    call $finite_wasm_stack
-    i64.const 4
-    call $finite_wasm_gas
-    local.get $n
-    i32.const 0
-    i32.eq
-    if (result i32) ;; label = @1
+    block (result i32) ;; label = @1
+      i64.const 8
       i64.const 1
-      call $finite_wasm_gas
-      i32.const 0
-    else
+      call $finite_wasm_stack
       i64.const 4
       call $finite_wasm_gas
       local.get $n
-      i32.const 1
-      i32.sub
-      call $even
+      i32.const 0
+      i32.eq
+      if (result i32) ;; label = @2
+        i64.const 1
+        call $finite_wasm_gas
+        i32.const 0
+      else
+        i64.const 4
+        call $finite_wasm_gas
+        local.get $n
+        i32.const 1
+        i32.sub
+        call $even
+      end
     end
+    i64.const -8
+    i64.const -1
+    nop
+    call $finite_wasm_stack
   )
   (export "even" (func $even))
   (export "odd" (func $odd))

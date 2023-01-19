@@ -76,8 +76,14 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
     (local f32 f32)
+    block ;; label = @1
+      i64.const 0
+      i64.const 2
+      call 1
+    end
     i64.const 0
-    i64.const 2
+    i64.const -2
+    nop
     call 1
   )
 )
@@ -89,11 +95,7 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-  )
+  (func (;2;) (type 0))
   (table (;0;) 0 funcref)
   (memory (;0;) 0)
   (elem (;0;) funcref (ref.func 2))
@@ -104,11 +106,7 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-  )
+  (func (;2;) (type 0))
   (table (;0;) 0 funcref)
   (memory (;0;) 0)
   (elem (;0;) funcref (ref.null func))
@@ -130,16 +128,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-  )
-  (func (;3;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-  )
+  (func (;2;) (type 0))
+  (func (;3;) (type 0))
 )
 (module
   (type (;0;) (func))
@@ -147,11 +137,7 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-  )
+  (func (;2;) (type 0))
   (table (;0;) 1 funcref)
 )
 (module
@@ -164,20 +150,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
-    i64.const 4
-    i64.const 0
-    call 1
-    i64.const 3
-    call 0
     block ;; label = @1
-      i32.const 1
-      if ;; label = @2
-        i64.const 2
-        call 0
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block ;; label = @2
         i32.const 1
-        br_table 2 (;@0;)
+        if ;; label = @3
+          i64.const 2
+          call 0
+          i32.const 1
+          br_table 2 (;@1;)
+        end
       end
     end
+    i64.const -4
+    i64.const 0
+    nop
+    call 1
   )
 )
 (module
@@ -186,10 +178,6 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
-    i64.const 0
-    i64.const 0
-    call 1
-  )
+  (func (;2;) (type 0))
   (start 2)
 )

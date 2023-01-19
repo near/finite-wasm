@@ -8,259 +8,307 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (func (;2;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
-    i64.const 16
-    i64.const 3
-    call $finite_wasm_stack
-    i64.const 5
-    call $finite_wasm_gas
-    local.get $n
-    local.set $i
-    i64.const 1
-    local.set $res
-    block $done ;; label = @1
-      loop $loop ;; label = @2
-        i64.const 5
-        call $finite_wasm_gas
-        local.get $i
-        i64.const 0
-        i64.eq
-        if ;; label = @3
-          i64.const 1
-          call $finite_wasm_gas
-          br 2 (;@1;)
-        else
-          i64.const 8
+    block $done (result i64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call $finite_wasm_stack
+      i64.const 5
+      call $finite_wasm_gas
+      local.get $n
+      local.set $i
+      i64.const 1
+      local.set $res
+      block $loop ;; label = @2
+        loop ;; label = @3
+          i64.const 5
           call $finite_wasm_gas
           local.get $i
-          local.get $res
-          i64.mul
-          local.set $res
-          local.get $i
+          i64.const 0
+          i64.eq
+          if ;; label = @4
+            i64.const 1
+            call $finite_wasm_gas
+            br 2 (;@2;)
+          else
+            i64.const 8
+            call $finite_wasm_gas
+            local.get $i
+            local.get $res
+            i64.mul
+            local.set $res
+            local.get $i
+            i64.const 1
+            i64.sub
+            local.set $i
+          end
           i64.const 1
-          i64.sub
-          local.set $i
+          call $finite_wasm_gas
+          br 0 (;@3;)
         end
-        i64.const 1
-        call $finite_wasm_gas
-        br 0 (;@2;)
       end
+      i64.const 1
+      call $finite_wasm_gas
+      local.get $res
     end
-    i64.const 1
-    call $finite_wasm_gas
-    local.get $res
+    i64.const -16
+    i64.const -3
+    nop
+    call $finite_wasm_stack
   )
   (func (;3;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
-    i64.const 16
-    i64.const 3
-    call $finite_wasm_stack
-    i64.const 5
-    call $finite_wasm_gas
-    local.get $n
-    local.set $i
-    i64.const 1
-    local.set $res
-    block $done ;; label = @1
-      loop $loop ;; label = @2
-        i64.const 5
-        call $finite_wasm_gas
-        local.get $i
-        i64.const 0
-        i64.eq
-        if ;; label = @3
-          i64.const 1
-          call $finite_wasm_gas
-          br 2 (;@1;)
-        else
-          i64.const 8
+    block $done (result i64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call $finite_wasm_stack
+      i64.const 5
+      call $finite_wasm_gas
+      local.get $n
+      local.set $i
+      i64.const 1
+      local.set $res
+      block $loop ;; label = @2
+        loop ;; label = @3
+          i64.const 5
           call $finite_wasm_gas
           local.get $i
-          local.get $res
-          i64.mul
-          local.set $res
-          local.get $i
+          i64.const 0
+          i64.eq
+          if ;; label = @4
+            i64.const 1
+            call $finite_wasm_gas
+            br 2 (;@2;)
+          else
+            i64.const 8
+            call $finite_wasm_gas
+            local.get $i
+            local.get $res
+            i64.mul
+            local.set $res
+            local.get $i
+            i64.const 1
+            i64.sub
+            local.set $i
+          end
           i64.const 1
-          i64.sub
-          local.set $i
+          call $finite_wasm_gas
+          br 0 (;@3;)
         end
-        i64.const 1
-        call $finite_wasm_gas
-        br 0 (;@2;)
       end
+      i64.const 1
+      call $finite_wasm_gas
+      local.get $res
     end
-    i64.const 1
-    call $finite_wasm_gas
-    local.get $res
+    i64.const -16
+    i64.const -3
+    nop
+    call $finite_wasm_stack
   )
   (func (;4;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
-    i64.const 16
-    i64.const 3
-    call $finite_wasm_stack
-    i64.const 5
-    call $finite_wasm_gas
-    local.get $n
-    local.set $i
-    i64.const 1
-    local.set $res
-    block $done ;; label = @1
-      loop $loop ;; label = @2
-        i64.const 5
-        call $finite_wasm_gas
-        local.get $i
-        i64.const 0
-        i64.eq
-        if $body ;; label = @3
-          i64.const 1
-          call $finite_wasm_gas
-          br 2 (;@1;)
-        else
-          i64.const 8
+    block $done (result i64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call $finite_wasm_stack
+      i64.const 5
+      call $finite_wasm_gas
+      local.get $n
+      local.set $i
+      i64.const 1
+      local.set $res
+      block $loop ;; label = @2
+        loop $body ;; label = @3
+          i64.const 5
           call $finite_wasm_gas
           local.get $i
-          local.get $res
-          i64.mul
-          local.set $res
-          local.get $i
+          i64.const 0
+          i64.eq
+          if ;; label = @4
+            i64.const 1
+            call $finite_wasm_gas
+            br 2 (;@2;)
+          else
+            i64.const 8
+            call $finite_wasm_gas
+            local.get $i
+            local.get $res
+            i64.mul
+            local.set $res
+            local.get $i
+            i64.const 1
+            i64.sub
+            local.set $i
+          end
           i64.const 1
-          i64.sub
-          local.set $i
+          call $finite_wasm_gas
+          br 0 (;@3;)
         end
-        i64.const 1
-        call $finite_wasm_gas
-        br 0 (;@2;)
       end
+      i64.const 1
+      call $finite_wasm_gas
+      local.get $res
     end
-    i64.const 1
-    call $finite_wasm_gas
-    local.get $res
+    i64.const -16
+    i64.const -3
+    nop
+    call $finite_wasm_stack
   )
   (func (;5;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
-    i64.const 16
-    i64.const 3
-    call $finite_wasm_stack
-    i64.const 5
-    call $finite_wasm_gas
-    local.get $n
-    local.set $i
-    i64.const 1
-    local.set $res
-    block $done ;; label = @1
-      loop $loop ;; label = @2
-        i64.const 5
-        call $finite_wasm_gas
-        local.get $i
-        i64.const 0
-        i64.eq
-        if ;; label = @3
-          i64.const 1
-          call $finite_wasm_gas
-          br 2 (;@1;)
-        else
-          i64.const 8
+    block $done (result i64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call $finite_wasm_stack
+      i64.const 5
+      call $finite_wasm_gas
+      local.get $n
+      local.set $i
+      i64.const 1
+      local.set $res
+      block $loop ;; label = @2
+        loop ;; label = @3
+          i64.const 5
           call $finite_wasm_gas
           local.get $i
-          local.get $res
-          i64.mul
-          local.set $res
-          local.get $i
+          i64.const 0
+          i64.eq
+          if ;; label = @4
+            i64.const 1
+            call $finite_wasm_gas
+            br 2 (;@2;)
+          else
+            i64.const 8
+            call $finite_wasm_gas
+            local.get $i
+            local.get $res
+            i64.mul
+            local.set $res
+            local.get $i
+            i64.const 1
+            i64.sub
+            local.set $i
+          end
           i64.const 1
-          i64.sub
-          local.set $i
+          call $finite_wasm_gas
+          br 0 (;@3;)
         end
-        i64.const 1
-        call $finite_wasm_gas
-        br 0 (;@2;)
       end
+      i64.const 1
+      call $finite_wasm_gas
+      local.get $res
     end
-    i64.const 1
-    call $finite_wasm_gas
-    local.get $res
+    i64.const -16
+    i64.const -3
+    nop
+    call $finite_wasm_stack
   )
   (func (;6;) (type 0) (param $n i64) (result i64)
     (local $i i64) (local $res i64)
-    i64.const 16
-    i64.const 3
-    call $finite_wasm_stack
-    i64.const 5
-    call $finite_wasm_gas
-    local.get $n
-    local.set $i
-    i64.const 1
-    local.set $res
-    block $done ;; label = @1
-      loop $loop ;; label = @2
-        i64.const 5
-        call $finite_wasm_gas
-        local.get $i
-        i64.const 0
-        i64.eq
-        if ;; label = @3
-          i64.const 1
-          call $finite_wasm_gas
-          br 2 (;@1;)
-        else
-          i64.const 8
+    block $done (result i64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call $finite_wasm_stack
+      i64.const 5
+      call $finite_wasm_gas
+      local.get $n
+      local.set $i
+      i64.const 1
+      local.set $res
+      block $loop ;; label = @2
+        loop ;; label = @3
+          i64.const 5
           call $finite_wasm_gas
           local.get $i
-          local.get $res
-          i64.mul
-          local.set $res
-          local.get $i
+          i64.const 0
+          i64.eq
+          if ;; label = @4
+            i64.const 1
+            call $finite_wasm_gas
+            br 2 (;@2;)
+          else
+            i64.const 8
+            call $finite_wasm_gas
+            local.get $i
+            local.get $res
+            i64.mul
+            local.set $res
+            local.get $i
+            i64.const 1
+            i64.sub
+            local.set $i
+          end
           i64.const 1
-          i64.sub
-          local.set $i
+          call $finite_wasm_gas
+          br 0 (;@3;)
         end
-        i64.const 1
-        call $finite_wasm_gas
-        br 0 (;@2;)
       end
+      i64.const 1
+      call $finite_wasm_gas
+      local.get $res
     end
-    i64.const 1
-    call $finite_wasm_gas
-    local.get $res
+    i64.const -16
+    i64.const -3
+    nop
+    call $finite_wasm_stack
   )
   (func $add_one_to_global (;7;) (type 1) (result i32)
     (local i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call $finite_wasm_stack
+      i64.const 5
+      call $finite_wasm_gas
+      i32.const 1
+      global.get $temp
+      i32.add
+      global.set $temp
+      global.get $temp
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call $finite_wasm_stack
-    i64.const 5
-    call $finite_wasm_gas
-    i32.const 1
-    global.get $temp
-    i32.add
-    global.set $temp
-    global.get $temp
   )
   (func $add_one_to_global_and_drop (;8;) (type 2)
-    i64.const 4
+    block ;; label = @1
+      i64.const 4
+      i64.const 0
+      call $finite_wasm_stack
+      i64.const 1
+      call $finite_wasm_gas
+      call $add_one_to_global
+      i64.const 1
+      call $finite_wasm_gas
+      drop
+    end
+    i64.const -4
     i64.const 0
+    nop
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
-    call $add_one_to_global
-    i64.const 1
-    call $finite_wasm_gas
-    drop
   )
   (func (;9;) (type 1) (result i32)
-    i64.const 8
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 0
+      call $finite_wasm_stack
+      i64.const 1
+      call $finite_wasm_gas
+      call $add_one_to_global
+      i64.const 1
+      call $finite_wasm_gas
+      call $add_one_to_global
+      i64.const 1
+      call $finite_wasm_gas
+      call $add_one_to_global_and_drop
+      i64.const 1
+      call $finite_wasm_gas
+      i32.add
+    end
+    i64.const -8
     i64.const 0
+    nop
     call $finite_wasm_stack
-    i64.const 1
-    call $finite_wasm_gas
-    call $add_one_to_global
-    i64.const 1
-    call $finite_wasm_gas
-    call $add_one_to_global
-    i64.const 1
-    call $finite_wasm_gas
-    call $add_one_to_global_and_drop
-    i64.const 1
-    call $finite_wasm_gas
-    i32.add
   )
   (global $temp (;0;) (mut i32) i32.const 0)
   (export "fac-expr" (func 2))
@@ -289,361 +337,367 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type $proc)
-    i64.const 8
+    block ;; label = @1
+      i64.const 8
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 3
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 3
+      call 0
+      block ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 3
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 4
+      call 0
+      block ;; label = @2
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+        i64.const 4
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 3
+        call 0
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 3
+        call 0
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+      else
+        i64.const 3
+        call 0
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+      end
+      i64.const 3
+      call 0
+      block (result i32) ;; label = @2
+        i32.const 0
+        call_indirect (type 2)
+        i64.const 4
+        call 0
+      end
+      drop
+      loop (result i32) ;; label = @2
+        i32.const 0
+        call_indirect (type 2)
+        i64.const 3
+        call 0
+      end
+      drop
+      i32.const 0
+      if (result i32) ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type 2)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type 2)
+      end
+      i64.const 4
+      call 0
+      drop
+      block ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 3
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 3
+      call 0
+      block ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 3
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 3
+      call 0
+      block ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 3
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 4
+      call 0
+      block ;; label = @2
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+        i64.const 4
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 3
+        call 0
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 3
+        call 0
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+      else
+        i64.const 3
+        call 0
+        i32.const 0
+        i32.const 0
+        call_indirect (type 1)
+      end
+      i64.const 3
+      call 0
+      block (result i32) ;; label = @2
+        i32.const 0
+        call_indirect (type 2)
+        i64.const 4
+        call 0
+      end
+      drop
+      loop (result i32) ;; label = @2
+        i32.const 0
+        call_indirect (type 2)
+        i64.const 3
+        call 0
+      end
+      drop
+      i32.const 0
+      if (result i32) ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type 2)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type 2)
+      end
+      i64.const 4
+      call 0
+      drop
+      block ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 3
+        call 0
+      end
+      loop ;; label = @2
+        i32.const 0
+        call_indirect (type $proc)
+        i64.const 2
+        call 0
+      end
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      if ;; label = @2
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      else
+        i64.const 2
+        call 0
+        i32.const 0
+        call_indirect (type $proc)
+      end
+      i64.const 2
+      call 0
+      i32.const 0
+      call_indirect (type $proc)
+    end
+    i64.const -8
     i64.const 0
+    nop
     call 1
-    i64.const 3
-    call 0
-    block ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 3
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 3
-    call 0
-    block ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 3
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 4
-    call 0
-    block ;; label = @1
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-      i64.const 4
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 3
-      call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 3
-      call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-    else
-      i64.const 3
-      call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-    end
-    i64.const 3
-    call 0
-    block (result i32) ;; label = @1
-      i32.const 0
-      call_indirect (type 2)
-      i64.const 4
-      call 0
-    end
-    drop
-    loop (result i32) ;; label = @1
-      i32.const 0
-      call_indirect (type 2)
-      i64.const 3
-      call 0
-    end
-    drop
-    i32.const 0
-    if (result i32) ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type 2)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type 2)
-    end
-    i64.const 4
-    call 0
-    drop
-    block ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 3
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 3
-    call 0
-    block ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 3
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 3
-    call 0
-    block ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 3
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 4
-    call 0
-    block ;; label = @1
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-      i64.const 4
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 3
-      call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 3
-      call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-    else
-      i64.const 3
-      call 0
-      i32.const 0
-      i32.const 0
-      call_indirect (type 1)
-    end
-    i64.const 3
-    call 0
-    block (result i32) ;; label = @1
-      i32.const 0
-      call_indirect (type 2)
-      i64.const 4
-      call 0
-    end
-    drop
-    loop (result i32) ;; label = @1
-      i32.const 0
-      call_indirect (type 2)
-      i64.const 3
-      call 0
-    end
-    drop
-    i32.const 0
-    if (result i32) ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type 2)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type 2)
-    end
-    i64.const 4
-    call 0
-    drop
-    block ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 3
-      call 0
-    end
-    loop ;; label = @1
-      i32.const 0
-      call_indirect (type $proc)
-      i64.const 2
-      call 0
-    end
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    if ;; label = @1
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    else
-      i64.const 2
-      call 0
-      i32.const 0
-      call_indirect (type $proc)
-    end
-    i64.const 2
-    call 0
-    i32.const 0
-    call_indirect (type $proc)
   )
   (table (;0;) 1 funcref)
 )

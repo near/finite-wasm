@@ -5,16 +5,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $z
+      f64.add
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $z
-    f64.add
   )
   (export "f64.no_contraction" (func 2))
 )
@@ -34,28 +40,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $z
+      f32.add
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $z
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $z
+      f64.add
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $z
-    f64.add
   )
   (export "f32.no_fma" (func 2))
   (export "f64.no_fma" (func 3))
@@ -82,24 +100,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.add
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.add
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.add
   )
   (export "f32.no_fold_add_zero" (func 2))
   (export "f64.no_fold_add_zero" (func 3))
@@ -119,24 +149,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f32.const 0x0p+0 (;=0;)
+      local.get $x
+      f32.sub
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f32.const 0x0p+0 (;=0;)
-    local.get $x
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f64.const 0x0p+0 (;=0;)
+      local.get $x
+      f64.sub
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f64.const 0x0p+0 (;=0;)
-    local.get $x
-    f64.sub
   )
   (export "f32.no_fold_zero_sub" (func 2))
   (export "f64.no_fold_zero_sub" (func 3))
@@ -156,24 +198,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.sub
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.sub
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.sub
   )
   (export "f32.no_fold_sub_zero" (func 2))
   (export "f64.no_fold_sub_zero" (func 3))
@@ -191,24 +245,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.mul
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.mul
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.mul
   )
   (export "f32.no_fold_mul_zero" (func 2))
   (export "f64.no_fold_mul_zero" (func 3))
@@ -233,24 +299,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x1p+0 (;=1;)
+      f32.mul
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x1p+0 (;=1;)
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x1p+0 (;=1;)
+      f64.mul
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x1p+0 (;=1;)
-    f64.mul
   )
   (export "f32.no_fold_mul_one" (func 2))
   (export "f64.no_fold_mul_one" (func 3))
@@ -268,24 +346,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f32.const 0x0p+0 (;=0;)
+      local.get $x
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f32.const 0x0p+0 (;=0;)
-    local.get $x
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f64.const 0x0p+0 (;=0;)
+      local.get $x
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f64.const 0x0p+0 (;=0;)
-    local.get $x
-    f64.div
   )
   (export "f32.no_fold_zero_div" (func 2))
   (export "f64.no_fold_zero_div" (func 3))
@@ -309,24 +399,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x1p+0 (;=1;)
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x1p+0 (;=1;)
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x1p+0 (;=1;)
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x1p+0 (;=1;)
-    f64.div
   )
   (export "f32.no_fold_div_one" (func 2))
   (export "f64.no_fold_div_one" (func 3))
@@ -344,24 +446,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const -0x1p+0 (;=-1;)
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const -0x1p+0 (;=-1;)
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const -0x1p+0 (;=-1;)
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const -0x1p+0 (;=-1;)
-    f64.div
   )
   (export "f32.no_fold_div_neg1" (func 2))
   (export "f64.no_fold_div_neg1" (func 3))
@@ -379,24 +493,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f32.const -0x0p+0 (;=-0;)
+      local.get $x
+      f32.sub
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f32.const -0x0p+0 (;=-0;)
-    local.get $x
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f64.const -0x0p+0 (;=-0;)
+      local.get $x
+      f64.sub
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f64.const -0x0p+0 (;=-0;)
-    local.get $x
-    f64.sub
   )
   (export "f32.no_fold_neg0_sub" (func 2))
   (export "f64.no_fold_neg0_sub" (func 3))
@@ -414,24 +540,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f32.const -0x1p+0 (;=-1;)
+      local.get $x
+      f32.mul
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f32.const -0x1p+0 (;=-1;)
-    local.get $x
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f64.const -0x1p+0 (;=-1;)
+      local.get $x
+      f64.mul
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f64.const -0x1p+0 (;=-1;)
-    local.get $x
-    f64.mul
   )
   (export "f32.no_fold_neg1_mul" (func 2))
   (export "f64.no_fold_neg1_mul" (func 3))
@@ -449,24 +587,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f32.eq
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f32.eq
   )
   (func (;3;) (type 1) (param $x f64) (result i32)
-    i64.const 16
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f64.eq
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f64.eq
   )
   (export "f32.no_fold_eq_self" (func 2))
   (export "f64.no_fold_eq_self" (func 3))
@@ -484,24 +634,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f32.ne
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f32.ne
   )
   (func (;3;) (type 1) (param $x f64) (result i32)
-    i64.const 16
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f64.ne
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f64.ne
   )
   (export "f32.no_fold_ne_self" (func 2))
   (export "f64.no_fold_ne_self" (func 3))
@@ -519,24 +681,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f32.sub
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f64.sub
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f64.sub
   )
   (export "f32.no_fold_sub_self" (func 2))
   (export "f64.no_fold_sub_self" (func 3))
@@ -556,24 +730,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $x
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $x
-    f64.div
   )
   (export "f32.no_fold_div_self" (func 2))
   (export "f64.no_fold_div_self" (func 3))
@@ -597,24 +783,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x1.8p+1 (;=3;)
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x1.8p+1 (;=3;)
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x1.8p+1 (;=3;)
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x1.8p+1 (;=3;)
-    f64.div
   )
   (export "f32.no_fold_div_3" (func 2))
   (export "f64.no_fold_div_3" (func 3))
@@ -640,32 +838,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 12
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f32.mul
+      local.get $y
+      local.get $z
+      f32.mul
+      f32.add
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f32.mul
-    local.get $y
-    local.get $z
-    f32.mul
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 24
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f64.mul
+      local.get $y
+      local.get $z
+      f64.mul
+      f64.add
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f64.mul
-    local.get $y
-    local.get $z
-    f64.mul
-    f64.add
   )
   (export "f32.no_factor" (func 2))
   (export "f64.no_factor" (func 3))
@@ -691,28 +901,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.add
+      local.get $z
+      f32.mul
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.add
-    local.get $z
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.add
+      local.get $z
+      f64.mul
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.add
-    local.get $z
-    f64.mul
   )
   (export "f32.no_distribute" (func 2))
   (export "f64.no_distribute" (func 3))
@@ -738,28 +960,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 12
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      local.get $z
+      f32.div
+      f32.mul
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    local.get $z
-    f32.div
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 24
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      local.get $z
+      f64.div
+      f64.mul
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    local.get $z
-    f64.div
-    f64.mul
   )
   (export "f32.no_regroup_div_mul" (func 2))
   (export "f64.no_regroup_div_mul" (func 3))
@@ -785,28 +1019,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $z
+      f32.div
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $z
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $z
+      f64.div
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $z
-    f64.div
   )
   (export "f32.no_regroup_mul_div" (func 2))
   (export "f64.no_regroup_mul_div" (func 3))
@@ -832,32 +1078,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (param $w f32) (result f32)
-    i64.const 8
-    i64.const 4
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.add
+      local.get $z
+      f32.add
+      local.get $w
+      f32.add
+    end
+    i64.const -8
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.add
-    local.get $z
-    f32.add
-    local.get $w
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (param $w f64) (result f64)
-    i64.const 16
-    i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.add
+      local.get $z
+      f64.add
+      local.get $w
+      f64.add
+    end
+    i64.const -16
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.add
-    local.get $z
-    f64.add
-    local.get $w
-    f64.add
   )
   (export "f32.no_reassociate_add" (func 2))
   (export "f64.no_reassociate_add" (func 3))
@@ -883,32 +1141,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (param $w f32) (result f32)
-    i64.const 8
-    i64.const 4
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $z
+      f32.mul
+      local.get $w
+      f32.mul
+    end
+    i64.const -8
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $z
-    f32.mul
-    local.get $w
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (param $w f64) (result f64)
-    i64.const 16
-    i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $z
+      f64.mul
+      local.get $w
+      f64.mul
+    end
+    i64.const -16
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $z
-    f64.mul
-    local.get $w
-    f64.mul
   )
   (export "f32.no_reassociate_mul" (func 2))
   (export "f64.no_reassociate_mul" (func 3))
@@ -934,24 +1204,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.div
   )
   (export "f32.no_fold_div_0" (func 2))
   (export "f64.no_fold_div_0" (func 3))
@@ -983,24 +1265,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.const -0x0p+0 (;=-0;)
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.const -0x0p+0 (;=-0;)
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.const -0x0p+0 (;=-0;)
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.const -0x0p+0 (;=-0;)
-    f64.div
   )
   (export "f32.no_fold_div_neg0" (func 2))
   (export "f64.no_fold_div_neg0" (func 3))
@@ -1032,34 +1326,46 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 12
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      local.get $x
+      f32.mul
+      local.get $y
+      local.get $y
+      f32.mul
+      f32.add
+      f32.sqrt
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    local.get $x
-    f32.mul
-    local.get $y
-    local.get $y
-    f32.mul
-    f32.add
-    f32.sqrt
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 24
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      local.get $x
+      f64.mul
+      local.get $y
+      local.get $y
+      f64.mul
+      f64.add
+      f64.sqrt
+    end
+    i64.const -24
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    local.get $x
-    f64.mul
-    local.get $y
-    local.get $y
-    f64.mul
-    f64.add
-    f64.sqrt
   )
   (export "f32.no_fold_to_hypot" (func 2))
   (export "f64.no_fold_to_hypot" (func 3))
@@ -1084,14 +1390,20 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f32.const 0x1p+0 (;=1;)
+      local.get $x
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    local.get $x
-    f32.div
   )
   (export "f32.no_approximate_reciprocal" (func 2))
 )
@@ -1111,26 +1423,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      f32.const 0x1p+0 (;=1;)
+      local.get $x
+      f32.sqrt
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    local.get $x
-    f32.sqrt
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      f64.const 0x1p+0 (;=1;)
+      local.get $x
+      f64.sqrt
+      f64.div
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    f64.const 0x1p+0 (;=1;)
-    local.get $x
-    f64.sqrt
-    f64.div
   )
   (export "f32.no_approximate_reciprocal_sqrt" (func 2))
   (export "f64.no_fuse_reciprocal_sqrt" (func 3))
@@ -1156,15 +1480,21 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      f32.const 0x1p+0 (;=1;)
+      local.get $x
+      f32.div
+      f32.sqrt
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    local.get $x
-    f32.div
-    f32.sqrt
   )
   (export "f32.no_approximate_sqrt_reciprocal" (func 2))
 )
@@ -1184,44 +1514,68 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param i32) (result i32)
-    i64.const 4
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      f32.convert_i32_s
+      i32.trunc_f32_s
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    f32.convert_i32_s
-    i32.trunc_f32_s
   )
   (func (;3;) (type 0) (param i32) (result i32)
-    i64.const 4
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      f32.convert_i32_u
+      i32.trunc_f32_u
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    f32.convert_i32_u
-    i32.trunc_f32_u
   )
   (func (;4;) (type 1) (param i64) (result i64)
-    i64.const 8
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      f64.convert_i64_s
+      i64.trunc_f64_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    f64.convert_i64_s
-    i64.trunc_f64_s
   )
   (func (;5;) (type 1) (param i64) (result i64)
-    i64.const 8
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      f64.convert_i64_u
+      i64.trunc_f64_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    f64.convert_i64_u
-    i64.trunc_f64_u
   )
   (export "i32.no_fold_f32_s" (func 2))
   (export "i32.no_fold_f32_u" (func 3))
@@ -1254,28 +1608,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.add
+      local.get $y
+      f32.sub
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.add
-    local.get $y
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.add
+      local.get $y
+      f64.sub
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.add
-    local.get $y
-    f64.sub
   )
   (export "f32.no_fold_add_sub" (func 2))
   (export "f64.no_fold_add_sub" (func 3))
@@ -1302,28 +1668,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.sub
+      local.get $y
+      f32.add
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.sub
-    local.get $y
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.sub
+      local.get $y
+      f64.add
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.sub
-    local.get $y
-    f64.add
   )
   (export "f32.no_fold_sub_add" (func 2))
   (export "f64.no_fold_sub_add" (func 3))
@@ -1350,28 +1728,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $y
+      f32.div
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $y
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $y
+      f64.div
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $y
-    f64.div
   )
   (export "f32.no_fold_mul_div" (func 2))
   (export "f64.no_fold_mul_div" (func 3))
@@ -1398,28 +1788,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.div
+      local.get $y
+      f32.mul
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.div
-    local.get $y
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.div
+      local.get $y
+      f64.mul
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.div
-    local.get $y
-    f64.mul
   )
   (export "f32.no_fold_div_mul" (func 2))
   (export "f64.no_fold_div_mul" (func 3))
@@ -1446,28 +1848,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f32.const 0x1p+1 (;=2;)
+      f32.div
+      f32.const 0x1p+1 (;=2;)
+      f32.mul
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f32.const 0x1p+1 (;=2;)
-    f32.div
-    f32.const 0x1p+1 (;=2;)
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f64.const 0x1p+1 (;=2;)
+      f64.div
+      f64.const 0x1p+1 (;=2;)
+      f64.mul
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f64.const 0x1p+1 (;=2;)
-    f64.div
-    f64.const 0x1p+1 (;=2;)
-    f64.mul
   )
   (export "f32.no_fold_div2_mul2" (func 2))
   (export "f64.no_fold_div2_mul2" (func 3))
@@ -1484,14 +1898,20 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f32.demote_f64
+      f64.promote_f32
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f32.demote_f64
-    f64.promote_f32
   )
   (export "no_fold_demote_promote" (func 2))
 )
@@ -1511,14 +1931,20 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      f64.promote_f32
+      f32.demote_f64
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    f64.promote_f32
-    f32.demote_f64
   )
   (export "no_fold_promote_demote" (func 2))
 )
@@ -1546,28 +1972,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f64) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.promote_f32
+      f64.add
+      f32.demote_f64
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.promote_f32
-    f64.add
-    f32.demote_f64
   )
   (func (;3;) (type 1) (param $y f32) (param $x f64) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $y
+      f64.promote_f32
+      local.get $x
+      f64.add
+      f32.demote_f64
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $y
-    f64.promote_f32
-    local.get $x
-    f64.add
-    f32.demote_f64
   )
   (export "no_demote_mixed_add" (func 2))
   (export "no_demote_mixed_add_commuted" (func 3))
@@ -1593,16 +2031,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f64) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.promote_f32
+      f64.sub
+      f32.demote_f64
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.promote_f32
-    f64.sub
-    f32.demote_f64
   )
   (export "no_demote_mixed_sub" (func 2))
 )
@@ -1622,196 +2066,292 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f32_s
+      i64.const 1
+      call 0
+      f32.convert_i32_s
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f32_s
-    i64.const 1
-    call 0
-    f32.convert_i32_s
   )
   (func (;3;) (type 0) (param $x f32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f32_u
+      i64.const 1
+      call 0
+      f32.convert_i32_s
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f32_u
-    i64.const 1
-    call 0
-    f32.convert_i32_s
   )
   (func (;4;) (type 0) (param $x f32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f32_s
+      i64.const 1
+      call 0
+      f32.convert_i32_u
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f32_s
-    i64.const 1
-    call 0
-    f32.convert_i32_u
   )
   (func (;5;) (type 0) (param $x f32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f32_u
+      i64.const 1
+      call 0
+      f32.convert_i32_u
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f32_u
-    i64.const 1
-    call 0
-    f32.convert_i32_u
   )
   (func (;6;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f64_s
+      i64.const 1
+      call 0
+      f64.convert_i32_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f64_s
-    i64.const 1
-    call 0
-    f64.convert_i32_s
   )
   (func (;7;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f64_u
+      i64.const 1
+      call 0
+      f64.convert_i32_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f64_u
-    i64.const 1
-    call 0
-    f64.convert_i32_s
   )
   (func (;8;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f64_s
+      i64.const 1
+      call 0
+      f64.convert_i32_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f64_s
-    i64.const 1
-    call 0
-    f64.convert_i32_u
   )
   (func (;9;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i32.trunc_f64_u
+      i64.const 1
+      call 0
+      f64.convert_i32_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i32.trunc_f64_u
-    i64.const 1
-    call 0
-    f64.convert_i32_u
   )
   (func (;10;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f32_s
+      i64.const 1
+      call 0
+      f32.convert_i64_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f32_s
-    i64.const 1
-    call 0
-    f32.convert_i64_s
   )
   (func (;11;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f32_u
+      i64.const 1
+      call 0
+      f32.convert_i64_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f32_u
-    i64.const 1
-    call 0
-    f32.convert_i64_s
   )
   (func (;12;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f32_s
+      i64.const 1
+      call 0
+      f32.convert_i64_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f32_s
-    i64.const 1
-    call 0
-    f32.convert_i64_u
   )
   (func (;13;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f32_u
+      i64.const 1
+      call 0
+      f32.convert_i64_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f32_u
-    i64.const 1
-    call 0
-    f32.convert_i64_u
   )
   (func (;14;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f64_s
+      i64.const 1
+      call 0
+      f64.convert_i64_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f64_s
-    i64.const 1
-    call 0
-    f64.convert_i64_s
   )
   (func (;15;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f64_u
+      i64.const 1
+      call 0
+      f64.convert_i64_s
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f64_u
-    i64.const 1
-    call 0
-    f64.convert_i64_s
   )
   (func (;16;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f64_s
+      i64.const 1
+      call 0
+      f64.convert_i64_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f64_s
-    i64.const 1
-    call 0
-    f64.convert_i64_u
   )
   (func (;17;) (type 1) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      i64.trunc_f64_u
+      i64.const 1
+      call 0
+      f64.convert_i64_u
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    i64.trunc_f64_u
-    i64.const 1
-    call 0
-    f64.convert_i64_u
   )
   (export "f32.i32.no_fold_trunc_s_convert_s" (func 2))
   (export "f32.i32.no_fold_trunc_u_convert_s" (func 3))
@@ -1875,58 +2415,78 @@
   (type (;1;) (func (param i32) (result f32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
+  (type (;5;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $i i32) (param $x f32)
-    i64.const 8
-    i64.const 2
+    block (type 4) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $i
+      local.get $x
+      f32.store
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $i
-    local.get $x
-    f32.store
   )
   (func (;3;) (type 0) (param $n i32) (param $z f32)
     (local $i i32)
-    i64.const 12
-    i64.const 3
-    call 1
-    i64.const 1
-    call 0
-    block $exit ;; label = @1
-      loop $cont ;; label = @2
-        i64.const 4
-        call 0
-        local.get $i
-        local.get $i
-        f32.load
-        i64.const 3
-        call 0
-        local.get $z
-        f32.div
-        f32.store
-        i64.const 8
-        call 0
-        local.get $i
-        i32.const 4
-        i32.add
-        local.set $i
-        local.get $i
-        local.get $n
-        i32.lt_u
-        br_if 0 (;@2;)
+    block $exit (type 5) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 1
+      call 0
+      block $cont ;; label = @2
+        loop ;; label = @3
+          i64.const 4
+          call 0
+          local.get $i
+          local.get $i
+          f32.load
+          i64.const 3
+          call 0
+          local.get $z
+          f32.div
+          f32.store
+          i64.const 8
+          call 0
+          local.get $i
+          i32.const 4
+          i32.add
+          local.set $i
+          local.get $i
+          local.get $n
+          i32.lt_u
+          br_if 0 (;@3;)
+        end
       end
     end
+    i64.const -12
+    i64.const -3
+    nop
+    call 1
   )
   (func (;4;) (type 1) (param $i i32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
+      f32.load
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $i
-    f32.load
   )
   (memory (;0;) 1 1)
   (export "init" (func 2))
@@ -1952,58 +2512,78 @@
   (type (;1;) (func (param i32) (result f64)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
+  (type (;5;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $i i32) (param $x f64)
-    i64.const 12
-    i64.const 2
+    block (type 4) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $i
+      local.get $x
+      f64.store
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $i
-    local.get $x
-    f64.store
   )
   (func (;3;) (type 0) (param $n i32) (param $z f64)
     (local $i i32)
-    i64.const 20
-    i64.const 3
-    call 1
-    i64.const 1
-    call 0
-    block $exit ;; label = @1
-      loop $cont ;; label = @2
-        i64.const 4
-        call 0
-        local.get $i
-        local.get $i
-        f64.load
-        i64.const 3
-        call 0
-        local.get $z
-        f64.div
-        f64.store
-        i64.const 8
-        call 0
-        local.get $i
-        i32.const 8
-        i32.add
-        local.set $i
-        local.get $i
-        local.get $n
-        i32.lt_u
-        br_if 0 (;@2;)
+    block $exit (type 5) ;; label = @1
+      i64.const 20
+      i64.const 3
+      call 1
+      i64.const 1
+      call 0
+      block $cont ;; label = @2
+        loop ;; label = @3
+          i64.const 4
+          call 0
+          local.get $i
+          local.get $i
+          f64.load
+          i64.const 3
+          call 0
+          local.get $z
+          f64.div
+          f64.store
+          i64.const 8
+          call 0
+          local.get $i
+          i32.const 8
+          i32.add
+          local.set $i
+          local.get $i
+          local.get $n
+          i32.lt_u
+          br_if 0 (;@3;)
+        end
       end
     end
+    i64.const -20
+    i64.const -3
+    nop
+    call 1
   )
   (func (;4;) (type 1) (param $i i32) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
+      f64.load
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $i
-    f64.load
   )
   (memory (;0;) 1 1)
   (export "init" (func 2))
@@ -2034,92 +2614,140 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.ge
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.ge
-    i32.eqz
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.gt
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.gt
-    i32.eqz
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.le
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.le
-    i32.eqz
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.lt
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.lt
-    i32.eqz
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.ge
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.ge
-    i32.eqz
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.gt
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.gt
-    i32.eqz
   )
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.le
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.le
-    i32.eqz
   )
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.lt
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.lt
-    i32.eqz
   )
   (export "f32.ult" (func 2))
   (export "f32.ule" (func 3))
@@ -2173,108 +2801,156 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f32.lt
+      select
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f32.lt
-    select
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f32.le
+      select
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f32.le
-    select
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f32.gt
+      select
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f32.gt
-    select
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f32.ge
+      select
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f32.ge
-    select
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 32
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f64.lt
+      select
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f64.lt
-    select
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 32
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f64.le
+      select
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f64.le
-    select
   )
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 32
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f64.gt
+      select
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f64.gt
-    select
   )
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 32
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      local.get $x
+      local.get $y
+      f64.ge
+      select
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    local.get $x
-    local.get $y
-    f64.ge
-    select
   )
   (export "f32.no_fold_lt_select" (func 2))
   (export "f32.no_fold_le_select" (func 3))
@@ -2328,156 +3004,204 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.lt
-    if (result f32) ;; label = @1
-      i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f32.lt
+      if (result f32) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -8
+    i64.const -2
+    nop
+    call 1
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.le
-    if (result f32) ;; label = @1
-      i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f32.le
+      if (result f32) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -8
+    i64.const -2
+    nop
+    call 1
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.gt
-    if (result f32) ;; label = @1
-      i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f32.gt
+      if (result f32) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -8
+    i64.const -2
+    nop
+    call 1
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.ge
-    if (result f32) ;; label = @1
-      i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f32.ge
+      if (result f32) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -8
+    i64.const -2
+    nop
+    call 1
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.lt
-    if (result f64) ;; label = @1
-      i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f64.lt
+      if (result f64) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -16
+    i64.const -2
+    nop
+    call 1
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.le
-    if (result f64) ;; label = @1
-      i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f64.le
+      if (result f64) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -16
+    i64.const -2
+    nop
+    call 1
   )
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.gt
-    if (result f64) ;; label = @1
-      i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f64.gt
+      if (result f64) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -16
+    i64.const -2
+    nop
+    call 1
   )
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.ge
-    if (result f64) ;; label = @1
-      i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 1
-      call 0
       local.get $y
+      f64.ge
+      if (result f64) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 1
+        call 0
+        local.get $y
+      end
     end
+    i64.const -16
+    i64.const -2
+    nop
+    call 1
   )
   (export "f32.no_fold_lt_if" (func 2))
   (export "f32.no_fold_le_if" (func 3))
@@ -2531,116 +3255,164 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 16
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.neg
+      local.get $x
+      local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.lt
+      select
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.neg
-    local.get $x
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.lt
-    select
   )
   (func (;3;) (type 0) (param $x f32) (result f32)
-    i64.const 16
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.neg
+      local.get $x
+      local.get $x
+      f32.const -0x0p+0 (;=-0;)
+      f32.le
+      select
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.neg
-    local.get $x
-    local.get $x
-    f32.const -0x0p+0 (;=-0;)
-    f32.le
-    select
   )
   (func (;4;) (type 0) (param $x f32) (result f32)
-    i64.const 16
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $x
+      f32.neg
+      local.get $x
+      f32.const -0x0p+0 (;=-0;)
+      f32.gt
+      select
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $x
-    f32.neg
-    local.get $x
-    f32.const -0x0p+0 (;=-0;)
-    f32.gt
-    select
   )
   (func (;5;) (type 0) (param $x f32) (result f32)
-    i64.const 16
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $x
+      f32.neg
+      local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.ge
+      select
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $x
-    f32.neg
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.ge
-    select
   )
   (func (;6;) (type 1) (param $x f64) (result f64)
-    i64.const 32
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.neg
+      local.get $x
+      local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.lt
+      select
+    end
+    i64.const -32
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.neg
-    local.get $x
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.lt
-    select
   )
   (func (;7;) (type 1) (param $x f64) (result f64)
-    i64.const 32
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.neg
+      local.get $x
+      local.get $x
+      f64.const -0x0p+0 (;=-0;)
+      f64.le
+      select
+    end
+    i64.const -32
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.neg
-    local.get $x
-    local.get $x
-    f64.const -0x0p+0 (;=-0;)
-    f64.le
-    select
   )
   (func (;8;) (type 1) (param $x f64) (result f64)
-    i64.const 32
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $x
+      f64.neg
+      local.get $x
+      f64.const -0x0p+0 (;=-0;)
+      f64.gt
+      select
+    end
+    i64.const -32
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $x
-    f64.neg
-    local.get $x
-    f64.const -0x0p+0 (;=-0;)
-    f64.gt
-    select
   )
   (func (;9;) (type 1) (param $x f64) (result f64)
-    i64.const 32
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $x
+      f64.neg
+      local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.ge
+      select
+    end
+    i64.const -32
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $x
-    f64.neg
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.ge
-    select
   )
   (export "f32.no_fold_lt_select_to_abs" (func 2))
   (export "f32.no_fold_le_select_to_abs" (func 3))
@@ -2694,164 +3466,212 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.lt
-    if (result f32) ;; label = @1
-      i64.const 2
-      call 0
-      local.get $x
-      f32.neg
-    else
+    block (result f32) ;; label = @1
+      i64.const 8
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
+      f32.const 0x0p+0 (;=0;)
+      f32.lt
+      if (result f32) ;; label = @2
+        i64.const 2
+        call 0
+        local.get $x
+        f32.neg
+      else
+        i64.const 1
+        call 0
+        local.get $x
+      end
     end
+    i64.const -8
+    i64.const -1
+    nop
+    call 1
   )
   (func (;3;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.const -0x0p+0 (;=-0;)
-    f32.le
-    if (result f32) ;; label = @1
-      i64.const 2
-      call 0
-      local.get $x
-      f32.neg
-    else
+    block (result f32) ;; label = @1
+      i64.const 8
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
+      f32.const -0x0p+0 (;=-0;)
+      f32.le
+      if (result f32) ;; label = @2
+        i64.const 2
+        call 0
+        local.get $x
+        f32.neg
+      else
+        i64.const 1
+        call 0
+        local.get $x
+      end
     end
+    i64.const -8
+    i64.const -1
+    nop
+    call 1
   )
   (func (;4;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.const -0x0p+0 (;=-0;)
-    f32.gt
-    if (result f32) ;; label = @1
+    block (result f32) ;; label = @1
+      i64.const 8
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 2
-      call 0
-      local.get $x
-      f32.neg
+      f32.const -0x0p+0 (;=-0;)
+      f32.gt
+      if (result f32) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 2
+        call 0
+        local.get $x
+        f32.neg
+      end
     end
+    i64.const -8
+    i64.const -1
+    nop
+    call 1
   )
   (func (;5;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.const 0x0p+0 (;=0;)
-    f32.ge
-    if (result f32) ;; label = @1
+    block (result f32) ;; label = @1
+      i64.const 8
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 2
-      call 0
-      local.get $x
-      f32.neg
+      f32.const 0x0p+0 (;=0;)
+      f32.ge
+      if (result f32) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 2
+        call 0
+        local.get $x
+        f32.neg
+      end
     end
+    i64.const -8
+    i64.const -1
+    nop
+    call 1
   )
   (func (;6;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.lt
-    if (result f64) ;; label = @1
-      i64.const 2
-      call 0
-      local.get $x
-      f64.neg
-    else
+    block (result f64) ;; label = @1
+      i64.const 16
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
+      f64.const 0x0p+0 (;=0;)
+      f64.lt
+      if (result f64) ;; label = @2
+        i64.const 2
+        call 0
+        local.get $x
+        f64.neg
+      else
+        i64.const 1
+        call 0
+        local.get $x
+      end
     end
+    i64.const -16
+    i64.const -1
+    nop
+    call 1
   )
   (func (;7;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.const -0x0p+0 (;=-0;)
-    f64.le
-    if (result f64) ;; label = @1
-      i64.const 2
-      call 0
-      local.get $x
-      f64.neg
-    else
+    block (result f64) ;; label = @1
+      i64.const 16
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
+      f64.const -0x0p+0 (;=-0;)
+      f64.le
+      if (result f64) ;; label = @2
+        i64.const 2
+        call 0
+        local.get $x
+        f64.neg
+      else
+        i64.const 1
+        call 0
+        local.get $x
+      end
     end
+    i64.const -16
+    i64.const -1
+    nop
+    call 1
   )
   (func (;8;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.const -0x0p+0 (;=-0;)
-    f64.gt
-    if (result f64) ;; label = @1
+    block (result f64) ;; label = @1
+      i64.const 16
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 2
-      call 0
-      local.get $x
-      f64.neg
+      f64.const -0x0p+0 (;=-0;)
+      f64.gt
+      if (result f64) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 2
+        call 0
+        local.get $x
+        f64.neg
+      end
     end
+    i64.const -16
+    i64.const -1
+    nop
+    call 1
   )
   (func (;9;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
-    call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.const 0x0p+0 (;=0;)
-    f64.ge
-    if (result f64) ;; label = @1
+    block (result f64) ;; label = @1
+      i64.const 16
       i64.const 1
+      call 1
+      i64.const 4
       call 0
       local.get $x
-    else
-      i64.const 2
-      call 0
-      local.get $x
-      f64.neg
+      f64.const 0x0p+0 (;=0;)
+      f64.ge
+      if (result f64) ;; label = @2
+        i64.const 1
+        call 0
+        local.get $x
+      else
+        i64.const 2
+        call 0
+        local.get $x
+        f64.neg
+      end
     end
+    i64.const -16
+    i64.const -1
+    nop
+    call 1
   )
   (export "f32.no_fold_lt_if_to_abs" (func 2))
   (export "f32.no_fold_le_if_to_abs" (func 3))
@@ -2906,32 +3726,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result f32)
-    i64.const 8
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 0
+      call 1
+      i64.const 7
+      call 0
+      f32.const 0x1.553f7cp+0 (;=1.333;)
+      f32.const 0x1.39999ap+0 (;=1.225;)
+      f32.add
+      f32.const 0x1.553f7cp+0 (;=1.333;)
+      f32.sub
+      f32.const 0x1.39999ap+0 (;=1.225;)
+      f32.sub
+    end
+    i64.const -8
     i64.const 0
+    nop
     call 1
-    i64.const 7
-    call 0
-    f32.const 0x1.553f7cp+0 (;=1.333;)
-    f32.const 0x1.39999ap+0 (;=1.225;)
-    f32.add
-    f32.const 0x1.553f7cp+0 (;=1.333;)
-    f32.sub
-    f32.const 0x1.39999ap+0 (;=1.225;)
-    f32.sub
   )
   (func (;3;) (type 1) (result f64)
-    i64.const 16
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 7
+      call 0
+      f64.const 0x1.553f7ced91687p+0 (;=1.333;)
+      f64.const 0x1.399999999999ap+0 (;=1.225;)
+      f64.add
+      f64.const 0x1.553f7ced91687p+0 (;=1.333;)
+      f64.sub
+      f64.const 0x1.399999999999ap+0 (;=1.225;)
+      f64.sub
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 7
-    call 0
-    f64.const 0x1.553f7ced91687p+0 (;=1.333;)
-    f64.const 0x1.399999999999ap+0 (;=1.225;)
-    f64.add
-    f64.const 0x1.553f7ced91687p+0 (;=1.333;)
-    f64.sub
-    f64.const 0x1.399999999999ap+0 (;=1.225;)
-    f64.sub
   )
   (export "f32.incorrect_correction" (func 2))
   (export "f64.incorrect_correction" (func 3))
@@ -2950,51 +3782,57 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result f32)
     (local $x f32) (local $r f32) (local $q f32) (local $z0 f32) (local $z1 f32)
-    i64.const 12
-    i64.const 5
-    call 1
-    i64.const 33
-    call 0
-    f32.const 0x1.388p+7 (;=156.25;)
-    local.set $x
-    f32.const 0x1.a0aaaap+7 (;=208.33333;)
-    local.set $r
-    f32.const 0x1.c78e2ap+0 (;=1.779513;)
-    local.set $q
-    local.get $r
-    f32.neg
-    local.get $x
-    f32.mul
-    local.get $x
-    local.get $q
-    f32.mul
-    local.get $r
-    f32.sub
-    f32.div
-    local.set $z0
-    local.get $r
-    f32.neg
-    local.get $x
-    f32.mul
-    local.get $x
-    local.get $q
-    f32.mul
-    local.get $r
-    f32.sub
-    f32.div
-    local.set $z1
-    block ;; label = @1
-      local.get $z0
-      local.get $z1
-      f32.eq
-      br_if 0 (;@1;)
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 5
+      call 1
+      i64.const 33
+      call 0
+      f32.const 0x1.388p+7 (;=156.25;)
+      local.set $x
+      f32.const 0x1.a0aaaap+7 (;=208.33333;)
+      local.set $r
+      f32.const 0x1.c78e2ap+0 (;=1.779513;)
+      local.set $q
+      local.get $r
+      f32.neg
+      local.get $x
+      f32.mul
+      local.get $x
+      local.get $q
+      f32.mul
+      local.get $r
+      f32.sub
+      f32.div
+      local.set $z0
+      local.get $r
+      f32.neg
+      local.get $x
+      f32.mul
+      local.get $x
+      local.get $q
+      f32.mul
+      local.get $r
+      f32.sub
+      f32.div
+      local.set $z1
+      block ;; label = @2
+        local.get $z0
+        local.get $z1
+        f32.eq
+        br_if 0 (;@2;)
+        i64.const 1
+        call 0
+        unreachable
+      end
       i64.const 1
       call 0
-      unreachable
+      local.get $z1
     end
-    i64.const 1
-    call 0
-    local.get $z1
+    i64.const -12
+    i64.const -5
+    nop
+    call 1
   )
   (export "calculate" (func 2))
 )
@@ -3008,51 +3846,57 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result f64)
     (local $x f64) (local $r f64) (local $q f64) (local $z0 f64) (local $z1 f64)
-    i64.const 24
-    i64.const 5
-    call 1
-    i64.const 33
-    call 0
-    f64.const 0x1.388p+7 (;=156.25;)
-    local.set $x
-    f64.const 0x1.a0aaaaaab064bp+7 (;=208.333333334;)
-    local.set $r
-    f64.const 0x1.c78e2aae3d096p+0 (;=1.77951304201;)
-    local.set $q
-    local.get $r
-    f64.neg
-    local.get $x
-    f64.mul
-    local.get $x
-    local.get $q
-    f64.mul
-    local.get $r
-    f64.sub
-    f64.div
-    local.set $z0
-    local.get $r
-    f64.neg
-    local.get $x
-    f64.mul
-    local.get $x
-    local.get $q
-    f64.mul
-    local.get $r
-    f64.sub
-    f64.div
-    local.set $z1
-    block ;; label = @1
-      local.get $z0
-      local.get $z1
-      f64.eq
-      br_if 0 (;@1;)
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 5
+      call 1
+      i64.const 33
+      call 0
+      f64.const 0x1.388p+7 (;=156.25;)
+      local.set $x
+      f64.const 0x1.a0aaaaaab064bp+7 (;=208.333333334;)
+      local.set $r
+      f64.const 0x1.c78e2aae3d096p+0 (;=1.77951304201;)
+      local.set $q
+      local.get $r
+      f64.neg
+      local.get $x
+      f64.mul
+      local.get $x
+      local.get $q
+      f64.mul
+      local.get $r
+      f64.sub
+      f64.div
+      local.set $z0
+      local.get $r
+      f64.neg
+      local.get $x
+      f64.mul
+      local.get $x
+      local.get $q
+      f64.mul
+      local.get $r
+      f64.sub
+      f64.div
+      local.set $z1
+      block ;; label = @2
+        local.get $z0
+        local.get $z1
+        f64.eq
+        br_if 0 (;@2;)
+        i64.const 1
+        call 0
+        unreachable
+      end
       i64.const 1
       call 0
-      unreachable
+      local.get $z1
     end
-    i64.const 1
-    call 0
-    local.get $z1
+    i64.const -24
+    i64.const -5
+    nop
+    call 1
   )
   (export "calculate" (func 2))
 )
@@ -3068,16 +3912,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 12
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 1
+      call 1
+      i64.const 5
+      call 0
+      f32.const 0x0p+0 (;=0;)
+      f32.const -0x0p+0 (;=-0;)
+      local.get $x
+      f32.sub
+      f32.sub
+    end
+    i64.const -12
+    i64.const -1
+    nop
     call 1
-    i64.const 5
-    call 0
-    f32.const 0x0p+0 (;=0;)
-    f32.const -0x0p+0 (;=-0;)
-    local.get $x
-    f32.sub
-    f32.sub
   )
   (export "llvm_pr26746" (func 2))
 )
@@ -3093,17 +3943,23 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x i32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      i32.const 268435455
+      i32.and
+      f32.convert_i32_s
+      f32.const -0x1p+23 (;=-8388608;)
+      f32.add
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    i32.const 268435455
-    i32.and
-    f32.convert_i32_s
-    f32.const -0x1p+23 (;=-8388608;)
-    f32.add
   )
   (export "llvm_pr27153" (func 2))
 )
@@ -3119,20 +3975,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x i32) (param $y i32) (result f32)
-    i64.const 12
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 9
+      call 0
+      local.get $x
+      i32.const -25034805
+      i32.or
+      f32.convert_i32_s
+      local.get $y
+      i32.const 14942208
+      i32.and
+      f32.convert_i32_s
+      f32.add
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 9
-    call 0
-    local.get $x
-    i32.const -25034805
-    i32.or
-    f32.convert_i32_s
-    local.get $y
-    i32.const 14942208
-    i32.and
-    f32.convert_i32_s
-    f32.add
   )
   (export "llvm_pr27036" (func 2))
 )
@@ -3155,42 +4017,60 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param $a f64) (param $b f64) (param $c f64) (param $d f64) (result f64)
-    i64.const 24
-    i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $a
+      local.get $b
+      f64.mul
+      local.get $c
+      local.get $d
+      f64.mul
+      f64.div
+    end
+    i64.const -24
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $a
-    local.get $b
-    f64.mul
-    local.get $c
-    local.get $d
-    f64.mul
-    f64.div
   )
   (func (;3;) (type 1) (param $a f64) (param $b f64) (param $c f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $a
+      local.get $b
+      f64.mul
+      local.get $c
+      f64.sub
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $a
-    local.get $b
-    f64.mul
-    local.get $c
-    f64.sub
   )
   (func (;4;) (type 2) (param $a f32) (param $b f32) (param $c f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $a
+      local.get $b
+      f32.mul
+      local.get $c
+      f32.mul
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $a
-    local.get $b
-    f32.mul
-    local.get $c
-    f32.mul
   )
   (export "thepast0" (func 2))
   (export "thepast1" (func 3))
@@ -3210,14 +4090,20 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      f32.const 0x1p+0 (;=1;)
+      local.get $x
+      f32.div
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 3
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    local.get $x
-    f32.div
   )
   (export "inverse" (func 2))
 )
@@ -3234,26 +4120,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f32.sqrt
+      f32.const 0x1p+1 (;=2;)
+      f32.sub
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.sqrt
-    f32.const 0x1p+1 (;=2;)
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f64.sqrt
+      f64.const 0x1p+1 (;=2;)
+      f64.sub
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.sqrt
-    f64.const 0x1p+1 (;=2;)
-    f64.sub
   )
   (export "f32_sqrt_minus_2" (func 2))
   (export "f64_sqrt_minus_2" (func 3))
@@ -3271,28 +4169,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 12
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 1
+      call 1
+      i64.const 5
+      call 0
+      f32.const 0x1p+0 (;=1;)
+      f32.const 0x1p+0 (;=1;)
+      local.get $x
+      f32.div
+      f32.div
+    end
+    i64.const -12
+    i64.const -1
+    nop
     call 1
-    i64.const 5
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    f32.const 0x1p+0 (;=1;)
-    local.get $x
-    f32.div
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 24
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 1
+      call 1
+      i64.const 5
+      call 0
+      f64.const 0x1p+0 (;=1;)
+      f64.const 0x1p+0 (;=1;)
+      local.get $x
+      f64.div
+      f64.div
+    end
+    i64.const -24
+    i64.const -1
+    nop
     call 1
-    i64.const 5
-    call 0
-    f64.const 0x1p+0 (;=1;)
-    f64.const 0x1p+0 (;=1;)
-    local.get $x
-    f64.div
-    f64.div
   )
   (export "f32.no_fold_recip_recip" (func 2))
   (export "f64.no_fold_recip_recip" (func 3))
@@ -3329,32 +4239,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 12
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.add
+      local.get $x
+      local.get $y
+      f32.sub
+      f32.mul
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.add
-    local.get $x
-    local.get $y
-    f32.sub
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 24
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.add
+      local.get $x
+      local.get $y
+      f64.sub
+      f64.mul
+    end
+    i64.const -24
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.add
-    local.get $x
-    local.get $y
-    f64.sub
-    f64.mul
   )
   (export "f32.no_algebraic_factoring" (func 2))
   (export "f64.no_algebraic_factoring" (func 3))
@@ -3381,32 +4303,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 12
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $x
+      f32.mul
+      local.get $y
+      local.get $y
+      f32.mul
+      f32.sub
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $x
-    f32.mul
-    local.get $y
-    local.get $y
-    f32.mul
-    f32.sub
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 24
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $x
+      f64.mul
+      local.get $y
+      local.get $y
+      f64.mul
+      f64.sub
+    end
+    i64.const -24
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $x
-    f64.mul
-    local.get $y
-    local.get $y
-    f64.mul
-    f64.sub
   )
   (export "f32.no_algebraic_factoring" (func 2))
   (export "f64.no_algebraic_factoring" (func 3))
@@ -3431,90 +4365,103 @@
   (type (;1;) (func (param i32) (result f32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $i i32) (param $j i32) (param $k i32)
     (local $x0 f32) (local $x1 f32) (local $x2 f32) (local $x3 f32) (local $y0 f32) (local $y1 f32) (local $y2 f32) (local $y3 f32)
-    i64.const 12
-    i64.const 11
+    block (type 4) ;; label = @1
+      i64.const 12
+      i64.const 11
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
+      f32.load
+      i64.const 3
+      call 0
+      local.set $x0
+      local.get $i
+      f32.load offset=4
+      i64.const 3
+      call 0
+      local.set $x1
+      local.get $i
+      f32.load offset=8
+      i64.const 3
+      call 0
+      local.set $x2
+      local.get $i
+      f32.load offset=12
+      i64.const 3
+      call 0
+      local.set $x3
+      local.get $j
+      f32.load
+      i64.const 3
+      call 0
+      local.set $y0
+      local.get $j
+      f32.load offset=4
+      i64.const 3
+      call 0
+      local.set $y1
+      local.get $j
+      f32.load offset=8
+      i64.const 3
+      call 0
+      local.set $y2
+      local.get $j
+      f32.load offset=12
+      i64.const 6
+      call 0
+      local.set $y3
+      local.get $k
+      local.get $x0
+      local.get $y0
+      f32.add
+      f32.store
+      i64.const 5
+      call 0
+      local.get $k
+      local.get $x1
+      local.get $y1
+      f32.add
+      f32.store offset=4
+      i64.const 5
+      call 0
+      local.get $k
+      local.get $x2
+      local.get $y2
+      f32.add
+      f32.store offset=8
+      i64.const 5
+      call 0
+      local.get $k
+      local.get $x3
+      local.get $y3
+      f32.add
+      f32.store offset=12
+    end
+    i64.const -12
+    i64.const -11
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $i
-    f32.load
-    i64.const 3
-    call 0
-    local.set $x0
-    local.get $i
-    f32.load offset=4
-    i64.const 3
-    call 0
-    local.set $x1
-    local.get $i
-    f32.load offset=8
-    i64.const 3
-    call 0
-    local.set $x2
-    local.get $i
-    f32.load offset=12
-    i64.const 3
-    call 0
-    local.set $x3
-    local.get $j
-    f32.load
-    i64.const 3
-    call 0
-    local.set $y0
-    local.get $j
-    f32.load offset=4
-    i64.const 3
-    call 0
-    local.set $y1
-    local.get $j
-    f32.load offset=8
-    i64.const 3
-    call 0
-    local.set $y2
-    local.get $j
-    f32.load offset=12
-    i64.const 6
-    call 0
-    local.set $y3
-    local.get $k
-    local.get $x0
-    local.get $y0
-    f32.add
-    f32.store
-    i64.const 5
-    call 0
-    local.get $k
-    local.get $x1
-    local.get $y1
-    f32.add
-    f32.store offset=4
-    i64.const 5
-    call 0
-    local.get $k
-    local.get $x2
-    local.get $y2
-    f32.add
-    f32.store offset=8
-    i64.const 5
-    call 0
-    local.get $k
-    local.get $x3
-    local.get $y3
-    f32.add
-    f32.store offset=12
   )
   (func (;3;) (type 1) (param $k i32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $k
+      f32.load
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $k
-    f32.load
   )
   (memory (;0;) 1 1)
   (export "f32.simple_x4_sum" (func 2))
@@ -3532,90 +4479,103 @@
   (type (;1;) (func (param i32) (result f64)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $i i32) (param $j i32) (param $k i32)
     (local $x0 f64) (local $x1 f64) (local $x2 f64) (local $x3 f64) (local $y0 f64) (local $y1 f64) (local $y2 f64) (local $y3 f64)
-    i64.const 20
-    i64.const 11
+    block (type 4) ;; label = @1
+      i64.const 20
+      i64.const 11
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
+      f64.load
+      i64.const 3
+      call 0
+      local.set $x0
+      local.get $i
+      f64.load offset=8
+      i64.const 3
+      call 0
+      local.set $x1
+      local.get $i
+      f64.load offset=16
+      i64.const 3
+      call 0
+      local.set $x2
+      local.get $i
+      f64.load offset=24
+      i64.const 3
+      call 0
+      local.set $x3
+      local.get $j
+      f64.load
+      i64.const 3
+      call 0
+      local.set $y0
+      local.get $j
+      f64.load offset=8
+      i64.const 3
+      call 0
+      local.set $y1
+      local.get $j
+      f64.load offset=16
+      i64.const 3
+      call 0
+      local.set $y2
+      local.get $j
+      f64.load offset=24
+      i64.const 6
+      call 0
+      local.set $y3
+      local.get $k
+      local.get $x0
+      local.get $y0
+      f64.add
+      f64.store
+      i64.const 5
+      call 0
+      local.get $k
+      local.get $x1
+      local.get $y1
+      f64.add
+      f64.store offset=8
+      i64.const 5
+      call 0
+      local.get $k
+      local.get $x2
+      local.get $y2
+      f64.add
+      f64.store offset=16
+      i64.const 5
+      call 0
+      local.get $k
+      local.get $x3
+      local.get $y3
+      f64.add
+      f64.store offset=24
+    end
+    i64.const -20
+    i64.const -11
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $i
-    f64.load
-    i64.const 3
-    call 0
-    local.set $x0
-    local.get $i
-    f64.load offset=8
-    i64.const 3
-    call 0
-    local.set $x1
-    local.get $i
-    f64.load offset=16
-    i64.const 3
-    call 0
-    local.set $x2
-    local.get $i
-    f64.load offset=24
-    i64.const 3
-    call 0
-    local.set $x3
-    local.get $j
-    f64.load
-    i64.const 3
-    call 0
-    local.set $y0
-    local.get $j
-    f64.load offset=8
-    i64.const 3
-    call 0
-    local.set $y1
-    local.get $j
-    f64.load offset=16
-    i64.const 3
-    call 0
-    local.set $y2
-    local.get $j
-    f64.load offset=24
-    i64.const 6
-    call 0
-    local.set $y3
-    local.get $k
-    local.get $x0
-    local.get $y0
-    f64.add
-    f64.store
-    i64.const 5
-    call 0
-    local.get $k
-    local.get $x1
-    local.get $y1
-    f64.add
-    f64.store offset=8
-    i64.const 5
-    call 0
-    local.get $k
-    local.get $x2
-    local.get $y2
-    f64.add
-    f64.store offset=16
-    i64.const 5
-    call 0
-    local.get $k
-    local.get $x3
-    local.get $y3
-    f64.add
-    f64.store offset=24
   )
   (func (;3;) (type 1) (param $k i32) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $k
+      f64.load
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $k
-    f64.load
   )
   (memory (;0;) 1 1)
   (export "f64.simple_x4_sum" (func 2))
@@ -3639,80 +4599,92 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $p i32) (param $n i32) (result f32)
     (local $sum f32) (local $c f32) (local $t f32)
-    i64.const 12
-    i64.const 5
-    call 1
-    i64.const 1
-    call 0
-    block $exit ;; label = @1
-      loop $top ;; label = @2
-        i64.const 4
-        call 0
-        local.get $c
-        local.get $p
-        f32.load
-        i64.const 21
-        call 0
-        local.get $t
-        f32.sub
-        local.tee $t
-        f32.add
-        local.tee $sum
-        local.get $c
-        f32.sub
-        local.get $t
-        f32.sub
-        local.set $t
-        local.get $p
-        i32.const 4
-        i32.add
-        local.set $p
-        local.get $sum
-        local.set $c
-        local.get $n
-        i32.const -1
-        i32.add
-        local.tee $n
-        br_if 0 (;@2;)
-        i64.const 1
-        call 0
+    block $exit (result f32) ;; label = @1
+      i64.const 12
+      i64.const 5
+      call 1
+      i64.const 1
+      call 0
+      block $top ;; label = @2
+        loop ;; label = @3
+          i64.const 4
+          call 0
+          local.get $c
+          local.get $p
+          f32.load
+          i64.const 21
+          call 0
+          local.get $t
+          f32.sub
+          local.tee $t
+          f32.add
+          local.tee $sum
+          local.get $c
+          f32.sub
+          local.get $t
+          f32.sub
+          local.set $t
+          local.get $p
+          i32.const 4
+          i32.add
+          local.set $p
+          local.get $sum
+          local.set $c
+          local.get $n
+          i32.const -1
+          i32.add
+          local.tee $n
+          br_if 0 (;@3;)
+          i64.const 1
+          call 0
+        end
       end
+      local.get $sum
     end
-    local.get $sum
+    i64.const -12
+    i64.const -5
+    nop
+    call 1
   )
   (func (;3;) (type 0) (param $p i32) (param $n i32) (result f32)
     (local $sum f32)
-    i64.const 8
-    i64.const 3
-    call 1
-    i64.const 1
-    call 0
-    block $exit ;; label = @1
-      loop $top ;; label = @2
-        i64.const 4
-        call 0
-        local.get $sum
-        local.get $p
-        f32.load
-        i64.const 12
-        call 0
-        f32.add
-        local.set $sum
-        local.get $p
-        i32.const 4
-        i32.add
-        local.set $p
-        local.get $n
-        i32.const -1
-        i32.add
-        local.set $n
-        local.get $n
-        br_if 0 (;@2;)
-        i64.const 1
-        call 0
+    block $exit (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 1
+      call 0
+      block $top ;; label = @2
+        loop ;; label = @3
+          i64.const 4
+          call 0
+          local.get $sum
+          local.get $p
+          f32.load
+          i64.const 12
+          call 0
+          f32.add
+          local.set $sum
+          local.get $p
+          i32.const 4
+          i32.add
+          local.set $p
+          local.get $n
+          i32.const -1
+          i32.add
+          local.set $n
+          local.get $n
+          br_if 0 (;@3;)
+          i64.const 1
+          call 0
+        end
       end
+      local.get $sum
     end
-    local.get $sum
+    i64.const -8
+    i64.const -3
+    nop
+    call 1
   )
   (memory (;0;) 1 1)
   (export "f32.kahan_sum" (func 2))
@@ -3730,80 +4702,92 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $p i32) (param $n i32) (result f64)
     (local $sum f64) (local $c f64) (local $t f64)
-    i64.const 24
-    i64.const 5
-    call 1
-    i64.const 1
-    call 0
-    block $exit ;; label = @1
-      loop $top ;; label = @2
-        i64.const 4
-        call 0
-        local.get $c
-        local.get $p
-        f64.load
-        i64.const 21
-        call 0
-        local.get $t
-        f64.sub
-        local.tee $t
-        f64.add
-        local.tee $sum
-        local.get $c
-        f64.sub
-        local.get $t
-        f64.sub
-        local.set $t
-        local.get $p
-        i32.const 8
-        i32.add
-        local.set $p
-        local.get $sum
-        local.set $c
-        local.get $n
-        i32.const -1
-        i32.add
-        local.tee $n
-        br_if 0 (;@2;)
-        i64.const 1
-        call 0
+    block $exit (result f64) ;; label = @1
+      i64.const 24
+      i64.const 5
+      call 1
+      i64.const 1
+      call 0
+      block $top ;; label = @2
+        loop ;; label = @3
+          i64.const 4
+          call 0
+          local.get $c
+          local.get $p
+          f64.load
+          i64.const 21
+          call 0
+          local.get $t
+          f64.sub
+          local.tee $t
+          f64.add
+          local.tee $sum
+          local.get $c
+          f64.sub
+          local.get $t
+          f64.sub
+          local.set $t
+          local.get $p
+          i32.const 8
+          i32.add
+          local.set $p
+          local.get $sum
+          local.set $c
+          local.get $n
+          i32.const -1
+          i32.add
+          local.tee $n
+          br_if 0 (;@3;)
+          i64.const 1
+          call 0
+        end
       end
+      local.get $sum
     end
-    local.get $sum
+    i64.const -24
+    i64.const -5
+    nop
+    call 1
   )
   (func (;3;) (type 0) (param $p i32) (param $n i32) (result f64)
     (local $sum f64)
-    i64.const 16
-    i64.const 3
-    call 1
-    i64.const 1
-    call 0
-    block $exit ;; label = @1
-      loop $top ;; label = @2
-        i64.const 4
-        call 0
-        local.get $sum
-        local.get $p
-        f64.load
-        i64.const 12
-        call 0
-        f64.add
-        local.set $sum
-        local.get $p
-        i32.const 8
-        i32.add
-        local.set $p
-        local.get $n
-        i32.const -1
-        i32.add
-        local.set $n
-        local.get $n
-        br_if 0 (;@2;)
-        i64.const 1
-        call 0
+    block $exit (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 1
+      call 0
+      block $top ;; label = @2
+        loop ;; label = @3
+          i64.const 4
+          call 0
+          local.get $sum
+          local.get $p
+          f64.load
+          i64.const 12
+          call 0
+          f64.add
+          local.set $sum
+          local.get $p
+          i32.const 8
+          i32.add
+          local.set $p
+          local.get $n
+          i32.const -1
+          i32.add
+          local.set $n
+          local.get $n
+          br_if 0 (;@3;)
+          i64.const 1
+          call 0
+        end
       end
+      local.get $sum
     end
-    local.get $sum
+    i64.const -16
+    i64.const -3
+    nop
+    call 1
   )
   (memory (;0;) 1 1)
   (export "f64.kahan_sum" (func 2))
@@ -3823,26 +4807,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.sub
+      f32.neg
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.sub
-    f32.neg
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.sub
+      f64.neg
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.sub
-    f64.neg
   )
   (export "f32.no_fold_neg_sub" (func 2))
   (export "f64.no_fold_neg_sub" (func 3))
@@ -3867,26 +4863,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.add
+      f32.neg
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.add
-    f32.neg
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.add
+      f64.neg
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.add
-    f64.neg
   )
   (export "f32.no_fold_neg_add" (func 2))
   (export "f64.no_fold_neg_add" (func 3))
@@ -3911,28 +4919,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f32.neg
+      local.get $y
+      f32.neg
+      f32.add
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f32.neg
-    local.get $y
-    f32.neg
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f64.neg
+      local.get $y
+      f64.neg
+      f64.add
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f64.neg
-    local.get $y
-    f64.neg
-    f64.add
   )
   (export "f32.no_fold_add_neg_neg" (func 2))
   (export "f64.no_fold_add_neg_neg" (func 3))
@@ -3957,26 +4977,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f32.neg
+      local.get $x
+      f32.add
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.neg
-    local.get $x
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f64.neg
+      local.get $x
+      f64.add
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.neg
-    local.get $x
-    f64.add
   )
   (export "f32.no_fold_add_neg" (func 2))
   (export "f64.no_fold_add_neg" (func 3))
@@ -4001,40 +5033,52 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 11
+      call 0
+      local.get $x
+      local.get $x
+      f32.add
+      local.get $x
+      f32.add
+      local.get $x
+      f32.add
+      local.get $x
+      f32.add
+      local.get $x
+      f32.add
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 11
-    call 0
-    local.get $x
-    local.get $x
-    f32.add
-    local.get $x
-    f32.add
-    local.get $x
-    f32.add
-    local.get $x
-    f32.add
-    local.get $x
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 11
+      call 0
+      local.get $x
+      local.get $x
+      f64.add
+      local.get $x
+      f64.add
+      local.get $x
+      f64.add
+      local.get $x
+      f64.add
+      local.get $x
+      f64.add
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 11
-    call 0
-    local.get $x
-    local.get $x
-    f64.add
-    local.get $x
-    f64.add
-    local.get $x
-    f64.add
-    local.get $x
-    f64.add
-    local.get $x
-    f64.add
   )
   (export "f32.no_fold_6x_via_add" (func 2))
   (export "f64.no_fold_6x_via_add" (func 3))
@@ -4062,28 +5106,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.div
+      local.get $z
+      f32.div
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.div
-    local.get $z
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.div
+      local.get $z
+      f64.div
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.div
-    local.get $z
-    f64.div
   )
   (export "f32.no_fold_div_div" (func 2))
   (export "f64.no_fold_div_div" (func 3))
@@ -4112,32 +5168,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (param $w f32) (result f32)
-    i64.const 12
-    i64.const 4
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.div
+      local.get $z
+      local.get $w
+      f32.div
+      f32.mul
+    end
+    i64.const -12
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.div
-    local.get $z
-    local.get $w
-    f32.div
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (param $w f64) (result f64)
-    i64.const 24
-    i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 4
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.div
+      local.get $z
+      local.get $w
+      f64.div
+      f64.mul
+    end
+    i64.const -24
+    i64.const -4
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.div
-    local.get $z
-    local.get $w
-    f64.div
-    f64.mul
   )
   (export "f32.no_fold_mul_divs" (func 2))
   (export "f64.no_fold_mul_divs" (func 3))
@@ -4164,32 +5232,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 12
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f32.div
+      local.get $y
+      local.get $z
+      f32.div
+      f32.add
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f32.div
-    local.get $y
-    local.get $z
-    f32.div
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 24
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f64.div
+      local.get $y
+      local.get $z
+      f64.div
+      f64.add
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f64.div
-    local.get $y
-    local.get $z
-    f64.div
-    f64.add
   )
   (export "f32.no_fold_add_divs" (func 2))
   (export "f64.no_fold_add_divs" (func 3))
@@ -4216,26 +5296,38 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 8
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $x
+      f32.mul
+      f32.sqrt
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $x
-    f32.mul
-    f32.sqrt
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 16
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $x
+      f64.mul
+      f64.sqrt
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $x
-    f64.mul
-    f64.sqrt
   )
   (export "f32.no_fold_sqrt_square" (func 2))
   (export "f64.no_fold_sqrt_square" (func 3))
@@ -4262,28 +5354,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f32.sqrt
+      local.get $y
+      f32.sqrt
+      f32.mul
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f32.sqrt
-    local.get $y
-    f32.sqrt
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f64.sqrt
+      local.get $y
+      f64.sqrt
+      f64.mul
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f64.sqrt
-    local.get $y
-    f64.sqrt
-    f64.mul
   )
   (export "f32.no_fold_mul_sqrts" (func 2))
   (export "f64.no_fold_mul_sqrts" (func 3))
@@ -4310,28 +5414,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f32.sqrt
+      local.get $y
+      f32.sqrt
+      f32.div
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f32.sqrt
-    local.get $y
-    f32.sqrt
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      f64.sqrt
+      local.get $y
+      f64.sqrt
+      f64.div
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    f64.sqrt
-    local.get $y
-    f64.sqrt
-    f64.div
   )
   (export "f32.no_fold_div_sqrts" (func 2))
   (export "f64.no_fold_div_sqrts" (func 3))
@@ -4358,30 +5474,42 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      f32.sqrt
+      f32.mul
+      local.get $y
+      f32.div
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    f32.sqrt
-    f32.mul
-    local.get $y
-    f32.div
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 6
+      call 0
+      local.get $x
+      local.get $y
+      f64.sqrt
+      f64.mul
+      local.get $y
+      f64.div
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $x
-    local.get $y
-    f64.sqrt
-    f64.mul
-    local.get $y
-    f64.div
   )
   (export "f32.no_fold_mul_sqrt_div" (func 2))
   (export "f64.no_fold_mul_sqrt_div" (func 3))
@@ -4409,28 +5537,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $z
+      f32.mul
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $z
-    f32.mul
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $z
+      f64.mul
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $z
-    f64.mul
   )
   (export "f32.no_flush_intermediate_subnormal" (func 2))
   (export "f64.no_flush_intermediate_subnormal" (func 3))
@@ -4450,87 +5590,129 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $x
+      f32.eq
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $x
-    f32.eq
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $x
+      f32.le
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $x
-    f32.le
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.mul
+      local.get $x
+      f32.lt
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.mul
-    local.get $x
-    f32.lt
   )
   (func (;5;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $x
+      f64.eq
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $x
-    f64.eq
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $x
+      f64.le
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $x
-    f64.le
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.mul
+      local.get $x
+      f64.lt
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.mul
-    local.get $x
-    f64.lt
   )
   (func (;8;) (type 2) (param $x f64) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f32.demote_f64
+      local.get $y
+      f32.mul
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.demote_f64
-    local.get $y
-    f32.mul
   )
   (export "f32.recoding_eq" (func 2))
   (export "f32.recoding_le" (func 3))
@@ -4569,28 +5751,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result i32)
-    i64.const 8
-    i64.const 3
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f32.div
+      local.get $z
+      f32.eq
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f32.div
-    local.get $z
-    f32.eq
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result i32)
-    i64.const 16
-    i64.const 3
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $x
+      local.get $y
+      f64.div
+      local.get $z
+      f64.eq
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $x
-    local.get $y
-    f64.div
-    local.get $z
-    f64.eq
   )
   (export "f32.no_extended_precision_div" (func 2))
   (export "f64.no_extended_precision_div" (func 3))
@@ -4611,32 +5805,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (result f32)
-    i64.const 12
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      f32.const -0x1p+3 (;=-8;)
+      local.get $x
+      f32.mul
+      f32.const 0x1p+3 (;=8;)
+      local.get $x
+      f32.mul
+      f32.add
+    end
+    i64.const -12
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    f32.const -0x1p+3 (;=-8;)
-    local.get $x
-    f32.mul
-    f32.const 0x1p+3 (;=8;)
-    local.get $x
-    f32.mul
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (result f64)
-    i64.const 24
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      f64.const -0x1p+3 (;=-8;)
+      local.get $x
+      f64.mul
+      f64.const 0x1p+3 (;=8;)
+      local.get $x
+      f64.mul
+      f64.add
+    end
+    i64.const -24
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    f64.const -0x1p+3 (;=-8;)
-    local.get $x
-    f64.mul
-    f64.const 0x1p+3 (;=8;)
-    local.get $x
-    f64.mul
-    f64.add
   )
   (export "f32.no_distribute_exact" (func 2))
   (export "f64.no_distribute_exact" (func 3))
@@ -4659,142 +5865,202 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 6)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 7)))
   (func (;2;) (type 0) (param f32) (result f32)
-    i64.const 4
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      f32.sqrt
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    f32.sqrt
   )
   (func (;3;) (type 1) (param f32 f32 f32 f32) (result f32)
-    i64.const 16
-    i64.const 4
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 4
+      call 1
+      i64.const 9
+      call 0
+      local.get 0
+      local.get 1
+      f32.div
+      local.get 2
+      local.get 3
+      local.get 2
+      f32.sub
+      f32.div
+      f32.add
+    end
+    i64.const -16
+    i64.const -4
+    nop
     call 1
-    i64.const 9
-    call 0
-    local.get 0
-    local.get 1
-    f32.div
-    local.get 2
-    local.get 3
-    local.get 2
-    f32.sub
-    f32.div
-    f32.add
   )
   (func (;4;) (type 2) (param f32 f32 f32) (result f32)
-    i64.const 8
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get 0
+      local.get 1
+      f32.mul
+      local.get 2
+      f32.div
+    end
+    i64.const -8
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get 0
-    local.get 1
-    f32.mul
-    local.get 2
-    f32.div
   )
   (func (;5;) (type 2) (param f32 f32 f32) (result f32)
-    i64.const 12
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get 0
+      local.get 1
+      f32.div
+      local.get 2
+      local.get 0
+      f32.div
+      f32.add
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get 0
-    local.get 1
-    f32.div
-    local.get 2
-    local.get 0
-    f32.div
-    f32.add
   )
   (func (;6;) (type 1) (param f32 f32 f32 f32) (result f32)
-    i64.const 16
-    i64.const 4
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 4
+      call 1
+      i64.const 11
+      call 0
+      local.get 0
+      local.get 1
+      local.get 2
+      f32.mul
+      f32.add
+      local.get 3
+      local.get 1
+      local.get 2
+      f32.mul
+      f32.sub
+      f32.div
+    end
+    i64.const -16
+    i64.const -4
+    nop
     call 1
-    i64.const 11
-    call 0
-    local.get 0
-    local.get 1
-    local.get 2
-    f32.mul
-    f32.add
-    local.get 3
-    local.get 1
-    local.get 2
-    f32.mul
-    f32.sub
-    f32.div
   )
   (func (;7;) (type 3) (param f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      f64.sqrt
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    f64.sqrt
   )
   (func (;8;) (type 4) (param f64 f64 f64 f64) (result f64)
-    i64.const 32
-    i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 4
+      call 1
+      i64.const 9
+      call 0
+      local.get 0
+      local.get 1
+      f64.div
+      local.get 2
+      local.get 3
+      local.get 2
+      f64.sub
+      f64.div
+      f64.add
+    end
+    i64.const -32
+    i64.const -4
+    nop
     call 1
-    i64.const 9
-    call 0
-    local.get 0
-    local.get 1
-    f64.div
-    local.get 2
-    local.get 3
-    local.get 2
-    f64.sub
-    f64.div
-    f64.add
   )
   (func (;9;) (type 5) (param f64 f64 f64) (result f64)
-    i64.const 16
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get 0
+      local.get 1
+      f64.mul
+      local.get 2
+      f64.div
+    end
+    i64.const -16
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get 0
-    local.get 1
-    f64.mul
-    local.get 2
-    f64.div
   )
   (func (;10;) (type 5) (param f64 f64 f64) (result f64)
-    i64.const 24
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get 0
+      local.get 1
+      f64.div
+      local.get 2
+      local.get 0
+      f64.div
+      f64.add
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get 0
-    local.get 1
-    f64.div
-    local.get 2
-    local.get 0
-    f64.div
-    f64.add
   )
   (func (;11;) (type 4) (param f64 f64 f64 f64) (result f64)
-    i64.const 32
-    i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 4
+      call 1
+      i64.const 11
+      call 0
+      local.get 0
+      local.get 1
+      local.get 2
+      f64.mul
+      f64.add
+      local.get 3
+      local.get 1
+      local.get 2
+      f64.mul
+      f64.sub
+      f64.div
+    end
+    i64.const -32
+    i64.const -4
+    nop
     call 1
-    i64.const 11
-    call 0
-    local.get 0
-    local.get 1
-    local.get 2
-    f64.mul
-    f64.add
-    local.get 3
-    local.get 1
-    local.get 2
-    f64.mul
-    f64.sub
-    f64.div
   )
   (export "f32.sqrt" (func 2))
   (export "f32.xkcd_sqrt_2" (func 3))
@@ -4834,88 +6100,100 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $0 f32) (param $1 f32) (result f32)
-    i64.const 12
-    i64.const 2
+    block $label$0 (result f32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      loop $label$2 ;; label = @2
+        i64.const 14
+        call 0
+        local.get $0
+        local.get $0
+        f32.add
+        local.tee $0
+        f32.const 0x1p+0 (;=1;)
+        f32.add
+        local.get $0
+        f32.sub
+        f32.const -0x1p+0 (;=-1;)
+        f32.add
+        f32.const 0x0p+0 (;=0;)
+        f32.eq
+        br_if 0 (;@2;)
+      end
+      loop ;; label = @2
+        i64.const 14
+        call 0
+        local.get $0
+        local.get $1
+        f32.const 0x1p+0 (;=1;)
+        f32.add
+        local.tee $1
+        f32.add
+        local.get $0
+        f32.sub
+        local.get $1
+        f32.sub
+        f32.const 0x0p+0 (;=0;)
+        f32.ne
+        br_if 0 (;@2;)
+        i64.const 1
+        call 0
+      end
+      local.get $1
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    loop $label$0 ;; label = @1
-      i64.const 14
-      call 0
-      local.get $0
-      local.get $0
-      f32.add
-      local.tee $0
-      f32.const 0x1p+0 (;=1;)
-      f32.add
-      local.get $0
-      f32.sub
-      f32.const -0x1p+0 (;=-1;)
-      f32.add
-      f32.const 0x0p+0 (;=0;)
-      f32.eq
-      br_if 0 (;@1;)
-    end
-    loop $label$2 ;; label = @1
-      i64.const 14
-      call 0
-      local.get $0
-      local.get $1
-      f32.const 0x1p+0 (;=1;)
-      f32.add
-      local.tee $1
-      f32.add
-      local.get $0
-      f32.sub
-      local.get $1
-      f32.sub
-      f32.const 0x0p+0 (;=0;)
-      f32.ne
-      br_if 0 (;@1;)
-      i64.const 1
-      call 0
-    end
-    local.get $1
   )
   (func (;3;) (type 1) (param $0 f64) (param $1 f64) (result f64)
-    i64.const 24
-    i64.const 2
+    block $label$0 (result f64) ;; label = @1
+      i64.const 24
+      i64.const 2
+      call 1
+      loop $label$2 ;; label = @2
+        i64.const 14
+        call 0
+        local.get $0
+        local.get $0
+        f64.add
+        local.tee $0
+        f64.const 0x1p+0 (;=1;)
+        f64.add
+        local.get $0
+        f64.sub
+        f64.const -0x1p+0 (;=-1;)
+        f64.add
+        f64.const 0x0p+0 (;=0;)
+        f64.eq
+        br_if 0 (;@2;)
+      end
+      loop ;; label = @2
+        i64.const 14
+        call 0
+        local.get $0
+        local.get $1
+        f64.const 0x1p+0 (;=1;)
+        f64.add
+        local.tee $1
+        f64.add
+        local.get $0
+        f64.sub
+        local.get $1
+        f64.sub
+        f64.const 0x0p+0 (;=0;)
+        f64.ne
+        br_if 0 (;@2;)
+        i64.const 1
+        call 0
+      end
+      local.get $1
+    end
+    i64.const -24
+    i64.const -2
+    nop
     call 1
-    loop $label$0 ;; label = @1
-      i64.const 14
-      call 0
-      local.get $0
-      local.get $0
-      f64.add
-      local.tee $0
-      f64.const 0x1p+0 (;=1;)
-      f64.add
-      local.get $0
-      f64.sub
-      f64.const -0x1p+0 (;=-1;)
-      f64.add
-      f64.const 0x0p+0 (;=0;)
-      f64.eq
-      br_if 0 (;@1;)
-    end
-    loop $label$2 ;; label = @1
-      i64.const 14
-      call 0
-      local.get $0
-      local.get $1
-      f64.const 0x1p+0 (;=1;)
-      f64.add
-      local.tee $1
-      f64.add
-      local.get $0
-      f64.sub
-      local.get $1
-      f64.sub
-      f64.const 0x0p+0 (;=0;)
-      f64.ne
-      br_if 0 (;@1;)
-      i64.const 1
-      call 0
-    end
-    local.get $1
   )
   (export "f32.compute_radix" (func 2))
   (export "f64.compute_radix" (func 3))
@@ -4934,32 +6212,44 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 8
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.const 0x1p+0 (;=1;)
+      f32.sub
+      local.get $y
+      f32.mul
+      local.get $y
+      f32.add
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.const 0x1p+0 (;=1;)
-    f32.sub
-    local.get $y
-    f32.mul
-    local.get $y
-    f32.add
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.const 0x1p+0 (;=1;)
+      f64.sub
+      local.get $y
+      f64.mul
+      local.get $y
+      f64.add
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.const 0x1p+0 (;=1;)
-    f64.sub
-    local.get $y
-    f64.mul
-    local.get $y
-    f64.add
   )
   (export "f32.no_fold_sub1_mul_add" (func 2))
   (export "f64.no_fold_sub1_mul_add" (func 3))
@@ -4978,60 +6268,84 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result i32)
-    i64.const 12
-    i64.const 3
+    block (result i32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f32.add
+      local.get $y
+      local.get $z
+      f32.add
+      f32.le
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f32.add
-    local.get $y
-    local.get $z
-    f32.add
-    f32.le
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result i32)
-    i64.const 12
-    i64.const 3
+    block (result i32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f32.add
+      local.get $y
+      local.get $z
+      f32.add
+      f32.ge
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f32.add
-    local.get $y
-    local.get $z
-    f32.add
-    f32.ge
   )
   (func (;4;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result i32)
-    i64.const 24
-    i64.const 3
+    block (result i32) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f64.add
+      local.get $y
+      local.get $z
+      f64.add
+      f64.le
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f64.add
-    local.get $y
-    local.get $z
-    f64.add
-    f64.le
   )
   (func (;5;) (type 1) (param $x f64) (param $y f64) (param $z f64) (result i32)
-    i64.const 24
-    i64.const 3
+    block (result i32) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $z
+      f64.add
+      local.get $y
+      local.get $z
+      f64.add
+      f64.ge
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $z
-    f64.add
-    local.get $y
-    local.get $z
-    f64.add
-    f64.ge
   )
   (export "f32.no_fold_add_le_monotonicity" (func 2))
   (export "f32.no_fold_add_ge_monotonicity" (func 3))
@@ -5053,92 +6367,140 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.lt
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.lt
-    i32.eqz
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.le
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.le
-    i32.eqz
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.gt
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.gt
-    i32.eqz
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f32.ge
+      i32.eqz
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f32.ge
-    i32.eqz
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.lt
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.lt
-    i32.eqz
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.le
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.le
-    i32.eqz
   )
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.gt
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.gt
-    i32.eqz
   )
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      local.get $y
+      f64.ge
+      i32.eqz
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    local.get $y
-    f64.ge
-    i32.eqz
   )
   (export "f32.not_lt" (func 2))
   (export "f32.not_le" (func 3))
@@ -5170,36 +6532,48 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result f32)
-    i64.const 16
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 9
+      call 0
+      f32.const 0x1p+0 (;=1;)
+      f32.const 0x1.8p+1 (;=3;)
+      f32.const 0x1p+2 (;=4;)
+      f32.const 0x1.8p+1 (;=3;)
+      f32.div
+      f32.const 0x1p+0 (;=1;)
+      f32.sub
+      f32.mul
+      f32.sub
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 9
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    f32.const 0x1.8p+1 (;=3;)
-    f32.const 0x1p+2 (;=4;)
-    f32.const 0x1.8p+1 (;=3;)
-    f32.div
-    f32.const 0x1p+0 (;=1;)
-    f32.sub
-    f32.mul
-    f32.sub
   )
   (func (;3;) (type 1) (result f64)
-    i64.const 32
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 9
+      call 0
+      f64.const 0x1p+0 (;=1;)
+      f64.const 0x1.8p+1 (;=3;)
+      f64.const 0x1p+2 (;=4;)
+      f64.const 0x1.8p+1 (;=3;)
+      f64.div
+      f64.const 0x1p+0 (;=1;)
+      f64.sub
+      f64.mul
+      f64.sub
+    end
+    i64.const -32
     i64.const 0
+    nop
     call 1
-    i64.const 9
-    call 0
-    f64.const 0x1p+0 (;=1;)
-    f64.const 0x1.8p+1 (;=3;)
-    f64.const 0x1p+2 (;=4;)
-    f64.const 0x1.8p+1 (;=3;)
-    f64.div
-    f64.const 0x1p+0 (;=1;)
-    f64.sub
-    f64.mul
-    f64.sub
   )
   (export "f32.epsilon" (func 2))
   (export "f64.epsilon" (func 3))
@@ -5220,57 +6594,69 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result f32)
     (local $x f32) (local $result f32)
-    i64.const 8
-    i64.const 2
-    call 1
-    i64.const 2
-    call 0
-    f32.const 0x1p+0 (;=1;)
-    local.set $x
-    loop $loop ;; label = @1
-      i64.const 11
+    block $loop (result f32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 2
       call 0
-      local.get $x
-      local.tee $result
-      f32.const 0x1p-1 (;=0.5;)
-      f32.mul
-      local.tee $x
       f32.const 0x1p+0 (;=1;)
-      f32.add
-      f32.const 0x1p+0 (;=1;)
-      f32.gt
-      br_if 0 (;@1;)
-      i64.const 1
-      call 0
+      local.set $x
+      loop ;; label = @2
+        i64.const 11
+        call 0
+        local.get $x
+        local.tee $result
+        f32.const 0x1p-1 (;=0.5;)
+        f32.mul
+        local.tee $x
+        f32.const 0x1p+0 (;=1;)
+        f32.add
+        f32.const 0x1p+0 (;=1;)
+        f32.gt
+        br_if 0 (;@2;)
+        i64.const 1
+        call 0
+      end
+      local.get $result
     end
-    local.get $result
+    i64.const -8
+    i64.const -2
+    nop
+    call 1
   )
   (func (;3;) (type 1) (result f64)
     (local $x f64) (local $result f64)
-    i64.const 16
-    i64.const 2
-    call 1
-    i64.const 2
-    call 0
-    f64.const 0x1p+0 (;=1;)
-    local.set $x
-    loop $loop ;; label = @1
-      i64.const 11
+    block $loop (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 2
       call 0
-      local.get $x
-      local.tee $result
-      f64.const 0x1p-1 (;=0.5;)
-      f64.mul
-      local.tee $x
       f64.const 0x1p+0 (;=1;)
-      f64.add
-      f64.const 0x1p+0 (;=1;)
-      f64.gt
-      br_if 0 (;@1;)
-      i64.const 1
-      call 0
+      local.set $x
+      loop ;; label = @2
+        i64.const 11
+        call 0
+        local.get $x
+        local.tee $result
+        f64.const 0x1p-1 (;=0.5;)
+        f64.mul
+        local.tee $x
+        f64.const 0x1p+0 (;=1;)
+        f64.add
+        f64.const 0x1p+0 (;=1;)
+        f64.gt
+        br_if 0 (;@2;)
+        i64.const 1
+        call 0
+      end
+      local.get $result
     end
-    local.get $result
+    i64.const -16
+    i64.const -2
+    nop
+    call 1
   )
   (export "f32.epsilon" (func 2))
   (export "f64.epsilon" (func 3))
@@ -5289,116 +6675,164 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 12
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.lt
+      local.get $x
+      local.get $y
+      f32.ge
+      i32.or
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.lt
-    local.get $x
-    local.get $y
-    f32.ge
-    i32.or
   )
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 12
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.le
+      local.get $x
+      local.get $y
+      f32.gt
+      i32.or
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.le
-    local.get $x
-    local.get $y
-    f32.gt
-    i32.or
   )
   (func (;4;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 12
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.gt
+      local.get $x
+      local.get $y
+      f32.le
+      i32.or
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.gt
-    local.get $x
-    local.get $y
-    f32.le
-    i32.or
   )
   (func (;5;) (type 0) (param $x f32) (param $y f32) (result i32)
-    i64.const 12
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f32.ge
+      local.get $x
+      local.get $y
+      f32.lt
+      i32.or
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f32.ge
-    local.get $x
-    local.get $y
-    f32.lt
-    i32.or
   )
   (func (;6;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 20
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.lt
+      local.get $x
+      local.get $y
+      f64.ge
+      i32.or
+    end
+    i64.const -20
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.lt
-    local.get $x
-    local.get $y
-    f64.ge
-    i32.or
   )
   (func (;7;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 20
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.le
+      local.get $x
+      local.get $y
+      f64.gt
+      i32.or
+    end
+    i64.const -20
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.le
-    local.get $x
-    local.get $y
-    f64.gt
-    i32.or
   )
   (func (;8;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 20
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.gt
+      local.get $x
+      local.get $y
+      f64.le
+      i32.or
+    end
+    i64.const -20
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.gt
-    local.get $x
-    local.get $y
-    f64.le
-    i32.or
   )
   (func (;9;) (type 1) (param $x f64) (param $y f64) (result i32)
-    i64.const 20
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      local.get $y
+      f64.ge
+      local.get $x
+      local.get $y
+      f64.lt
+      i32.or
+    end
+    i64.const -20
+    i64.const -2
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    local.get $y
-    f64.ge
-    local.get $x
-    local.get $y
-    f64.lt
-    i32.or
   )
   (export "f32.no_trichotomy_lt" (func 2))
   (export "f32.no_trichotomy_le" (func 3))
@@ -5431,268 +6865,382 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
   (func (;2;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      local.get $y
+      f32.reinterpret_i32
+      f32.div
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    local.get $y
-    f32.reinterpret_i32
-    f32.div
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;3;) (type 0) (param $x i32) (param $y i32) (result i32)
-    i64.const 8
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      local.get $y
+      f32.reinterpret_i32
+      f32.div
+      i32.reinterpret_f32
+      i32.const 2147483647
+      i32.and
+    end
+    i64.const -8
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    local.get $y
-    f32.reinterpret_i32
-    f32.div
-    i32.reinterpret_f32
-    i32.const 2147483647
-    i32.and
   )
   (func (;4;) (type 1) (param $x i32) (result i32)
-    i64.const 4
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      f32.neg
+      i32.reinterpret_f32
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    f32.neg
-    i32.reinterpret_f32
   )
   (func (;5;) (type 2) (param $x i64) (param $y i64) (result i64)
-    i64.const 16
-    i64.const 2
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      local.get $y
+      f64.reinterpret_i64
+      f64.div
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    local.get $y
-    f64.reinterpret_i64
-    f64.div
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;6;) (type 2) (param $x i64) (param $y i64) (result i64)
-    i64.const 16
-    i64.const 2
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      local.get $y
+      f64.reinterpret_i64
+      f64.div
+      i64.reinterpret_f64
+      i64.const 9223372036854775807
+      i64.and
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    local.get $y
-    f64.reinterpret_i64
-    f64.div
-    i64.reinterpret_f64
-    i64.const 9223372036854775807
-    i64.and
   )
   (func (;7;) (type 3) (param $x i64) (result i64)
-    i64.const 8
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 4
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      f64.neg
+      i64.reinterpret_f64
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 4
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    f64.neg
-    i64.reinterpret_f64
   )
   (func (;8;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      f32.const 0x0p+0 (;=0;)
+      f32.sub
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    f32.const 0x0p+0 (;=0;)
-    f32.sub
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;9;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      f32.const -0x0p+0 (;=-0;)
+      local.get $x
+      f32.reinterpret_i32
+      f32.sub
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    f32.const -0x0p+0 (;=-0;)
-    local.get $x
-    f32.reinterpret_i32
-    f32.sub
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;10;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      f32.const 0x1p+0 (;=1;)
+      f32.mul
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    f32.const 0x1p+0 (;=1;)
-    f32.mul
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;11;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      f32.const -0x1p+0 (;=-1;)
+      local.get $x
+      f32.reinterpret_i32
+      f32.mul
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    f32.const -0x1p+0 (;=-1;)
-    local.get $x
-    f32.reinterpret_i32
-    f32.mul
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;12;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      f32.const 0x1p+0 (;=1;)
+      f32.div
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    f32.const 0x1p+0 (;=1;)
-    f32.div
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;13;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      f32.const -0x1p+0 (;=-1;)
+      f32.div
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    f32.const -0x1p+0 (;=-1;)
-    f32.div
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (func (;14;) (type 3) (param $x i64) (result i64)
-    i64.const 16
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      f64.const 0x0p+0 (;=0;)
+      f64.sub
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    f64.const 0x0p+0 (;=0;)
-    f64.sub
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;15;) (type 3) (param $x i64) (result i64)
-    i64.const 16
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      f64.const -0x0p+0 (;=-0;)
+      local.get $x
+      f64.reinterpret_i64
+      f64.sub
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    f64.const -0x0p+0 (;=-0;)
-    local.get $x
-    f64.reinterpret_i64
-    f64.sub
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;16;) (type 3) (param $x i64) (result i64)
-    i64.const 16
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      f64.const 0x1p+0 (;=1;)
+      f64.mul
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    f64.const 0x1p+0 (;=1;)
-    f64.mul
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;17;) (type 3) (param $x i64) (result i64)
-    i64.const 16
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      f64.const -0x1p+0 (;=-1;)
+      local.get $x
+      f64.reinterpret_i64
+      f64.mul
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    f64.const -0x1p+0 (;=-1;)
-    local.get $x
-    f64.reinterpret_i64
-    f64.mul
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;18;) (type 3) (param $x i64) (result i64)
-    i64.const 16
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      f64.const 0x1p+0 (;=1;)
+      f64.div
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    f64.const 0x1p+0 (;=1;)
-    f64.div
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;19;) (type 3) (param $x i64) (result i64)
-    i64.const 16
-    i64.const 1
+    block (result i64) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f64.reinterpret_i64
+      f64.const -0x1p+0 (;=-1;)
+      f64.div
+      i64.reinterpret_f64
+      i64.const 9221120237041090560
+      i64.and
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f64.reinterpret_i64
-    f64.const -0x1p+0 (;=-1;)
-    f64.div
-    i64.reinterpret_f64
-    i64.const 9221120237041090560
-    i64.and
   )
   (func (;20;) (type 1) (param $x i32) (result i32)
-    i64.const 8
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 7
+      call 0
+      local.get $x
+      f32.reinterpret_i32
+      f64.promote_f32
+      f32.demote_f64
+      i32.reinterpret_f32
+      i32.const 2143289344
+      i32.and
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 7
-    call 0
-    local.get $x
-    f32.reinterpret_i32
-    f64.promote_f32
-    f32.demote_f64
-    i32.reinterpret_f32
-    i32.const 2143289344
-    i32.and
   )
   (export "f32.arithmetic_nan_bitpattern" (func 2))
   (export "f32.canonical_nan_bitpattern" (func 3))
@@ -5758,48 +7306,60 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $x0 f64) (param $x1 f64) (param $x2 f64) (param $x3 f64) (param $y0 f64) (param $y1 f64) (param $y2 f64) (param $y3 f64) (result f64)
-    i64.const 24
-    i64.const 8
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 8
+      call 1
+      i64.const 15
+      call 0
+      local.get $x0
+      local.get $y0
+      f64.mul
+      local.get $x1
+      local.get $y1
+      f64.mul
+      f64.add
+      local.get $x2
+      local.get $y2
+      f64.mul
+      f64.add
+      local.get $x3
+      local.get $y3
+      f64.mul
+      f64.add
+    end
+    i64.const -24
+    i64.const -8
+    nop
     call 1
-    i64.const 15
-    call 0
-    local.get $x0
-    local.get $y0
-    f64.mul
-    local.get $x1
-    local.get $y1
-    f64.mul
-    f64.add
-    local.get $x2
-    local.get $y2
-    f64.mul
-    f64.add
-    local.get $x3
-    local.get $y3
-    f64.mul
-    f64.add
   )
   (func (;3;) (type 0) (param $x0 f64) (param $x1 f64) (param $x2 f64) (param $x3 f64) (param $y0 f64) (param $y1 f64) (param $y2 f64) (param $y3 f64) (result f64)
-    i64.const 32
-    i64.const 8
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 8
+      call 1
+      i64.const 15
+      call 0
+      local.get $x0
+      local.get $y0
+      f64.mul
+      local.get $x1
+      local.get $y1
+      f64.mul
+      f64.add
+      local.get $x2
+      local.get $y2
+      f64.mul
+      local.get $x3
+      local.get $y3
+      f64.mul
+      f64.add
+      f64.add
+    end
+    i64.const -32
+    i64.const -8
+    nop
     call 1
-    i64.const 15
-    call 0
-    local.get $x0
-    local.get $y0
-    f64.mul
-    local.get $x1
-    local.get $y1
-    f64.mul
-    f64.add
-    local.get $x2
-    local.get $y2
-    f64.mul
-    local.get $x3
-    local.get $y3
-    f64.mul
-    f64.add
-    f64.add
   )
   (export "dot_product_example" (func 2))
   (export "with_binary_sum_collapse" (func 3))
@@ -5823,34 +7383,46 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 12
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      local.get $x
+      f32.mul
+      local.get $y
+      local.get $y
+      f32.mul
+      f32.sub
+      f32.sqrt
+    end
+    i64.const -12
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    local.get $x
-    f32.mul
-    local.get $y
-    local.get $y
-    f32.mul
-    f32.sub
-    f32.sqrt
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 24
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      local.get $x
+      f64.mul
+      local.get $y
+      local.get $y
+      f64.mul
+      f64.sub
+      f64.sqrt
+    end
+    i64.const -24
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    local.get $x
-    f64.mul
-    local.get $y
-    local.get $y
-    f64.mul
-    f64.sub
-    f64.sqrt
   )
   (export "f32.contract2fma" (func 2))
   (export "f64.contract2fma" (func 3))
@@ -5873,28 +7445,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $a f32) (param $b f32) (param $c f32) (result f32)
-    i64.const 12
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $a
+      local.get $b
+      local.get $c
+      f32.div
+      f32.sub
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $a
-    local.get $b
-    local.get $c
-    f32.div
-    f32.sub
   )
   (func (;3;) (type 1) (param $a f64) (param $b f64) (param $c f64) (result f64)
-    i64.const 24
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $a
+      local.get $b
+      local.get $c
+      f64.div
+      f64.sub
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $a
-    local.get $b
-    local.get $c
-    f64.div
-    f64.sub
   )
   (export "f32.division_by_small_number" (func 2))
   (export "f64.division_by_small_number" (func 3))
@@ -5913,30 +7497,42 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $a f32) (param $b f32) (param $c f32) (result f32)
-    i64.const 12
-    i64.const 3
+    block (result f32) ;; label = @1
+      i64.const 12
+      i64.const 3
+      call 1
+      i64.const 6
+      call 0
+      local.get $a
+      local.get $b
+      local.get $c
+      f32.sqrt
+      f32.add
+      f32.mul
+    end
+    i64.const -12
+    i64.const -3
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $a
-    local.get $b
-    local.get $c
-    f32.sqrt
-    f32.add
-    f32.mul
   )
   (func (;3;) (type 1) (param $a f64) (param $b f64) (param $c f64) (result f64)
-    i64.const 24
-    i64.const 3
+    block (result f64) ;; label = @1
+      i64.const 24
+      i64.const 3
+      call 1
+      i64.const 6
+      call 0
+      local.get $a
+      local.get $b
+      local.get $c
+      f64.sqrt
+      f64.add
+      f64.mul
+    end
+    i64.const -24
+    i64.const -3
+    nop
     call 1
-    i64.const 6
-    call 0
-    local.get $a
-    local.get $b
-    local.get $c
-    f64.sqrt
-    f64.add
-    f64.mul
   )
   (export "f32.golden_ratio" (func 2))
   (export "f64.golden_ratio" (func 3))
@@ -5955,38 +7551,50 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $n f32) (result f32)
-    i64.const 16
-    i64.const 1
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 10
+      call 0
+      f32.const 0x1p-1 (;=0.5;)
+      local.get $n
+      local.get $n
+      local.get $n
+      f32.mul
+      f32.const 0x1p+2 (;=4;)
+      f32.add
+      f32.sqrt
+      f32.add
+      f32.mul
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 10
-    call 0
-    f32.const 0x1p-1 (;=0.5;)
-    local.get $n
-    local.get $n
-    local.get $n
-    f32.mul
-    f32.const 0x1p+2 (;=4;)
-    f32.add
-    f32.sqrt
-    f32.add
-    f32.mul
   )
   (func (;3;) (type 1) (param $n f64) (result f64)
-    i64.const 32
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 1
+      call 1
+      i64.const 10
+      call 0
+      f64.const 0x1p-1 (;=0.5;)
+      local.get $n
+      local.get $n
+      local.get $n
+      f64.mul
+      f64.const 0x1p+2 (;=4;)
+      f64.add
+      f64.sqrt
+      f64.add
+      f64.mul
+    end
+    i64.const -32
+    i64.const -1
+    nop
     call 1
-    i64.const 10
-    call 0
-    f64.const 0x1p-1 (;=0.5;)
-    local.get $n
-    local.get $n
-    local.get $n
-    f64.mul
-    f64.const 0x1p+2 (;=4;)
-    f64.add
-    f64.sqrt
-    f64.add
-    f64.mul
   )
   (export "f32.silver_means" (func 2))
   (export "f64.silver_means" (func 3))
@@ -6014,16 +7622,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $four f64) (param $ten f64) (result i32)
-    i64.const 16
-    i64.const 2
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $four
+      local.get $ten
+      f64.div
+      f64.const 0x1.999999999999ap-2 (;=0.4;)
+      f64.lt
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 5
-    call 0
-    local.get $four
-    local.get $ten
-    f64.div
-    f64.const 0x1.999999999999ap-2 (;=0.4;)
-    f64.lt
   )
   (export "point_four" (func 2))
 )
@@ -6040,76 +7654,82 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param i32) (result f64)
     (local f64 f64 f64 f64)
-    i64.const 48
-    i64.const 5
-    call 1
-    i64.const 7
-    call 0
-    f64.const 0x0p+0 (;=0;)
-    local.set 1
-    block ;; label = @1
-      local.get 0
-      i32.const 1
-      i32.lt_s
-      br_if 0 (;@1;)
-      i64.const 4
+    block (result f64) ;; label = @1
+      i64.const 48
+      i64.const 5
+      call 1
+      i64.const 7
       call 0
-      f64.const 0x1p+0 (;=1;)
-      local.set 2
       f64.const 0x0p+0 (;=0;)
-      local.set 3
-      loop ;; label = @2
-        i64.const 45
-        call 0
-        local.get 1
-        local.get 2
-        f64.const 0x1p+3 (;=8;)
-        local.get 3
-        f64.const 0x1p+3 (;=8;)
-        f64.mul
-        local.tee 4
-        f64.const 0x1p+0 (;=1;)
-        f64.add
-        f64.div
-        f64.const 0x1p+2 (;=4;)
-        local.get 4
-        f64.const 0x1p+2 (;=4;)
-        f64.add
-        f64.div
-        f64.sub
-        f64.const 0x1p+1 (;=2;)
-        local.get 4
-        f64.const 0x1.4p+2 (;=5;)
-        f64.add
-        f64.div
-        f64.sub
-        f64.const 0x1p+1 (;=2;)
-        local.get 4
-        f64.const 0x1.8p+2 (;=6;)
-        f64.add
-        f64.div
-        f64.sub
-        f64.mul
-        f64.add
-        local.set 1
-        local.get 3
-        f64.const 0x1p+0 (;=1;)
-        f64.add
-        local.set 3
-        local.get 2
-        f64.const 0x1p-4 (;=0.0625;)
-        f64.mul
-        local.set 2
+      local.set 1
+      block ;; label = @2
         local.get 0
-        i32.const -1
-        i32.add
-        local.tee 0
+        i32.const 1
+        i32.lt_s
         br_if 0 (;@2;)
+        i64.const 4
+        call 0
+        f64.const 0x1p+0 (;=1;)
+        local.set 2
+        f64.const 0x0p+0 (;=0;)
+        local.set 3
+        loop ;; label = @3
+          i64.const 45
+          call 0
+          local.get 1
+          local.get 2
+          f64.const 0x1p+3 (;=8;)
+          local.get 3
+          f64.const 0x1p+3 (;=8;)
+          f64.mul
+          local.tee 4
+          f64.const 0x1p+0 (;=1;)
+          f64.add
+          f64.div
+          f64.const 0x1p+2 (;=4;)
+          local.get 4
+          f64.const 0x1p+2 (;=4;)
+          f64.add
+          f64.div
+          f64.sub
+          f64.const 0x1p+1 (;=2;)
+          local.get 4
+          f64.const 0x1.4p+2 (;=5;)
+          f64.add
+          f64.div
+          f64.sub
+          f64.const 0x1p+1 (;=2;)
+          local.get 4
+          f64.const 0x1.8p+2 (;=6;)
+          f64.add
+          f64.div
+          f64.sub
+          f64.mul
+          f64.add
+          local.set 1
+          local.get 3
+          f64.const 0x1p+0 (;=1;)
+          f64.add
+          local.set 3
+          local.get 2
+          f64.const 0x1p-4 (;=0.0625;)
+          f64.mul
+          local.set 2
+          local.get 0
+          i32.const -1
+          i32.add
+          local.tee 0
+          br_if 0 (;@3;)
+        end
       end
+      i64.const 1
+      call 0
+      local.get 1
     end
-    i64.const 1
-    call 0
-    local.get 1
+    i64.const -48
+    i64.const -5
+    nop
+    call 1
   )
   (export "tau" (func 2))
 )
@@ -6126,34 +7746,46 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f32) (param $y f32) (result f32)
-    i64.const 16
-    i64.const 2
+    block (result f32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      local.get $x
+      f32.const 0x1p+0 (;=1;)
+      f32.add
+      local.get $y
+      f32.const 0x0p+0 (;=0;)
+      f32.lt
+      select
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    local.get $x
-    f32.const 0x1p+0 (;=1;)
-    f32.add
-    local.get $y
-    f32.const 0x0p+0 (;=0;)
-    f32.lt
-    select
   )
   (func (;3;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 32
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      local.get $x
+      local.get $x
+      f64.const 0x1p+0 (;=1;)
+      f64.add
+      local.get $y
+      f64.const 0x0p+0 (;=0;)
+      f64.lt
+      select
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 8
-    call 0
-    local.get $x
-    local.get $x
-    f64.const 0x1p+0 (;=1;)
-    f64.add
-    local.get $y
-    f64.const 0x0p+0 (;=0;)
-    f64.lt
-    select
   )
   (export "f32.no_fold_conditional_inc" (func 2))
   (export "f64.no_fold_conditional_inc" (func 3))

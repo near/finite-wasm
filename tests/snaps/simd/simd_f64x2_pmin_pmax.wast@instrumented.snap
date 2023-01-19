@@ -5,24 +5,36 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param v128 v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      local.get 1
+      f64x2.pmin
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    local.get 1
-    f64x2.pmin
   )
   (func (;3;) (type 0) (param v128 v128) (result v128)
-    i64.const 32
-    i64.const 2
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      local.get 1
+      f64x2.pmax
+    end
+    i64.const -32
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get 0
-    local.get 1
-    f64x2.pmax
   )
   (export "f64x2.pmin" (func 2))
   (export "f64x2.pmax" (func 3))

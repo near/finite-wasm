@@ -23,4 +23,4 @@ jobs:
       - run: rustup update --no-self-update stable
       - run: opam install ocamlbuild
       - run: opam exec -- make -Cinterpreter wasm
-      - run: cargo test
+      - run: cargo test --all-features

@@ -126,6 +126,8 @@ pub(crate) enum Error {
     WriteTempTest(#[source] std::io::Error, PathBuf),
     #[error("interpreter (= {0}) and analysis (= {1}) disagree on gas consumption")]
     GasMismatch(i64, i64),
+    #[error("processing the interpreter output panicked")]
+    InterpreterOutputProcessingPanic,
 }
 
 impl Error {
@@ -148,6 +150,7 @@ impl Error {
             | Error::InstrumentModulePanic(_, _)
             | Error::Instrument(_)
             | Error::GasMismatch(_, _)
+            | Error::InterpreterOutputProcessingPanic
             | Error::WriteTempTest(_, _) => {}
             Error::ParseBuffer(s) => set_wast_path(s, path),
             Error::ParseWast(s) => set_wast_path(s, path),
@@ -275,7 +278,10 @@ impl<'a> TestContext {
 
     fn validate_interpreter_output(&mut self, interpreter_out: &str) -> Result<(), Error> {
         let (interpreter_gas, instrumentation_gas) =
-            self.process_interpreter_output(interpreter_out)?;
+            std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                self.process_interpreter_output(interpreter_out)
+            }))
+            .map_err(|_| Error::InterpreterOutputProcessingPanic)??;
         if interpreter_gas != instrumentation_gas {
             return Err(Error::GasMismatch(interpreter_gas, instrumentation_gas));
         }
@@ -292,6 +298,8 @@ impl<'a> TestContext {
 
         let mut interpreter_gas = 0;
         let mut instrumentation_gas = 0;
+        let mut total_stack_used = 0;
+        let mut max_stack_used = 0;
         for line in interpreter_out.lines() {
             let Some((kind, rest)) = line.split_once(": ") else {
                 continue;
@@ -310,10 +318,20 @@ impl<'a> TestContext {
                     let Some((l, r)) = rest.split_once(" ") else {
                         continue;
                     };
-                    let _ops_size = parse_prefix_num(l.as_bytes()).expect("TODO");
+                    let ops_size = parse_prefix_num(l.as_bytes()).expect("TODO");
                     let frame_size = parse_prefix_num(r.as_bytes()).expect("TODO");
                     // The reference interpreter charges 1 gas for each local and argument.
                     instrumentation_gas += frame_size;
+                    total_stack_used += ops_size + frame_size;
+                    max_stack_used = std::cmp::max(total_stack_used, max_stack_used);
+                }
+                "return_stack" => {
+                    let Some((l, r)) = rest.split_once(" ") else {
+                        continue;
+                    };
+                    let ops_size = parse_prefix_num(l.as_bytes()).expect("TODO");
+                    let frame_size = parse_prefix_num(r.as_bytes()).expect("TODO");
+                    total_stack_used -= ops_size + frame_size;
                 }
                 _ => {
                     continue;
@@ -447,8 +465,11 @@ impl<'a> TestContext {
               (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (type $gas_ty)))
               (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (type $stack_ty)))
               (func $main (export "main")
-                (call $finite_wasm_stack (i64.const 1) (i64.const {charge_for_stack}))
-                (call $finite_wasm_gas (i64.const {charge_for_gas}))
+                block
+                    (call $finite_wasm_stack (i64.const 1) (i64.const {charge_for_stack}))
+                    (call $finite_wasm_gas (i64.const {charge_for_gas}))
+                end
+                (call $finite_wasm_stack (i64.const -1) (i64.const -{charge_for_stack}) (nop))
               )
             )
             (assert_return (invoke "main"))

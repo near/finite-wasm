@@ -5,112 +5,184 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i16x8.extend_high_i8x16_s
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i16x8.extend_high_i8x16_s
   )
   (func (;3;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i16x8.extend_high_i8x16_u
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i16x8.extend_high_i8x16_u
   )
   (func (;4;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i16x8.extend_low_i8x16_s
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i16x8.extend_low_i8x16_s
   )
   (func (;5;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i16x8.extend_low_i8x16_u
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i16x8.extend_low_i8x16_u
   )
   (func (;6;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i32x4.extend_high_i16x8_s
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i32x4.extend_high_i16x8_s
   )
   (func (;7;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i32x4.extend_high_i16x8_u
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i32x4.extend_high_i16x8_u
   )
   (func (;8;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i32x4.extend_low_i16x8_s
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i32x4.extend_low_i16x8_s
   )
   (func (;9;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i32x4.extend_low_i16x8_u
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i32x4.extend_low_i16x8_u
   )
   (func (;10;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i64x2.extend_high_i32x4_s
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i64x2.extend_high_i32x4_s
   )
   (func (;11;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i64x2.extend_high_i32x4_u
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i64x2.extend_high_i32x4_u
   )
   (func (;12;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i64x2.extend_low_i32x4_s
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i64x2.extend_low_i32x4_s
   )
   (func (;13;) (type 0) (param v128) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
+      i64x2.extend_low_i32x4_u
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get 0
-    i64x2.extend_low_i32x4_u
   )
   (export "i16x8.extend_high_i8x16_s" (func 2))
   (export "i16x8.extend_high_i8x16_u" (func 3))

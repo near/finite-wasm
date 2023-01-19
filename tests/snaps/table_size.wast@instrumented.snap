@@ -3,99 +3,151 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
+  (type (;5;) (func))
+  (type (;6;) (func))
+  (type (;7;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      table.size $t0
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    table.size $t0
   )
   (func (;3;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      table.size $t1
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    table.size $t1
   )
   (func (;4;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      table.size $t2
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    table.size $t2
   )
   (func (;5;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      table.size $t3
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    table.size $t3
   )
   (func (;6;) (type 1) (param $sz i32)
-    i64.const 36
-    i64.const 1
+    block (type 4) ;; label = @1
+      i64.const 36
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      ref.null extern
+      local.get $sz
+      i64.const 1
+      call 0
+      table.grow $t0
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -36
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    ref.null extern
-    local.get $sz
-    i64.const 1
-    call 0
-    table.grow $t0
-    i64.const 1
-    call 0
-    drop
   )
   (func (;7;) (type 1) (param $sz i32)
-    i64.const 36
-    i64.const 1
+    block (type 5) ;; label = @1
+      i64.const 36
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      ref.null extern
+      local.get $sz
+      i64.const 1
+      call 0
+      table.grow $t1
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -36
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    ref.null extern
-    local.get $sz
-    i64.const 1
-    call 0
-    table.grow $t1
-    i64.const 1
-    call 0
-    drop
   )
   (func (;8;) (type 1) (param $sz i32)
-    i64.const 36
-    i64.const 1
+    block (type 6) ;; label = @1
+      i64.const 36
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      ref.null extern
+      local.get $sz
+      i64.const 1
+      call 0
+      table.grow $t2
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -36
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    ref.null extern
-    local.get $sz
-    i64.const 1
-    call 0
-    table.grow $t2
-    i64.const 1
-    call 0
-    drop
   )
   (func (;9;) (type 1) (param $sz i32)
-    i64.const 36
-    i64.const 1
+    block (type 7) ;; label = @1
+      i64.const 36
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      ref.null extern
+      local.get $sz
+      i64.const 1
+      call 0
+      table.grow $t3
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -36
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    ref.null extern
-    local.get $sz
-    i64.const 1
-    call 0
-    table.grow $t3
-    i64.const 1
-    call 0
-    drop
   )
   (table $t0 (;0;) 0 externref)
   (table $t1 (;1;) 1 externref)

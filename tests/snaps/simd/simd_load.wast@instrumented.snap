@@ -5,13 +5,19 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
   )
   (memory (;0;) 1)
   (export "v128.load" (func 2))
@@ -31,16 +37,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result i32)
-    i64.const 16
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 1
+      call 0
+      i8x16.extract_lane_s 0
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 1
-    call 0
-    i8x16.extract_lane_s 0
   )
   (memory (;0;) 1)
   (export "as-i8x16_extract_lane_s-value/0" (func 2))
@@ -55,20 +67,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 32
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load offset=16
+      i64.const 1
+      call 0
+      i8x16.eq
+    end
+    i64.const -32
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load offset=16
-    i64.const 1
-    call 0
-    i8x16.eq
   )
   (memory (;0;) 1)
   (export "as-i8x16.eq-operand" (func 2))
@@ -84,28 +102,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 1
+      call 0
+      v128.not
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 1
-    call 0
-    v128.not
   )
   (func (;3;) (type 1) (result i32)
-    i64.const 16
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 1
+      call 0
+      i8x16.all_true
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 1
-    call 0
-    i8x16.all_true
   )
   (memory (;0;) 1)
   (export "as-v128.not-operand" (func 2))
@@ -122,24 +152,30 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 48
+    block (result v128) ;; label = @1
+      i64.const 48
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 16
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 32
+      v128.load
+      i64.const 1
+      call 0
+      v128.bitselect
+    end
+    i64.const -48
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 16
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 32
-    v128.load
-    i64.const 1
-    call 0
-    v128.bitselect
   )
   (memory (;0;) 1)
   (export "as-v128.bitselect-operand" (func 2))
@@ -156,17 +192,23 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 20
+    block (result v128) ;; label = @1
+      i64.const 20
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      i8x16.shl
+    end
+    i64.const -20
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    i8x16.shl
   )
   (memory (;0;) 1)
   (export "as-i8x16.shl-operand" (func 2))
@@ -181,25 +223,31 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 32
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 16
+      v128.load
+      i64.const 3
+      call 0
+      i8x16.add
+      i32.const 16
+      v128.load
+      i64.const 1
+      call 0
+      i8x16.sub
+    end
+    i64.const -32
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 16
-    v128.load
-    i64.const 3
-    call 0
-    i8x16.add
-    i32.const 16
-    v128.load
-    i64.const 1
-    call 0
-    i8x16.sub
   )
   (memory (;0;) 1)
   (export "as-add/sub-operand" (func 2))
@@ -215,20 +263,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 32
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 16
+      v128.load
+      i64.const 1
+      call 0
+      f32x4.mul
+    end
+    i64.const -32
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 16
-    v128.load
-    i64.const 1
-    call 0
-    f32x4.mul
   )
   (memory (;0;) 1)
   (export "as-f32x4.mul-operand" (func 2))
@@ -244,16 +298,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 1
+      call 0
+      f32x4.abs
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 1
-    call 0
-    f32x4.abs
   )
   (memory (;0;) 1)
   (export "as-f32x4.abs-operand" (func 2))
@@ -268,20 +328,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 32
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load offset=16
+      i64.const 1
+      call 0
+      f32x4.min
+    end
+    i64.const -32
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load offset=16
-    i64.const 1
-    call 0
-    f32x4.min
   )
   (memory (;0;) 1)
   (export "as-f32x4.min-operand" (func 2))
@@ -297,16 +363,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 1
+      call 0
+      i32x4.trunc_sat_f32x4_s
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 1
-    call 0
-    i32x4.trunc_sat_f32x4_s
   )
   (memory (;0;) 1)
   (export "as-i32x4.trunc_sat_f32x4_s-operand" (func 2))
@@ -321,16 +393,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 1
+      call 0
+      f32x4.convert_i32x4_u
+    end
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 1
-    call 0
-    f32x4.convert_i32x4_u
   )
   (memory (;0;) 1)
   (export "as-f32x4.convert_i32x4_u-operand" (func 2))
@@ -345,20 +423,26 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 32
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load offset=15
+      i64.const 1
+      call 0
+      i8x16.swizzle
+    end
+    i64.const -32
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    v128.load
-    i64.const 2
-    call 0
-    i32.const 1
-    v128.load offset=15
-    i64.const 1
-    call 0
-    i8x16.swizzle
   )
   (memory (;0;) 1)
   (export "as-i8x16.swizzle-operand" (func 2))
@@ -374,18 +458,24 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 3
-    call 0
     block (result v128) ;; label = @1
-      i32.const 0
-      v128.load
-      i64.const 1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 3
       call 0
-      br 0 (;@1;)
+      block (result v128) ;; label = @2
+        i32.const 0
+        v128.load
+        i64.const 1
+        call 0
+        br 0 (;@2;)
+      end
     end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
   )
   (memory (;0;) 1)
   (export "as-br-value" (func 2))

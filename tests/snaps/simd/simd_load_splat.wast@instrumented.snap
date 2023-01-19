@@ -5,256 +5,424 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat
   )
   (func (;3;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat
   )
   (func (;4;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat
   )
   (func (;5;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat
   )
   (func (;6;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat
   )
   (func (;7;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat
   )
   (func (;8;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat offset=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat offset=1
   )
   (func (;9;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat offset=2
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat offset=2
   )
   (func (;10;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat offset=15
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat offset=15
   )
   (func (;11;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat
   )
   (func (;12;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat align=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat align=1
   )
   (func (;13;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat offset=1 align=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat offset=1 align=1
   )
   (func (;14;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat offset=2 align=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat offset=2 align=1
   )
   (func (;15;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat offset=15
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat offset=15
   )
   (func (;16;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat
   )
   (func (;17;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat align=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat align=1
   )
   (func (;18;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat offset=1 align=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat offset=1 align=1
   )
   (func (;19;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat offset=2 align=2
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat offset=2 align=2
   )
   (func (;20;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat offset=15
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat offset=15
   )
   (func (;21;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat
   )
   (func (;22;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat align=1
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat align=1
   )
   (func (;23;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat offset=1 align=2
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat offset=1 align=2
   )
   (func (;24;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat offset=2 align=4
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat offset=2 align=4
   )
   (func (;25;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat offset=15
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat offset=15
   )
   (func (;26;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load8_splat offset=65536
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load8_splat offset=65536
   )
   (func (;27;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load16_splat offset=65535
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load16_splat offset=65535
   )
   (func (;28;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load32_splat offset=65533
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load32_splat offset=65533
   )
   (func (;29;) (type 0) (param $address i32) (result v128)
-    i64.const 16
-    i64.const 1
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $address
+      v128.load64_splat offset=65529
+    end
+    i64.const -16
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $address
-    v128.load64_splat offset=65529
   )
   (memory (;0;) 1)
   (export "v128.load8_splat" (func 2))
@@ -411,160 +579,232 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result v128)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 4
-    call 0
     block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
-        i32.const 0
-        v128.load8_splat
+        block (result v128) ;; label = @3
+          i32.const 0
+          v128.load8_splat
+        end
       end
     end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
   )
   (func (;3;) (type 0) (result v128)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 4
-    call 0
     block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
-        i32.const 1
-        v128.load16_splat
+        block (result v128) ;; label = @3
+          i32.const 1
+          v128.load16_splat
+        end
       end
     end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
   )
   (func (;4;) (type 0) (result v128)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 4
-    call 0
     block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
-        i32.const 2
-        v128.load32_splat
+        block (result v128) ;; label = @3
+          i32.const 2
+          v128.load32_splat
+        end
       end
     end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
   )
   (func (;5;) (type 0) (result v128)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 4
-    call 0
     block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 4
+      call 0
       block (result v128) ;; label = @2
-        i32.const 9
-        v128.load64_splat
+        block (result v128) ;; label = @3
+          i32.const 9
+          v128.load64_splat
+        end
       end
     end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
   )
   (func (;6;) (type 0) (result v128)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 3
-    call 0
     block (result v128) ;; label = @1
-      i32.const 3
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block (result v128) ;; label = @2
+        i32.const 3
+        v128.load8_splat
+        i64.const 1
+        call 0
+        br 0 (;@2;)
+      end
+    end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
+  )
+  (func (;7;) (type 0) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block (result v128) ;; label = @2
+        i32.const 4
+        v128.load16_splat
+        i64.const 1
+        call 0
+        br 0 (;@2;)
+      end
+    end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
+  )
+  (func (;8;) (type 0) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block (result v128) ;; label = @2
+        i32.const 5
+        v128.load32_splat
+        i64.const 1
+        call 0
+        br 0 (;@2;)
+      end
+    end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
+  )
+  (func (;9;) (type 0) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block (result v128) ;; label = @2
+        i32.const 10
+        v128.load64_splat
+        i64.const 1
+        call 0
+        br 0 (;@2;)
+      end
+    end
+    i64.const -16
+    i64.const 0
+    nop
+    call 1
+  )
+  (func (;10;) (type 1) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 6
       v128.load8_splat
       i64.const 1
       call 0
-      br 0 (;@1;)
+      i8x16.extract_lane_s 0
     end
-  )
-  (func (;7;) (type 0) (result v128)
-    i64.const 16
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 3
-    call 0
-    block (result v128) ;; label = @1
-      i32.const 4
+  )
+  (func (;11;) (type 1) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 7
       v128.load16_splat
       i64.const 1
       call 0
-      br 0 (;@1;)
+      i8x16.extract_lane_s 0
     end
-  )
-  (func (;8;) (type 0) (result v128)
-    i64.const 16
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 3
-    call 0
-    block (result v128) ;; label = @1
-      i32.const 5
+  )
+  (func (;12;) (type 1) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 8
       v128.load32_splat
       i64.const 1
       call 0
-      br 0 (;@1;)
+      i8x16.extract_lane_s 0
     end
-  )
-  (func (;9;) (type 0) (result v128)
-    i64.const 16
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 3
-    call 0
-    block (result v128) ;; label = @1
-      i32.const 10
+  )
+  (func (;13;) (type 1) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 11
       v128.load64_splat
       i64.const 1
       call 0
-      br 0 (;@1;)
+      i8x16.extract_lane_s 0
     end
-  )
-  (func (;10;) (type 1) (result i32)
-    i64.const 16
+    i64.const -16
     i64.const 0
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 6
-    v128.load8_splat
-    i64.const 1
-    call 0
-    i8x16.extract_lane_s 0
-  )
-  (func (;11;) (type 1) (result i32)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 2
-    call 0
-    i32.const 7
-    v128.load16_splat
-    i64.const 1
-    call 0
-    i8x16.extract_lane_s 0
-  )
-  (func (;12;) (type 1) (result i32)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 2
-    call 0
-    i32.const 8
-    v128.load32_splat
-    i64.const 1
-    call 0
-    i8x16.extract_lane_s 0
-  )
-  (func (;13;) (type 1) (result i32)
-    i64.const 16
-    i64.const 0
-    call 1
-    i64.const 2
-    call 0
-    i32.const 11
-    v128.load64_splat
-    i64.const 1
-    call 0
-    i8x16.extract_lane_s 0
   )
   (memory (;0;) 1)
   (export "v128.load8_splat-in-block" (func 2))

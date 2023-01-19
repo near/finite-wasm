@@ -6,32 +6,50 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      f64.abs
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    f64.abs
   )
   (func (;3;) (type 0) (param $x f64) (result f64)
-    i64.const 8
-    i64.const 1
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $x
+      f64.neg
+    end
+    i64.const -8
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    local.get $x
-    f64.neg
   )
   (func (;4;) (type 1) (param $x f64) (param $y f64) (result f64)
-    i64.const 16
-    i64.const 2
+    block (result f64) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
+      f64.copysign
+    end
+    i64.const -16
+    i64.const -2
+    nop
     call 1
-    i64.const 3
-    call 0
-    local.get $x
-    local.get $y
-    f64.copysign
   )
   (export "abs" (func 2))
   (export "neg" (func 3))

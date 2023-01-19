@@ -8,31 +8,40 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
   (func (;2;) (type 0) (param $cond i32) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 0
+      i64.const 1
+      call 1
+      i64.const 1
+      call 0
+      unreachable
+      i32.const 0
+      local.get $cond
+      select
+    end
     i64.const 0
-    i64.const 1
+    i64.const -1
+    nop
     call 1
-    i64.const 1
-    call 0
-    unreachable
-    i32.const 0
-    local.get $cond
-    select
   )
   (func (;3;) (type 0) (param $cond i32) (result i32)
-    i64.const 4
-    i64.const 1
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      unreachable
+      local.get $cond
+      select
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 2
-    call 0
-    i32.const 0
-    unreachable
-    local.get $cond
-    select
   )
   (func (;4;) (type 1)
-    i64.const 0
-    i64.const 0
-    call 1
     i64.const 1
     call 0
     unreachable
@@ -56,9 +65,6 @@
     unreachable
   )
   (func (;5;) (type 2) (result i32)
-    i64.const 0
-    i64.const 0
-    call 1
     i64.const 1
     call 0
     unreachable
@@ -66,9 +72,6 @@
     i32.add
   )
   (func (;6;) (type 3) (result i64)
-    i64.const 0
-    i64.const 0
-    call 1
     i64.const 1
     call 0
     unreachable
@@ -78,9 +81,6 @@
     i64.add
   )
   (func (;7;) (type 1)
-    i64.const 0
-    i64.const 0
-    call 1
     i64.const 1
     call 0
     unreachable
@@ -89,9 +89,6 @@
     drop
   )
   (func (;8;) (type 1)
-    i64.const 0
-    i64.const 0
-    call 1
     i64.const 1
     call 0
     unreachable
@@ -121,25 +118,31 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (func (;2;) (type 0)
-    i64.const 8
-    i64.const 0
-    call 1
-    i64.const 3
-    call 0
-    block (result f64) ;; label = @1
-      block (result f32) ;; label = @2
-        unreachable
-        i32.const 1
-        br_table 0 (;@2;) 1 (;@1;) 1 (;@1;)
+    block ;; label = @1
+      i64.const 8
+      i64.const 0
+      call 1
+      i64.const 3
+      call 0
+      block (result f64) ;; label = @2
+        block (result f32) ;; label = @3
+          unreachable
+          i32.const 1
+          br_table 0 (;@3;) 1 (;@2;) 1 (;@2;)
+        end
+        i64.const 2
+        call 0
+        drop
+        f64.const 0x0p+0 (;=0;)
       end
-      i64.const 2
+      i64.const 1
       call 0
       drop
-      f64.const 0x0p+0 (;=0;)
     end
-    i64.const 1
-    call 0
-    drop
+    i64.const -8
+    i64.const 0
+    nop
+    call 1
   )
   (export "meet-bottom" (func 2))
 )

@@ -263,7 +263,7 @@ impl AnalysisOutcome {
     ///
     /// This function will modify the provided core wasm module to introduce two imports:
     ///
-    /// * `{env}.finite_wasm_gas`: `(func (params i64))
+    /// * `{env}.finite_wasm_gas`: `(func (params u64))
     /// * `{env}.finite_wasm_stack`: `(func (params i64 i64))
     ///
     /// These functions must be provided by the embedder. The `finite_wasm_gas` should reduce the
@@ -272,12 +272,12 @@ impl AnalysisOutcome {
     /// specification.
     ///
     /// The `finite_wasm_stack` is called with two arguments. First is the size by which the
-    /// operands stack increases. Second is the size of the stack reserved by the function frame.
-    /// This host function must keep track of the current total stack height and raise a trap if
-    /// the stack limit is exceeded.
+    /// operands stack increases, or decreases if the argument is negative. Second is the size of
+    /// the stack reserved or released by the function frame. This host function must keep track of
+    /// the current total stack height and raise a trap if the stack limit is exceeded.
     #[cfg(feature = "instrument")]
-    pub fn instrument(&self, env: &str, wasm: &[u8]) -> Result<Vec<u8>, InstrumentError> {
-        instrument::instrument(wasm, env, self)
+    pub fn instrument(&self, import_env: &str, wasm: &[u8]) -> Result<Vec<u8>, InstrumentError> {
+        instrument::InstrumentContext::new(wasm, import_env, self).run()
     }
 }
 

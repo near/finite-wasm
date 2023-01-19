@@ -3,29 +3,42 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      memory.size
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 4
-    i64.const 1
+    block (type 4) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 1
+      call 0
+      local.get $sz
+      i64.const 1
+      call 0
+      memory.grow
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 1
-    call 0
-    local.get $sz
-    i64.const 1
-    call 0
-    memory.grow
-    i64.const 1
-    call 0
-    drop
   )
   (memory (;0;) 0)
   (export "size" (func 2))
@@ -44,29 +57,42 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      memory.size
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 4
-    i64.const 1
+    block (type 4) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 1
+      call 0
+      local.get $sz
+      i64.const 1
+      call 0
+      memory.grow
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 1
-    call 0
-    local.get $sz
-    i64.const 1
-    call 0
-    memory.grow
-    i64.const 1
-    call 0
-    drop
   )
   (memory (;0;) 1)
   (export "size" (func 2))
@@ -85,29 +111,42 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      memory.size
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 4
-    i64.const 1
+    block (type 4) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 1
+      call 0
+      local.get $sz
+      i64.const 1
+      call 0
+      memory.grow
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 1
-    call 0
-    local.get $sz
-    i64.const 1
-    call 0
-    memory.grow
-    i64.const 1
-    call 0
-    drop
   )
   (memory (;0;) 0 2)
   (export "size" (func 2))
@@ -130,29 +169,42 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (func (;2;) (type 0) (result i32)
-    i64.const 4
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call 1
+      i64.const 1
+      call 0
+      memory.size
+    end
+    i64.const -4
     i64.const 0
+    nop
     call 1
-    i64.const 1
-    call 0
-    memory.size
   )
   (func (;3;) (type 1) (param $sz i32)
-    i64.const 4
-    i64.const 1
+    block (type 4) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 1
+      call 0
+      local.get $sz
+      i64.const 1
+      call 0
+      memory.grow
+      i64.const 1
+      call 0
+      drop
+    end
+    i64.const -4
+    i64.const -1
+    nop
     call 1
-    i64.const 1
-    call 0
-    local.get $sz
-    i64.const 1
-    call 0
-    memory.grow
-    i64.const 1
-    call 0
-    drop
   )
   (memory (;0;) 3 8)
   (export "size" (func 2))
