@@ -5,8 +5,6 @@ use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitStatus;
 
-use crate::instrument;
-
 #[derive(Debug, PartialEq)]
 enum Line {
     Equal(String),
@@ -120,8 +118,10 @@ pub(crate) enum Error {
     AnalyseModule(#[source] finite_wasm::Error, String, PathBuf),
     #[error("could not analyze the module {0} at {1:?}, analysis panicked")]
     AnalyseModulePanic(String, PathBuf),
+    #[error("could not instrument the module {0} at {1:?}, instrumentation code panicked")]
+    InstrumentModulePanic(String, PathBuf),
     #[error("could not instrument the test module")]
-    Instrument(#[source] instrument::Error),
+    Instrument(#[source] finite_wasm::InstrumentError),
     #[error("could not write out the instrumented test module to a temporary file at {1:?}")]
     WriteTempTest(#[source] std::io::Error, PathBuf),
     #[error("interpreter (= {0}) and analysis (= {1}) disagree on gas consumption")]
@@ -145,6 +145,7 @@ impl Error {
             | Error::DiffSnap(_)
             | Error::AnalyseModule(_, _, _)
             | Error::AnalyseModulePanic(_, _)
+            | Error::InstrumentModulePanic(_, _)
             | Error::Instrument(_)
             | Error::GasMismatch(_, _)
             | Error::WriteTempTest(_, _) => {}
@@ -427,7 +428,10 @@ impl<'a> TestContext {
         })
         .map_err(|_| Error::AnalyseModulePanic(id.into(), self.test_path.clone()))?
         .map_err(|e| Error::AnalyseModule(e, id.into(), self.test_path.clone()))?;
-        self.instrument(&code, results).map_err(Error::Instrument)
+
+        std::panic::catch_unwind(|| results.instrument("spectest", code))
+            .map_err(|_| Error::InstrumentModulePanic(id.into(), self.test_path.clone()))?
+            .map_err(Error::Instrument)
     }
 
     fn self_test_interpreter(&mut self) -> Result<(), Error> {

@@ -17,6 +17,7 @@ WebAssembly programs in a runtime-agnostic way.
 name = "wast"
 path = "src/wast_tests/runner.rs"
 harness = false
+required-features = ["instrument"]
 
 [dependencies]
 bitvec = "1.0.1"
@@ -26,11 +27,17 @@ wasmprinter = "0.2"
 thiserror = "1"
 num-traits = "0.2.15"
 prefix-sum-vec = "0.1.2"
+wasm-encoder = { version = "0.20", optional = true }
 
 [dev-dependencies]
 walkdir = "2.3.0"
-thiserror = "1.0.0"
 wast = "52"
-wasm-encoder = "0.20"
 atoi = "2.0.0"
 rayon = "1.6.1"
+
+[features]
+instrument = ["wasm-encoder"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "finite_wasm_docs"]

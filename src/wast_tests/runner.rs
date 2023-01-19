@@ -4,7 +4,6 @@ use std::ffi::OsStr;
 use std::io::{self, Write};
 use std::path::PathBuf;
 
-mod instrument;
 #[cfg(test)]
 mod test;
 

@@ -1,6 +1,9 @@
 #![doc = include_str!("../README.mkd")]
+#![cfg_attr(finite_wasm_docs, feature(doc_auto_cfg))]
 
 use gas::InstrumentationKind;
+#[cfg(feature = "instrument")]
+pub use instrument::Error as InstrumentError;
 /// A re-export of the prefix_sum_vec crate. Use in implementing [`max_stack::SizeConfig`].
 pub use prefix_sum_vec;
 use visitors::VisitOperatorWithOffset;
@@ -11,6 +14,8 @@ use wasmparser::BinaryReaderError;
 
 pub mod gas;
 mod instruction_categories;
+#[cfg(feature = "instrument")]
+mod instrument;
 pub mod max_stack;
 mod visitors;
 
@@ -232,10 +237,48 @@ pub struct AnalysisOutcome {
     /// will differ, but will never exceed the number here.
     pub function_operand_stack_sizes: Vec<u64>,
 
-    /// The table of offsets for gas instrumentation points, *excluding* imports.
+    /// The table of offsets for gas instrumentation points.
+    ///
+    /// This vector is indexed by entries in the code section (that is, it is indexed by the
+    /// function index, *excluding* imports).
     pub gas_offsets: Vec<Box<[usize]>>,
+    /// The table of gas costs for gas instrumentation points.
+    ///
+    /// This vector is indexed by entries in the code section (that is, it is indexed by the
+    /// function index, *excluding* imports).
     pub gas_costs: Vec<Box<[u64]>>,
+    /// The table of instrumentation kinds for gas instrumentation points.
+    ///
+    /// This vector is indexed by entries in the code section (that is, it is indexed by the
+    /// function index, *excluding* imports).
     pub gas_kinds: Vec<Box<[InstrumentationKind]>>,
+}
+
+impl AnalysisOutcome {
+    /// Modify the provided `wasm` module to enforce gas and stack limits.
+    ///
+    /// The instrumentation approach provided by this crate has been largely tailored for this
+    /// crate’s own testing needs and may not be applicable to every use-case. However the code is
+    /// reasonably high quality that it might be useful for development purposes.
+    ///
+    /// This function will modify the provided core wasm module to introduce two imports:
+    ///
+    /// * `{env}.finite_wasm_gas`: `(func (params i64))
+    /// * `{env}.finite_wasm_stack`: `(func (params i64 i64))
+    ///
+    /// These functions must be provided by the embedder. The `finite_wasm_gas` should reduce the
+    /// pool of remaining gas by the only argument supplied and trap the execution when the gas is
+    /// exhausted. When the gas is exhausted the reamining gas pool must be set to 0, as per the
+    /// specification.
+    ///
+    /// The `finite_wasm_stack` is called with two arguments. First is the size by which the
+    /// operands stack increases. Second is the size of the stack reserved by the function frame.
+    /// This host function must keep track of the current total stack height and raise a trap if
+    /// the stack limit is exceeded.
+    #[cfg(feature = "instrument")]
+    pub fn instrument(&self, env: &str, wasm: &[u8]) -> Result<Vec<u8>, InstrumentError> {
+        instrument::instrument(wasm, env, self)
+    }
 }
 
 #[cfg(test)]
