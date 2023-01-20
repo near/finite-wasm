@@ -169,15 +169,35 @@ impl<'a> Config<'a> for NoConfig {
     }
 }
 
-// impl<'a, C: StackConfig<'a>> StackConfig for &'a C {
-//     fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
-//         C::size_of_value(*self, ty)
-//     }
-//
-//     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
-//         C::size_of_function_activation(*self, locals)
-//     }
-// }
+impl<'a, C: SizeConfig + ?Sized> SizeConfig for &'a C {
+    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
+        C::size_of_value(*self, ty)
+    }
+
+    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
+        C::size_of_function_activation(*self, locals)
+    }
+}
+
+impl<'a, C: SizeConfig + ?Sized> SizeConfig for &'a mut C {
+    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
+        C::size_of_value(*self, ty)
+    }
+
+    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
+        C::size_of_function_activation(*self, locals)
+    }
+}
+
+impl<'a, C: SizeConfig + ?Sized> SizeConfig for Box<C> {
+    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
+        C::size_of_value(&*self, ty)
+    }
+
+    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
+        C::size_of_function_activation(&*self, locals)
+    }
+}
 
 #[derive(Debug)]
 pub(crate) struct Frame {

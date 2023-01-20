@@ -254,3 +254,67 @@ pub struct AnalysisOutcome {
     pub gas_costs: Vec<Box<[u64]>>,
     pub gas_kinds: Vec<Box<[InstrumentationKind]>>,
 }
+
+#[cfg(test)]
+pub(crate) mod tests {
+    pub(crate) struct SizeConfig {
+        pub(crate) value_size: u8,
+        pub(crate) local_size: u8,
+    }
+
+    impl<'a> crate::max_stack::SizeConfig for SizeConfig {
+        fn size_of_value(&self, _: wasmparser::ValType) -> u8 {
+            self.value_size
+        }
+
+        fn size_of_function_activation(
+            &self,
+            locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
+        ) -> u64 {
+            let locals = locals.max_index().map(|&v| v + 1).unwrap_or(0);
+            u64::from(locals) * u64::from(self.local_size)
+        }
+    }
+
+    impl Default for SizeConfig {
+        fn default() -> Self {
+            SizeConfig {
+                value_size: 9,
+                local_size: 5,
+            }
+        }
+    }
+
+    macro_rules! define_fee {
+        ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+            $(
+                fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { 1 }
+            )*
+        }
+    }
+
+    struct GasConfig;
+    impl<'a> wasmparser::VisitOperator<'a> for GasConfig {
+        type Output = u64;
+        wasmparser::for_each_operator!(define_fee);
+    }
+
+    #[test]
+    fn dynamic_dispatch_is_possible() {
+        let dynamic_size_config = SizeConfig::default();
+        let dynamic_gas_config = GasConfig;
+        let _ = crate::Analysis::new()
+            .with_stack(&dynamic_size_config as &dyn crate::max_stack::SizeConfig)
+            .analyze(b"");
+
+        let _ = crate::Analysis::new()
+            .with_stack(Box::new(dynamic_size_config) as Box<dyn crate::max_stack::SizeConfig>)
+            .analyze(b"");
+
+        let _ = crate::Analysis::new()
+            // FIXME: Not yet, needs a wasmparser crate version bump
+            // FIXME: due to current limitations in the borrow checker, this implies a `'static` lifetime
+            .with_gas(/*&mut*/ dynamic_gas_config)
+            .analyze(b"");
+    }
+}

@@ -1,35 +1,7 @@
-use crate::max_stack::Config;
-
 use super::{Error, Frame, FunctionState, ModuleState};
+use crate::max_stack::Config;
+use crate::tests::SizeConfig as TestConfig;
 use wasmparser::{BlockType, ValType};
-
-struct TestConfig {
-    value_size: u8,
-    local_size: u8,
-}
-
-impl<'a> super::SizeConfig for TestConfig {
-    fn size_of_value(&self, _: wasmparser::ValType) -> u8 {
-        self.value_size
-    }
-
-    fn size_of_function_activation(
-        &self,
-        locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
-    ) -> u64 {
-        let locals = locals.max_index().map(|&v| v + 1).unwrap_or(0);
-        u64::from(locals) * u64::from(self.local_size)
-    }
-}
-
-impl Default for TestConfig {
-    fn default() -> Self {
-        TestConfig {
-            value_size: 9,
-            local_size: 5,
-        }
-    }
-}
 
 fn new_state() -> (TestConfig, ModuleState, FunctionState) {
     (
@@ -38,53 +10,6 @@ fn new_state() -> (TestConfig, ModuleState, FunctionState) {
         FunctionState::new(),
     )
 }
-
-// macro_rules! visitor {
-//     (
-//         let $binding: ident = StackSizeVisitor {
-//             $(functions: $functions: expr,)?
-//             $(types: $types: expr,)?
-//             $(globals: $globals: expr,)?
-//             $(tables: $tables: expr,)?
-//         }
-//     ) => {
-//         let config = TestConfig::default();
-//         let mut frames = Vec::new();
-//         let mut operands = Vec::new();
-//         let mut locals = PrefixSumVec::new();
-//         #[allow(unused_variables)]
-//         let functions: &[u32] = &[];
-//         $(let functions = $functions;)?
-//         #[allow(unused_variables)]
-//         let types: &[wasmparser::Type] = &[];
-//         $(let types = $types;)?
-//         #[allow(unused_variables)]
-//         let globals: &[wasmparser::ValType] = &[];
-//         $(let globals = $globals;)?
-//         #[allow(unused_variables)]
-//         let tables: &[wasmparser::ValType] = &[];
-//         $(let tables = $tables;)?
-//         #[allow(unused_mut)]
-//         let mut $binding = StackSizeVisitor {
-//             config: &config,
-//             offset: 0,
-//             functions,
-//             types,
-//             globals,
-//             tables,
-//             locals: &mut locals,
-//             operands: &mut operands,
-//             size: 0,
-//             max_size: 0,
-//             frames: &mut frames,
-//             current_frame: Frame {
-//                 height: 0,
-//                 block_type: wasmparser::BlockType::Empty,
-//                 stack_polymorphic: false,
-//             },
-//         };
-//     }
-// }
 
 #[test]
 fn test_function_type_index_oob() {
@@ -277,16 +202,29 @@ fn test_operand_stack_size() {
     config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(27, fnstate.size);
     assert_eq!(27, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).pop().expect("non empty operand stack");
+    config
+        .to_visitor(&mstate, &mut fnstate)
+        .pop()
+        .expect("non empty operand stack");
     assert_eq!(18, fnstate.size);
     assert_eq!(27, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).pop().expect("non empty operand stack");
+    config
+        .to_visitor(&mstate, &mut fnstate)
+        .pop()
+        .expect("non empty operand stack");
     assert_eq!(9, fnstate.size);
     assert_eq!(27, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).pop().expect("non empty operand stack");
+    config
+        .to_visitor(&mstate, &mut fnstate)
+        .pop()
+        .expect("non empty operand stack");
     assert_eq!(0, fnstate.size);
     assert_eq!(27, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).pop().err().expect("empty operand stack");
+    config
+        .to_visitor(&mstate, &mut fnstate)
+        .pop()
+        .err()
+        .expect("empty operand stack");
     assert_eq!(0, fnstate.size);
     assert_eq!(27, fnstate.max_size);
 }
