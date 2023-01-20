@@ -1,5 +1,6 @@
-use super::{Error, Frame, StackSizeVisitor};
-use prefix_sum_vec::PrefixSumVec;
+use crate::max_stack::Config;
+
+use super::{Error, Frame, FunctionState, ModuleState};
 use wasmparser::{BlockType, ValType};
 
 struct TestConfig {
@@ -7,7 +8,7 @@ struct TestConfig {
     local_size: u8,
 }
 
-impl super::SizeConfig for TestConfig {
+impl<'a> super::SizeConfig for TestConfig {
     fn size_of_value(&self, _: wasmparser::ValType) -> u8 {
         self.value_size
     }
@@ -30,59 +31,68 @@ impl Default for TestConfig {
     }
 }
 
-macro_rules! visitor {
+fn new_state() -> (TestConfig, ModuleState, FunctionState) {
     (
-        let $binding: ident = StackSizeVisitor {
-            $(functions: $functions: expr,)?
-            $(types: $types: expr,)?
-            $(globals: $globals: expr,)?
-            $(tables: $tables: expr,)?
-        }
-    ) => {
-        let config = TestConfig::default();
-        let mut frames = Vec::new();
-        let mut operands = Vec::new();
-        let mut locals = PrefixSumVec::new();
-        #[allow(unused_variables)]
-        let functions: &[u32] = &[];
-        $(let functions = $functions;)?
-        #[allow(unused_variables)]
-        let types: &[wasmparser::Type] = &[];
-        $(let types = $types;)?
-        #[allow(unused_variables)]
-        let globals: &[wasmparser::ValType] = &[];
-        $(let globals = $globals;)?
-        #[allow(unused_variables)]
-        let tables: &[wasmparser::ValType] = &[];
-        $(let tables = $tables;)?
-        #[allow(unused_mut)]
-        let mut $binding = StackSizeVisitor {
-            config: &config,
-            offset: 0,
-            functions,
-            types,
-            globals,
-            tables,
-            locals: &mut locals,
-            operands: &mut operands,
-            size: 0,
-            max_size: 0,
-            frames: &mut frames,
-            current_frame: Frame {
-                height: 0,
-                block_type: wasmparser::BlockType::Empty,
-                stack_polymorphic: false,
-            },
-        };
-    }
+        TestConfig::default(),
+        ModuleState::new(),
+        FunctionState::new(),
+    )
 }
+
+// macro_rules! visitor {
+//     (
+//         let $binding: ident = StackSizeVisitor {
+//             $(functions: $functions: expr,)?
+//             $(types: $types: expr,)?
+//             $(globals: $globals: expr,)?
+//             $(tables: $tables: expr,)?
+//         }
+//     ) => {
+//         let config = TestConfig::default();
+//         let mut frames = Vec::new();
+//         let mut operands = Vec::new();
+//         let mut locals = PrefixSumVec::new();
+//         #[allow(unused_variables)]
+//         let functions: &[u32] = &[];
+//         $(let functions = $functions;)?
+//         #[allow(unused_variables)]
+//         let types: &[wasmparser::Type] = &[];
+//         $(let types = $types;)?
+//         #[allow(unused_variables)]
+//         let globals: &[wasmparser::ValType] = &[];
+//         $(let globals = $globals;)?
+//         #[allow(unused_variables)]
+//         let tables: &[wasmparser::ValType] = &[];
+//         $(let tables = $tables;)?
+//         #[allow(unused_mut)]
+//         let mut $binding = StackSizeVisitor {
+//             config: &config,
+//             offset: 0,
+//             functions,
+//             types,
+//             globals,
+//             tables,
+//             locals: &mut locals,
+//             operands: &mut operands,
+//             size: 0,
+//             max_size: 0,
+//             frames: &mut frames,
+//             current_frame: Frame {
+//                 height: 0,
+//                 block_type: wasmparser::BlockType::Empty,
+//                 stack_polymorphic: false,
+//             },
+//         };
+//     }
+// }
 
 #[test]
 fn test_function_type_index_oob() {
-    visitor! { let visitor = StackSizeVisitor {
-        functions: &[1],
-        types: &[wasmparser::Type::Func(wasmparser::FuncType::new([], []))],
-    } };
+    let (config, mut mstate, mut fnstate) = new_state();
+    mstate.functions = vec![1];
+    mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new([], []))];
+    let visitor = config.to_visitor(&mstate, &mut fnstate);
+
     assert_eq!(Some(1), visitor.function_type_index(0).ok());
     let Err(Error::FunctionIndex(1)) = visitor.function_type_index(1) else {
         panic!("function_type_index(1) did not fail")
@@ -94,7 +104,9 @@ fn test_function_type_index_oob() {
 
 #[test]
 fn test_with_block_types_empty() {
-    visitor! { let visitor = StackSizeVisitor {} };
+    let (config, mstate, mut fnstate) = new_state();
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+
     let mut called = false;
     visitor
         .with_block_types(BlockType::Empty, |_, params, results| {
@@ -112,7 +124,8 @@ fn test_with_block_types_empty() {
 
 #[test]
 fn test_with_block_types_type() {
-    visitor! { let visitor = StackSizeVisitor {} };
+    let (config, mstate, mut fnstate) = new_state();
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let mut called = false;
     visitor
         .with_block_types(BlockType::Type(ValType::V128), |_, params, results| {
@@ -130,11 +143,13 @@ fn test_with_block_types_type() {
 
 #[test]
 fn test_with_block_types_functype() {
-    visitor! { let visitor = StackSizeVisitor {
-        types: &[
-            wasmparser::Type::Func(wasmparser::FuncType::new([ValType::V128], [ValType::FuncRef]))
-        ],
-    } };
+    let (config, mut mstate, mut fnstate) = new_state();
+    mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new(
+        [ValType::V128],
+        [ValType::FuncRef],
+    ))];
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+
     let mut called = false;
     visitor
         .with_block_types(BlockType::FuncType(0), |_, params, results| {
@@ -159,9 +174,10 @@ fn test_with_block_types_functype() {
 
 #[test]
 fn test_nested_polymorphic_frames() {
-    visitor! { let visitor = StackSizeVisitor {} };
+    let (config, mstate, mut fnstate) = new_state();
 
-    assert_eq!(0, visitor.size);
+    assert_eq!(0, fnstate.size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     visitor.make_polymorphic();
     visitor
         .pop()
@@ -171,7 +187,8 @@ fn test_nested_polymorphic_frames() {
         .new_frame(BlockType::Empty, 0)
         .expect("pushing a new frame should succeed");
     visitor.push(ValType::I32);
-    assert_eq!(0, visitor.size);
+    assert_eq!(0, fnstate.size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     visitor
         .pop()
         .expect("pops from polymorphic frames should never fail");
@@ -186,10 +203,10 @@ fn test_nested_polymorphic_frames() {
 
 #[test]
 fn test_nested_polymorphic_frames_2() {
-    visitor! { let visitor = StackSizeVisitor {} };
+    let (config, mstate, mut fnstate) = new_state();
+    assert_eq!(0, fnstate.size);
 
-    assert_eq!(0, visitor.size);
-
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     visitor
         .new_frame(BlockType::Empty, 0)
         .expect("pushing a new frame should succeed");
@@ -202,124 +219,141 @@ fn test_nested_polymorphic_frames_2() {
                 have made this frame polymorphic too");
     };
 
-    assert!(!visitor.current_frame.stack_polymorphic);
+    assert!(!fnstate.current_frame.stack_polymorphic);
+
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.pop() else {
         panic!("setting frame polymorphic should not affect the parent frames");
     };
     visitor.push(ValType::V128);
     assert!(visitor.pop().is_ok());
-    assert_eq!(u64::from(visitor.config.value_size), visitor.max_size);
+    assert_eq!(u64::from(visitor.config.value_size), fnstate.max_size);
 }
 
 #[test]
 fn test_pop_many() {
-    visitor! { let visitor = StackSizeVisitor {} };
+    let (config, mstate, mut fnstate) = new_state();
 
-    assert_eq!(0, visitor.operands.len());
+    assert_eq!(0, fnstate.operands.len());
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     visitor.push(ValType::V128);
-    assert_eq!(1, visitor.operands.len());
+    assert_eq!(1, fnstate.operands.len());
 
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.pop_many(2) else {
         panic!("pop_many cannot pop more than there are operands");
     };
     assert!(visitor.pop_many(0).is_ok());
-    assert_eq!(1, visitor.operands.len());
+    assert_eq!(1, fnstate.operands.len());
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     assert!(visitor.pop_many(1).is_ok());
-    assert_eq!(0, visitor.operands.len());
+    assert_eq!(0, fnstate.operands.len());
 
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     visitor.push(ValType::V128);
     visitor.push(ValType::V128);
-    assert_eq!(2, visitor.operands.len());
+    assert_eq!(2, fnstate.operands.len());
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.pop_many(3) else {
         panic!("pop_many cannot pop more than there are operands");
     };
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     assert!(visitor.pop_many(2).is_ok());
-    assert_eq!(0, visitor.operands.len());
+    assert_eq!(0, fnstate.operands.len());
 }
 
 #[test]
 fn test_operand_stack_size() {
-    visitor! { let visitor = StackSizeVisitor {} };
-    assert_eq!(0, visitor.size);
-    assert_eq!(0, visitor.max_size);
-    visitor.push(ValType::V128);
-    assert_eq!(9, visitor.size);
-    assert_eq!(9, visitor.max_size);
-    visitor.push(ValType::V128);
-    assert_eq!(18, visitor.size);
-    assert_eq!(18, visitor.max_size);
-    visitor.push(ValType::V128);
-    assert_eq!(27, visitor.size);
-    assert_eq!(27, visitor.max_size);
-    visitor.pop().expect("non empty operand stack");
-    assert_eq!(18, visitor.size);
-    assert_eq!(27, visitor.max_size);
-    visitor.pop().expect("non empty operand stack");
-    assert_eq!(9, visitor.size);
-    assert_eq!(27, visitor.max_size);
-    visitor.pop().expect("non empty operand stack");
-    assert_eq!(0, visitor.size);
-    assert_eq!(27, visitor.max_size);
-    visitor.pop().err().expect("empty operand stack");
-    assert_eq!(0, visitor.size);
-    assert_eq!(27, visitor.max_size);
+    let (config, mstate, mut fnstate) = new_state();
+
+    assert_eq!(0, fnstate.size);
+    assert_eq!(0, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    assert_eq!(9, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    assert_eq!(18, fnstate.size);
+    assert_eq!(18, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    assert_eq!(27, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).pop().expect("non empty operand stack");
+    assert_eq!(18, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).pop().expect("non empty operand stack");
+    assert_eq!(9, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).pop().expect("non empty operand stack");
+    assert_eq!(0, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).pop().err().expect("empty operand stack");
+    assert_eq!(0, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
 }
 
 #[test]
 fn test_operand_stack_size_with_frames() {
-    visitor! { let visitor = StackSizeVisitor {
-        types: &[
-            wasmparser::Type::Func(wasmparser::FuncType::new([ValType::V128], []))
-        ],
-    } };
-    assert_eq!(0, visitor.size);
-    assert_eq!(0, visitor.max_size);
+    let (config, mut mstate, mut fnstate) = new_state();
+    mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new(
+        [ValType::V128],
+        [],
+    ))];
+
+    assert_eq!(0, fnstate.size);
+    assert_eq!(0, fnstate.max_size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.new_frame(BlockType::FuncType(0), 1) else {
         panic!("can't shift operands past empty stack!");
     };
     visitor.push(ValType::V128);
-    assert_eq!(9, visitor.size);
-    assert_eq!(9, visitor.max_size);
+    assert_eq!(9, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.new_frame(BlockType::FuncType(0), 2) else {
         panic!("can't shift operands past empty stack!");
     };
     assert_eq!(Some(()), visitor.new_frame(BlockType::FuncType(0), 0).ok());
-    assert_eq!(9, visitor.size);
-    assert_eq!(9, visitor.max_size);
+    assert_eq!(9, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Ok(Some(_)) = visitor.end_frame() else {
         panic!("should be able to end frame we pushed recently");
     };
-    assert_eq!(9, visitor.size);
-    assert_eq!(9, visitor.max_size);
+    assert_eq!(9, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
 
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     assert_eq!(Some(()), visitor.new_frame(BlockType::FuncType(0), 1).ok());
-    assert_eq!(1, visitor.operands.len());
-    assert_eq!(9, visitor.size);
-    assert_eq!(9, visitor.max_size);
+    assert_eq!(1, fnstate.operands.len());
+    assert_eq!(9, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Ok(Some(_)) = visitor.end_frame() else {
         panic!("should be able to end frame we pushed recently");
     };
-    assert_eq!(0, visitor.operands.len());
-    assert_eq!(0, visitor.size);
-    assert_eq!(9, visitor.max_size);
+    assert_eq!(0, fnstate.operands.len());
+    assert_eq!(0, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
 
-    visitor.push(ValType::V128);
-    assert_eq!(9, visitor.size);
-    assert_eq!(9, visitor.max_size);
-    visitor.push(ValType::V128);
-    assert_eq!(18, visitor.size);
-    assert_eq!(18, visitor.max_size);
+    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    assert_eq!(9, fnstate.size);
+    assert_eq!(9, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    assert_eq!(18, fnstate.size);
+    assert_eq!(18, fnstate.max_size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     assert_eq!(Some(()), visitor.new_frame(BlockType::FuncType(0), 1).ok());
-    assert_eq!(2, visitor.operands.len());
-    assert_eq!(18, visitor.size);
-    assert_eq!(18, visitor.max_size);
-    visitor.push(ValType::V128);
-    assert_eq!(27, visitor.size);
-    assert_eq!(27, visitor.max_size);
+    assert_eq!(2, fnstate.operands.len());
+    assert_eq!(18, fnstate.size);
+    assert_eq!(18, fnstate.max_size);
+    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    assert_eq!(27, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
+    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
     let Ok(Some(_)) = visitor.end_frame() else {
         panic!("should be able to end frame we pushed recently");
     };
-    assert_eq!(1, visitor.operands.len());
-    assert_eq!(9, visitor.size);
-    assert_eq!(27, visitor.max_size);
+    assert_eq!(1, fnstate.operands.len());
+    assert_eq!(9, fnstate.size);
+    assert_eq!(27, fnstate.max_size);
 }

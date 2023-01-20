@@ -70,8 +70,8 @@ macro_rules! define_fee {
     }
 }
 
-struct MyGasCostModel;
-impl<'a> wp::VisitOperator<'a> for MyGasCostModel {
+struct MyGasConfig;
+impl<'a> wp::VisitOperator<'a> for MyGasConfig {
     type Output = u64;
     wp::for_each_operator!(define_fee);
 }
@@ -79,7 +79,7 @@ impl<'a> wp::VisitOperator<'a> for MyGasCostModel {
 fn analyze_module(wasm_code: &[u8]) -> finite_wasm::AnalysisOutcome {
     finite_wasm::Analysis::new()
         .with_stack(MySizeConfig)
-        .with_gas(MyGasCostModel)
+        .with_gas(MyGasConfig)
         .analyze(wasm_code)
         .expect("something went wrong!")
 }

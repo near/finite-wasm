@@ -3,12 +3,12 @@
 use gas::InstrumentationKind;
 /// A re-export of the prefix_sum_vec crate. Use in implementing [`max_stack::SizeConfig`].
 pub use prefix_sum_vec;
-use prefix_sum_vec::PrefixSumVec;
 use std::num::TryFromIntError;
 use visitors::VisitOperatorWithOffset;
-/// A re-export of the wasmparser crate. Use in implementing [`max_stack::SizeConfig`] and [`gas::CostModel`].
+/// A re-export of the wasmparser crate. Use in implementing [`max_stack::SizeConfig`] and
+/// [`gas::Config`].
 pub use wasmparser;
-use wasmparser::{BinaryReaderError, BlockType};
+use wasmparser::BinaryReaderError;
 
 pub mod gas;
 mod instruction_categories;
@@ -68,11 +68,11 @@ pub struct Analysis<StackConfig, GasCostModel> {
     gas_cfg: GasCostModel,
 }
 
-impl Analysis<max_stack::NoSizeConfig, gas::NoCostModel> {
+impl Analysis<max_stack::NoConfig, gas::NoConfig> {
     pub fn new() -> Self {
         Self {
-            max_stack_cfg: max_stack::NoSizeConfig,
-            gas_cfg: gas::NoCostModel,
+            max_stack_cfg: max_stack::NoConfig,
+            gas_cfg: gas::NoConfig,
         }
     }
 }
@@ -95,26 +95,18 @@ impl<SC, GC> Analysis<SC, GC> {
     }
 }
 
-impl<SC: max_stack::SizeConfig, GC: for<'a> gas::CostModel<'a>> Analysis<SC, GC> {
+impl<SC: for<'a> max_stack::Config<'a>, GC: for<'a> gas::Config<'a>> Analysis<SC, GC> {
     pub fn analyze(&mut self, module: &[u8]) -> Result<AnalysisOutcome, Error> {
-        let mut types = vec![];
-        let mut functions = vec![];
+        let mut current_fn_id = 0u32;
         let mut function_frame_sizes = vec![];
         let mut function_operand_stack_sizes = vec![];
-        let mut globals = vec![];
-        let mut tables = vec![];
-        // Reused between functions for speeds.
-        let mut locals = PrefixSumVec::new();
-        let mut operand_stack = vec![];
-        let mut max_stack_frame_stack = vec![];
-        let mut gas_frame_stack = vec![];
-        let mut offsets = vec![];
-        let mut costs = vec![];
-        let mut kinds = vec![];
-        let mut gas_offsets = vec![];
         let mut gas_costs = vec![];
         let mut gas_kinds = vec![];
-        let mut current_fn_id = 0u32;
+        let mut gas_offsets = vec![];
+        // Reused between functions for speeds.
+        let mut gas_state = gas::FunctionState::new();
+        let mut stack_state = max_stack::FunctionState::new();
+        let mut module_state = max_stack::ModuleState::new();
 
         let parser = wasmparser::Parser::new(0);
         for payload in parser.parse_all(module) {
@@ -125,16 +117,16 @@ impl<SC: max_stack::SizeConfig, GC: for<'a> gas::CostModel<'a>> Analysis<SC, GC>
                         let import = import.map_err(Error::ParseImports)?;
                         match import.ty {
                             wasmparser::TypeRef::Func(f) => {
-                                functions.push(f);
+                                module_state.functions.push(f);
                                 current_fn_id = current_fn_id
                                     .checked_add(1)
                                     .ok_or(Error::TooManyFunctions)?;
                             }
                             wasmparser::TypeRef::Global(g) => {
-                                globals.push(g.content_type);
+                                module_state.globals.push(g.content_type);
                             }
                             wasmparser::TypeRef::Table(t) => {
-                                tables.push(t.element_type);
+                                module_state.tables.push(t.element_type);
                             }
                             wasmparser::TypeRef::Memory(_) => continue,
                             wasmparser::TypeRef::Tag(_) => continue,
@@ -144,117 +136,64 @@ impl<SC: max_stack::SizeConfig, GC: for<'a> gas::CostModel<'a>> Analysis<SC, GC>
                 wasmparser::Payload::TypeSection(reader) => {
                     for ty in reader {
                         let ty = ty.map_err(Error::ParseTypes)?;
-                        types.push(ty);
+                        module_state.types.push(ty);
                     }
                 }
                 wasmparser::Payload::GlobalSection(reader) => {
                     for global in reader {
                         let global = global.map_err(Error::ParseGlobals)?;
-                        globals.push(global.ty.content_type);
+                        module_state.globals.push(global.ty.content_type);
                     }
                 }
                 wasmparser::Payload::TableSection(reader) => {
                     for tbl in reader.into_iter() {
                         let tbl = tbl.map_err(Error::ParseTable)?;
-                        tables.push(tbl.element_type);
+                        module_state.tables.push(tbl.element_type);
                     }
                 }
                 wasmparser::Payload::FunctionSection(reader) => {
                     for function in reader {
                         let function = function.map_err(Error::ParseFunctions)?;
-                        functions.push(function);
+                        module_state.functions.push(function);
                     }
                 }
                 wasmparser::Payload::CodeSectionEntry(function) => {
-                    locals.clear();
-                    operand_stack.clear();
-                    max_stack_frame_stack.clear();
-                    offsets.clear();
-                    kinds.clear();
-                    costs.clear();
-
+                    stack_state.clear();
                     let function_id_usize = usize::try_from(current_fn_id)
                         .expect("failed converting from u32 to usize");
-                    let type_id = *functions
+                    let type_id = *module_state
+                        .functions
                         .get(function_id_usize)
                         .ok_or(Error::FunctionIndex(current_fn_id))?;
                     let type_id_usize =
                         usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
-                    let fn_type = types.get(type_id_usize).ok_or(Error::TypeIndex(type_id))?;
+                    let fn_type = module_state
+                        .types
+                        .get(type_id_usize)
+                        .ok_or(Error::TypeIndex(type_id))?;
 
                     match fn_type {
                         wasmparser::Type::Func(fnty) => {
                             for param in fnty.params() {
-                                locals
-                                    .try_push_more(1, *param)
+                                stack_state
+                                    .add_locals(1, *param)
                                     .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
                             }
                         }
                     }
                     for local in function.get_locals_reader().map_err(Error::LocalsReader)? {
                         let local = local.map_err(Error::ParseLocals)?;
-                        locals
-                            .try_push_more(local.0, local.1)
+                        stack_state
+                            .add_locals(local.0, local.1)
                             .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
                     }
 
-                    let mut gas_visitor;
-                    let mut nop_gas_visitor = visitors::NoOpVisitor(Ok(()));
-                    let gas_visitor = if let Some(model) = self.gas_cfg.to_visitor() {
-                        gas_visitor = gas::GasVisitor {
-                            offset: 0,
-                            model,
-                            offsets: &mut offsets,
-                            costs: &mut costs,
-                            kinds: &mut kinds,
-                            frame_stack: &mut gas_frame_stack,
-                            next_offset_cost: None,
-                            current_frame: gas::Frame {
-                                stack_polymorphic: false,
-                                kind: gas::BranchTargetKind::UntakenForward,
-                            },
-                        };
-                        &mut gas_visitor as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>
-                    } else {
-                        &mut nop_gas_visitor
-                    };
-
-                    let mut stack_visitor;
-                    let mut nop_stack_visitor = visitors::NoOpVisitor(Ok(None));
-                    let stack_visitor = if !self.max_stack_cfg.should_run(Default::default()) {
-                        &mut nop_stack_visitor
-                    } else {
-                        // This includes accounting for any possible return pointer tracking,
-                        // parameters and locals (which all are considered locals in wasm).
-                        function_frame_sizes
-                            .push(self.max_stack_cfg.size_of_function_activation(&locals));
-                        stack_visitor = max_stack::StackSizeVisitor {
-                            offset: 0,
-
-                            config: &self.max_stack_cfg,
-                            functions: &functions,
-                            types: &types,
-                            globals: &globals,
-                            tables: &tables,
-                            locals: &locals,
-
-                            operands: &mut operand_stack,
-                            size: 0,
-                            max_size: 0,
-
-                            // Future optimization opportunity: Struct-of-Arrays representation.
-                            frames: &mut max_stack_frame_stack,
-                            current_frame: max_stack::Frame {
-                                height: 0,
-                                block_type: BlockType::Empty,
-                                stack_polymorphic: false,
-                            },
-                        };
-                        &mut stack_visitor
-                            as &mut dyn VisitOperatorWithOffset<Output = Result<_, _>>
-                    };
-
-                    let mut combined_visitor = visitors::JoinVisitor(gas_visitor, stack_visitor);
+                    // Visit the function body.
+                    let mut combined_visitor = visitors::JoinVisitor(
+                        self.gas_cfg.to_visitor(&mut gas_state),
+                        self.max_stack_cfg
+                            .to_visitor(&module_state, &mut stack_state),
+                    );
                     let mut operators = function
                         .get_operators_reader()
                         .map_err(Error::OperatorReader)?;
@@ -263,22 +202,21 @@ impl<SC: max_stack::SizeConfig, GC: for<'a> gas::CostModel<'a>> Analysis<SC, GC>
                         let (gas_result, stack_result) = operators
                             .visit_operator(&mut combined_visitor)
                             .map_err(Error::VisitOperators)?;
-                        let stack_result = stack_result.map_err(Error::MaxStack)?;
-                        gas_result.map_err(Error::Gas)?;
-                        if let Some(stack_size) = stack_result {
-                            function_operand_stack_sizes.push(stack_size);
-                        }
+                        let () = gas_result.map_err(Error::Gas)?;
+                        let () = stack_result.map_err(Error::MaxStack)?;
                     }
+                    drop(combined_visitor);
 
-                    if !kinds.is_empty() {
-                        gas::optimize(&mut offsets, &mut costs, &mut kinds);
-                        // FIXME(nagisa): this may have a much better representation… We might be
-                        // able to avoid storing all the analysis results if we instrumented
-                        // on-the-fly too...
-                        gas_offsets.push(offsets.drain(..).collect());
-                        gas_kinds.push(kinds.drain(..).collect());
-                        gas_costs.push(costs.drain(..).collect());
-                    }
+                    function_frame_sizes.push(self.max_stack_cfg.frame_size(&stack_state));
+                    function_operand_stack_sizes.push(stack_state.max_size);
+                    gas_state.optimize();
+                    let (offsets, costs, kinds) = gas_state.drain();
+                    // FIXME(nagisa): this may have a much better representation… We might be
+                    // able to avoid storing all the analysis results if we instrumented
+                    // on-the-fly too...
+                    gas_offsets.push(offsets);
+                    gas_kinds.push(kinds);
+                    gas_costs.push(costs);
                     current_fn_id = current_fn_id
                         .checked_add(1)
                         .ok_or(Error::TooManyFunctions)?;

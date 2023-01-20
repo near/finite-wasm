@@ -1,7 +1,8 @@
 //! Analysis of the amount of time (gas) a function takes to execute.
 //!
 //! The gas analysis is a two-pass linear-time algorithm. This algorithm first constructs a table
-//! along the lines of
+//! containing instrumentation offsets (represented as instructions in the example below), their
+//! costs and kinds:
 //!
 //! <pre>
 //! | Instructions | Cost | Kind |
@@ -33,7 +34,7 @@
 //! accurate gas count is desired.
 
 use crate::instruction_categories as gen;
-pub use cost_model::{CostModel, NoCostModel};
+pub use cost_model::{Config, NoConfig};
 pub use error::Error;
 use wasmparser::{BlockType, BrTable, VisitOperator};
 
@@ -133,16 +134,22 @@ pub(crate) struct Frame {
     pub(crate) kind: BranchTargetKind,
 }
 
-pub(crate) struct GasVisitor<'a, CostModel> {
-    pub(crate) offset: usize,
-
-    /// A visitor that produces costs for instructions.
-    pub(crate) model: &'a mut CostModel,
-
+/// The per-function state used by the [`Visitor`].
+///
+/// This type maintains the state accumulated during the analysis of a single function in a module.
+/// If the same instance of this `FunctionState` is used to analyze multiple functions, it will
+/// result in re-use of the backing allocations, and thus an improved performance. However, make
+/// sure to call [`FunctionState::drain`] between functions!
+pub struct FunctionState {
     /// Table of instruction ranges, and the total gas cost of executing the range.
-    pub(crate) offsets: &'a mut Vec<usize>,
-    pub(crate) costs: &'a mut Vec<u64>,
-    pub(crate) kinds: &'a mut Vec<InstrumentationKind>,
+    pub(crate) offsets: Vec<usize>,
+    pub(crate) costs: Vec<u64>,
+    pub(crate) kinds: Vec<InstrumentationKind>,
+
+    /// Information about the analyzed function’s frame stack.
+    pub(crate) frame_stack: Vec<Frame>,
+
+    pub(crate) current_frame: Frame,
 
     /// Is there a charge we want to introduce "after" the current offset?
     ///
@@ -150,30 +157,113 @@ pub(crate) struct GasVisitor<'a, CostModel> {
     /// `charge_before` or `charge_after`, even if with a 0-cost so that there is an opportunity to
     /// merge this cost into the table.
     pub(crate) next_offset_cost: Option<(u64, InstrumentationKind)>,
-
-    /// Information about the analyzed function’s frame stack.
-    pub(crate) frame_stack: &'a mut Vec<Frame>,
-    pub(crate) current_frame: Frame,
 }
 
-impl<'a, CostModel> GasVisitor<'a, CostModel> {
+impl FunctionState {
+    /// Create a new state for the gas analysis.
+    pub fn new() -> Self {
+        Self {
+            offsets: vec![],
+            costs: vec![],
+            kinds: vec![],
+            frame_stack: vec![],
+            current_frame: Frame {
+                stack_polymorphic: false,
+                kind: BranchTargetKind::UntakenForward,
+            },
+            next_offset_cost: None,
+        }
+    }
+
+    /// Optimize the instruction tables.
+    ///
+    /// This reduces the number of entries in the supplied vectors while preserving the equivalence of
+    /// observable program behaviours.
+    pub(crate) fn optimize(&mut self) {
+        let mut kind_before_instruction = self.kinds
+            .first()
+            .copied()
+            .unwrap_or(InstrumentationKind::PreControlFlow);
+        let mut output_idx = 0;
+        for input_idx in 1..self.kinds.len() {
+            let kind_after_instruction = self.kinds[input_idx];
+            let merge_across_instruction = match (kind_before_instruction, kind_after_instruction) {
+                // The changes to the remaining gas pool are not observable across a pure instruction.
+                (InstrumentationKind::Pure, InstrumentationKind::Pure) => true,
+                // The unreachable code is never executed.
+                (InstrumentationKind::Unreachable, InstrumentationKind::Unreachable) => true,
+                // The next instruction is about to be a control-flow instruction. We can still merge
+                // across the current instruction, which is pure.
+                (InstrumentationKind::Pure, InstrumentationKind::PreControlFlow) => true,
+                // The previous instruction was a control-flow instruction. The current instruction is
+                // pure, though.
+                (InstrumentationKind::PostControlFlow, InstrumentationKind::Pure) => true,
+                _ => false,
+            };
+            if merge_across_instruction {
+                self.kinds[output_idx] = kind_after_instruction;
+                self.costs[output_idx] += self.costs[input_idx];
+            } else {
+                output_idx += 1;
+                self.kinds[output_idx] = kind_after_instruction;
+                self.costs[output_idx] = self.costs[input_idx];
+                self.offsets[output_idx] = self.offsets[input_idx];
+            }
+            kind_before_instruction = kind_after_instruction;
+        }
+        self.kinds.truncate(output_idx + 1);
+        self.costs.truncate(output_idx + 1);
+        self.offsets.truncate(output_idx + 1);
+    }
+
+    /// Retrieve the results of analyzing a single function with this state.
+    pub fn drain(&mut self) -> (Box<[usize]>, Box<[u64]>, Box<[InstrumentationKind]>) {
+        let offsets = self.offsets.drain(..).collect();
+        let kinds = self.kinds.drain(..).collect();
+        let costs = self.costs.drain(..).collect();
+        self.frame_stack.clear();
+        self.current_frame = Frame {
+            stack_polymorphic: false,
+            kind: BranchTargetKind::UntakenForward,
+        };
+        self.next_offset_cost = None;
+        (offsets, costs, kinds)
+    }
+}
+
+/// The core algorihtm of the `gas` analysis.
+pub struct Visitor<'a, CostModel> {
+    pub(crate) offset: usize,
+
+    /// A visitor that produces costs for instructions.
+    pub(crate) model: &'a mut CostModel,
+
+    /// Per-function visitor state.
+    ///
+    /// This state allocates data intermediate results during the function analysis and ultimately
+    /// then drains it into summarized data. As thus, this state can be reused between functions
+    /// for better performance.
+    pub(crate) state: &'a mut FunctionState,
+}
+
+impl<'a, CostModel> Visitor<'a, CostModel> {
     /// Charge some gas before the currently analyzed instruction.
     fn charge_before(&mut self, mut kind: InstrumentationKind, mut cost: u64) {
-        if let Some((scheduled_cost, scheduled_kind)) = self.next_offset_cost.take() {
+        if let Some((scheduled_cost, scheduled_kind)) = self.state.next_offset_cost.take() {
             cost += scheduled_cost;
             kind = match (scheduled_kind, kind) {
                 (InstrumentationKind::Pure, other) => other,
                 _ => unimplemented!("`charge_after` with {scheduled_kind:?} is not implemented"),
             }
         }
-        let kind = if self.current_frame.stack_polymorphic {
+        let kind = if self.state.current_frame.stack_polymorphic {
             InstrumentationKind::Unreachable
         } else {
             kind
         };
-        self.offsets.push(self.offset);
-        self.kinds.push(kind);
-        self.costs.push(cost);
+        self.state.offsets.push(self.offset);
+        self.state.kinds.push(kind);
+        self.state.costs.push(cost);
     }
 
     /// Charge some gas after the currently analyzed instruction.
@@ -181,10 +271,10 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     /// Note that this method works by enqueueing a charge to be added to the tables at a next call
     /// of the `charge_before` or `charge_after` function.
     fn charge_after(&mut self, kind: InstrumentationKind, cost: u64) {
-        if let Some((cost, kind)) = self.next_offset_cost.take() {
+        if let Some((cost, kind)) = self.state.next_offset_cost.take() {
             self.charge_before(kind, cost);
         }
-        assert!(self.next_offset_cost.replace((cost, kind)).is_none());
+        assert!(self.state.next_offset_cost.replace((cost, kind)).is_none());
     }
 
     /// Create a new frame on the frame stack.
@@ -192,9 +282,9 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     /// The caller is responsible for specifying how the branches behave when branched to this
     /// frame.
     fn new_frame(&mut self, kind: BranchTargetKind) {
-        let stack_polymorphic = self.current_frame.stack_polymorphic;
-        self.frame_stack.push(std::mem::replace(
-            &mut self.current_frame,
+        let stack_polymorphic = self.state.current_frame.stack_polymorphic;
+        self.state.frame_stack.push(std::mem::replace(
+            &mut self.state.current_frame,
             Frame {
                 stack_polymorphic,
                 kind,
@@ -206,21 +296,21 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
     ///
     /// When there is only one frame remaining this becomes a no-op.
     fn end_frame(&mut self) {
-        if let Some(frame) = self.frame_stack.pop() {
-            self.current_frame = frame;
+        if let Some(frame) = self.state.frame_stack.pop() {
+            self.state.current_frame = frame;
         }
     }
 
     /// Mark the current frame as polymorphic.
     fn make_polymorphic(&mut self) {
-        self.current_frame.stack_polymorphic = true;
+        self.state.current_frame.stack_polymorphic = true;
     }
 
     /// The index of the root frame (that is the one representing the function entry.)
     fn root_frame_index(&self) -> usize {
         // NB: this implicitly is 1-less than the number of frames due to us maintaining a
         // `current_frame` field.
-        self.frame_stack.len()
+        self.state.frame_stack.len()
     }
 
     fn frame_index(&self, relative_depth: u32) -> Result<usize, Error> {
@@ -229,18 +319,19 @@ impl<'a, CostModel> GasVisitor<'a, CostModel> {
 
     fn visit_branch(&mut self, depth: usize) -> Result<(), Error> {
         let frame = if let Some(frame_stack_index) = depth.checked_sub(1) {
-            self.frame_stack
+            self.state
+                .frame_stack
                 .iter_mut()
                 .nth_back(frame_stack_index)
                 .ok_or(Error::InvalidBrTarget(self.offset))?
         } else {
-            &mut self.current_frame
+            &mut self.state.current_frame
         };
         match frame.kind {
             BranchTargetKind::Forward => (),
             BranchTargetKind::UntakenForward => frame.kind = BranchTargetKind::Forward,
             BranchTargetKind::Backward(instruction_index) => {
-                self.kinds[instruction_index] = InstrumentationKind::PostControlFlow
+                self.state.kinds[instruction_index] = InstrumentationKind::PostControlFlow
             }
         }
         Ok(())
@@ -313,8 +404,8 @@ macro_rules! pure_insn {
     };
 }
 
-impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
-    for GasVisitor<'a, CostModel>
+impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
+    for Visitor<'a, CostModel>
 {
     type Output = Result<(), Error>;
 
@@ -380,7 +471,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
 
     fn visit_loop(&mut self, blockty: BlockType) -> Self::Output {
         let cost = self.model.visit_loop(blockty);
-        let insn_type_index = self.kinds.len();
+        let insn_type_index = self.state.kinds.len();
         // For the time being this instruction is not a branch target, and therefore is pure.
         // However, we must charge for it _after_ it has been executed, just in case it becomes a
         // branch target later. That's because as per the WebAssembly specification, the `loop`
@@ -401,7 +492,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
             cost == 0,
             "the `end` instruction costs aren’t handled right, set it to 0"
         );
-        let kind = match self.current_frame.kind {
+        let kind = match self.state.current_frame.kind {
             BranchTargetKind::Forward => InstrumentationKind::PreControlFlow,
             BranchTargetKind::Backward(_) => InstrumentationKind::Pure,
             BranchTargetKind::UntakenForward => InstrumentationKind::Pure,
@@ -472,7 +563,7 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
         self.visit_branch(frame_idx)
     }
 
-    fn visit_br_table(&mut self, targets: BrTable<'a>) -> Self::Output {
+    fn visit_br_table(&mut self, targets: BrTable<'b>) -> Self::Output {
         let cost = self.model.visit_br_table(targets.clone());
         self.charge_before(InstrumentationKind::PreControlFlow, cost);
         for target in targets.targets() {
@@ -592,55 +683,10 @@ impl<'a, CostModel: VisitOperator<'a, Output = u64>> VisitOperator<'a>
     }
 }
 
-impl<'a, CostModel: VisitOperator<'a, Output = u64>> crate::visitors::VisitOperatorWithOffset<'a>
-    for GasVisitor<'a, CostModel>
+impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>>
+    crate::visitors::VisitOperatorWithOffset<'b> for Visitor<'a, CostModel>
 {
     fn set_offset(&mut self, offset: usize) {
         self.offset = offset;
     }
-}
-
-/// Optimize the instruction tables.
-///
-/// This reduces the number of entries in the supplied vectors while preserving the equivalence of
-/// observable program behaviours.
-pub(crate) fn optimize(
-    offsets: &mut Vec<usize>,
-    costs: &mut Vec<u64>,
-    kinds: &mut Vec<InstrumentationKind>,
-) {
-    let mut kind_before_instruction = kinds
-        .first()
-        .copied()
-        .unwrap_or(InstrumentationKind::PreControlFlow);
-    let mut output_idx = 0;
-    for input_idx in 1..kinds.len() {
-        let kind_after_instruction = kinds[input_idx];
-        let merge_across_instruction = match (kind_before_instruction, kind_after_instruction) {
-            // The changes to the remaining gas pool are not observable across a pure instruction.
-            (InstrumentationKind::Pure, InstrumentationKind::Pure) => true,
-            // The unreachable code is never executed.
-            (InstrumentationKind::Unreachable, InstrumentationKind::Unreachable) => true,
-            // The next instruction is about to be a control-flow instruction. We can still merge
-            // across the current instruction, which is pure.
-            (InstrumentationKind::Pure, InstrumentationKind::PreControlFlow) => true,
-            // The previous instruction was a control-flow instruction. The current instruction is
-            // pure, though.
-            (InstrumentationKind::PostControlFlow, InstrumentationKind::Pure) => true,
-            _ => false,
-        };
-        if merge_across_instruction {
-            kinds[output_idx] = kind_after_instruction;
-            costs[output_idx] += costs[input_idx];
-        } else {
-            output_idx += 1;
-            kinds[output_idx] = kind_after_instruction;
-            costs[output_idx] = costs[input_idx];
-            offsets[output_idx] = offsets[input_idx];
-        }
-        kind_before_instruction = kind_after_instruction;
-    }
-    kinds.truncate(output_idx + 1);
-    costs.truncate(output_idx + 1);
-    offsets.truncate(output_idx + 1);
 }

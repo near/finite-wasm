@@ -1,40 +1,33 @@
-/// The cost model for the gas analysis.
+use crate::{gas, visitors};
+
+/// The configuration for the gas analysis.
 ///
-/// Note that this trait is not particularly useful to implement directly. Implement
+/// Note that this trait is not intended to implement directly. Implement
 /// [`finite_wasm::wasmparser::VisitOperator`](crate::wasmparser::VisitOperator) with `type Output
 /// = u64`, where each of the `visit_*` methods return a gas cost for the specific instrution being
-/// visited. Implementers of this trait will also implement `CostModel` by definition.
-pub trait CostModel<'a> {
-    type Visitor: wasmparser::VisitOperator<'a, Output = u64>;
-    fn to_visitor(&mut self) -> Option<&mut Self::Visitor>;
+/// visited. Implementers of such trait will also implement `gas::Config` by definition.
+pub trait Config<'a> {
+    type GasVisitor: for<'b> visitors::VisitOperatorWithOffset<'b, Output = Result<(), gas::Error>>;
+    fn to_visitor(&'a mut self, state: &'a mut gas::FunctionState) -> Self::GasVisitor;
 }
 
-macro_rules! define_unreachable_visit {
-    ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
-        $(
-            fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { std::process::abort() }
-        )*
+/// Disable the gas analysis entirely.
+pub struct NoConfig;
+
+impl<'a> Config<'a> for NoConfig {
+    type GasVisitor = visitors::NoOpVisitor<Result<(), gas::Error>>;
+    fn to_visitor(&mut self, _: &mut gas::FunctionState) -> Self::GasVisitor {
+        visitors::NoOpVisitor(Ok(()))
     }
 }
 
-pub enum NoVisitor {}
-impl<'a> wasmparser::VisitOperator<'a> for NoVisitor {
-    type Output = u64;
-    wasmparser::for_each_operator!(define_unreachable_visit);
-}
-
-/// No gas cost model is provided, meaning the gas analysis will not run at all.
-pub struct NoCostModel;
-impl<'a> CostModel<'a> for NoCostModel {
-    type Visitor = NoVisitor;
-    fn to_visitor(&mut self) -> Option<&mut Self::Visitor> {
-        None
-    }
-}
-
-impl<'a, V: wasmparser::VisitOperator<'a, Output = u64>> CostModel<'a> for V {
-    type Visitor = V;
-    fn to_visitor(&mut self) -> Option<&mut Self::Visitor> {
-        Some(self)
+impl<'a, V: for<'b> wasmparser::VisitOperator<'b, Output = u64> + 'a> Config<'a> for V {
+    type GasVisitor = gas::Visitor<'a, V>;
+    fn to_visitor(&'a mut self, state: &'a mut gas::FunctionState) -> Self::GasVisitor {
+        gas::Visitor {
+            offset: 0,
+            model: self,
+            state,
+        }
     }
 }

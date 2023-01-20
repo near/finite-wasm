@@ -1,8 +1,12 @@
-pub(crate) trait VisitOperatorWithOffset<'a>: wasmparser::VisitOperator<'a> {
-    fn set_offset(&mut self, offset: usize);
+mod internal {
+    pub trait VisitOperatorWithOffset<'a>: wasmparser::VisitOperator<'a> {
+        fn set_offset(&mut self, offset: usize);
+    }
+
+    pub struct NoOpVisitor<Output>(pub(crate) Output);
 }
 
-pub(crate) struct NoOpVisitor<Output>(pub(crate) Output);
+pub(crate) use internal::{NoOpVisitor, VisitOperatorWithOffset};
 
 macro_rules! noop_visit {
     ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
@@ -21,7 +25,7 @@ impl<'a, Output: 'static + Clone> VisitOperatorWithOffset<'a> for NoOpVisitor<Ou
     fn set_offset(&mut self, _: usize) {}
 }
 
-pub(crate) struct JoinVisitor<'a, L: ?Sized, R: ?Sized>(pub(crate) &'a mut L, pub(crate) &'a mut R);
+pub(crate) struct JoinVisitor<L, R>(pub(crate) L, pub(crate) R);
 
 macro_rules! join_visit {
     ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
@@ -31,19 +35,19 @@ macro_rules! join_visit {
     }
 }
 
-impl<'a, L, R> wasmparser::VisitOperator<'a> for JoinVisitor<'a, L, R>
+impl<'a, L, R> wasmparser::VisitOperator<'a> for JoinVisitor<L, R>
 where
-    L: wasmparser::VisitOperator<'a> + ?Sized,
-    R: wasmparser::VisitOperator<'a> + ?Sized,
+    L: wasmparser::VisitOperator<'a>,
+    R: wasmparser::VisitOperator<'a>,
 {
     type Output = (L::Output, R::Output);
     wasmparser::for_each_operator!(join_visit);
 }
 
-impl<'a, L, R> VisitOperatorWithOffset<'a> for JoinVisitor<'a, L, R>
+impl<'a, L, R> VisitOperatorWithOffset<'a> for JoinVisitor<L, R>
 where
-    L: VisitOperatorWithOffset<'a> + ?Sized,
-    R: VisitOperatorWithOffset<'a> + ?Sized,
+    L: VisitOperatorWithOffset<'a>,
+    R: VisitOperatorWithOffset<'a>,
 {
     fn set_offset(&mut self, offset: usize) {
         self.0.set_offset(offset);
