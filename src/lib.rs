@@ -108,7 +108,7 @@ impl<SC, GC> Analysis<SC, GC> {
     }
 }
 
-impl<'b, SC: max_stack::Config, GC: gas::Config<'b>> Analysis<SC, GC> {
+impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
     /// Execute the analysis on the provided module.
     pub fn analyze(&mut self, module: &'b [u8]) -> Result<AnalysisOutcome, Error> {
         let mut current_fn_id = 0u32;

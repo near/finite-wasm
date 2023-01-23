@@ -124,26 +124,26 @@ pub trait SizeConfig {
 /// Note that this trait is not intended to implement directly. Implement [`SizeConfig`]
 /// instead. Implementers of `SizeConfig` trait will also implement `max_stack::Config` by
 /// definition.
-pub trait Config {
-    type StackVisitor<'b, 's>: visitors::VisitOperatorWithOffset<'b, Output = Output>
+pub trait Config<'b> {
+    type StackVisitor<'s>: visitors::VisitOperatorWithOffset<'b, Output = Output>
     where
         Self: 's;
-    fn to_visitor<'b, 's>(
+    fn to_visitor<'s>(
         &'s self,
         module_state: &'s ModuleState,
         function_state: &'s mut FunctionState,
-    ) -> Self::StackVisitor<'b, 's>;
+    ) -> Self::StackVisitor<'s>;
     fn frame_size(&self, function_state: &FunctionState) -> u64;
 }
 
-impl<S: SizeConfig> Config for S {
-    type StackVisitor<'b, 's> = Visitor<'s, Self> where Self: 's;
+impl<'b, S: SizeConfig> Config<'b> for S {
+    type StackVisitor<'s> = Visitor<'s, Self> where Self: 's;
 
-    fn to_visitor<'b, 's>(
+    fn to_visitor<'s>(
         &'s self,
         module_state: &'s ModuleState,
         function_state: &'s mut FunctionState,
-    ) -> Self::StackVisitor<'b, 's> {
+    ) -> Self::StackVisitor<'s> {
         Visitor {
             offset: 0,
             config: self,
@@ -159,14 +159,14 @@ impl<S: SizeConfig> Config for S {
 
 /// Disable the max stack analysis entirely.
 pub struct NoConfig;
-impl Config for NoConfig {
-    type StackVisitor<'b, 's> = visitors::NoOpVisitor<Output>;
+impl<'b> Config<'b> for NoConfig {
+    type StackVisitor<'s> = visitors::NoOpVisitor<Output>;
 
-    fn to_visitor<'b, 's>(
+    fn to_visitor<'s>(
         &'s self,
         _: &'s ModuleState,
         _: &'s mut FunctionState,
-    ) -> Self::StackVisitor<'b, 's> {
+    ) -> Self::StackVisitor<'s> {
         visitors::NoOpVisitor(Ok(()))
     }
 
