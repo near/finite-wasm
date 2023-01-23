@@ -157,9 +157,7 @@ impl<'b, S: SizeConfig> Config<'b> for S {
     }
 }
 
-/// Disable the max stack analysis entirely.
-pub struct NoConfig;
-impl<'b> Config<'b> for NoConfig {
+impl<'b> Config<'b> for crate::NoConfig {
     type StackVisitor<'s> = visitors::NoOpVisitor<Output>;
 
     fn to_visitor<'s>(

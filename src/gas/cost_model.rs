@@ -10,16 +10,10 @@ pub trait Config<'b> {
     type GasVisitor<'s>: visitors::VisitOperatorWithOffset<'b, Output = Result<(), gas::Error>>
     where
         Self: 's;
-    fn to_visitor<'s>(
-        &'s mut self,
-        state: &'s mut gas::FunctionState,
-    ) -> Self::GasVisitor<'s>;
+    fn to_visitor<'s>(&'s mut self, state: &'s mut gas::FunctionState) -> Self::GasVisitor<'s>;
 }
 
-/// Disable the gas analysis entirely.
-pub struct NoConfig;
-
-impl<'b> Config<'b> for NoConfig {
+impl<'b> Config<'b> for crate::NoConfig {
     type GasVisitor<'s> = visitors::NoOpVisitor<Result<(), gas::Error>>;
     fn to_visitor<'s>(&'s mut self, _: &'s mut gas::FunctionState) -> Self::GasVisitor<'s> {
         visitors::NoOpVisitor(Ok(()))
@@ -28,10 +22,7 @@ impl<'b> Config<'b> for NoConfig {
 
 impl<'b, V: wasmparser::VisitOperator<'b, Output = u64>> Config<'b> for V {
     type GasVisitor<'s> = gas::Visitor<'s, V> where Self: 's;
-    fn to_visitor<'s>(
-        &'s mut self,
-        state: &'s mut gas::FunctionState,
-    ) -> Self::GasVisitor<'s> {
+    fn to_visitor<'s>(&'s mut self, state: &'s mut gas::FunctionState) -> Self::GasVisitor<'s> {
         gas::Visitor {
             offset: 0,
             model: self,

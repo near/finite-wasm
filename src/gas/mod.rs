@@ -34,7 +34,7 @@
 //! accurate gas count is desired.
 
 use crate::instruction_categories as gen;
-pub use cost_model::{Config, NoConfig};
+pub use cost_model::Config;
 pub use error::Error;
 use wasmparser::{BlockType, BrTable, VisitOperator};
 
@@ -180,7 +180,8 @@ impl FunctionState {
     /// This reduces the number of entries in the supplied vectors while preserving the equivalence of
     /// observable program behaviours.
     pub(crate) fn optimize(&mut self) {
-        let mut kind_before_instruction = self.kinds
+        let mut kind_before_instruction = self
+            .kinds
             .first()
             .copied()
             .unwrap_or(InstrumentationKind::PreControlFlow);

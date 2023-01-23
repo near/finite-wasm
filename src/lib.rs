@@ -54,6 +54,9 @@ pub enum Error {
     Gas(#[source] gas::Error),
 }
 
+/// No config is provided for the analysis, meaning the specific analysis will not run.
+pub struct NoConfig;
+
 /// The entry-point type to set-up your finite-wasm analysis.
 ///
 /// This type allows running any number of analyses implemented by this crate. By default, none of
@@ -68,21 +71,21 @@ pub struct Analysis<StackConfig, GasCostModel> {
     gas_cfg: GasCostModel,
 }
 
-impl Analysis<max_stack::NoConfig, gas::NoConfig> {
+impl Analysis<NoConfig, NoConfig> {
     pub fn new() -> Self {
         Self {
-            max_stack_cfg: max_stack::NoConfig,
-            gas_cfg: gas::NoConfig,
+            max_stack_cfg: NoConfig,
+            gas_cfg: NoConfig,
         }
     }
 }
 
-impl<SC, GC> Analysis<SC, GC> {
+impl<StackConfig, GasCostModel> Analysis<StackConfig, GasCostModel> {
     /// Configure the stack analysis.
     ///
     /// You most likely want to pass in a type that implements the [`max_stack::SizeConfig`] trait.
     /// This can be either by value, by reference or as a dynamic object of some sort.
-    pub fn with_stack<NewSC>(self, max_stack_cfg: NewSC) -> Analysis<NewSC, GC> {
+    pub fn with_stack<NewSC>(self, max_stack_cfg: NewSC) -> Analysis<NewSC, GasCostModel> {
         let Self { gas_cfg, .. } = self;
         Analysis {
             max_stack_cfg,
@@ -99,7 +102,7 @@ impl<SC, GC> Analysis<SC, GC> {
     /// analyzed module.
     ///
     /// For more information see [`gas::Config`].
-    pub fn with_gas<NewGC>(self, gas_cfg: NewGC) -> Analysis<SC, NewGC> {
+    pub fn with_gas<NewGC>(self, gas_cfg: NewGC) -> Analysis<StackConfig, NewGC> {
         let Self { max_stack_cfg, .. } = self;
         Analysis {
             max_stack_cfg,
