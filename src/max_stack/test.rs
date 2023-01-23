@@ -16,7 +16,7 @@ fn test_function_type_index_oob() {
     let (config, mut mstate, mut fnstate) = new_state();
     mstate.functions = vec![1];
     mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new([], []))];
-    let visitor = config.to_visitor(&mstate, &mut fnstate);
+    let visitor = config.make_visitor(&mstate, &mut fnstate);
 
     assert_eq!(Some(1), visitor.function_type_index(0).ok());
     let Err(Error::FunctionIndex(1)) = visitor.function_type_index(1) else {
@@ -30,7 +30,7 @@ fn test_function_type_index_oob() {
 #[test]
 fn test_with_block_types_empty() {
     let (config, mstate, mut fnstate) = new_state();
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
 
     let mut called = false;
     visitor
@@ -50,7 +50,7 @@ fn test_with_block_types_empty() {
 #[test]
 fn test_with_block_types_type() {
     let (config, mstate, mut fnstate) = new_state();
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let mut called = false;
     visitor
         .with_block_types(BlockType::Type(ValType::V128), |_, params, results| {
@@ -73,7 +73,7 @@ fn test_with_block_types_functype() {
         [ValType::V128],
         [ValType::FuncRef],
     ))];
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
 
     let mut called = false;
     visitor
@@ -102,7 +102,7 @@ fn test_nested_polymorphic_frames() {
     let (config, mstate, mut fnstate) = new_state();
 
     assert_eq!(0, fnstate.size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     visitor.make_polymorphic();
     visitor
         .pop()
@@ -113,7 +113,7 @@ fn test_nested_polymorphic_frames() {
         .expect("pushing a new frame should succeed");
     visitor.push(ValType::I32);
     assert_eq!(0, fnstate.size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     visitor
         .pop()
         .expect("pops from polymorphic frames should never fail");
@@ -131,7 +131,7 @@ fn test_nested_polymorphic_frames_2() {
     let (config, mstate, mut fnstate) = new_state();
     assert_eq!(0, fnstate.size);
 
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     visitor
         .new_frame(BlockType::Empty, 0)
         .expect("pushing a new frame should succeed");
@@ -146,7 +146,7 @@ fn test_nested_polymorphic_frames_2() {
 
     assert!(!fnstate.current_frame.stack_polymorphic);
 
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.pop() else {
         panic!("setting frame polymorphic should not affect the parent frames");
     };
@@ -160,29 +160,29 @@ fn test_pop_many() {
     let (config, mstate, mut fnstate) = new_state();
 
     assert_eq!(0, fnstate.operands.len());
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     visitor.push(ValType::V128);
     assert_eq!(1, fnstate.operands.len());
 
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.pop_many(2) else {
         panic!("pop_many cannot pop more than there are operands");
     };
     assert!(visitor.pop_many(0).is_ok());
     assert_eq!(1, fnstate.operands.len());
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     assert!(visitor.pop_many(1).is_ok());
     assert_eq!(0, fnstate.operands.len());
 
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     visitor.push(ValType::V128);
     visitor.push(ValType::V128);
     assert_eq!(2, fnstate.operands.len());
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.pop_many(3) else {
         panic!("pop_many cannot pop more than there are operands");
     };
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     assert!(visitor.pop_many(2).is_ok());
     assert_eq!(0, fnstate.operands.len());
 }
@@ -193,35 +193,35 @@ fn test_operand_stack_size() {
 
     assert_eq!(0, fnstate.size);
     assert_eq!(0, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(18, fnstate.size);
     assert_eq!(18, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(27, fnstate.size);
     assert_eq!(27, fnstate.max_size);
     config
-        .to_visitor(&mstate, &mut fnstate)
+        .make_visitor(&mstate, &mut fnstate)
         .pop()
         .expect("non empty operand stack");
     assert_eq!(18, fnstate.size);
     assert_eq!(27, fnstate.max_size);
     config
-        .to_visitor(&mstate, &mut fnstate)
+        .make_visitor(&mstate, &mut fnstate)
         .pop()
         .expect("non empty operand stack");
     assert_eq!(9, fnstate.size);
     assert_eq!(27, fnstate.max_size);
     config
-        .to_visitor(&mstate, &mut fnstate)
+        .make_visitor(&mstate, &mut fnstate)
         .pop()
         .expect("non empty operand stack");
     assert_eq!(0, fnstate.size);
     assert_eq!(27, fnstate.max_size);
     config
-        .to_visitor(&mstate, &mut fnstate)
+        .make_visitor(&mstate, &mut fnstate)
         .pop()
         .err()
         .expect("empty operand stack");
@@ -239,33 +239,33 @@ fn test_operand_stack_size_with_frames() {
 
     assert_eq!(0, fnstate.size);
     assert_eq!(0, fnstate.max_size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.new_frame(BlockType::FuncType(0), 1) else {
         panic!("can't shift operands past empty stack!");
     };
     visitor.push(ValType::V128);
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Err(Error::EmptyStack(_)) = visitor.new_frame(BlockType::FuncType(0), 2) else {
         panic!("can't shift operands past empty stack!");
     };
     assert_eq!(Some(()), visitor.new_frame(BlockType::FuncType(0), 0).ok());
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Ok(Some(_)) = visitor.end_frame() else {
         panic!("should be able to end frame we pushed recently");
     };
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
 
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     assert_eq!(Some(()), visitor.new_frame(BlockType::FuncType(0), 1).ok());
     assert_eq!(1, fnstate.operands.len());
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Ok(Some(_)) = visitor.end_frame() else {
         panic!("should be able to end frame we pushed recently");
     };
@@ -273,21 +273,21 @@ fn test_operand_stack_size_with_frames() {
     assert_eq!(0, fnstate.size);
     assert_eq!(9, fnstate.max_size);
 
-    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(18, fnstate.size);
     assert_eq!(18, fnstate.max_size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     assert_eq!(Some(()), visitor.new_frame(BlockType::FuncType(0), 1).ok());
     assert_eq!(2, fnstate.operands.len());
     assert_eq!(18, fnstate.size);
     assert_eq!(18, fnstate.max_size);
-    config.to_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
     assert_eq!(27, fnstate.size);
     assert_eq!(27, fnstate.max_size);
-    let mut visitor = config.to_visitor(&mstate, &mut fnstate);
+    let mut visitor = config.make_visitor(&mstate, &mut fnstate);
     let Ok(Some(_)) = visitor.end_frame() else {
         panic!("should be able to end frame we pushed recently");
     };

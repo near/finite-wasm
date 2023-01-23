@@ -29,4 +29,6 @@ pub enum Error {
     LocalIndex(u32),
     #[error("too many frames in the function")]
     TooManyFrames,
+    #[error("could not process function locals")]
+    TooManyLocals(#[source] prefix_sum_vec::TryPushError),
 }

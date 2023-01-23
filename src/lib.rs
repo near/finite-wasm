@@ -3,7 +3,6 @@
 use gas::InstrumentationKind;
 /// A re-export of the prefix_sum_vec crate. Use in implementing [`max_stack::SizeConfig`].
 pub use prefix_sum_vec;
-use std::num::TryFromIntError;
 use visitors::VisitOperatorWithOffset;
 /// A re-export of the wasmparser crate. Use in implementing [`max_stack::SizeConfig`] and
 /// [`gas::Config`].
@@ -39,14 +38,8 @@ pub enum Error {
     TooManyFunctions,
     #[error("could not parse the table section")]
     ParseTable(#[source] BinaryReaderError),
-    #[error("could not process locals for function ${1}")]
-    TooManyLocals(#[source] prefix_sum_vec::TryPushError, u32),
-    #[error("type index {0} refers to a non-existent type")]
-    TypeIndex(u32),
-    #[error("type index {0} is out of range")]
-    TypeIndexRange(u32, #[source] TryFromIntError),
-    #[error("function index {0} refers to a non-existent type")]
-    FunctionIndex(u32),
+    #[error("could not process locals")]
+    ProcessLocals(#[source] max_stack::Error),
 
     #[error("could not process operator for max_stack analysis")]
     MaxStack(#[source] max_stack::Error),
@@ -136,16 +129,18 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                         let import = import.map_err(Error::ParseImports)?;
                         match import.ty {
                             wasmparser::TypeRef::Func(f) => {
-                                module_state.functions.push(f);
+                                self.max_stack_cfg.add_function(&mut module_state, f);
                                 current_fn_id = current_fn_id
                                     .checked_add(1)
                                     .ok_or(Error::TooManyFunctions)?;
                             }
                             wasmparser::TypeRef::Global(g) => {
-                                module_state.globals.push(g.content_type);
+                                self.max_stack_cfg
+                                    .add_global(&mut module_state, g.content_type);
                             }
                             wasmparser::TypeRef::Table(t) => {
-                                module_state.tables.push(t.element_type);
+                                self.max_stack_cfg
+                                    .add_table(&mut module_state, t.element_type);
                             }
                             wasmparser::TypeRef::Memory(_) => continue,
                             wasmparser::TypeRef::Tag(_) => continue,
@@ -155,55 +150,38 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                 wasmparser::Payload::TypeSection(reader) => {
                     for ty in reader {
                         let ty = ty.map_err(Error::ParseTypes)?;
-                        module_state.types.push(ty);
+                        self.max_stack_cfg.add_type(&mut module_state, ty);
                     }
                 }
                 wasmparser::Payload::GlobalSection(reader) => {
                     for global in reader {
                         let global = global.map_err(Error::ParseGlobals)?;
-                        module_state.globals.push(global.ty.content_type);
+                        self.max_stack_cfg
+                            .add_global(&mut module_state, global.ty.content_type);
                     }
                 }
                 wasmparser::Payload::TableSection(reader) => {
                     for tbl in reader.into_iter() {
                         let tbl = tbl.map_err(Error::ParseTable)?;
-                        module_state.tables.push(tbl.element_type);
+                        self.max_stack_cfg
+                            .add_table(&mut module_state, tbl.element_type);
                     }
                 }
                 wasmparser::Payload::FunctionSection(reader) => {
                     for function in reader {
                         let function = function.map_err(Error::ParseFunctions)?;
-                        module_state.functions.push(function);
+                        self.max_stack_cfg.add_function(&mut module_state, function);
                     }
                 }
                 wasmparser::Payload::CodeSectionEntry(function) => {
-                    let function_id_usize = usize::try_from(current_fn_id)
-                        .expect("failed converting from u32 to usize");
-                    let type_id = *module_state
-                        .functions
-                        .get(function_id_usize)
-                        .ok_or(Error::FunctionIndex(current_fn_id))?;
-                    let type_id_usize =
-                        usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
-                    let fn_type = module_state
-                        .types
-                        .get(type_id_usize)
-                        .ok_or(Error::TypeIndex(type_id))?;
-
-                    match fn_type {
-                        wasmparser::Type::Func(fnty) => {
-                            for param in fnty.params() {
-                                stack_state
-                                    .add_locals(1, *param)
-                                    .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
-                            }
-                        }
-                    }
+                    self.max_stack_cfg
+                        .populate_locals(&module_state, &mut stack_state, current_fn_id)
+                        .map_err(Error::ProcessLocals)?;
                     for local in function.get_locals_reader().map_err(Error::LocalsReader)? {
                         let local = local.map_err(Error::ParseLocals)?;
                         stack_state
                             .add_locals(local.0, local.1)
-                            .map_err(|e| Error::TooManyLocals(e, current_fn_id))?;
+                            .map_err(Error::ProcessLocals)?;
                     }
 
                     // Visit the function body.

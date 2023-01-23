@@ -2,14 +2,14 @@
 //!
 //! This is a single pass linear-time algorithm.
 
-pub use error::Error;
 pub use config::{Config, SizeConfig};
+pub use error::Error;
 use instruction_visit::Output;
-use prefix_sum_vec::{PrefixSumVec, TryPushError};
+use prefix_sum_vec::PrefixSumVec;
 use wasmparser::{BlockType, ValType};
 
-mod error;
 mod config;
+mod error;
 mod instruction_visit;
 #[cfg(test)]
 mod test;
@@ -19,10 +19,10 @@ mod test;
 /// This structure maintains the information gathered when parsing type, globals, tables and
 /// function sections.
 pub struct ModuleState {
-    pub(crate) functions: Vec<u32>,
-    pub(crate) types: Vec<wasmparser::Type>,
-    pub(crate) globals: Vec<wasmparser::ValType>,
-    pub(crate) tables: Vec<wasmparser::ValType>,
+    functions: Vec<u32>,
+    types: Vec<wasmparser::Type>,
+    globals: Vec<wasmparser::ValType>,
+    tables: Vec<wasmparser::ValType>,
 }
 
 impl ModuleState {
@@ -40,8 +40,7 @@ impl ModuleState {
 ///
 /// This type maintains the state accumulated during the analysis of a single function in a module.
 /// If the same instance of this `FunctionState` is used to analyze multiple functions, it will
-/// result in re-use of the backing allocations, and thus an improved performance. However, make
-/// sure to call [`FunctionState::clear`] between functions!
+/// result in re-use of the backing allocations, and thus an improved performance.
 pub struct FunctionState {
     locals: PrefixSumVec<wasmparser::ValType, u32>,
 
@@ -96,7 +95,7 @@ impl FunctionState {
         }
     }
 
-    pub fn clear(&mut self) {
+    pub(crate) fn clear(&mut self) {
         self.locals.clear();
         self.operands.clear();
         self.size = 0;
@@ -109,8 +108,10 @@ impl FunctionState {
         };
     }
 
-    pub fn add_locals(&mut self, count: u32, ty: wasmparser::ValType) -> Result<(), TryPushError> {
-        self.locals.try_push_more(count, ty)
+    pub(crate) fn add_locals(&mut self, count: u32, ty: wasmparser::ValType) -> Result<(), Error> {
+        self.locals
+            .try_push_more(count, ty)
+            .map_err(Error::TooManyLocals)
     }
 }
 

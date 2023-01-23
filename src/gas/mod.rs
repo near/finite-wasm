@@ -138,8 +138,7 @@ pub(crate) struct Frame {
 ///
 /// This type maintains the state accumulated during the analysis of a single function in a module.
 /// If the same instance of this `FunctionState` is used to analyze multiple functions, it will
-/// result in re-use of the backing allocations, and thus an improved performance. However, make
-/// sure to call [`FunctionState::drain`] between functions!
+/// result in re-use of the backing allocations, and thus an improved performance.
 pub struct FunctionState {
     /// Table of instruction ranges, and the total gas cost of executing the range.
     pub(crate) offsets: Vec<usize>,
