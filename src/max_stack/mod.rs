@@ -124,24 +124,26 @@ pub trait SizeConfig {
 /// Note that this trait is not intended to implement directly. Implement [`SizeConfig`]
 /// instead. Implementers of `SizeConfig` trait will also implement `max_stack::Config` by
 /// definition.
-pub trait Config<'a> {
-    type StackVisitor: for<'b> visitors::VisitOperatorWithOffset<'b, Output = Output>;
-    fn to_visitor(
-        &'a self,
-        module_state: &'a ModuleState,
-        function_state: &'a mut FunctionState,
-    ) -> Self::StackVisitor;
-    fn frame_size(&self, function_state: &'a FunctionState) -> u64;
+pub trait Config {
+    type StackVisitor<'b, 's>: visitors::VisitOperatorWithOffset<'b, Output = Output>
+    where
+        Self: 's;
+    fn to_visitor<'b, 's>(
+        &'s self,
+        module_state: &'s ModuleState,
+        function_state: &'s mut FunctionState,
+    ) -> Self::StackVisitor<'b, 's>;
+    fn frame_size(&self, function_state: &FunctionState) -> u64;
 }
 
-impl<'a, S: SizeConfig + 'a> Config<'a> for S {
-    type StackVisitor = Visitor<'a, Self>;
+impl<S: SizeConfig> Config for S {
+    type StackVisitor<'b, 's> = Visitor<'s, Self> where Self: 's;
 
-    fn to_visitor(
-        &'a self,
-        module_state: &'a ModuleState,
-        function_state: &'a mut FunctionState,
-    ) -> Self::StackVisitor {
+    fn to_visitor<'b, 's>(
+        &'s self,
+        module_state: &'s ModuleState,
+        function_state: &'s mut FunctionState,
+    ) -> Self::StackVisitor<'b, 's> {
         Visitor {
             offset: 0,
             config: self,
@@ -150,21 +152,25 @@ impl<'a, S: SizeConfig + 'a> Config<'a> for S {
         }
     }
 
-    fn frame_size(&self, function_state: &'a FunctionState) -> u64 {
+    fn frame_size(&self, function_state: &FunctionState) -> u64 {
         self.size_of_function_activation(&function_state.locals)
     }
 }
 
 /// Disable the max stack analysis entirely.
 pub struct NoConfig;
-impl<'a> Config<'a> for NoConfig {
-    type StackVisitor = visitors::NoOpVisitor<Output>;
+impl Config for NoConfig {
+    type StackVisitor<'b, 's> = visitors::NoOpVisitor<Output>;
 
-    fn to_visitor(&self, _: &ModuleState, _: &mut FunctionState) -> Self::StackVisitor {
+    fn to_visitor<'b, 's>(
+        &'s self,
+        _: &'s ModuleState,
+        _: &'s mut FunctionState,
+    ) -> Self::StackVisitor<'b, 's> {
         visitors::NoOpVisitor(Ok(()))
     }
 
-    fn frame_size(&self, _: &'a FunctionState) -> u64 {
+    fn frame_size(&self, _: &FunctionState) -> u64 {
         0
     }
 }
@@ -233,16 +239,16 @@ pub(crate) struct Frame {
 }
 
 /// The core algorihtm of the `max_stack` analysis.
-pub struct Visitor<'a, Cfg: ?Sized> {
+pub struct Visitor<'s, Cfg: ?Sized> {
     pub(crate) offset: usize,
 
-    pub(crate) config: &'a Cfg,
+    pub(crate) config: &'s Cfg,
 
-    pub(crate) module_state: &'a ModuleState,
-    pub(crate) function_state: &'a mut FunctionState,
+    pub(crate) module_state: &'s ModuleState,
+    pub(crate) function_state: &'s mut FunctionState,
 }
 
-impl<'a, Cfg: SizeConfig + ?Sized> Visitor<'a, Cfg> {
+impl<'b, 's, Cfg: SizeConfig + ?Sized> Visitor<'s, Cfg> {
     fn function_type_index(&self, function_index: u32) -> Result<u32, Error> {
         let function_index_usize = usize::try_from(function_index)
             .map_err(|e| Error::FunctionIndexRange(function_index, e))?;
@@ -253,7 +259,7 @@ impl<'a, Cfg: SizeConfig + ?Sized> Visitor<'a, Cfg> {
             .ok_or(Error::FunctionIndex(function_index))
     }
 
-    fn type_params_results(&self, type_idx: u32) -> Result<(&'a [ValType], &'a [ValType]), Error> {
+    fn type_params_results(&self, type_idx: u32) -> Result<(&'s [ValType], &'s [ValType]), Error> {
         let type_idx_usize =
             usize::try_from(type_idx).map_err(|e| Error::TypeIndexRange(type_idx, e))?;
         match self

@@ -95,8 +95,8 @@ impl<SC, GC> Analysis<SC, GC> {
     }
 }
 
-impl<SC: for<'a> max_stack::Config<'a>, GC: for<'a> gas::Config<'a>> Analysis<SC, GC> {
-    pub fn analyze(&mut self, module: &[u8]) -> Result<AnalysisOutcome, Error> {
+impl<'b, SC: max_stack::Config, GC: gas::Config<'b>> Analysis<SC, GC> {
+    pub fn analyze(&mut self, module: &'b [u8]) -> Result<AnalysisOutcome, Error> {
         let mut current_fn_id = 0u32;
         let mut function_frame_sizes = vec![];
         let mut function_operand_stack_sizes = vec![];
@@ -302,7 +302,8 @@ pub(crate) mod tests {
     #[test]
     fn dynamic_dispatch_is_possible() {
         let dynamic_size_config = SizeConfig::default();
-        let dynamic_gas_config = GasConfig;
+        let mut dynamic_gas_config = GasConfig;
+
         let _ = crate::Analysis::new()
             .with_stack(&dynamic_size_config as &dyn crate::max_stack::SizeConfig)
             .analyze(b"");
@@ -312,9 +313,17 @@ pub(crate) mod tests {
             .analyze(b"");
 
         let _ = crate::Analysis::new()
-            // FIXME: Not yet, needs a wasmparser crate version bump
-            // FIXME: due to current limitations in the borrow checker, this implies a `'static` lifetime
-            .with_gas(/*&mut*/ dynamic_gas_config)
+            .with_gas(&mut dynamic_gas_config)
+            .analyze(b"");
+
+        let _ = crate::Analysis::new()
+            .with_gas(&mut dynamic_gas_config as &mut dyn wasmparser::VisitOperator<Output = u64>)
+            .analyze(b"");
+
+        let _ = crate::Analysis::new()
+            .with_gas(
+                Box::new(dynamic_gas_config) as Box<dyn wasmparser::VisitOperator<Output = u64>>
+            )
             .analyze(b"");
     }
 }

@@ -232,18 +232,18 @@ impl FunctionState {
 }
 
 /// The core algorihtm of the `gas` analysis.
-pub struct Visitor<'a, CostModel> {
+pub struct Visitor<'s, CostModel> {
     pub(crate) offset: usize,
 
     /// A visitor that produces costs for instructions.
-    pub(crate) model: &'a mut CostModel,
+    pub(crate) model: &'s mut CostModel,
 
     /// Per-function visitor state.
     ///
     /// This state allocates data intermediate results during the function analysis and ultimately
     /// then drains it into summarized data. As thus, this state can be reused between functions
     /// for better performance.
-    pub(crate) state: &'a mut FunctionState,
+    pub(crate) state: &'s mut FunctionState,
 }
 
 impl<'a, CostModel> Visitor<'a, CostModel> {
@@ -680,6 +680,10 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
 
     fn visit_catch_all(&mut self) -> Self::Output {
         todo!("exception handling extension")
+    }
+
+    fn visit_memory_discard(&mut self, _: u32) -> Self::Output {
+        todo!("memory control extension")
     }
 }
 

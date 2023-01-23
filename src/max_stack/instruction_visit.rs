@@ -123,7 +123,7 @@ macro_rules! instruction_category {
     };
 }
 
-impl<'a, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'cfg, Cfg> {
+impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
     type Output = Output;
 
     gen::r#const!(instruction_category);
@@ -493,11 +493,13 @@ impl<'a, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'cfg, Cfg> {
     fn visit_catch_all(&mut self) -> Self::Output {
         todo!("exception handling has not been implemented");
     }
+
+    fn visit_memory_discard(&mut self, _: u32) -> Self::Output {
+        todo!("memory control proposal has not been implemented");
+    }
 }
 
-impl<'a, 'cfg, Cfg: SizeConfig> crate::visitors::VisitOperatorWithOffset<'a>
-    for Visitor<'cfg, Cfg>
-{
+impl<'b, 's, Cfg: SizeConfig> crate::visitors::VisitOperatorWithOffset<'b> for Visitor<'s, Cfg> {
     fn set_offset(&mut self, offset: usize) {
         self.offset = offset;
     }
