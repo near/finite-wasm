@@ -263,8 +263,8 @@ impl AnalysisOutcome {
     ///
     /// This function will modify the provided core wasm module to introduce two imports:
     ///
-    /// * `{env}.finite_wasm_gas`: `(func (params u64))
-    /// * `{env}.finite_wasm_stack`: `(func (params i64 i64))
+    /// * `{env}.finite_wasm_gas`: `(func (params u64))`
+    /// * `{env}.finite_wasm_stack`: `(func (params i64 i64))`
     ///
     /// These functions must be provided by the embedder. The `finite_wasm_gas` should reduce the
     /// pool of remaining gas by the only argument supplied and trap the execution when the gas is
