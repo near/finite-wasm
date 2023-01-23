@@ -34,11 +34,11 @@
 //! accurate gas count is desired.
 
 use crate::instruction_categories as gen;
-pub use cost_model::Config;
+pub use config::Config;
 pub use error::Error;
 use wasmparser::{BlockType, BrTable, VisitOperator};
 
-mod cost_model;
+mod config;
 mod error;
 
 /// The type of a particular instrumentation point (as denoted by its offset.)
@@ -215,20 +215,6 @@ impl FunctionState {
         self.kinds.truncate(output_idx + 1);
         self.costs.truncate(output_idx + 1);
         self.offsets.truncate(output_idx + 1);
-    }
-
-    /// Retrieve the results of analyzing a single function with this state.
-    pub fn drain(&mut self) -> (Box<[usize]>, Box<[u64]>, Box<[InstrumentationKind]>) {
-        let offsets = self.offsets.drain(..).collect();
-        let kinds = self.kinds.drain(..).collect();
-        let costs = self.costs.drain(..).collect();
-        self.frame_stack.clear();
-        self.current_frame = Frame {
-            stack_polymorphic: false,
-            kind: BranchTargetKind::UntakenForward,
-        };
-        self.next_offset_cost = None;
-        (offsets, costs, kinds)
     }
 }
 

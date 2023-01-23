@@ -2,13 +2,14 @@
 //!
 //! This is a single pass linear-time algorithm.
 
-pub use self::error::Error;
-use crate::visitors;
+pub use error::Error;
+pub use config::{Config, SizeConfig};
 use instruction_visit::Output;
 use prefix_sum_vec::{PrefixSumVec, TryPushError};
 use wasmparser::{BlockType, ValType};
 
 mod error;
+mod config;
 mod instruction_visit;
 #[cfg(test)]
 mod test;
@@ -110,96 +111,6 @@ impl FunctionState {
 
     pub fn add_locals(&mut self, count: u32, ty: wasmparser::ValType) -> Result<(), TryPushError> {
         self.locals.try_push_more(count, ty)
-    }
-}
-
-/// Configure size of various values that may end up on the stack.
-pub trait SizeConfig {
-    fn size_of_value(&self, ty: wasmparser::ValType) -> u8;
-    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
-}
-
-/// The configuration for the stack analysis.
-///
-/// Note that this trait is not intended to implement directly. Implement [`SizeConfig`]
-/// instead. Implementers of `SizeConfig` trait will also implement `max_stack::Config` by
-/// definition.
-pub trait Config<'b> {
-    type StackVisitor<'s>: visitors::VisitOperatorWithOffset<'b, Output = Output>
-    where
-        Self: 's;
-    fn to_visitor<'s>(
-        &'s self,
-        module_state: &'s ModuleState,
-        function_state: &'s mut FunctionState,
-    ) -> Self::StackVisitor<'s>;
-    fn frame_size(&self, function_state: &FunctionState) -> u64;
-}
-
-impl<'b, S: SizeConfig> Config<'b> for S {
-    type StackVisitor<'s> = Visitor<'s, Self> where Self: 's;
-
-    fn to_visitor<'s>(
-        &'s self,
-        module_state: &'s ModuleState,
-        function_state: &'s mut FunctionState,
-    ) -> Self::StackVisitor<'s> {
-        Visitor {
-            offset: 0,
-            config: self,
-            module_state,
-            function_state,
-        }
-    }
-
-    fn frame_size(&self, function_state: &FunctionState) -> u64 {
-        self.size_of_function_activation(&function_state.locals)
-    }
-}
-
-impl<'b> Config<'b> for crate::NoConfig {
-    type StackVisitor<'s> = visitors::NoOpVisitor<Output>;
-
-    fn to_visitor<'s>(
-        &'s self,
-        _: &'s ModuleState,
-        _: &'s mut FunctionState,
-    ) -> Self::StackVisitor<'s> {
-        visitors::NoOpVisitor(Ok(()))
-    }
-
-    fn frame_size(&self, _: &FunctionState) -> u64 {
-        0
-    }
-}
-
-impl<'a, C: SizeConfig + ?Sized> SizeConfig for &'a C {
-    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
-        C::size_of_value(*self, ty)
-    }
-
-    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
-        C::size_of_function_activation(*self, locals)
-    }
-}
-
-impl<'a, C: SizeConfig + ?Sized> SizeConfig for &'a mut C {
-    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
-        C::size_of_value(*self, ty)
-    }
-
-    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
-        C::size_of_function_activation(*self, locals)
-    }
-}
-
-impl<'a, C: SizeConfig + ?Sized> SizeConfig for Box<C> {
-    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
-        C::size_of_value(&*self, ty)
-    }
-
-    fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64 {
-        C::size_of_function_activation(&*self, locals)
     }
 }
 

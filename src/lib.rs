@@ -115,11 +115,13 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
     /// Execute the analysis on the provided module.
     pub fn analyze(&mut self, module: &'b [u8]) -> Result<AnalysisOutcome, Error> {
         let mut current_fn_id = 0u32;
-        let mut function_frame_sizes = vec![];
-        let mut function_operand_stack_sizes = vec![];
-        let mut gas_costs = vec![];
-        let mut gas_kinds = vec![];
-        let mut gas_offsets = vec![];
+        let mut outcome = AnalysisOutcome {
+            function_frame_sizes: vec![],
+            function_operand_stack_sizes: vec![],
+            gas_offsets: vec![],
+            gas_costs: vec![],
+            gas_kinds: vec![],
+        };
         // Reused between functions for speeds.
         let mut gas_state = gas::FunctionState::new();
         let mut stack_state = max_stack::FunctionState::new();
@@ -175,7 +177,6 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                     }
                 }
                 wasmparser::Payload::CodeSectionEntry(function) => {
-                    stack_state.clear();
                     let function_id_usize = usize::try_from(current_fn_id)
                         .expect("failed converting from u32 to usize");
                     let type_id = *module_state
@@ -207,9 +208,9 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
 
                     // Visit the function body.
                     let mut combined_visitor = visitors::JoinVisitor(
-                        self.gas_cfg.to_visitor(&mut gas_state),
+                        self.gas_cfg.make_visitor(&mut gas_state),
                         self.max_stack_cfg
-                            .to_visitor(&module_state, &mut stack_state),
+                            .make_visitor(&module_state, &mut stack_state),
                     );
                     let mut operators = function
                         .get_operators_reader()
@@ -224,16 +225,10 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                     }
                     drop(combined_visitor);
 
-                    function_frame_sizes.push(self.max_stack_cfg.frame_size(&stack_state));
-                    function_operand_stack_sizes.push(stack_state.max_size);
+                    self.max_stack_cfg
+                        .save_outcomes(&mut stack_state, &mut outcome);
                     gas_state.optimize();
-                    let (offsets, costs, kinds) = gas_state.drain();
-                    // FIXME(nagisa): this may have a much better representation… We might be
-                    // able to avoid storing all the analysis results if we instrumented
-                    // on-the-fly too...
-                    gas_offsets.push(offsets);
-                    gas_kinds.push(kinds);
-                    gas_costs.push(costs);
+                    self.gas_cfg.save_outcomes(&mut gas_state, &mut outcome);
                     current_fn_id = current_fn_id
                         .checked_add(1)
                         .ok_or(Error::TooManyFunctions)?;
@@ -241,13 +236,7 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                 _ => (),
             }
         }
-        Ok(AnalysisOutcome {
-            function_frame_sizes,
-            function_operand_stack_sizes,
-            gas_costs,
-            gas_kinds,
-            gas_offsets,
-        })
+        Ok(outcome)
     }
 }
 
