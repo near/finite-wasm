@@ -78,6 +78,10 @@ impl Analysis<max_stack::NoConfig, gas::NoConfig> {
 }
 
 impl<SC, GC> Analysis<SC, GC> {
+    /// Configure the stack analysis.
+    ///
+    /// You most likely want to pass in a type that implements the [`max_stack::SizeConfig`] trait.
+    /// This can be either by value, by reference or as a dynamic object of some sort.
     pub fn with_stack<NewSC>(self, max_stack_cfg: NewSC) -> Analysis<NewSC, GC> {
         let Self { gas_cfg, .. } = self;
         Analysis {
@@ -86,6 +90,15 @@ impl<SC, GC> Analysis<SC, GC> {
         }
     }
 
+    /// Configure the gas analysis.
+    ///
+    /// You most likely want to pass in a type that implements the [`wasmparser::VisitOperator`]
+    /// trait. This can be either by value, by reference or as a dynamic object of some sort.
+    /// Though do keep in mind, that using a dynamic object may incur a significant performance
+    /// penality, as the configuration provided here is accessed for each instruction in the
+    /// analyzed module.
+    ///
+    /// For more information see [`gas::Config`].
     pub fn with_gas<NewGC>(self, gas_cfg: NewGC) -> Analysis<SC, NewGC> {
         let Self { max_stack_cfg, .. } = self;
         Analysis {
@@ -96,6 +109,7 @@ impl<SC, GC> Analysis<SC, GC> {
 }
 
 impl<'b, SC: max_stack::Config, GC: gas::Config<'b>> Analysis<SC, GC> {
+    /// Execute the analysis on the provided module.
     pub fn analyze(&mut self, module: &'b [u8]) -> Result<AnalysisOutcome, Error> {
         let mut current_fn_id = 0u32;
         let mut function_frame_sizes = vec![];
