@@ -205,7 +205,6 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
 
                     self.max_stack_cfg
                         .save_outcomes(&mut stack_state, &mut outcome);
-                    gas_state.optimize();
                     self.gas_cfg.save_outcomes(&mut gas_state, &mut outcome);
                     current_fn_id = current_fn_id
                         .checked_add(1)

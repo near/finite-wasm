@@ -41,6 +41,7 @@ impl<'b, V: wasmparser::VisitOperator<'b, Output = u64>> Config<'b> for V {
     }
 
     fn save_outcomes(&self, state: &mut gas::FunctionState, out: &mut crate::AnalysisOutcome) {
+        state.optimize();
         out.gas_offsets.push(state.offsets.drain(..).collect());
         out.gas_kinds.push(state.kinds.drain(..).collect());
         out.gas_costs.push(state.costs.drain(..).collect());
