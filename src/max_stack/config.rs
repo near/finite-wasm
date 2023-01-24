@@ -52,7 +52,7 @@ impl<'a, C: SizeConfig + ?Sized> SizeConfig for std::sync::Arc<C> {
 
 /// The configuration for the stack analysis.
 ///
-/// Note that this trait is not intended to implement directly. Implement [`SizeConfig`]
+/// Note that this trait is not intended to be implemented directly. Implement [`SizeConfig`]
 /// instead. Implementers of `SizeConfig` trait will also implement `max_stack::Config` by
 /// definition.
 pub trait Config<'b> {
