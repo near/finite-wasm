@@ -280,11 +280,18 @@ impl<'a> InstrumentContext<'a> {
             .get_operators_reader()
             .map_err(Error::ParseOperators)?;
 
-        // In order to enable us to insert the stack termination, we’ll wrap the function body into a
-        // `block`…
+        // In order to enable us to insert the code to release the stack allocation, we’ll wrap the
+        // function body into a `block` and insert the instrumentation after the block ends… This
+        // additional wrapping block allows us to “intercept” various branching instructions with
+        // frame depths that would otherwise lead to a return. This is especially important when
+        // these branching instructions are conditional: we could replace `br $well_chosen_index`
+        // with a `return` and handle it much the same way, but we can’t do anything of the sort
+        // for `br_if $well_chosen_index`.
         let (params, results) = match func_type {
             wp::Type::Func(fnty) => (fnty.params(), fnty.results()),
         };
+        // NOTE: Function parameters become locals, rather than operands, so we don’t need to
+        // handle them in any way when inserting the block.
         let block_type = match (params, results) {
             ([], []) => we::BlockType::Empty,
             (_, [result]) => we::BlockType::Result(valtype(*result)),
@@ -332,6 +339,8 @@ impl<'a> InstrumentContext<'a> {
                     new_function.raw(self.wasm[offset..end_offset].iter().copied())
                 }
                 wp::Operator::Return => {
+                    // FIXME: we could replace these `return`s with `br $well_chosen_index`
+                    // targetting the block we inserted around the function body.
                     if should_instrument_stack {
                         call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
                     }
