@@ -261,20 +261,22 @@ impl AnalysisOutcome {
     /// crate’s own testing needs and may not be applicable to every use-case. However the code is
     /// reasonably high quality that it might be useful for development purposes.
     ///
-    /// This function will modify the provided core wasm module to introduce two imports:
+    /// This function will modify the provided core wasm module to introduce three imports:
     ///
     /// * `{env}.finite_wasm_gas`: `(func (params u64))`
-    /// * `{env}.finite_wasm_stack`: `(func (params i64 i64))`
+    /// * `{env}.finite_wasm_stack`: `(func (params u64 u64))`
+    /// * `{env}.finite_wasm_unstack`: `(func (params u64 u64))`
     ///
     /// These functions must be provided by the embedder. The `finite_wasm_gas` should reduce the
     /// pool of remaining gas by the only argument supplied and trap the execution when the gas is
     /// exhausted. When the gas is exhausted the reamining gas pool must be set to 0, as per the
     /// specification.
     ///
-    /// The `finite_wasm_stack` is called with two arguments. First is the size by which the
-    /// operands stack increases, or decreases if the argument is negative. Second is the size of
-    /// the stack reserved or released by the function frame. This host function must keep track of
-    /// the current total stack height and raise a trap if the stack limit is exceeded.
+    /// The `finite_wasm_stack` and `finite_wasm_unstack` are called with two arguments. The first
+    /// argument is the size by which the operands stack increases, or decreases if the argument is
+    /// negative. Second is the size of the stack reserved or released by the function frame. These
+    /// host functions must keep track of the current total stack height and raise a trap if the
+    /// stack limit is exceeded.
     #[cfg(feature = "instrument")]
     pub fn instrument(&self, import_env: &str, wasm: &[u8]) -> Result<Vec<u8>, InstrumentError> {
         instrument::InstrumentContext::new(wasm, import_env, self).run()

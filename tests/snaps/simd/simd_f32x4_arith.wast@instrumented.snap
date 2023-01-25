@@ -5,7 +5,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param v128 v128) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -16,26 +17,9 @@
       local.get 1
       f32x4.add
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
-  )
-  (func (;3;) (type 0) (param v128 v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 2
-      call 1
-      i64.const 3
-      call 0
-      local.get 0
-      local.get 1
-      f32x4.sub
-    end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;4;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -46,12 +30,11 @@
       call 0
       local.get 0
       local.get 1
-      f32x4.mul
+      f32x4.sub
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;5;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -62,27 +45,26 @@
       call 0
       local.get 0
       local.get 1
-      f32x4.div
+      f32x4.mul
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;6;) (type 1) (param v128) (result v128)
+  (func (;6;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
-      i64.const 16
-      i64.const 1
-      call 1
+      i64.const 32
       i64.const 2
+      call 1
+      i64.const 3
       call 0
       local.get 0
-      f32x4.neg
+      local.get 1
+      f32x4.div
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;7;) (type 1) (param v128) (result v128)
     block (result v128) ;; label = @1
@@ -92,19 +74,32 @@
       i64.const 2
       call 0
       local.get 0
+      f32x4.neg
+    end
+    i64.const 16
+    i64.const 1
+    call 2
+  )
+  (func (;8;) (type 1) (param v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get 0
       f32x4.sqrt
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (export "f32x4.add" (func 2))
-  (export "f32x4.sub" (func 3))
-  (export "f32x4.mul" (func 4))
-  (export "f32x4.div" (func 5))
-  (export "f32x4.neg" (func 6))
-  (export "f32x4.sqrt" (func 7))
+  (export "f32x4.add" (func 3))
+  (export "f32x4.sub" (func 4))
+  (export "f32x4.mul" (func 5))
+  (export "f32x4.div" (func 6))
+  (export "f32x4.neg" (func 7))
+  (export "f32x4.sqrt" (func 8))
 )
 (assert_return (invoke "f32x4.add" (v128.const f32x4 0x0p+0 0x0p+0 0x0p+0 0x0p+0)
                                    (v128.const f32x4 0x0p+0 0x0p+0 0x0p+0 0x0p+0))
@@ -5379,7 +5374,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -5389,12 +5385,11 @@
       v128.const i32x4 0x7fa00000 0xffa00000 0x41800000 0x41c80000
       f32x4.sqrt
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 0) (result v128)
+  (func (;4;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -5404,12 +5399,11 @@
       v128.const i32x4 0xbf800000 0x7fc00000 0x40800000 0x41100000
       f32x4.sqrt
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 0) (result v128)
+  (func (;5;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -5419,14 +5413,13 @@
       v128.const i32x4 0xff800000 0x7fa00000 0x42100000 0x42440000
       f32x4.sqrt
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (export "f32x4_sqrt_arith" (func 2))
-  (export "f32x4_sqrt_canon" (func 3))
-  (export "f32x4_sqrt_mixed" (func 4))
+  (export "f32x4_sqrt_arith" (func 3))
+  (export "f32x4_sqrt_canon" (func 4))
+  (export "f32x4_sqrt_mixed" (func 5))
 )
 (assert_return (invoke "f32x4_sqrt_arith") (v128.const f32x4 nan:arithmetic nan:arithmetic 4.0 5.0))
 (assert_return (invoke "f32x4_sqrt_canon") (v128.const f32x4 nan:canonical nan:canonical 2.0 3.0))
@@ -5440,7 +5433,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param v128 v128 v128) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 3
@@ -5453,28 +5447,9 @@
       local.get 2
       f32x4.add
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
-  )
-  (func (;3;) (type 0) (param v128 v128 v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 3
-      call 1
-      i64.const 5
-      call 0
-      local.get 0
-      local.get 1
-      f32x4.add
-      local.get 2
-      f32x4.div
-    end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;4;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5485,14 +5460,13 @@
       call 0
       local.get 0
       local.get 1
-      f32x4.mul
+      f32x4.add
       local.get 2
       f32x4.div
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;5;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5503,14 +5477,13 @@
       call 0
       local.get 0
       local.get 1
-      f32x4.sub
+      f32x4.mul
       local.get 2
       f32x4.div
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;6;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5521,14 +5494,13 @@
       call 0
       local.get 0
       local.get 1
-      f32x4.add
+      f32x4.sub
       local.get 2
-      f32x4.mul
+      f32x4.div
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;7;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5539,14 +5511,13 @@
       call 0
       local.get 0
       local.get 1
-      f32x4.div
+      f32x4.add
       local.get 2
       f32x4.mul
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;8;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5557,16 +5528,32 @@
       call 0
       local.get 0
       local.get 1
+      f32x4.div
+      local.get 2
+      f32x4.mul
+    end
+    i64.const 32
+    i64.const 3
+    call 2
+  )
+  (func (;9;) (type 0) (param v128 v128 v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get 0
+      local.get 1
       f32x4.sub
       local.get 2
       f32x4.mul
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
-  (func (;9;) (type 0) (param v128 v128 v128) (result v128)
+  (func (;10;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 3
@@ -5579,27 +5566,9 @@
       local.get 2
       f32x4.sub
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
-  )
-  (func (;10;) (type 1) (param v128 v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 2
-      call 1
-      i64.const 4
-      call 0
-      local.get 0
-      f32x4.neg
-      local.get 1
-      f32x4.add
-    end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;11;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5609,14 +5578,13 @@
       i64.const 4
       call 0
       local.get 0
-      f32x4.sqrt
+      f32x4.neg
       local.get 1
       f32x4.add
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;12;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5626,14 +5594,13 @@
       i64.const 4
       call 0
       local.get 0
-      f32x4.neg
+      f32x4.sqrt
       local.get 1
-      f32x4.div
+      f32x4.add
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;13;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5643,14 +5610,13 @@
       i64.const 4
       call 0
       local.get 0
-      f32x4.sqrt
+      f32x4.neg
       local.get 1
       f32x4.div
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;14;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5660,14 +5626,13 @@
       i64.const 4
       call 0
       local.get 0
-      f32x4.neg
+      f32x4.sqrt
       local.get 1
-      f32x4.mul
+      f32x4.div
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;15;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -5677,16 +5642,31 @@
       i64.const 4
       call 0
       local.get 0
+      f32x4.neg
+      local.get 1
+      f32x4.mul
+    end
+    i64.const 32
+    i64.const 2
+    call 2
+  )
+  (func (;16;) (type 1) (param v128 v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get 0
       f32x4.sqrt
       local.get 1
       f32x4.mul
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;16;) (type 1) (param v128 v128) (result v128)
+  (func (;17;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -5698,12 +5678,11 @@
       local.get 1
       f32x4.sub
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;17;) (type 1) (param v128 v128) (result v128)
+  (func (;18;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -5715,27 +5694,26 @@
       local.get 1
       f32x4.sub
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (export "add-sub" (func 2))
-  (export "div-add" (func 3))
-  (export "div-mul" (func 4))
-  (export "div-sub" (func 5))
-  (export "mul-add" (func 6))
-  (export "mul-div" (func 7))
-  (export "mul-sub" (func 8))
-  (export "sub-add" (func 9))
-  (export "add-neg" (func 10))
-  (export "add-sqrt" (func 11))
-  (export "div-neg" (func 12))
-  (export "div-sqrt" (func 13))
-  (export "mul-neg" (func 14))
-  (export "mul-sqrt" (func 15))
-  (export "sub-neg" (func 16))
-  (export "sub-sqrt" (func 17))
+  (export "add-sub" (func 3))
+  (export "div-add" (func 4))
+  (export "div-mul" (func 5))
+  (export "div-sub" (func 6))
+  (export "mul-add" (func 7))
+  (export "mul-div" (func 8))
+  (export "mul-sub" (func 9))
+  (export "sub-add" (func 10))
+  (export "add-neg" (func 11))
+  (export "add-sqrt" (func 12))
+  (export "div-neg" (func 13))
+  (export "div-sqrt" (func 14))
+  (export "mul-neg" (func 15))
+  (export "mul-sqrt" (func 16))
+  (export "sub-neg" (func 17))
+  (export "sub-sqrt" (func 18))
 )
 (assert_return (invoke "add-sub" (v128.const f32x4 1.125 1.125 1.125 1.125)
                                  (v128.const f32x4 0.25 0.25 0.25 0.25)

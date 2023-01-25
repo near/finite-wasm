@@ -4,7 +4,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0) (param $x v128) (param $y v128) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -15,26 +16,9 @@
       local.get $y
       i32x4.eq
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
-  )
-  (func (;3;) (type 0) (param $x v128) (param $y v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 2
-      call 1
-      i64.const 3
-      call 0
-      local.get $x
-      local.get $y
-      i32x4.ne
-    end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;4;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -45,12 +29,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.lt_s
+      i32x4.ne
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;5;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -61,12 +44,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.lt_u
+      i32x4.lt_s
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;6;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -77,12 +59,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.le_s
+      i32x4.lt_u
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;7;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -93,12 +74,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.le_u
+      i32x4.le_s
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;8;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -109,12 +89,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.gt_s
+      i32x4.le_u
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;9;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -125,12 +104,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.gt_u
+      i32x4.gt_s
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;10;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -141,12 +119,11 @@
       call 0
       local.get $x
       local.get $y
-      i32x4.ge_s
+      i32x4.gt_u
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;11;) (type 0) (param $x v128) (param $y v128) (result v128)
     block (result v128) ;; label = @1
@@ -157,23 +134,37 @@
       call 0
       local.get $x
       local.get $y
+      i32x4.ge_s
+    end
+    i64.const 32
+    i64.const 2
+    call 2
+  )
+  (func (;12;) (type 0) (param $x v128) (param $y v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $x
+      local.get $y
       i32x4.ge_u
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (export "eq" (func 2))
-  (export "ne" (func 3))
-  (export "lt_s" (func 4))
-  (export "lt_u" (func 5))
-  (export "le_s" (func 6))
-  (export "le_u" (func 7))
-  (export "gt_s" (func 8))
-  (export "gt_u" (func 9))
-  (export "ge_s" (func 10))
-  (export "ge_u" (func 11))
+  (export "eq" (func 3))
+  (export "ne" (func 4))
+  (export "lt_s" (func 5))
+  (export "lt_u" (func 6))
+  (export "le_s" (func 7))
+  (export "le_u" (func 8))
+  (export "gt_s" (func 9))
+  (export "gt_u" (func 10))
+  (export "ge_s" (func 11))
+  (export "ge_u" (func 12))
 )
 (assert_return (invoke "eq" (v128.const i32x4 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF)
                             (v128.const i32x4 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF 0xFFFFFFFF))
@@ -1619,7 +1610,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -1645,12 +1637,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 0)
+  (func (;4;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -1676,12 +1667,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 0)
+  (func (;5;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -1707,12 +1697,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 0)
+  (func (;6;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -1738,12 +1727,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 0)
+  (func (;7;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -1769,12 +1757,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;7;) (type 0)
+  (func (;8;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -1800,63 +1787,9 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
-  )
-  (func (;8;) (type 0)
-    block ;; label = @1
-      i64.const 64
-      i64.const 0
-      call 1
-      i64.const 2
-      call 0
-      i32.const 0
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 1
-      v128.load
-      i64.const 3
-      call 0
-      i32x4.eq
-      i32.const 2
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 3
-      v128.load
-      i64.const 4
-      call 0
-      i32x4.eq
-      i32x4.eq
-      i32.const 0
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 1
-      v128.load
-      i64.const 3
-      call 0
-      i32x4.eq
-      i32.const 2
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 3
-      v128.load
-      i64.const 4
-      call 0
-      i32x4.eq
-      i32x4.eq
-      i32x4.eq
-      drop
-    end
-    i64.const -64
-    i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;9;) (type 0)
     block ;; label = @1
@@ -1873,7 +1806,7 @@
       v128.load
       i64.const 3
       call 0
-      i32x4.ne
+      i32x4.eq
       i32.const 2
       v128.load
       i64.const 2
@@ -1882,8 +1815,8 @@
       v128.load
       i64.const 4
       call 0
-      i32x4.ne
-      i32x4.ne
+      i32x4.eq
+      i32x4.eq
       i32.const 0
       v128.load
       i64.const 2
@@ -1892,7 +1825,7 @@
       v128.load
       i64.const 3
       call 0
-      i32x4.ne
+      i32x4.eq
       i32.const 2
       v128.load
       i64.const 2
@@ -1901,15 +1834,14 @@
       v128.load
       i64.const 4
       call 0
-      i32x4.ne
-      i32x4.ne
-      i32x4.ne
+      i32x4.eq
+      i32x4.eq
+      i32x4.eq
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;10;) (type 0)
     block ;; label = @1
@@ -1926,7 +1858,7 @@
       v128.load
       i64.const 3
       call 0
-      i32x4.lt_s
+      i32x4.ne
       i32.const 2
       v128.load
       i64.const 2
@@ -1935,8 +1867,8 @@
       v128.load
       i64.const 4
       call 0
-      i32x4.lt_s
-      i32x4.lt_s
+      i32x4.ne
+      i32x4.ne
       i32.const 0
       v128.load
       i64.const 2
@@ -1945,7 +1877,7 @@
       v128.load
       i64.const 3
       call 0
-      i32x4.lt_s
+      i32x4.ne
       i32.const 2
       v128.load
       i64.const 2
@@ -1954,15 +1886,14 @@
       v128.load
       i64.const 4
       call 0
-      i32x4.lt_s
-      i32x4.lt_s
-      i32x4.lt_s
+      i32x4.ne
+      i32x4.ne
+      i32x4.ne
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;11;) (type 0)
     block ;; label = @1
@@ -1979,7 +1910,7 @@
       v128.load
       i64.const 3
       call 0
-      i32x4.le_u
+      i32x4.lt_s
       i32.const 2
       v128.load
       i64.const 2
@@ -1988,8 +1919,8 @@
       v128.load
       i64.const 4
       call 0
-      i32x4.le_u
-      i32x4.le_u
+      i32x4.lt_s
+      i32x4.lt_s
       i32.const 0
       v128.load
       i64.const 2
@@ -1998,7 +1929,7 @@
       v128.load
       i64.const 3
       call 0
-      i32x4.le_u
+      i32x4.lt_s
       i32.const 2
       v128.load
       i64.const 2
@@ -2007,15 +1938,14 @@
       v128.load
       i64.const 4
       call 0
-      i32x4.le_u
-      i32x4.le_u
-      i32x4.le_u
+      i32x4.lt_s
+      i32x4.lt_s
+      i32x4.lt_s
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;12;) (type 0)
     block ;; label = @1
@@ -2032,6 +1962,58 @@
       v128.load
       i64.const 3
       call 0
+      i32x4.le_u
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i32x4.le_u
+      i32x4.le_u
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      i32x4.le_u
+      i32.const 2
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 3
+      v128.load
+      i64.const 4
+      call 0
+      i32x4.le_u
+      i32x4.le_u
+      i32x4.le_u
+      drop
+    end
+    i64.const 64
+    i64.const 0
+    call 2
+  )
+  (func (;13;) (type 0)
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
       i32x4.gt_u
       i32.const 2
       v128.load
@@ -2065,12 +2047,11 @@
       i32x4.gt_u
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;13;) (type 0)
+  (func (;14;) (type 0)
     block ;; label = @1
       i64.const 64
       i64.const 0
@@ -2118,12 +2099,11 @@
       i32x4.ge_s
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;14;) (type 0)
+  (func (;15;) (type 0)
     block ;; label = @1
       i64.const 64
       i64.const 0
@@ -2171,25 +2151,24 @@
       i32x4.ge_u
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "eq-in-block" (func 2))
-  (export "ne-in-block" (func 3))
-  (export "lt_s-in-block" (func 4))
-  (export "le_u-in-block" (func 5))
-  (export "gt_u-in-block" (func 6))
-  (export "ge_s-in-block" (func 7))
-  (export "nested-eq" (func 8))
-  (export "nested-ne" (func 9))
-  (export "nested-lt_s" (func 10))
-  (export "nested-le_u" (func 11))
-  (export "nested-gt_u" (func 12))
-  (export "nested-ge_s" (func 13))
-  (export "as-param" (func 14))
+  (export "eq-in-block" (func 3))
+  (export "ne-in-block" (func 4))
+  (export "lt_s-in-block" (func 5))
+  (export "le_u-in-block" (func 6))
+  (export "gt_u-in-block" (func 7))
+  (export "ge_s-in-block" (func 8))
+  (export "nested-eq" (func 9))
+  (export "nested-ne" (func 10))
+  (export "nested-lt_s" (func 11))
+  (export "nested-le_u" (func 12))
+  (export "nested-gt_u" (func 13))
+  (export "nested-ge_s" (func 14))
+  (export "as-param" (func 15))
 )
 (assert_return (invoke "eq-in-block"))
 (assert_return (invoke "ne-in-block"))

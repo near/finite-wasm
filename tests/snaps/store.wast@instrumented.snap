@@ -4,7 +4,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -17,12 +18,11 @@
         i32.store
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 0)
+  (func (;4;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -35,12 +35,11 @@
         i32.store
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 0)
+  (func (;5;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -56,12 +55,11 @@
         br 0 (;@2;)
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 0)
+  (func (;6;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -78,12 +76,11 @@
         br_if 0 (;@2;)
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 0)
+  (func (;7;) (type 0)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -100,12 +97,11 @@
         br_if 0 (;@2;)
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;7;) (type 0)
+  (func (;8;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -122,12 +118,11 @@
         br_table 0 (;@2;)
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;8;) (type 0)
+  (func (;9;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -139,18 +134,16 @@
       i32.store
       i64.const 1
       call 0
-      i64.const -8
+      i64.const 8
       i64.const 0
-      nop
-      call 1
+      call 2
       return
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;9;) (type 0)
+  (func (;10;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -166,12 +159,11 @@
         i32.store
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;10;) (type 0)
+  (func (;11;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -188,21 +180,20 @@
         i32.store
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "as-block-value" (func 2))
-  (export "as-loop-value" (func 3))
-  (export "as-br-value" (func 4))
-  (export "as-br_if-value" (func 5))
-  (export "as-br_if-value-cond" (func 6))
-  (export "as-br_table-value" (func 7))
-  (export "as-return-value" (func 8))
-  (export "as-if-then" (func 9))
-  (export "as-if-else" (func 10))
+  (export "as-block-value" (func 3))
+  (export "as-loop-value" (func 4))
+  (export "as-br-value" (func 5))
+  (export "as-br_if-value" (func 6))
+  (export "as-br_if-value-cond" (func 7))
+  (export "as-br_table-value" (func 8))
+  (export "as-return-value" (func 9))
+  (export "as-if-then" (func 10))
+  (export "as-if-else" (func 11))
 )
 (assert_return (invoke "as-block-value"))
 (assert_return (invoke "as-loop-value"))

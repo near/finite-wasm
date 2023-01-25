@@ -5,7 +5,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -30,12 +31,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;3;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;4;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -60,12 +60,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;4;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;5;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -90,12 +89,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;5;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;6;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -120,12 +118,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;6;) (type 1) (param $x v128) (result i64)
+  (func (;7;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -150,12 +147,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
-  (func (;7;) (type 1) (param $x v128) (result i64)
+  (func (;8;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -180,12 +176,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
-  (func (;8;) (type 1) (param $x v128) (result i64)
+  (func (;9;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -210,12 +205,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
-  (func (;9;) (type 1) (param $x v128) (result i64)
+  (func (;10;) (type 1) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -240,12 +234,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
-  (func (;10;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;11;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -270,12 +263,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;11;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;12;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -300,12 +292,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;12;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;13;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -330,12 +321,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;13;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;14;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -360,12 +350,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;14;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;15;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -390,12 +379,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;15;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;16;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -420,12 +408,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;16;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;17;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -450,12 +437,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;17;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;18;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -480,12 +466,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;18;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;19;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -510,12 +495,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;19;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;20;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -540,12 +524,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;20;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;21;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -570,12 +553,11 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
-  (func (;21;) (type 0) (param $address i32) (param $x v128) (result i64)
+  (func (;22;) (type 0) (param $address i32) (param $x v128) (result i64)
     (local $ret i64)
     block (result i64) ;; label = @1
       i64.const 20
@@ -600,33 +582,32 @@
       call 0
       local.get $ret
     end
-    i64.const -20
-    i64.const -3
-    nop
-    call 1
+    i64.const 20
+    i64.const 3
+    call 2
   )
   (memory (;0;) 1)
   (global $zero (;0;) (mut v128) v128.const i32x4 0x00000000 0x00000000 0x00000000 0x00000000)
-  (export "v128.store32_lane_0" (func 2))
-  (export "v128.store32_lane_1" (func 3))
-  (export "v128.store32_lane_2" (func 4))
-  (export "v128.store32_lane_3" (func 5))
-  (export "v128.store32_lane_0_offset_0" (func 6))
-  (export "v128.store32_lane_1_offset_1" (func 7))
-  (export "v128.store32_lane_2_offset_2" (func 8))
-  (export "v128.store32_lane_3_offset_3" (func 9))
-  (export "v128.store32_lane_0_align_1" (func 10))
-  (export "v128.store32_lane_0_align_2" (func 11))
-  (export "v128.store32_lane_0_align_4" (func 12))
-  (export "v128.store32_lane_1_align_1" (func 13))
-  (export "v128.store32_lane_1_align_2" (func 14))
-  (export "v128.store32_lane_1_align_4" (func 15))
-  (export "v128.store32_lane_2_align_1" (func 16))
-  (export "v128.store32_lane_2_align_2" (func 17))
-  (export "v128.store32_lane_2_align_4" (func 18))
-  (export "v128.store32_lane_3_align_1" (func 19))
-  (export "v128.store32_lane_3_align_2" (func 20))
-  (export "v128.store32_lane_3_align_4" (func 21))
+  (export "v128.store32_lane_0" (func 3))
+  (export "v128.store32_lane_1" (func 4))
+  (export "v128.store32_lane_2" (func 5))
+  (export "v128.store32_lane_3" (func 6))
+  (export "v128.store32_lane_0_offset_0" (func 7))
+  (export "v128.store32_lane_1_offset_1" (func 8))
+  (export "v128.store32_lane_2_offset_2" (func 9))
+  (export "v128.store32_lane_3_offset_3" (func 10))
+  (export "v128.store32_lane_0_align_1" (func 11))
+  (export "v128.store32_lane_0_align_2" (func 12))
+  (export "v128.store32_lane_0_align_4" (func 13))
+  (export "v128.store32_lane_1_align_1" (func 14))
+  (export "v128.store32_lane_1_align_2" (func 15))
+  (export "v128.store32_lane_1_align_4" (func 16))
+  (export "v128.store32_lane_2_align_1" (func 17))
+  (export "v128.store32_lane_2_align_2" (func 18))
+  (export "v128.store32_lane_2_align_4" (func 19))
+  (export "v128.store32_lane_3_align_1" (func 20))
+  (export "v128.store32_lane_3_align_2" (func 21))
+  (export "v128.store32_lane_3_align_4" (func 22))
 )
 (assert_return (invoke "v128.store32_lane_0" (i32.const 0)
                                              (v128.const i32x4 50462976 0 0 0))

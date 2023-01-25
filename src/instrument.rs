@@ -3,15 +3,22 @@ use wasm_encoder::{self as we, Section};
 use wasmparser as wp;
 
 const PLACEHOLDER_FOR_NAMES: u8 = !0;
+
 /// These function indices are known to be constant, as they are added at the beginning of the
 /// imports section.
 ///
-/// Doing so makes it much easier to transform references to other functions (basically add 2 to
+/// Doing so makes it much easier to transform references to other functions (basically add F to
 /// all function indices)
 const GAS_INSTRUMENTATION_FN: u32 = 0;
 
 /// See [`GAS_INSTRUMENTATION_FN`].
-const STACK_INSTRUMENTATION_FN: u32 = 1;
+const RESERVE_STACK_INSTRUMENTATION_FN: u32 = GAS_INSTRUMENTATION_FN + 1;
+
+/// See [`RESERVE_STACK_INSTRUMENTATION_FN`].
+const RELEASE_STACK_INSTRUMENTATION_FN: u32 = RESERVE_STACK_INSTRUMENTATION_FN + 1;
+
+/// By how many to adjust the references to functions in the instrumented module.
+const F: u32 = RELEASE_STACK_INSTRUMENTATION_FN + 1;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -51,8 +58,6 @@ pub enum Error {
     ParseConstExprOperator(#[source] wp::BinaryReaderError),
     #[error("the analysis outcome missing a {0} entry for code section entry `{1}`")]
     FunctionMissingInAnalysisOutcome(&'static str, usize),
-    #[error("{0} is too large to fit into i64 for code section entry `{1}`")]
-    SizeTooLarge(&'static str, usize, #[source] std::num::TryFromIntError),
     #[error("module contains fewer function types than definitions")]
     InsufficientFunctionTypes,
     #[error("module contains a reference to an invalid type index")]
@@ -137,7 +142,7 @@ impl<'a> InstrumentContext<'a> {
                     self.transform_imports_section(imports)?;
                 }
                 wp::Payload::StartSection { func, .. } => {
-                    self.start_section.function_index = func + 2;
+                    self.start_section.function_index = func + F;
                     self.schedule_section(self.start_section.id());
                 }
                 wp::Payload::ElementSection(reader) => {
@@ -171,7 +176,7 @@ impl<'a> InstrumentContext<'a> {
                     for export in reader {
                         let export = export.map_err(Error::ParseExport)?;
                         let (kind, index) = match export.kind {
-                            wp::ExternalKind::Func => (we::ExportKind::Func, export.index + 2),
+                            wp::ExternalKind::Func => (we::ExportKind::Func, export.index + F),
                             wp::ExternalKind::Table => (we::ExportKind::Table, export.index),
                             wp::ExternalKind::Memory => (we::ExportKind::Memory, export.index),
                             wp::ExternalKind::Global => (we::ExportKind::Global, export.index),
@@ -266,10 +271,6 @@ impl<'a> InstrumentContext<'a> {
         let gas_offsets = get_idx!(analysis.gas_offsets)?;
         let stack_sz = *get_idx!(analysis.function_operand_stack_sizes)?;
         let frame_sz = *get_idx!(analysis.function_frame_sizes)?;
-        let stack_sz = i64::try_from(stack_sz)
-            .map_err(|e| Error::SizeTooLarge("function_operand_stack_sizes", code_idx, e))?;
-        let frame_sz = i64::try_from(frame_sz)
-            .map_err(|e| Error::SizeTooLarge("function_frame_sizes", code_idx, e))?;
 
         let mut instrumentation_points = gas_offsets
             .iter()
@@ -307,7 +308,9 @@ impl<'a> InstrumentContext<'a> {
         let should_instrument_stack = stack_sz != 0 || frame_sz != 0;
         if should_instrument_stack {
             new_function.instruction(&we::Instruction::Block(block_type));
-            call_stack_instrumentation(&mut new_function, stack_sz, frame_sz);
+            new_function.instruction(&we::Instruction::I64Const(stack_sz as i64));
+            new_function.instruction(&we::Instruction::I64Const(frame_sz as i64));
+            new_function.instruction(&we::Instruction::Call(RESERVE_STACK_INSTRUMENTATION_FN));
         }
 
         while !operators.eof() {
@@ -321,36 +324,30 @@ impl<'a> InstrumentContext<'a> {
             }
             match op {
                 wp::Operator::RefFunc { function_index } => {
-                    new_function.instruction(&we::Instruction::RefFunc(function_index + 2))
+                    new_function.instruction(&we::Instruction::RefFunc(function_index + F))
                 }
                 wp::Operator::Call { function_index } => {
-                    new_function.instruction(&we::Instruction::Call(function_index + 2))
+                    new_function.instruction(&we::Instruction::Call(function_index + F))
                 }
                 wp::Operator::ReturnCall { function_index } => {
-                    if should_instrument_stack {
-                        call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
-                    }
-                    new_function.instruction(&we::Instruction::ReturnCall(function_index + 2))
+                    call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
+                    new_function.instruction(&we::Instruction::ReturnCall(function_index + F))
                 }
                 wp::Operator::ReturnCallIndirect { .. } => {
-                    if should_instrument_stack {
-                        call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
-                    }
+                    call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
                     new_function.raw(self.wasm[offset..end_offset].iter().copied())
                 }
                 wp::Operator::Return => {
                     // FIXME: we could replace these `return`s with `br $well_chosen_index`
                     // targetting the block we inserted around the function body.
-                    if should_instrument_stack {
-                        call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
-                    }
+                    call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
                     new_function.instruction(&we::Instruction::Return)
                 }
                 wp::Operator::End if operators.eof() => {
                     // This is the last function end…
                     if should_instrument_stack {
                         new_function.instruction(&we::Instruction::End);
-                        call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
+                        call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
                     }
                     new_function.instruction(&we::Instruction::End)
                 }
@@ -371,7 +368,7 @@ impl<'a> InstrumentContext<'a> {
             self.type_section
                 .function([we::ValType::I64, we::ValType::I64], []);
             // By inserting the imports at the beginning of the import section we make the new
-            // function index mapping trivial (it is always just an increment by 2)
+            // function index mapping trivial (it is always just an increment by F)
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_gas",
@@ -380,6 +377,11 @@ impl<'a> InstrumentContext<'a> {
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_stack",
+                we::EntityType::Function(instrument_fn_ty + 1),
+            );
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_unstack",
                 we::EntityType::Function(instrument_fn_ty + 1),
             );
         }
@@ -393,7 +395,8 @@ impl<'a> InstrumentContext<'a> {
                 wp::Name::Function(map) => {
                     let mut new_name_map = namemap(map, true)?;
                     new_name_map.append(GAS_INSTRUMENTATION_FN, "finite_wasm_gas");
-                    new_name_map.append(STACK_INSTRUMENTATION_FN, "finite_wasm_stack");
+                    new_name_map.append(RESERVE_STACK_INSTRUMENTATION_FN, "finite_wasm_stack");
+                    new_name_map.append(RELEASE_STACK_INSTRUMENTATION_FN, "finite_wasm_unstack");
                     self.name_section.functions(&new_name_map)
                 }
                 wp::Name::Local(map) => self.name_section.locals(&indirectnamemap(map)?),
@@ -453,7 +456,7 @@ impl<'a> InstrumentContext<'a> {
                 wp::ElementItems::Functions(fns) => {
                     functions = fns
                         .into_iter()
-                        .map(|v| Ok(v.map_err(Error::ParseElementItem)? + 2))
+                        .map(|v| Ok(v.map_err(Error::ParseElementItem)? + F))
                         .collect::<Result<Vec<_>, _>>()?;
                     we::Elements::Functions(&functions)
                 }
@@ -488,21 +491,18 @@ impl<'a> InstrumentContext<'a> {
     }
 }
 
-fn call_stack_instrumentation(
+fn call_unstack_instrumentation(
     func: &mut we::Function,
-    max_operand_stack_size: i64,
-    function_frame_size: i64,
+    max_operand_stack_size: u64,
+    function_frame_size: u64,
 ) {
-    func.instruction(&we::Instruction::I64Const(max_operand_stack_size));
-    func.instruction(&we::Instruction::I64Const(function_frame_size));
-    // The interpreter prices this sequence as -4 gas to account for the leading `block` on
-    // entry.
-    //
-    // It however does not exist on exit so introduce a dummy instruction to compensate.
-    if max_operand_stack_size < 0 || function_frame_size < 0 {
-        func.instruction(&we::Instruction::Nop);
+    if max_operand_stack_size != 0 || function_frame_size != 0 {
+        // These casts being able to wrap-around is intentional. The callee must reinterpret these
+        // back to unsigned.
+        func.instruction(&we::Instruction::I64Const(max_operand_stack_size as i64));
+        func.instruction(&we::Instruction::I64Const(function_frame_size as i64));
+        func.instruction(&we::Instruction::Call(RELEASE_STACK_INSTRUMENTATION_FN));
     }
-    func.instruction(&we::Instruction::Call(STACK_INSTRUMENTATION_FN));
 }
 
 fn call_gas_instrumentation(func: &mut we::Function, gas: u64) {
@@ -534,7 +534,7 @@ fn constexpr(ep: wp::ConstExpr) -> Result<we::ConstExpr, Error> {
             .read_operator()
             .map_err(Error::ParseConstExprOperator)?
         {
-            wp::Operator::RefFunc { function_index } => we::ConstExpr::ref_func(function_index + 2),
+            wp::Operator::RefFunc { function_index } => we::ConstExpr::ref_func(function_index + F),
             _ => {
                 let expr_bytes = reader
                     .read_bytes(reader.bytes_remaining())
@@ -551,7 +551,7 @@ fn namemap(p: wp::NameMap, is_function: bool) -> Result<we::NameMap, Error> {
     let mut new_name_map = we::NameMap::new();
     for naming in p {
         let naming = naming.map_err(Error::ParseNameMapName)?;
-        new_name_map.append(naming.index + (2u32 * is_function as u32), naming.name);
+        new_name_map.append(naming.index + (F * is_function as u32), naming.name);
     }
     Ok(new_name_map)
 }
@@ -560,7 +560,7 @@ fn indirectnamemap(p: wp::IndirectNameMap) -> Result<we::IndirectNameMap, Error>
     let mut new_name_map = we::IndirectNameMap::new();
     for naming in p {
         let naming = naming.map_err(Error::ParseIndirectNameMapName)?;
-        new_name_map.append(naming.index + 2, &namemap(naming.names, false)?);
+        new_name_map.append(naming.index + F, &namemap(naming.names, false)?);
     }
     Ok(new_name_map)
 }

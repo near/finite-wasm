@@ -5,7 +5,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $0 i32) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 1
@@ -15,12 +16,11 @@
       local.get $0
       v128.load32_zero
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (func (;3;) (type 0) (param $0 i32) (result v128)
+  (func (;4;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 1
@@ -30,12 +30,11 @@
       local.get $0
       v128.load64_zero
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (func (;4;) (type 1) (result v128)
+  (func (;5;) (type 1) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -45,12 +44,11 @@
       i32.const 0
       v128.load32_zero
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 1) (result v128)
+  (func (;6;) (type 1) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -60,25 +58,9 @@
       i32.const 8
       v128.load64_zero
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
-  )
-  (func (;6;) (type 0) (param $0 i32) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 16
-      i64.const 1
-      call 1
-      i64.const 2
-      call 0
-      local.get $0
-      v128.load32_zero
-    end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    call 2
   )
   (func (;7;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -88,12 +70,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load32_zero align=1
+      v128.load32_zero
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;8;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -105,10 +86,9 @@
       local.get $0
       v128.load32_zero align=1
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;9;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -118,12 +98,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load32_zero offset=1 align=1
+      v128.load32_zero align=1
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;10;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -133,12 +112,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load32_zero offset=10
+      v128.load32_zero offset=1 align=1
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;11;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -148,12 +126,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load64_zero
+      v128.load32_zero offset=10
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;12;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -163,12 +140,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load64_zero align=1
+      v128.load64_zero
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;13;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -180,10 +156,9 @@
       local.get $0
       v128.load64_zero align=1
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;14;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -193,12 +168,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load64_zero offset=1 align=1
+      v128.load64_zero align=1
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;15;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -208,12 +182,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.load64_zero offset=10 align=4
+      v128.load64_zero offset=1 align=1
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;16;) (type 0) (param $0 i32) (result v128)
     block (result v128) ;; label = @1
@@ -223,29 +196,42 @@
       i64.const 2
       call 0
       local.get $0
+      v128.load64_zero offset=10 align=4
+    end
+    i64.const 16
+    i64.const 1
+    call 2
+  )
+  (func (;17;) (type 0) (param $0 i32) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $0
       v128.load64_zero offset=20
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "v128.load32_zero" (func 2))
-  (export "v128.load64_zero" (func 3))
-  (export "v128.load32_zero_const0" (func 4))
-  (export "v128.load64_zero_const8" (func 5))
-  (export "v128.load32_zero_offset0" (func 6))
-  (export "v128.load32_zero_align1" (func 7))
-  (export "v128.load32_zero_offset0_align1" (func 8))
-  (export "v128.load32_zero_offset1_align1" (func 9))
-  (export "v128.load32_zero_offset10_align4" (func 10))
-  (export "v128.load64_zero_offset0" (func 11))
-  (export "v128.load64_zero_align1" (func 12))
-  (export "v128.load64_zero_offset0_align1" (func 13))
-  (export "v128.load64_zero_offset1_align1" (func 14))
-  (export "v128.load64_zero_offset10_align4" (func 15))
-  (export "v128.load64_zero_offset20_align8" (func 16))
+  (export "v128.load32_zero" (func 3))
+  (export "v128.load64_zero" (func 4))
+  (export "v128.load32_zero_const0" (func 5))
+  (export "v128.load64_zero_const8" (func 6))
+  (export "v128.load32_zero_offset0" (func 7))
+  (export "v128.load32_zero_align1" (func 8))
+  (export "v128.load32_zero_offset0_align1" (func 9))
+  (export "v128.load32_zero_offset1_align1" (func 10))
+  (export "v128.load32_zero_offset10_align4" (func 11))
+  (export "v128.load64_zero_offset0" (func 12))
+  (export "v128.load64_zero_align1" (func 13))
+  (export "v128.load64_zero_offset0_align1" (func 14))
+  (export "v128.load64_zero_offset1_align1" (func 15))
+  (export "v128.load64_zero_offset10_align4" (func 16))
+  (export "v128.load64_zero_offset20_align8" (func 17))
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\80\81\82\83\84\85\86\87\88\89")
   (data (;1;) (i32.const 65520) "\0a\0b\0c\0d\0e\0f\80\81\82\83\84\85\86\87\88\89")
 )
@@ -290,7 +276,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -304,12 +291,11 @@
         end
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 0) (result v128)
+  (func (;4;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -323,12 +309,11 @@
         end
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 0) (result v128)
+  (func (;5;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -343,12 +328,11 @@
         br 0 (;@2;)
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 0) (result v128)
+  (func (;6;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
@@ -363,12 +347,11 @@
         br 0 (;@2;)
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 1) (result i32)
+  (func (;7;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -381,12 +364,11 @@
       call 0
       i32x4.extract_lane 0
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;7;) (type 2) (result i64)
+  (func (;8;) (type 2) (result i64)
     block (result i64) ;; label = @1
       i64.const 16
       i64.const 0
@@ -399,18 +381,17 @@
       call 0
       i64x2.extract_lane 0
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "v128.load32_zero-in-block" (func 2))
-  (export "v128.load64_zero-in-block" (func 3))
-  (export "v128.load32_zero-as-br-value" (func 4))
-  (export "v128.load64_zero-as-br-value" (func 5))
-  (export "v128.load32_zero-extract_lane_s-operand" (func 6))
-  (export "v128.load64_zero-extract_lane_s-operand" (func 7))
+  (export "v128.load32_zero-in-block" (func 3))
+  (export "v128.load64_zero-in-block" (func 4))
+  (export "v128.load32_zero-as-br-value" (func 5))
+  (export "v128.load64_zero-as-br-value" (func 6))
+  (export "v128.load32_zero-extract_lane_s-operand" (func 7))
+  (export "v128.load64_zero-extract_lane_s-operand" (func 8))
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\80\81\82\83\84\85\86\87\88\89")
 )
 (assert_return (invoke "v128.load32_zero-in-block") (v128.const i32x4 0x03020100 0x00000000 0x00000000 0x00000000))

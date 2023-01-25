@@ -7,7 +7,8 @@
   (type (;5;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 5)))
+  (func (;3;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -33,12 +34,11 @@
       i32.const 0
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;3;) (type 1) (result i32)
+  (func (;4;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -58,12 +58,11 @@
       i32.const 8
       i32.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;4;) (type 1) (result i32)
+  (func (;5;) (type 1) (result i32)
     (local $t i32) (local $s i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -90,12 +89,11 @@
       local.get $s
       i32.add
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;5;) (type 2) (result f32)
+  (func (;6;) (type 2) (result f32)
     (local $t f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -120,12 +118,11 @@
       call $finite_wasm_gas
       local.get $t
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func $malloc (;6;) (type 3) (param $size i32) (result i32)
+  (func $malloc (;7;) (type 3) (param $size i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 1
@@ -134,12 +131,11 @@
       call $finite_wasm_gas
       i32.const 16
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;7;) (type 1) (result i32)
+  (func (;8;) (type 1) (result i32)
     (local $x i32) (local $y i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -170,18 +166,17 @@
       local.get $x
       i32.load
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
   (memory (;0;) 1 1)
-  (export "zero_everything" (func 2))
-  (export "test_store_to_load" (func 3))
-  (export "test_redundant_load" (func 4))
-  (export "test_dead_store" (func 5))
+  (export "zero_everything" (func 3))
+  (export "test_store_to_load" (func 4))
+  (export "test_redundant_load" (func 5))
+  (export "test_dead_store" (func 6))
   (export "malloc" (func $malloc))
-  (export "malloc_aliasing" (func 7))
+  (export "malloc_aliasing" (func 8))
 )
 (assert_return (invoke "test_store_to_load") (i32.const 0x00000080))
 (invoke "zero_everything")

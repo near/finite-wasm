@@ -6,7 +6,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (param $0 v128) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (param $0 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 1
@@ -16,26 +17,9 @@
       local.get $0
       v128.not
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
-  )
-  (func (;3;) (type 1) (param $0 v128) (param $1 v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 2
-      call 1
-      i64.const 3
-      call 0
-      local.get $0
-      local.get $1
-      v128.and
-    end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     block (result v128) ;; label = @1
@@ -46,12 +30,11 @@
       call 0
       local.get $0
       local.get $1
-      v128.or
+      v128.and
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;5;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     block (result v128) ;; label = @1
@@ -62,14 +45,28 @@
       call 0
       local.get $0
       local.get $1
+      v128.or
+    end
+    i64.const 32
+    i64.const 2
+    call 2
+  )
+  (func (;6;) (type 1) (param $0 v128) (param $1 v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $0
+      local.get $1
       v128.xor
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;6;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result v128)
+  (func (;7;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 48
       i64.const 3
@@ -81,12 +78,11 @@
       local.get $2
       v128.bitselect
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 48
+    i64.const 3
+    call 2
   )
-  (func (;7;) (type 1) (param $0 v128) (param $1 v128) (result v128)
+  (func (;8;) (type 1) (param $0 v128) (param $1 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -97,17 +93,16 @@
       local.get $1
       v128.andnot
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (export "not" (func 2))
-  (export "and" (func 3))
-  (export "or" (func 4))
-  (export "xor" (func 5))
-  (export "bitselect" (func 6))
-  (export "andnot" (func 7))
+  (export "not" (func 3))
+  (export "and" (func 4))
+  (export "or" (func 5))
+  (export "xor" (func 6))
+  (export "bitselect" (func 7))
+  (export "andnot" (func 8))
 )
 (assert_return (invoke "not" (v128.const i32x4 0 0 0 0))
                              (v128.const i32x4 -1 -1 -1 -1))
@@ -505,7 +500,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block ;; label = @1
       i64.const 16
       i64.const 0
@@ -525,12 +521,11 @@
         drop
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 0)
+  (func (;4;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -556,12 +551,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 0)
+  (func (;5;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -587,12 +581,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 0)
+  (func (;6;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -618,12 +611,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 0)
+  (func (;7;) (type 0)
     block ;; label = @1
       i64.const 48
       i64.const 0
@@ -655,12 +647,11 @@
         drop
       end
     end
-    i64.const -48
+    i64.const 48
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;7;) (type 0)
+  (func (;8;) (type 0)
     block ;; label = @1
       i64.const 32
       i64.const 0
@@ -686,12 +677,11 @@
         drop
       end
     end
-    i64.const -32
+    i64.const 32
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;8;) (type 0)
+  (func (;9;) (type 0)
     block ;; label = @1
       i64.const 16
       i64.const 0
@@ -707,63 +697,9 @@
       v128.not
       drop
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
-  )
-  (func (;9;) (type 0)
-    block ;; label = @1
-      i64.const 64
-      i64.const 0
-      call 1
-      i64.const 2
-      call 0
-      i32.const 0
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 1
-      v128.load
-      i64.const 3
-      call 0
-      v128.and
-      i32.const 0
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 1
-      v128.load
-      i64.const 4
-      call 0
-      v128.and
-      v128.and
-      i32.const 0
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 1
-      v128.load
-      i64.const 3
-      call 0
-      v128.and
-      i32.const 0
-      v128.load
-      i64.const 2
-      call 0
-      i32.const 1
-      v128.load
-      i64.const 4
-      call 0
-      v128.and
-      v128.and
-      v128.and
-      drop
-    end
-    i64.const -64
-    i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;10;) (type 0)
     block ;; label = @1
@@ -780,6 +716,58 @@
       v128.load
       i64.const 3
       call 0
+      v128.and
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 4
+      call 0
+      v128.and
+      v128.and
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
+      v128.and
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 4
+      call 0
+      v128.and
+      v128.and
+      v128.and
+      drop
+    end
+    i64.const 64
+    i64.const 0
+    call 2
+  )
+  (func (;11;) (type 0)
+    block ;; label = @1
+      i64.const 64
+      i64.const 0
+      call 1
+      i64.const 2
+      call 0
+      i32.const 0
+      v128.load
+      i64.const 2
+      call 0
+      i32.const 1
+      v128.load
+      i64.const 3
+      call 0
       v128.or
       i32.const 0
       v128.load
@@ -813,12 +801,11 @@
       v128.or
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;11;) (type 0)
+  (func (;12;) (type 0)
     block ;; label = @1
       i64.const 64
       i64.const 0
@@ -866,12 +853,11 @@
       v128.xor
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;12;) (type 0)
+  (func (;13;) (type 0)
     block ;; label = @1
       i64.const 112
       i64.const 0
@@ -1001,12 +987,11 @@
       v128.bitselect
       drop
     end
-    i64.const -112
+    i64.const 112
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;13;) (type 0)
+  (func (;14;) (type 0)
     block ;; label = @1
       i64.const 64
       i64.const 0
@@ -1054,12 +1039,11 @@
       v128.andnot
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;14;) (type 0)
+  (func (;15;) (type 0)
     block ;; label = @1
       i64.const 64
       i64.const 0
@@ -1103,25 +1087,24 @@
       v128.or
       drop
     end
-    i64.const -64
+    i64.const 64
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "v128.not-in-block" (func 2))
-  (export "v128.and-in-block" (func 3))
-  (export "v128.or-in-block" (func 4))
-  (export "v128.xor-in-block" (func 5))
-  (export "v128.bitselect-in-block" (func 6))
-  (export "v128.andnot-in-block" (func 7))
-  (export "nested-v128.not" (func 8))
-  (export "nested-v128.and" (func 9))
-  (export "nested-v128.or" (func 10))
-  (export "nested-v128.xor" (func 11))
-  (export "nested-v128.bitselect" (func 12))
-  (export "nested-v128.andnot" (func 13))
-  (export "as-param" (func 14))
+  (export "v128.not-in-block" (func 3))
+  (export "v128.and-in-block" (func 4))
+  (export "v128.or-in-block" (func 5))
+  (export "v128.xor-in-block" (func 6))
+  (export "v128.bitselect-in-block" (func 7))
+  (export "v128.andnot-in-block" (func 8))
+  (export "nested-v128.not" (func 9))
+  (export "nested-v128.and" (func 10))
+  (export "nested-v128.or" (func 11))
+  (export "nested-v128.xor" (func 12))
+  (export "nested-v128.bitselect" (func 13))
+  (export "nested-v128.andnot" (func 14))
+  (export "as-param" (func 15))
 )
 (assert_return (invoke "v128.not-in-block"))
 (assert_return (invoke "v128.and-in-block"))

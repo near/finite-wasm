@@ -6,7 +6,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result f32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -16,12 +17,11 @@
       i32.const 0
       f32.load
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 1) (result i32)
+  (func (;4;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -31,12 +31,11 @@
       i32.const 0
       i32.load
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 2)
+  (func (;5;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -47,12 +46,11 @@
       f32.const nan:0x200000 (;=NaN;)
       f32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 2)
+  (func (;6;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -63,12 +61,11 @@
       i32.const 2141192192
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 2)
+  (func (;7;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -79,17 +76,16 @@
       i32.const 0
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1 1)
-  (export "f32.load" (func 2))
-  (export "i32.load" (func 3))
-  (export "f32.store" (func 4))
-  (export "i32.store" (func 5))
-  (export "reset" (func 6))
+  (export "f32.load" (func 3))
+  (export "i32.load" (func 4))
+  (export "f32.store" (func 5))
+  (export "i32.store" (func 6))
+  (export "reset" (func 7))
   (data (;0;) (i32.const 0) "\00\00\a0\7f")
 )
 (assert_return (invoke "i32.load") (i32.const 0x7fa00000))
@@ -115,7 +111,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result f64)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -125,12 +122,11 @@
       i32.const 0
       f64.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 1) (result i64)
+  (func (;4;) (type 1) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -140,12 +136,11 @@
       i32.const 0
       i64.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 2)
+  (func (;5;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -156,12 +151,11 @@
       f64.const nan:0x4000000000000 (;=NaN;)
       f64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 2)
+  (func (;6;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -172,12 +166,11 @@
       i64.const 9219994337134247936
       i64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 2)
+  (func (;7;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -188,17 +181,16 @@
       i64.const 0
       i64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1 1)
-  (export "f64.load" (func 2))
-  (export "i64.load" (func 3))
-  (export "f64.store" (func 4))
-  (export "i64.store" (func 5))
-  (export "reset" (func 6))
+  (export "f64.load" (func 3))
+  (export "i64.load" (func 4))
+  (export "f64.store" (func 5))
+  (export "i64.store" (func 6))
+  (export "reset" (func 7))
   (data (;0;) (i32.const 0) "\00\00\00\00\00\00\f4\7f")
 )
 (assert_return (invoke "i64.load") (i64.const 0x7ff4000000000000))
@@ -226,7 +218,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result f32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -236,12 +229,11 @@
       i32.const 1
       f32.load
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 1) (result i32)
+  (func (;4;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -251,12 +243,11 @@
       i32.const 1
       i32.load
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 2)
+  (func (;5;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -267,12 +258,11 @@
       f32.const nan:0x200000 (;=NaN;)
       f32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 2)
+  (func (;6;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -283,12 +273,11 @@
       i32.const 2141192192
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 2)
+  (func (;7;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -299,17 +288,16 @@
       i32.const 0
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1 1)
-  (export "f32.load" (func 2))
-  (export "i32.load" (func 3))
-  (export "f32.store" (func 4))
-  (export "i32.store" (func 5))
-  (export "reset" (func 6))
+  (export "f32.load" (func 3))
+  (export "i32.load" (func 4))
+  (export "f32.store" (func 5))
+  (export "i32.store" (func 6))
+  (export "reset" (func 7))
   (data (;0;) (i32.const 0) "\00\00\00\a0\7f")
 )
 (assert_return (invoke "i32.load") (i32.const 0x7fa00000))
@@ -335,7 +323,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result f64)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -345,12 +334,11 @@
       i32.const 1
       f64.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 1) (result i64)
+  (func (;4;) (type 1) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -360,12 +348,11 @@
       i32.const 1
       i64.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 2)
+  (func (;5;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -376,12 +363,11 @@
       f64.const nan:0x4000000000000 (;=NaN;)
       f64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 2)
+  (func (;6;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -392,12 +378,11 @@
       i64.const 9219994337134247936
       i64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 2)
+  (func (;7;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -408,17 +393,16 @@
       i64.const 0
       i64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1 1)
-  (export "f64.load" (func 2))
-  (export "i64.load" (func 3))
-  (export "f64.store" (func 4))
-  (export "i64.store" (func 5))
-  (export "reset" (func 6))
+  (export "f64.load" (func 3))
+  (export "i64.load" (func 4))
+  (export "f64.store" (func 5))
+  (export "i64.store" (func 6))
+  (export "reset" (func 7))
   (data (;0;) (i32.const 0) "\00\00\00\00\00\00\00\f4\7f")
 )
 (assert_return (invoke "i64.load") (i64.const 0x7ff4000000000000))
@@ -446,7 +430,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result f32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -456,12 +441,11 @@
       i32.const 0
       f32.load
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 1) (result i32)
+  (func (;4;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -471,12 +455,11 @@
       i32.const 0
       i32.load
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 2)
+  (func (;5;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -487,12 +470,11 @@
       f32.const nan:0x500001 (;=NaN;)
       f32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 2)
+  (func (;6;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -503,12 +485,11 @@
       i32.const 2144337921
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 2)
+  (func (;7;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -519,17 +500,16 @@
       i32.const 0
       i32.store
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1 1)
-  (export "f32.load" (func 2))
-  (export "i32.load" (func 3))
-  (export "f32.store" (func 4))
-  (export "i32.store" (func 5))
-  (export "reset" (func 6))
+  (export "f32.load" (func 3))
+  (export "i32.load" (func 4))
+  (export "f32.store" (func 5))
+  (export "i32.store" (func 6))
+  (export "reset" (func 7))
   (data (;0;) (i32.const 0) "\01\00\d0\7f")
 )
 (assert_return (invoke "i32.load") (i32.const 0x7fd00001))
@@ -555,7 +535,8 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (result f64)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (func (;3;) (type 0) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -565,12 +546,11 @@
       i32.const 0
       f64.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 1) (result i64)
+  (func (;4;) (type 1) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -580,12 +560,11 @@
       i32.const 0
       i64.load
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 2)
+  (func (;5;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -596,12 +575,11 @@
       f64.const nan:0xc000000000001 (;=NaN;)
       f64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 2)
+  (func (;6;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -612,12 +590,11 @@
       i64.const 9222246136947933185
       i64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 2)
+  (func (;7;) (type 2)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -628,17 +605,16 @@
       i64.const 0
       i64.store
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (memory (;0;) 1 1)
-  (export "f64.load" (func 2))
-  (export "i64.load" (func 3))
-  (export "f64.store" (func 4))
-  (export "i64.store" (func 5))
-  (export "reset" (func 6))
+  (export "f64.load" (func 3))
+  (export "i64.load" (func 4))
+  (export "f64.store" (func 5))
+  (export "i64.store" (func 6))
+  (export "reset" (func 7))
   (data (;0;) (i32.const 0) "\01\00\00\00\00\00\fc\7f")
 )
 (assert_return (invoke "i64.load") (i64.const 0x7ffc000000000001))

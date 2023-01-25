@@ -4,7 +4,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 1
     call 0
     nop
@@ -16,7 +17,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 2
     call 0
     nop
@@ -29,7 +31,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 2
     call 0
     nop
@@ -42,7 +45,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 2
     call 0
     nop
@@ -55,7 +59,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
-  (func $f (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (func $f (;3;) (type 0)
     i64.const 1
     call $finite_wasm_gas
     nop
@@ -67,7 +72,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 1
     call 0
     br 0 (;@0;)
@@ -80,9 +86,10 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0))
   (table (;0;) 1 funcref)
-  (elem (;0;) (i32.const 0) func 2)
+  (elem (;0;) (i32.const 0) func 3)
 )
 (module
   (type (;0;) (func))
@@ -90,7 +97,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
-  (func $f (;2;) (type 0))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (func $f (;3;) (type 0))
   (table (;0;) 1 funcref)
   (elem (;0;) (i32.const 0) func $f)
 )
@@ -104,7 +112,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "print" (func (;2;) (type 0)))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "print" (func (;3;) (type 0)))
 )
 (module
   (type (;0;) (func))
@@ -112,7 +121,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0))
 )
 (module
   (type (;0;) (func))
@@ -120,7 +130,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 1
     call 0
     nop
@@ -132,7 +143,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 1
     call 0
     nop
@@ -144,7 +156,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
-  (func $f (;2;) (type 0))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (func $f (;3;) (type 0))
 )
 (module
   (type (;0;) (func))
@@ -152,7 +165,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     i64.const 1
     call 0
     br 0 (;@0;)
@@ -167,7 +181,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block $l ;; label = @1
       i64.const 4
       i64.const 0
@@ -179,10 +194,9 @@
         br_table 0 (;@2;) 0 (;@2;)
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
 )
 (module
@@ -191,7 +205,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block $l ;; label = @1
       i64.const 4
       i64.const 0
@@ -203,10 +218,9 @@
         br_table 0 (;@2;) 0 (;@2;)
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
 )
 (module
@@ -215,7 +229,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block $l ;; label = @1
       i64.const 4
       i64.const 0
@@ -227,10 +242,9 @@
         br_table 0 (;@2;) 0 (;@2;)
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
 )
 (module
@@ -239,7 +253,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block $l0 ;; label = @1
       i64.const 4
       i64.const 0
@@ -251,10 +266,9 @@
         br_table 0 (;@2;)
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
 )
 (module
@@ -263,7 +277,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0)
     block $l$l ;; label = @1
       i64.const 4
       i64.const 0
@@ -275,10 +290,9 @@
         br_table 0 (;@2;)
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
 )
 (module

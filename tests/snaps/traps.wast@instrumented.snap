@@ -9,7 +9,8 @@
   (type (;7;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $x i32) (param $y i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $x i32) (param $y i32)
     block (type 4) ;; label = @1
       i64.const 8
       i64.const 2
@@ -23,12 +24,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call 1
+    i64.const 8
+    i64.const 2
+    call 2
   )
-  (func (;3;) (type 0) (param $x i32) (param $y i32)
+  (func (;4;) (type 0) (param $x i32) (param $y i32)
     block (type 5) ;; label = @1
       i64.const 8
       i64.const 2
@@ -42,12 +42,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call 1
+    i64.const 8
+    i64.const 2
+    call 2
   )
-  (func (;4;) (type 1) (param $x i64) (param $y i64)
+  (func (;5;) (type 1) (param $x i64) (param $y i64)
     block (type 6) ;; label = @1
       i64.const 16
       i64.const 2
@@ -61,12 +60,11 @@
       call 0
       drop
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
-  (func (;5;) (type 1) (param $x i64) (param $y i64)
+  (func (;6;) (type 1) (param $x i64) (param $y i64)
     block (type 7) ;; label = @1
       i64.const 16
       i64.const 2
@@ -80,15 +78,14 @@
       call 0
       drop
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
-  (export "no_dce.i32.div_s" (func 2))
-  (export "no_dce.i32.div_u" (func 3))
-  (export "no_dce.i64.div_s" (func 4))
-  (export "no_dce.i64.div_u" (func 5))
+  (export "no_dce.i32.div_s" (func 3))
+  (export "no_dce.i32.div_u" (func 4))
+  (export "no_dce.i64.div_s" (func 5))
+  (export "no_dce.i64.div_u" (func 6))
 )
 (assert_trap (invoke "no_dce.i32.div_s" (i32.const 1) (i32.const 0)) "integer divide by zero")
 (assert_trap (invoke "no_dce.i32.div_u" (i32.const 1) (i32.const 0)) "integer divide by zero")
@@ -108,7 +105,8 @@
   (type (;7;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $x i32) (param $y i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $x i32) (param $y i32)
     block (type 4) ;; label = @1
       i64.const 8
       i64.const 2
@@ -122,12 +120,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call 1
+    i64.const 8
+    i64.const 2
+    call 2
   )
-  (func (;3;) (type 0) (param $x i32) (param $y i32)
+  (func (;4;) (type 0) (param $x i32) (param $y i32)
     block (type 5) ;; label = @1
       i64.const 8
       i64.const 2
@@ -141,12 +138,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call 1
+    i64.const 8
+    i64.const 2
+    call 2
   )
-  (func (;4;) (type 1) (param $x i64) (param $y i64)
+  (func (;5;) (type 1) (param $x i64) (param $y i64)
     block (type 6) ;; label = @1
       i64.const 16
       i64.const 2
@@ -160,12 +156,11 @@
       call 0
       drop
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
-  (func (;5;) (type 1) (param $x i64) (param $y i64)
+  (func (;6;) (type 1) (param $x i64) (param $y i64)
     block (type 7) ;; label = @1
       i64.const 16
       i64.const 2
@@ -179,15 +174,14 @@
       call 0
       drop
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
-  (export "no_dce.i32.rem_s" (func 2))
-  (export "no_dce.i32.rem_u" (func 3))
-  (export "no_dce.i64.rem_s" (func 4))
-  (export "no_dce.i64.rem_u" (func 5))
+  (export "no_dce.i32.rem_s" (func 3))
+  (export "no_dce.i32.rem_u" (func 4))
+  (export "no_dce.i64.rem_s" (func 5))
+  (export "no_dce.i64.rem_u" (func 6))
 )
 (assert_trap (invoke "no_dce.i32.rem_s" (i32.const 1) (i32.const 0)) "integer divide by zero")
 (assert_trap (invoke "no_dce.i32.rem_u" (i32.const 1) (i32.const 0)) "integer divide by zero")
@@ -209,7 +203,8 @@
   (type (;11;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $x f32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $x f32)
     block (type 4) ;; label = @1
       i64.const 4
       i64.const 1
@@ -222,12 +217,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;3;) (type 0) (param $x f32)
+  (func (;4;) (type 0) (param $x f32)
     block (type 5) ;; label = @1
       i64.const 4
       i64.const 1
@@ -240,12 +234,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;4;) (type 1) (param $x f64)
+  (func (;5;) (type 1) (param $x f64)
     block (type 6) ;; label = @1
       i64.const 8
       i64.const 1
@@ -258,12 +251,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;5;) (type 1) (param $x f64)
+  (func (;6;) (type 1) (param $x f64)
     block (type 7) ;; label = @1
       i64.const 8
       i64.const 1
@@ -276,12 +268,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;6;) (type 0) (param $x f32)
+  (func (;7;) (type 0) (param $x f32)
     block (type 8) ;; label = @1
       i64.const 8
       i64.const 1
@@ -294,12 +285,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;7;) (type 0) (param $x f32)
+  (func (;8;) (type 0) (param $x f32)
     block (type 9) ;; label = @1
       i64.const 8
       i64.const 1
@@ -312,12 +302,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;8;) (type 1) (param $x f64)
+  (func (;9;) (type 1) (param $x f64)
     block (type 10) ;; label = @1
       i64.const 8
       i64.const 1
@@ -330,12 +319,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;9;) (type 1) (param $x f64)
+  (func (;10;) (type 1) (param $x f64)
     block (type 11) ;; label = @1
       i64.const 8
       i64.const 1
@@ -348,19 +336,18 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (export "no_dce.i32.trunc_f32_s" (func 2))
-  (export "no_dce.i32.trunc_f32_u" (func 3))
-  (export "no_dce.i32.trunc_f64_s" (func 4))
-  (export "no_dce.i32.trunc_f64_u" (func 5))
-  (export "no_dce.i64.trunc_f32_s" (func 6))
-  (export "no_dce.i64.trunc_f32_u" (func 7))
-  (export "no_dce.i64.trunc_f64_s" (func 8))
-  (export "no_dce.i64.trunc_f64_u" (func 9))
+  (export "no_dce.i32.trunc_f32_s" (func 3))
+  (export "no_dce.i32.trunc_f32_u" (func 4))
+  (export "no_dce.i32.trunc_f64_s" (func 5))
+  (export "no_dce.i32.trunc_f64_u" (func 6))
+  (export "no_dce.i64.trunc_f32_s" (func 7))
+  (export "no_dce.i64.trunc_f32_u" (func 8))
+  (export "no_dce.i64.trunc_f64_s" (func 9))
+  (export "no_dce.i64.trunc_f64_u" (func 10))
 )
 (assert_trap (invoke "no_dce.i32.trunc_f32_s" (f32.const nan)) "invalid conversion to integer")
 (assert_trap (invoke "no_dce.i32.trunc_f32_u" (f32.const nan)) "invalid conversion to integer")
@@ -391,7 +378,8 @@
   (type (;16;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0) (param $i i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0) (param $i i32)
     block (type 3) ;; label = @1
       i64.const 4
       i64.const 1
@@ -404,12 +392,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;3;) (type 0) (param $i i32)
+  (func (;4;) (type 0) (param $i i32)
     block (type 4) ;; label = @1
       i64.const 4
       i64.const 1
@@ -422,12 +409,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;4;) (type 0) (param $i i32)
+  (func (;5;) (type 0) (param $i i32)
     block (type 5) ;; label = @1
       i64.const 4
       i64.const 1
@@ -440,12 +426,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;5;) (type 0) (param $i i32)
+  (func (;6;) (type 0) (param $i i32)
     block (type 6) ;; label = @1
       i64.const 4
       i64.const 1
@@ -458,12 +443,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;6;) (type 0) (param $i i32)
+  (func (;7;) (type 0) (param $i i32)
     block (type 7) ;; label = @1
       i64.const 4
       i64.const 1
@@ -476,12 +460,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;7;) (type 0) (param $i i32)
+  (func (;8;) (type 0) (param $i i32)
     block (type 8) ;; label = @1
       i64.const 8
       i64.const 1
@@ -494,12 +477,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;8;) (type 0) (param $i i32)
+  (func (;9;) (type 0) (param $i i32)
     block (type 9) ;; label = @1
       i64.const 8
       i64.const 1
@@ -512,12 +494,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;9;) (type 0) (param $i i32)
+  (func (;10;) (type 0) (param $i i32)
     block (type 10) ;; label = @1
       i64.const 8
       i64.const 1
@@ -530,12 +511,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;10;) (type 0) (param $i i32)
+  (func (;11;) (type 0) (param $i i32)
     block (type 11) ;; label = @1
       i64.const 8
       i64.const 1
@@ -548,12 +528,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;11;) (type 0) (param $i i32)
+  (func (;12;) (type 0) (param $i i32)
     block (type 12) ;; label = @1
       i64.const 8
       i64.const 1
@@ -566,12 +545,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;12;) (type 0) (param $i i32)
+  (func (;13;) (type 0) (param $i i32)
     block (type 13) ;; label = @1
       i64.const 8
       i64.const 1
@@ -584,12 +562,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;13;) (type 0) (param $i i32)
+  (func (;14;) (type 0) (param $i i32)
     block (type 14) ;; label = @1
       i64.const 8
       i64.const 1
@@ -602,12 +579,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;14;) (type 0) (param $i i32)
+  (func (;15;) (type 0) (param $i i32)
     block (type 15) ;; label = @1
       i64.const 4
       i64.const 1
@@ -620,12 +596,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;15;) (type 0) (param $i i32)
+  (func (;16;) (type 0) (param $i i32)
     block (type 16) ;; label = @1
       i64.const 8
       i64.const 1
@@ -638,26 +613,25 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "no_dce.i32.load" (func 2))
-  (export "no_dce.i32.load16_s" (func 3))
-  (export "no_dce.i32.load16_u" (func 4))
-  (export "no_dce.i32.load8_s" (func 5))
-  (export "no_dce.i32.load8_u" (func 6))
-  (export "no_dce.i64.load" (func 7))
-  (export "no_dce.i64.load32_s" (func 8))
-  (export "no_dce.i64.load32_u" (func 9))
-  (export "no_dce.i64.load16_s" (func 10))
-  (export "no_dce.i64.load16_u" (func 11))
-  (export "no_dce.i64.load8_s" (func 12))
-  (export "no_dce.i64.load8_u" (func 13))
-  (export "no_dce.f32.load" (func 14))
-  (export "no_dce.f64.load" (func 15))
+  (export "no_dce.i32.load" (func 3))
+  (export "no_dce.i32.load16_s" (func 4))
+  (export "no_dce.i32.load16_u" (func 5))
+  (export "no_dce.i32.load8_s" (func 6))
+  (export "no_dce.i32.load8_u" (func 7))
+  (export "no_dce.i64.load" (func 8))
+  (export "no_dce.i64.load32_s" (func 9))
+  (export "no_dce.i64.load32_u" (func 10))
+  (export "no_dce.i64.load16_s" (func 11))
+  (export "no_dce.i64.load16_u" (func 12))
+  (export "no_dce.i64.load8_s" (func 13))
+  (export "no_dce.i64.load8_u" (func 14))
+  (export "no_dce.f32.load" (func 15))
+  (export "no_dce.f64.load" (func 16))
 )
 (assert_trap (invoke "no_dce.i32.load" (i32.const 65536)) "out of bounds memory access")
 (assert_trap (invoke "no_dce.i32.load16_s" (i32.const 65536)) "out of bounds memory access")

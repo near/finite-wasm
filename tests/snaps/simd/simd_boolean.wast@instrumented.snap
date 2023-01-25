@@ -4,7 +4,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0) (param $0 v128) (result i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 1
@@ -14,25 +15,9 @@
       local.get $0
       v128.any_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
-  )
-  (func (;3;) (type 0) (param $0 v128) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 1
-      call 1
-      i64.const 2
-      call 0
-      local.get $0
-      i8x16.all_true
-    end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -42,12 +27,11 @@
       i64.const 2
       call 0
       local.get $0
-      i8x16.bitmask
+      i8x16.all_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;5;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -57,12 +41,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.any_true
+      i8x16.bitmask
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;6;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -72,12 +55,11 @@
       i64.const 2
       call 0
       local.get $0
-      i16x8.all_true
+      v128.any_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;7;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -87,12 +69,11 @@
       i64.const 2
       call 0
       local.get $0
-      i16x8.bitmask
+      i16x8.all_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;8;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -102,12 +83,11 @@
       i64.const 2
       call 0
       local.get $0
-      v128.any_true
+      i16x8.bitmask
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;9;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -117,12 +97,11 @@
       i64.const 2
       call 0
       local.get $0
-      i32x4.all_true
+      v128.any_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;10;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -132,12 +111,11 @@
       i64.const 2
       call 0
       local.get $0
-      i32x4.bitmask
+      i32x4.all_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;11;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -147,12 +125,11 @@
       i64.const 2
       call 0
       local.get $0
-      i64x2.all_true
+      i32x4.bitmask
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;12;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -162,24 +139,37 @@
       i64.const 2
       call 0
       local.get $0
+      i64x2.all_true
+    end
+    i64.const 16
+    i64.const 1
+    call 2
+  )
+  (func (;13;) (type 0) (param $0 v128) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $0
       i64x2.bitmask
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (export "i8x16.any_true" (func 2))
-  (export "i8x16.all_true" (func 3))
-  (export "i8x16.bitmask" (func 4))
-  (export "i16x8.any_true" (func 5))
-  (export "i16x8.all_true" (func 6))
-  (export "i16x8.bitmask" (func 7))
-  (export "i32x4.any_true" (func 8))
-  (export "i32x4.all_true" (func 9))
-  (export "i32x4.bitmask" (func 10))
-  (export "i64x2.all_true" (func 11))
-  (export "i64x2.bitmask" (func 12))
+  (export "i8x16.any_true" (func 3))
+  (export "i8x16.all_true" (func 4))
+  (export "i8x16.bitmask" (func 5))
+  (export "i16x8.any_true" (func 6))
+  (export "i16x8.all_true" (func 7))
+  (export "i16x8.bitmask" (func 8))
+  (export "i32x4.any_true" (func 9))
+  (export "i32x4.all_true" (func 10))
+  (export "i32x4.bitmask" (func 11))
+  (export "i64x2.all_true" (func 12))
+  (export "i64x2.bitmask" (func 13))
 )
 (assert_return (invoke "i8x16.any_true" (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
                                         (i32.const 0))
@@ -356,30 +346,7 @@
   (type (;4;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
-  (func (;2;) (type 0) (param v128) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 1
-      call 1
-      i64.const 3
-      call 0
-      local.get 0
-      v128.any_true
-      if (result i32) ;; label = @2
-        i64.const 1
-        call 0
-        i32.const 1
-      else
-        i64.const 1
-        call 0
-        i32.const 0
-      end
-    end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
-  )
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
   (func (;3;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
@@ -399,10 +366,9 @@
         i32.const 0
       end
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
@@ -423,12 +389,34 @@
         i32.const 0
       end
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;5;) (type 0) (param v128) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 1
+      call 1
+      i64.const 3
+      call 0
+      local.get 0
+      v128.any_true
+      if (result i32) ;; label = @2
+        i64.const 1
+        call 0
+        i32.const 1
+      else
+        i64.const 1
+        call 0
+        i32.const 0
+      end
+    end
+    i64.const 16
+    i64.const 1
+    call 2
+  )
+  (func (;6;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 1
@@ -447,12 +435,11 @@
         i32.const 0
       end
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (func (;6;) (type 0) (param v128) (result i32)
+  (func (;7;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 1
@@ -471,12 +458,11 @@
         i32.const 0
       end
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (func (;7;) (type 0) (param v128) (result i32)
+  (func (;8;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 1
@@ -495,28 +481,9 @@
         i32.const 0
       end
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
-  )
-  (func (;8;) (type 0) (param v128) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 24
-      i64.const 1
-      call 1
-      i64.const 5
-      call 0
-      i32.const 1
-      i32.const 0
-      local.get 0
-      v128.any_true
-      select
-    end
-    i64.const -24
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;9;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
@@ -531,10 +498,9 @@
       v128.any_true
       select
     end
-    i64.const -24
-    i64.const -1
-    nop
-    call 1
+    i64.const 24
+    i64.const 1
+    call 2
   )
   (func (;10;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
@@ -549,12 +515,28 @@
       v128.any_true
       select
     end
-    i64.const -24
-    i64.const -1
-    nop
-    call 1
+    i64.const 24
+    i64.const 1
+    call 2
   )
   (func (;11;) (type 0) (param v128) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 24
+      i64.const 1
+      call 1
+      i64.const 5
+      call 0
+      i32.const 1
+      i32.const 0
+      local.get 0
+      v128.any_true
+      select
+    end
+    i64.const 24
+    i64.const 1
+    call 2
+  )
+  (func (;12;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 24
       i64.const 1
@@ -567,12 +549,11 @@
       i8x16.all_true
       select
     end
-    i64.const -24
-    i64.const -1
-    nop
-    call 1
+    i64.const 24
+    i64.const 1
+    call 2
   )
-  (func (;12;) (type 0) (param v128) (result i32)
+  (func (;13;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 24
       i64.const 1
@@ -585,12 +566,11 @@
       i16x8.all_true
       select
     end
-    i64.const -24
-    i64.const -1
-    nop
-    call 1
+    i64.const 24
+    i64.const 1
+    call 2
   )
-  (func (;13;) (type 0) (param v128) (result i32)
+  (func (;14;) (type 0) (param v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 24
       i64.const 1
@@ -603,40 +583,9 @@
       i32x4.all_true
       select
     end
-    i64.const -24
-    i64.const -1
-    nop
-    call 1
-  )
-  (func (;14;) (type 0) (param $0 v128) (result i32)
-    (local $1 i32)
-    block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 2
-      call 1
-      i64.const 8
-      call 0
-      i32.const 2
-      local.set $1
-      block ;; label = @2
-        i32.const 1
-        local.set $1
-        local.get $0
-        v128.any_true
-        br_if 0 (;@2;)
-        i64.const 2
-        call 0
-        i32.const 0
-        local.set $1
-      end
-      i64.const 1
-      call 0
-      local.get $1
-    end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 24
+    i64.const 1
+    call 2
   )
   (func (;15;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
@@ -663,10 +612,9 @@
       call 0
       local.get $1
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
   (func (;16;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
@@ -693,12 +641,40 @@
       call 0
       local.get $1
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
   (func (;17;) (type 0) (param $0 v128) (result i32)
+    (local $1 i32)
+    block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 2
+      call 1
+      i64.const 8
+      call 0
+      i32.const 2
+      local.set $1
+      block ;; label = @2
+        i32.const 1
+        local.set $1
+        local.get $0
+        v128.any_true
+        br_if 0 (;@2;)
+        i64.const 2
+        call 0
+        i32.const 0
+        local.set $1
+      end
+      i64.const 1
+      call 0
+      local.get $1
+    end
+    i64.const 16
+    i64.const 2
+    call 2
+  )
+  (func (;18;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     block (result i32) ;; label = @1
       i64.const 16
@@ -723,12 +699,11 @@
       call 0
       local.get $1
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
-  (func (;18;) (type 0) (param $0 v128) (result i32)
+  (func (;19;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     block (result i32) ;; label = @1
       i64.const 16
@@ -753,12 +728,11 @@
       call 0
       local.get $1
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
-  (func (;19;) (type 0) (param $0 v128) (result i32)
+  (func (;20;) (type 0) (param $0 v128) (result i32)
     (local $1 i32)
     block (result i32) ;; label = @1
       i64.const 16
@@ -783,28 +757,9 @@
       call 0
       local.get $1
     end
-    i64.const -16
-    i64.const -2
-    nop
-    call 1
-  )
-  (func (;20;) (type 1) (param $0 v128) (param $1 v128) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 20
-      i64.const 2
-      call 1
-      i64.const 5
-      call 0
-      local.get $0
-      v128.any_true
-      local.get $1
-      v128.any_true
-      i32.and
-    end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 2
+    call 2
   )
   (func (;21;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -819,10 +774,9 @@
       v128.any_true
       i32.and
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;22;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -837,10 +791,9 @@
       v128.any_true
       i32.and
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;23;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -853,12 +806,11 @@
       v128.any_true
       local.get $1
       v128.any_true
-      i32.or
+      i32.and
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;24;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -873,10 +825,9 @@
       v128.any_true
       i32.or
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;25;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -891,10 +842,9 @@
       v128.any_true
       i32.or
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;26;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -907,12 +857,11 @@
       v128.any_true
       local.get $1
       v128.any_true
-      i32.xor
+      i32.or
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;27;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -927,10 +876,9 @@
       v128.any_true
       i32.xor
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;28;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -945,10 +893,9 @@
       v128.any_true
       i32.xor
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;29;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -958,15 +905,14 @@
       i64.const 5
       call 0
       local.get $0
-      i8x16.all_true
+      v128.any_true
       local.get $1
-      i8x16.all_true
-      i32.and
+      v128.any_true
+      i32.xor
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;30;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -976,15 +922,14 @@
       i64.const 5
       call 0
       local.get $0
-      i16x8.all_true
+      i8x16.all_true
       local.get $1
-      i16x8.all_true
+      i8x16.all_true
       i32.and
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;31;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -994,15 +939,14 @@
       i64.const 5
       call 0
       local.get $0
-      i32x4.all_true
+      i16x8.all_true
       local.get $1
-      i32x4.all_true
+      i16x8.all_true
       i32.and
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;32;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1012,15 +956,14 @@
       i64.const 5
       call 0
       local.get $0
-      i8x16.all_true
+      i32x4.all_true
       local.get $1
-      i8x16.all_true
-      i32.or
+      i32x4.all_true
+      i32.and
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;33;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1030,15 +973,14 @@
       i64.const 5
       call 0
       local.get $0
-      i16x8.all_true
+      i8x16.all_true
       local.get $1
-      i16x8.all_true
+      i8x16.all_true
       i32.or
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;34;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1048,15 +990,14 @@
       i64.const 5
       call 0
       local.get $0
-      i32x4.all_true
+      i16x8.all_true
       local.get $1
-      i32x4.all_true
+      i16x8.all_true
       i32.or
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;35;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1066,15 +1007,14 @@
       i64.const 5
       call 0
       local.get $0
-      i8x16.all_true
+      i32x4.all_true
       local.get $1
-      i8x16.all_true
-      i32.xor
+      i32x4.all_true
+      i32.or
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;36;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1084,17 +1024,33 @@
       i64.const 5
       call 0
       local.get $0
+      i8x16.all_true
+      local.get $1
+      i8x16.all_true
+      i32.xor
+    end
+    i64.const 20
+    i64.const 2
+    call 2
+  )
+  (func (;37;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 20
+      i64.const 2
+      call 1
+      i64.const 5
+      call 0
+      local.get $0
       i16x8.all_true
       local.get $1
       i16x8.all_true
       i32.xor
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
-  (func (;37;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+  (func (;38;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 2
@@ -1107,26 +1063,9 @@
       i32x4.all_true
       i32.xor
     end
-    i64.const -20
-    i64.const -2
-    nop
-    call 1
-  )
-  (func (;38;) (type 0) (param $0 v128) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 1
-      call 1
-      i64.const 3
-      call 0
-      local.get $0
-      v128.not
-      v128.any_true
-    end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 20
+    i64.const 2
+    call 2
   )
   (func (;39;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1139,10 +1078,9 @@
       v128.not
       v128.any_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;40;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1155,27 +1093,24 @@
       v128.not
       v128.any_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (func (;41;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+  (func (;41;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
-      i64.const 32
-      i64.const 2
+      i64.const 16
+      i64.const 1
       call 1
-      i64.const 4
+      i64.const 3
       call 0
       local.get $0
-      local.get $1
-      v128.and
+      v128.not
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;42;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1189,10 +1124,9 @@
       v128.and
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;43;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1206,10 +1140,9 @@
       v128.and
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;44;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1220,13 +1153,12 @@
       call 0
       local.get $0
       local.get $1
-      v128.or
+      v128.and
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;45;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1240,10 +1172,9 @@
       v128.or
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;46;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1257,10 +1188,9 @@
       v128.or
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;47;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1271,13 +1201,12 @@
       call 0
       local.get $0
       local.get $1
-      v128.xor
+      v128.or
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;48;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1291,10 +1220,9 @@
       v128.xor
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;49;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1308,28 +1236,25 @@
       v128.xor
       v128.any_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;50;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+  (func (;50;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
-      i64.const 48
-      i64.const 3
+      i64.const 32
+      i64.const 2
       call 1
-      i64.const 5
+      i64.const 4
       call 0
       local.get $0
       local.get $1
-      local.get $2
-      v128.bitselect
+      v128.xor
       v128.any_true
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;51;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1344,10 +1269,9 @@
       v128.bitselect
       v128.any_true
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 48
+    i64.const 3
+    call 2
   )
   (func (;52;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1362,26 +1286,26 @@
       v128.bitselect
       v128.any_true
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 48
+    i64.const 3
+    call 2
   )
-  (func (;53;) (type 0) (param $0 v128) (result i32)
+  (func (;53;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
     block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 1
-      call 1
+      i64.const 48
       i64.const 3
+      call 1
+      i64.const 5
       call 0
       local.get $0
-      v128.not
-      i8x16.all_true
+      local.get $1
+      local.get $2
+      v128.bitselect
+      v128.any_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 48
+    i64.const 3
+    call 2
   )
   (func (;54;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1392,12 +1316,11 @@
       call 0
       local.get $0
       v128.not
-      i16x8.all_true
+      i8x16.all_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;55;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1408,29 +1331,26 @@
       call 0
       local.get $0
       v128.not
-      i32x4.all_true
+      i16x8.all_true
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (func (;56;) (type 1) (param $0 v128) (param $1 v128) (result i32)
+  (func (;56;) (type 0) (param $0 v128) (result i32)
     block (result i32) ;; label = @1
-      i64.const 32
-      i64.const 2
+      i64.const 16
+      i64.const 1
       call 1
-      i64.const 4
+      i64.const 3
       call 0
       local.get $0
-      local.get $1
-      v128.and
-      i8x16.all_true
+      v128.not
+      i32x4.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
   (func (;57;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1442,12 +1362,11 @@
       local.get $0
       local.get $1
       v128.and
-      i16x8.all_true
+      i8x16.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;58;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1459,12 +1378,11 @@
       local.get $0
       local.get $1
       v128.and
-      i32x4.all_true
+      i16x8.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;59;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1475,13 +1393,12 @@
       call 0
       local.get $0
       local.get $1
-      v128.or
-      i8x16.all_true
+      v128.and
+      i32x4.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;60;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1493,12 +1410,11 @@
       local.get $0
       local.get $1
       v128.or
-      i16x8.all_true
+      i8x16.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;61;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1510,12 +1426,11 @@
       local.get $0
       local.get $1
       v128.or
-      i32x4.all_true
+      i16x8.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;62;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1526,13 +1441,12 @@
       call 0
       local.get $0
       local.get $1
-      v128.xor
-      i8x16.all_true
+      v128.or
+      i32x4.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;63;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1544,12 +1458,11 @@
       local.get $0
       local.get $1
       v128.xor
-      i16x8.all_true
+      i8x16.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;64;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1561,30 +1474,27 @@
       local.get $0
       local.get $1
       v128.xor
-      i32x4.all_true
+      i16x8.all_true
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;65;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+  (func (;65;) (type 1) (param $0 v128) (param $1 v128) (result i32)
     block (result i32) ;; label = @1
-      i64.const 48
-      i64.const 3
+      i64.const 32
+      i64.const 2
       call 1
-      i64.const 5
+      i64.const 4
       call 0
       local.get $0
       local.get $1
-      local.get $2
-      v128.bitselect
-      i8x16.all_true
+      v128.xor
+      i32x4.all_true
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
   (func (;66;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1597,12 +1507,11 @@
       local.get $1
       local.get $2
       v128.bitselect
-      i16x8.all_true
+      i8x16.all_true
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 48
+    i64.const 3
+    call 2
   )
   (func (;67;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
     block (result i32) ;; label = @1
@@ -1615,80 +1524,96 @@
       local.get $1
       local.get $2
       v128.bitselect
+      i16x8.all_true
+    end
+    i64.const 48
+    i64.const 3
+    call 2
+  )
+  (func (;68;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 48
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get $0
+      local.get $1
+      local.get $2
+      v128.bitselect
       i32x4.all_true
     end
-    i64.const -48
-    i64.const -3
-    nop
-    call 1
+    i64.const 48
+    i64.const 3
+    call 2
   )
   (memory (;0;) 1)
-  (export "i8x16_any_true_as_if_cond" (func 2))
-  (export "i16x8_any_true_as_if_cond" (func 3))
-  (export "i32x4_any_true_as_if_cond" (func 4))
-  (export "i8x16_all_true_as_if_cond" (func 5))
-  (export "i16x8_all_true_as_if_cond" (func 6))
-  (export "i32x4_all_true_as_if_cond" (func 7))
-  (export "i8x16_any_true_as_select_cond" (func 8))
-  (export "i16x8_any_true_as_select_cond" (func 9))
-  (export "i32x4_any_true_as_select_cond" (func 10))
-  (export "i8x16_all_true_as_select_cond" (func 11))
-  (export "i16x8_all_true_as_select_cond" (func 12))
-  (export "i32x4_all_true_as_select_cond" (func 13))
-  (export "i8x16_any_true_as_br_if_cond" (func 14))
-  (export "i16x8_any_true_as_br_if_cond" (func 15))
-  (export "i32x4_any_true_as_br_if_cond" (func 16))
-  (export "i8x16_all_true_as_br_if_cond" (func 17))
-  (export "i16x8_all_true_as_br_if_cond" (func 18))
-  (export "i32x4_all_true_as_br_if_cond" (func 19))
-  (export "i8x16_any_true_as_i32.and_operand" (func 20))
-  (export "i16x8_any_true_as_i32.and_operand" (func 21))
-  (export "i32x4_any_true_as_i32.and_operand" (func 22))
-  (export "i8x16_any_true_as_i32.or_operand" (func 23))
-  (export "i16x8_any_true_as_i32.or_operand" (func 24))
-  (export "i32x4_any_true_as_i32.or_operand" (func 25))
-  (export "i8x16_any_true_as_i32.xor_operand" (func 26))
-  (export "i16x8_any_true_as_i32.xor_operand" (func 27))
-  (export "i32x4_any_true_as_i32.xor_operand" (func 28))
-  (export "i8x16_all_true_as_i32.and_operand" (func 29))
-  (export "i16x8_all_true_as_i32.and_operand" (func 30))
-  (export "i32x4_all_true_as_i32.and_operand" (func 31))
-  (export "i8x16_all_true_as_i32.or_operand" (func 32))
-  (export "i16x8_all_true_as_i32.or_operand" (func 33))
-  (export "i32x4_all_true_as_i32.or_operand" (func 34))
-  (export "i8x16_all_true_as_i32.xor_operand" (func 35))
-  (export "i16x8_all_true_as_i32.xor_operand" (func 36))
-  (export "i32x4_all_true_as_i32.xor_operand" (func 37))
-  (export "i8x16_any_true_with_v128.not" (func 38))
-  (export "i16x8_any_true_with_v128.not" (func 39))
-  (export "i32x4_any_true_with_v128.not" (func 40))
-  (export "i8x16_any_true_with_v128.and" (func 41))
-  (export "i16x8_any_true_with_v128.and" (func 42))
-  (export "i32x4_any_true_with_v128.and" (func 43))
-  (export "i8x16_any_true_with_v128.or" (func 44))
-  (export "i16x8_any_true_with_v128.or" (func 45))
-  (export "i32x4_any_true_with_v128.or" (func 46))
-  (export "i8x16_any_true_with_v128.xor" (func 47))
-  (export "i16x8_any_true_with_v128.xor" (func 48))
-  (export "i32x4_any_true_with_v128.xor" (func 49))
-  (export "i8x16_any_true_with_v128.bitselect" (func 50))
-  (export "i16x8_any_true_with_v128.bitselect" (func 51))
-  (export "i32x4_any_true_with_v128.bitselect" (func 52))
-  (export "i8x16_all_true_with_v128.not" (func 53))
-  (export "i16x8_all_true_with_v128.not" (func 54))
-  (export "i32x4_all_true_with_v128.not" (func 55))
-  (export "i8x16_all_true_with_v128.and" (func 56))
-  (export "i16x8_all_true_with_v128.and" (func 57))
-  (export "i32x4_all_true_with_v128.and" (func 58))
-  (export "i8x16_all_true_with_v128.or" (func 59))
-  (export "i16x8_all_true_with_v128.or" (func 60))
-  (export "i32x4_all_true_with_v128.or" (func 61))
-  (export "i8x16_all_true_with_v128.xor" (func 62))
-  (export "i16x8_all_true_with_v128.xor" (func 63))
-  (export "i32x4_all_true_with_v128.xor" (func 64))
-  (export "i8x16_all_true_with_v128.bitselect" (func 65))
-  (export "i16x8_all_true_with_v128.bitselect" (func 66))
-  (export "i32x4_all_true_with_v128.bitselect" (func 67))
+  (export "i8x16_any_true_as_if_cond" (func 3))
+  (export "i16x8_any_true_as_if_cond" (func 4))
+  (export "i32x4_any_true_as_if_cond" (func 5))
+  (export "i8x16_all_true_as_if_cond" (func 6))
+  (export "i16x8_all_true_as_if_cond" (func 7))
+  (export "i32x4_all_true_as_if_cond" (func 8))
+  (export "i8x16_any_true_as_select_cond" (func 9))
+  (export "i16x8_any_true_as_select_cond" (func 10))
+  (export "i32x4_any_true_as_select_cond" (func 11))
+  (export "i8x16_all_true_as_select_cond" (func 12))
+  (export "i16x8_all_true_as_select_cond" (func 13))
+  (export "i32x4_all_true_as_select_cond" (func 14))
+  (export "i8x16_any_true_as_br_if_cond" (func 15))
+  (export "i16x8_any_true_as_br_if_cond" (func 16))
+  (export "i32x4_any_true_as_br_if_cond" (func 17))
+  (export "i8x16_all_true_as_br_if_cond" (func 18))
+  (export "i16x8_all_true_as_br_if_cond" (func 19))
+  (export "i32x4_all_true_as_br_if_cond" (func 20))
+  (export "i8x16_any_true_as_i32.and_operand" (func 21))
+  (export "i16x8_any_true_as_i32.and_operand" (func 22))
+  (export "i32x4_any_true_as_i32.and_operand" (func 23))
+  (export "i8x16_any_true_as_i32.or_operand" (func 24))
+  (export "i16x8_any_true_as_i32.or_operand" (func 25))
+  (export "i32x4_any_true_as_i32.or_operand" (func 26))
+  (export "i8x16_any_true_as_i32.xor_operand" (func 27))
+  (export "i16x8_any_true_as_i32.xor_operand" (func 28))
+  (export "i32x4_any_true_as_i32.xor_operand" (func 29))
+  (export "i8x16_all_true_as_i32.and_operand" (func 30))
+  (export "i16x8_all_true_as_i32.and_operand" (func 31))
+  (export "i32x4_all_true_as_i32.and_operand" (func 32))
+  (export "i8x16_all_true_as_i32.or_operand" (func 33))
+  (export "i16x8_all_true_as_i32.or_operand" (func 34))
+  (export "i32x4_all_true_as_i32.or_operand" (func 35))
+  (export "i8x16_all_true_as_i32.xor_operand" (func 36))
+  (export "i16x8_all_true_as_i32.xor_operand" (func 37))
+  (export "i32x4_all_true_as_i32.xor_operand" (func 38))
+  (export "i8x16_any_true_with_v128.not" (func 39))
+  (export "i16x8_any_true_with_v128.not" (func 40))
+  (export "i32x4_any_true_with_v128.not" (func 41))
+  (export "i8x16_any_true_with_v128.and" (func 42))
+  (export "i16x8_any_true_with_v128.and" (func 43))
+  (export "i32x4_any_true_with_v128.and" (func 44))
+  (export "i8x16_any_true_with_v128.or" (func 45))
+  (export "i16x8_any_true_with_v128.or" (func 46))
+  (export "i32x4_any_true_with_v128.or" (func 47))
+  (export "i8x16_any_true_with_v128.xor" (func 48))
+  (export "i16x8_any_true_with_v128.xor" (func 49))
+  (export "i32x4_any_true_with_v128.xor" (func 50))
+  (export "i8x16_any_true_with_v128.bitselect" (func 51))
+  (export "i16x8_any_true_with_v128.bitselect" (func 52))
+  (export "i32x4_any_true_with_v128.bitselect" (func 53))
+  (export "i8x16_all_true_with_v128.not" (func 54))
+  (export "i16x8_all_true_with_v128.not" (func 55))
+  (export "i32x4_all_true_with_v128.not" (func 56))
+  (export "i8x16_all_true_with_v128.and" (func 57))
+  (export "i16x8_all_true_with_v128.and" (func 58))
+  (export "i32x4_all_true_with_v128.and" (func 59))
+  (export "i8x16_all_true_with_v128.or" (func 60))
+  (export "i16x8_all_true_with_v128.or" (func 61))
+  (export "i32x4_all_true_with_v128.or" (func 62))
+  (export "i8x16_all_true_with_v128.xor" (func 63))
+  (export "i16x8_all_true_with_v128.xor" (func 64))
+  (export "i32x4_all_true_with_v128.xor" (func 65))
+  (export "i8x16_all_true_with_v128.bitselect" (func 66))
+  (export "i16x8_all_true_with_v128.bitselect" (func 67))
+  (export "i32x4_all_true_with_v128.bitselect" (func 68))
 )
 (assert_return (invoke "i8x16_any_true_as_if_cond" (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
                                                    (i32.const 0))

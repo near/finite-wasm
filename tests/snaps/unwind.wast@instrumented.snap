@@ -5,7 +5,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -16,12 +17,11 @@
       i64.const 1
       unreachable
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;3;) (type 0)
+  (func (;4;) (type 0)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -32,12 +32,11 @@
       i64.const 1
       br 0 (;@1;)
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;4;) (type 1) (result i32)
+  (func (;5;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -49,12 +48,11 @@
       i32.const 9
       br 0 (;@1;)
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;5;) (type 0)
+  (func (;6;) (type 0)
     block ;; label = @1
       i64.const 16
       i64.const 0
@@ -70,12 +68,11 @@
       drop
       drop
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;6;) (type 1) (result i32)
+  (func (;7;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
@@ -92,12 +89,11 @@
       drop
       drop
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;7;) (type 0)
+  (func (;8;) (type 0)
     block ;; label = @1
       i64.const 16
       i64.const 0
@@ -109,31 +105,29 @@
       i32.const 0
       br_table 0 (;@1;)
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
-  )
-  (func (;8;) (type 1) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 20
-      i64.const 0
-      call 1
-      i64.const 5
-      call 0
-      i32.const 3
-      i64.const 1
-      i32.const 9
-      i32.const 0
-      br_table 0 (;@1;)
-    end
-    i64.const -20
-    i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;9;) (type 1) (result i32)
     block (result i32) ;; label = @1
+      i64.const 20
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      i32.const 3
+      i64.const 1
+      i32.const 9
+      i32.const 0
+      br_table 0 (;@1;)
+    end
+    i64.const 20
+    i64.const 0
+    call 2
+  )
+  (func (;10;) (type 1) (result i32)
+    block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
       call 1
@@ -142,18 +136,16 @@
       i32.const 3
       i64.const 1
       i32.const 9
-      i64.const -16
+      i64.const 16
       i64.const 0
-      nop
-      call 1
+      call 2
       return
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;10;) (type 0)
+  (func (;11;) (type 0)
     block ;; label = @1
       i64.const 12
       i64.const 0
@@ -166,12 +158,11 @@
         unreachable
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;11;) (type 1) (result i32)
+  (func (;12;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -187,12 +178,11 @@
       call 0
       i32.const 9
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;12;) (type 1) (result i32)
+  (func (;13;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -206,39 +196,37 @@
         br 0 (;@2;)
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
-  )
-  (func (;13;) (type 1) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 0
-      call 1
-      i64.const 5
-      call 0
-      block ;; label = @2
-        i32.const 3
-        i64.const 1
-        i32.const 1
-        br_if 0 (;@2;)
-        i64.const 2
-        call 0
-        drop
-        drop
-      end
-      i64.const 1
-      call 0
-      i32.const 9
-    end
-    i64.const -16
-    i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;14;) (type 1) (result i32)
     block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 5
+      call 0
+      block ;; label = @2
+        i32.const 3
+        i64.const 1
+        i32.const 1
+        br_if 0 (;@2;)
+        i64.const 2
+        call 0
+        drop
+        drop
+      end
+      i64.const 1
+      call 0
+      i32.const 9
+    end
+    i64.const 16
+    i64.const 0
+    call 2
+  )
+  (func (;15;) (type 1) (result i32)
+    block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
       call 1
@@ -256,12 +244,11 @@
         drop
       end
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;15;) (type 1) (result i32)
+  (func (;16;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -278,12 +265,11 @@
       call 0
       i32.const 9
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;16;) (type 1) (result i32)
+  (func (;17;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
@@ -298,12 +284,11 @@
         br_table 0 (;@2;)
       end
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;17;) (type 1) (result i32)
+  (func (;18;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -314,19 +299,17 @@
         i32.const 3
         i64.const 1
         i32.const 9
-        i64.const -16
+        i64.const 16
         i64.const 0
-        nop
-        call 1
+        call 2
         return
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;18;) (type 1) (result i32)
+  (func (;19;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -341,12 +324,11 @@
         end
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;19;) (type 1) (result i32)
+  (func (;20;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -367,12 +349,11 @@
       call 0
       i32.const 9
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;20;) (type 1) (result i32)
+  (func (;21;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -388,41 +369,39 @@
         end
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
-  )
-  (func (;21;) (type 1) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 16
-      i64.const 0
-      call 1
-      i64.const 6
-      call 0
-      block ;; label = @2
-        i32.const 3
-        block ;; label = @3
-          i64.const 1
-          i32.const 1
-          br_if 1 (;@2;)
-          i64.const 2
-          call 0
-          drop
-        end
-        drop
-      end
-      i64.const 1
-      call 0
-      i32.const 9
-    end
-    i64.const -16
-    i64.const 0
-    nop
-    call 1
+    call 2
   )
   (func (;22;) (type 1) (result i32)
     block (result i32) ;; label = @1
+      i64.const 16
+      i64.const 0
+      call 1
+      i64.const 6
+      call 0
+      block ;; label = @2
+        i32.const 3
+        block ;; label = @3
+          i64.const 1
+          i32.const 1
+          br_if 1 (;@2;)
+          i64.const 2
+          call 0
+          drop
+        end
+        drop
+      end
+      i64.const 1
+      call 0
+      i32.const 9
+    end
+    i64.const 16
+    i64.const 0
+    call 2
+  )
+  (func (;23;) (type 1) (result i32)
+    block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
       call 1
@@ -442,12 +421,11 @@
         end
       end
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;23;) (type 1) (result i32)
+  (func (;24;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -469,12 +447,11 @@
       call 0
       i32.const 9
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;24;) (type 1) (result i32)
+  (func (;25;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
@@ -491,12 +468,11 @@
         end
       end
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;25;) (type 1) (result i32)
+  (func (;26;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -508,20 +484,18 @@
         block ;; label = @3
           i64.const 1
           i32.const 9
-          i64.const -16
+          i64.const 16
           i64.const 0
-          nop
-          call 1
+          call 2
           return
         end
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;26;) (type 1) (result i32)
+  (func (;27;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -532,12 +506,11 @@
       unreachable
       i64.eqz
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;27;) (type 1) (result i32)
+  (func (;28;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -551,12 +524,11 @@
         i64.eqz
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;28;) (type 1) (result i32)
+  (func (;29;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -574,12 +546,11 @@
         i64.eqz
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;29;) (type 1) (result i32)
+  (func (;30;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -594,12 +565,11 @@
         i64.eqz
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;30;) (type 1) (result i32)
+  (func (;31;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -608,19 +578,17 @@
       call 0
       f32.const 0x0p+0 (;=0;)
       i32.const 9
-      i64.const -8
+      i64.const 8
       i64.const 0
-      nop
-      call 1
+      call 2
       return
       i64.eqz
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;31;) (type 1) (result i32)
+  (func (;32;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -632,12 +600,11 @@
       unreachable
       i64.eq
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;32;) (type 1) (result i32)
+  (func (;33;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -652,12 +619,11 @@
         i64.eq
       end
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;33;) (type 1) (result i32)
+  (func (;34;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 24
       i64.const 0
@@ -676,12 +642,11 @@
         i64.eq
       end
     end
-    i64.const -24
+    i64.const 24
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;34;) (type 1) (result i32)
+  (func (;35;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
@@ -697,12 +662,11 @@
         i64.eq
       end
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;35;) (type 1) (result i32)
+  (func (;36;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
@@ -712,19 +676,17 @@
       f32.const 0x0p+0 (;=0;)
       f64.const 0x1p+0 (;=1;)
       i32.const 9
-      i64.const -16
+      i64.const 16
       i64.const 0
-      nop
-      call 1
+      call 2
       return
       i64.eq
     end
-    i64.const -16
+    i64.const 16
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;36;) (type 1) (result i32)
+  (func (;37;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
@@ -737,12 +699,11 @@
       unreachable
       select
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;37;) (type 1) (result i32)
+  (func (;38;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 24
       i64.const 0
@@ -758,12 +719,11 @@
         select
       end
     end
-    i64.const -24
+    i64.const 24
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;38;) (type 1) (result i32)
+  (func (;39;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 20
       i64.const 0
@@ -783,12 +743,11 @@
         select
       end
     end
-    i64.const -20
+    i64.const 20
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;39;) (type 1) (result i32)
+  (func (;40;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 28
       i64.const 0
@@ -805,12 +764,11 @@
         select
       end
     end
-    i64.const -28
+    i64.const 28
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;40;) (type 1) (result i32)
+  (func (;41;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 24
       i64.const 0
@@ -821,19 +779,17 @@
       f64.const 0x1p+0 (;=1;)
       i64.const 1
       i32.const 9
-      i64.const -24
+      i64.const 24
       i64.const 0
-      nop
-      call 1
+      call 2
       return
       select
     end
-    i64.const -24
+    i64.const 24
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;41;) (type 1) (result i32)
+  (func (;42;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -845,12 +801,11 @@
         unreachable
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;42;) (type 1) (result i32)
+  (func (;43;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -863,12 +818,11 @@
         br 0 (;@2;)
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;43;) (type 1) (result i32)
+  (func (;44;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -885,12 +839,11 @@
         drop
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;44;) (type 1) (result i32)
+  (func (;45;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -904,12 +857,11 @@
         br_table 0 (;@2;) 0 (;@2;)
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;45;) (type 1) (result i32)
+  (func (;46;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -919,19 +871,17 @@
       block (result i32) ;; label = @2
         f32.const 0x0p+0 (;=0;)
         i32.const 9
-        i64.const -8
+        i64.const 8
         i64.const 0
-        nop
-        call 1
+        call 2
         return
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;46;) (type 1) (result i32)
+  (func (;47;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -943,12 +893,11 @@
         unreachable
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;47;) (type 1) (result i32)
+  (func (;48;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -963,12 +912,11 @@
         end
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;48;) (type 1) (result i32)
+  (func (;49;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -987,12 +935,11 @@
         end
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;49;) (type 1) (result i32)
+  (func (;50;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -1008,12 +955,11 @@
         end
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (func (;50;) (type 1) (result i32)
+  (func (;51;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 0
@@ -1023,67 +969,65 @@
         call 0
         f32.const 0x0p+0 (;=0;)
         i32.const 9
-        i64.const -8
+        i64.const 8
         i64.const 0
-        nop
-        call 1
+        call 2
         return
       end
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call 1
+    call 2
   )
-  (export "func-unwind-by-unreachable" (func 2))
-  (export "func-unwind-by-br" (func 3))
-  (export "func-unwind-by-br-value" (func 4))
-  (export "func-unwind-by-br_if" (func 5))
-  (export "func-unwind-by-br_if-value" (func 6))
-  (export "func-unwind-by-br_table" (func 7))
-  (export "func-unwind-by-br_table-value" (func 8))
-  (export "func-unwind-by-return" (func 9))
-  (export "block-unwind-by-unreachable" (func 10))
-  (export "block-unwind-by-br" (func 11))
-  (export "block-unwind-by-br-value" (func 12))
-  (export "block-unwind-by-br_if" (func 13))
-  (export "block-unwind-by-br_if-value" (func 14))
-  (export "block-unwind-by-br_table" (func 15))
-  (export "block-unwind-by-br_table-value" (func 16))
-  (export "block-unwind-by-return" (func 17))
-  (export "block-nested-unwind-by-unreachable" (func 18))
-  (export "block-nested-unwind-by-br" (func 19))
-  (export "block-nested-unwind-by-br-value" (func 20))
-  (export "block-nested-unwind-by-br_if" (func 21))
-  (export "block-nested-unwind-by-br_if-value" (func 22))
-  (export "block-nested-unwind-by-br_table" (func 23))
-  (export "block-nested-unwind-by-br_table-value" (func 24))
-  (export "block-nested-unwind-by-return" (func 25))
-  (export "unary-after-unreachable" (func 26))
-  (export "unary-after-br" (func 27))
-  (export "unary-after-br_if" (func 28))
-  (export "unary-after-br_table" (func 29))
-  (export "unary-after-return" (func 30))
-  (export "binary-after-unreachable" (func 31))
-  (export "binary-after-br" (func 32))
-  (export "binary-after-br_if" (func 33))
-  (export "binary-after-br_table" (func 34))
-  (export "binary-after-return" (func 35))
-  (export "select-after-unreachable" (func 36))
-  (export "select-after-br" (func 37))
-  (export "select-after-br_if" (func 38))
-  (export "select-after-br_table" (func 39))
-  (export "select-after-return" (func 40))
-  (export "block-value-after-unreachable" (func 41))
-  (export "block-value-after-br" (func 42))
-  (export "block-value-after-br_if" (func 43))
-  (export "block-value-after-br_table" (func 44))
-  (export "block-value-after-return" (func 45))
-  (export "loop-value-after-unreachable" (func 46))
-  (export "loop-value-after-br" (func 47))
-  (export "loop-value-after-br_if" (func 48))
-  (export "loop-value-after-br_table" (func 49))
-  (export "loop-value-after-return" (func 50))
+  (export "func-unwind-by-unreachable" (func 3))
+  (export "func-unwind-by-br" (func 4))
+  (export "func-unwind-by-br-value" (func 5))
+  (export "func-unwind-by-br_if" (func 6))
+  (export "func-unwind-by-br_if-value" (func 7))
+  (export "func-unwind-by-br_table" (func 8))
+  (export "func-unwind-by-br_table-value" (func 9))
+  (export "func-unwind-by-return" (func 10))
+  (export "block-unwind-by-unreachable" (func 11))
+  (export "block-unwind-by-br" (func 12))
+  (export "block-unwind-by-br-value" (func 13))
+  (export "block-unwind-by-br_if" (func 14))
+  (export "block-unwind-by-br_if-value" (func 15))
+  (export "block-unwind-by-br_table" (func 16))
+  (export "block-unwind-by-br_table-value" (func 17))
+  (export "block-unwind-by-return" (func 18))
+  (export "block-nested-unwind-by-unreachable" (func 19))
+  (export "block-nested-unwind-by-br" (func 20))
+  (export "block-nested-unwind-by-br-value" (func 21))
+  (export "block-nested-unwind-by-br_if" (func 22))
+  (export "block-nested-unwind-by-br_if-value" (func 23))
+  (export "block-nested-unwind-by-br_table" (func 24))
+  (export "block-nested-unwind-by-br_table-value" (func 25))
+  (export "block-nested-unwind-by-return" (func 26))
+  (export "unary-after-unreachable" (func 27))
+  (export "unary-after-br" (func 28))
+  (export "unary-after-br_if" (func 29))
+  (export "unary-after-br_table" (func 30))
+  (export "unary-after-return" (func 31))
+  (export "binary-after-unreachable" (func 32))
+  (export "binary-after-br" (func 33))
+  (export "binary-after-br_if" (func 34))
+  (export "binary-after-br_table" (func 35))
+  (export "binary-after-return" (func 36))
+  (export "select-after-unreachable" (func 37))
+  (export "select-after-br" (func 38))
+  (export "select-after-br_if" (func 39))
+  (export "select-after-br_table" (func 40))
+  (export "select-after-return" (func 41))
+  (export "block-value-after-unreachable" (func 42))
+  (export "block-value-after-br" (func 43))
+  (export "block-value-after-br_if" (func 44))
+  (export "block-value-after-br_table" (func 45))
+  (export "block-value-after-return" (func 46))
+  (export "loop-value-after-unreachable" (func 47))
+  (export "loop-value-after-br" (func 48))
+  (export "loop-value-after-br_if" (func 49))
+  (export "loop-value-after-br_table" (func 50))
+  (export "loop-value-after-return" (func 51))
 )
 (assert_trap (invoke "func-unwind-by-unreachable") "unreachable")
 (assert_return (invoke "func-unwind-by-br"))

@@ -10,21 +10,7 @@
   (type (;8;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $i i32) (result i32)
-    block (result i32) ;; label = @1
-      i64.const 4
-      i64.const 1
-      call 1
-      i64.const 2
-      call 0
-      local.get $i
-      i32.load8_u
-    end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
-  )
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
   (func (;3;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -35,10 +21,9 @@
       local.get $i
       i32.load8_u
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -48,12 +33,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_u offset=1
+      i32.load8_u
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;5;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -63,12 +47,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_u offset=2
+      i32.load8_u offset=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;6;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -78,12 +61,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_u offset=25
+      i32.load8_u offset=2
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;7;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -93,12 +75,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_s
+      i32.load8_u offset=25
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;8;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -110,10 +91,9 @@
       local.get $i
       i32.load8_s
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;9;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -123,12 +103,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_s offset=1
+      i32.load8_s
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;10;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -138,12 +117,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_s offset=2
+      i32.load8_s offset=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;11;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -153,12 +131,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load8_s offset=25
+      i32.load8_s offset=2
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;12;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -168,12 +145,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_u
+      i32.load8_s offset=25
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;13;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -183,12 +159,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_u align=1
+      i32.load16_u
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;14;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -198,12 +173,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_u offset=1 align=1
+      i32.load16_u align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;15;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -213,12 +187,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_u offset=2
+      i32.load16_u offset=1 align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;16;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -228,12 +201,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_u offset=25
+      i32.load16_u offset=2
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;17;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -243,12 +215,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_s
+      i32.load16_u offset=25
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;18;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -258,12 +229,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_s align=1
+      i32.load16_s
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;19;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -273,12 +243,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_s offset=1 align=1
+      i32.load16_s align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;20;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -288,12 +257,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_s offset=2
+      i32.load16_s offset=1 align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;21;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -303,12 +271,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load16_s offset=25
+      i32.load16_s offset=2
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;22;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -318,12 +285,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load
+      i32.load16_s offset=25
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;23;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -333,12 +299,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load align=1
+      i32.load
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;24;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -348,12 +313,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load offset=1 align=1
+      i32.load align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;25;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -363,12 +327,11 @@
       i64.const 2
       call 0
       local.get $i
-      i32.load offset=2 align=2
+      i32.load offset=1 align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;26;) (type 0) (param $i i32) (result i32)
     block (result i32) ;; label = @1
@@ -378,14 +341,27 @@
       i64.const 2
       call 0
       local.get $i
+      i32.load offset=2 align=2
+    end
+    i64.const 4
+    i64.const 1
+    call 2
+  )
+  (func (;27;) (type 0) (param $i i32) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
       i32.load offset=25
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;27;) (type 1) (param $i i32)
+  (func (;28;) (type 1) (param $i i32)
     block (type 4) ;; label = @1
       i64.const 4
       i64.const 1
@@ -398,12 +374,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;28;) (type 1) (param $i i32)
+  (func (;29;) (type 1) (param $i i32)
     block (type 5) ;; label = @1
       i64.const 4
       i64.const 1
@@ -416,12 +391,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;29;) (type 1) (param $i i32)
+  (func (;30;) (type 1) (param $i i32)
     block (type 6) ;; label = @1
       i64.const 4
       i64.const 1
@@ -434,12 +408,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;30;) (type 1) (param $i i32)
+  (func (;31;) (type 1) (param $i i32)
     block (type 7) ;; label = @1
       i64.const 4
       i64.const 1
@@ -452,12 +425,11 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;31;) (type 1) (param $i i32)
+  (func (;32;) (type 1) (param $i i32)
     block (type 8) ;; label = @1
       i64.const 4
       i64.const 1
@@ -470,42 +442,41 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "8u_good1" (func 2))
-  (export "8u_good2" (func 3))
-  (export "8u_good3" (func 4))
-  (export "8u_good4" (func 5))
-  (export "8u_good5" (func 6))
-  (export "8s_good1" (func 7))
-  (export "8s_good2" (func 8))
-  (export "8s_good3" (func 9))
-  (export "8s_good4" (func 10))
-  (export "8s_good5" (func 11))
-  (export "16u_good1" (func 12))
-  (export "16u_good2" (func 13))
-  (export "16u_good3" (func 14))
-  (export "16u_good4" (func 15))
-  (export "16u_good5" (func 16))
-  (export "16s_good1" (func 17))
-  (export "16s_good2" (func 18))
-  (export "16s_good3" (func 19))
-  (export "16s_good4" (func 20))
-  (export "16s_good5" (func 21))
-  (export "32_good1" (func 22))
-  (export "32_good2" (func 23))
-  (export "32_good3" (func 24))
-  (export "32_good4" (func 25))
-  (export "32_good5" (func 26))
-  (export "8u_bad" (func 27))
-  (export "8s_bad" (func 28))
-  (export "16u_bad" (func 29))
-  (export "16s_bad" (func 30))
-  (export "32_bad" (func 31))
+  (export "8u_good1" (func 3))
+  (export "8u_good2" (func 4))
+  (export "8u_good3" (func 5))
+  (export "8u_good4" (func 6))
+  (export "8u_good5" (func 7))
+  (export "8s_good1" (func 8))
+  (export "8s_good2" (func 9))
+  (export "8s_good3" (func 10))
+  (export "8s_good4" (func 11))
+  (export "8s_good5" (func 12))
+  (export "16u_good1" (func 13))
+  (export "16u_good2" (func 14))
+  (export "16u_good3" (func 15))
+  (export "16u_good4" (func 16))
+  (export "16u_good5" (func 17))
+  (export "16s_good1" (func 18))
+  (export "16s_good2" (func 19))
+  (export "16s_good3" (func 20))
+  (export "16s_good4" (func 21))
+  (export "16s_good5" (func 22))
+  (export "32_good1" (func 23))
+  (export "32_good2" (func 24))
+  (export "32_good3" (func 25))
+  (export "32_good4" (func 26))
+  (export "32_good5" (func 27))
+  (export "8u_bad" (func 28))
+  (export "8s_bad" (func 29))
+  (export "16u_bad" (func 30))
+  (export "16s_bad" (func 31))
+  (export "32_bad" (func 32))
   (data (;0;) (i32.const 0) "abcdefghijklmnopqrstuvwxyz")
 )
 (assert_return (invoke "8u_good1" (i32.const 0)) (i32.const 97))
@@ -631,21 +602,7 @@
   (type (;10;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $i i32) (result i64)
-    block (result i64) ;; label = @1
-      i64.const 8
-      i64.const 1
-      call 1
-      i64.const 2
-      call 0
-      local.get $i
-      i64.load8_u
-    end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
-  )
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
   (func (;3;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
@@ -656,10 +613,9 @@
       local.get $i
       i64.load8_u
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -669,12 +625,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_u offset=1
+      i64.load8_u
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;5;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -684,12 +639,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_u offset=2
+      i64.load8_u offset=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;6;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -699,12 +653,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_u offset=25
+      i64.load8_u offset=2
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;7;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -714,12 +667,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_s
+      i64.load8_u offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;8;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -731,10 +683,9 @@
       local.get $i
       i64.load8_s
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;9;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -744,12 +695,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_s offset=1
+      i64.load8_s
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;10;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -759,12 +709,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_s offset=2
+      i64.load8_s offset=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;11;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -774,12 +723,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load8_s offset=25
+      i64.load8_s offset=2
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;12;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -789,12 +737,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_u
+      i64.load8_s offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;13;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -804,12 +751,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_u align=1
+      i64.load16_u
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;14;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -819,12 +765,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_u offset=1 align=1
+      i64.load16_u align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;15;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -834,12 +779,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_u offset=2
+      i64.load16_u offset=1 align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;16;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -849,12 +793,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_u offset=25
+      i64.load16_u offset=2
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;17;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -864,12 +807,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_s
+      i64.load16_u offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;18;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -879,12 +821,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_s align=1
+      i64.load16_s
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;19;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -894,12 +835,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_s offset=1 align=1
+      i64.load16_s align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;20;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -909,12 +849,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_s offset=2
+      i64.load16_s offset=1 align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;21;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -924,12 +863,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load16_s offset=25
+      i64.load16_s offset=2
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;22;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -939,12 +877,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_u
+      i64.load16_s offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;23;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -954,12 +891,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_u align=1
+      i64.load32_u
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;24;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -969,12 +905,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_u offset=1 align=1
+      i64.load32_u align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;25;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -984,12 +919,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_u offset=2 align=2
+      i64.load32_u offset=1 align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;26;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -999,12 +933,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_u offset=25
+      i64.load32_u offset=2 align=2
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;27;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1014,12 +947,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_s
+      i64.load32_u offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;28;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1029,12 +961,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_s align=1
+      i64.load32_s
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;29;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1044,12 +975,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_s offset=1 align=1
+      i64.load32_s align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;30;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1059,12 +989,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_s offset=2 align=2
+      i64.load32_s offset=1 align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;31;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1074,12 +1003,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load32_s offset=25
+      i64.load32_s offset=2 align=2
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;32;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1089,12 +1017,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load
+      i64.load32_s offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;33;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1104,12 +1031,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load align=1
+      i64.load
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;34;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1119,12 +1045,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load offset=1 align=1
+      i64.load align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;35;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1134,12 +1059,11 @@
       i64.const 2
       call 0
       local.get $i
-      i64.load offset=2 align=2
+      i64.load offset=1 align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;36;) (type 0) (param $i i32) (result i64)
     block (result i64) ;; label = @1
@@ -1149,14 +1073,27 @@
       i64.const 2
       call 0
       local.get $i
+      i64.load offset=2 align=2
+    end
+    i64.const 8
+    i64.const 1
+    call 2
+  )
+  (func (;37;) (type 0) (param $i i32) (result i64)
+    block (result i64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
       i64.load offset=25
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;37;) (type 1) (param $i i32)
+  (func (;38;) (type 1) (param $i i32)
     block (type 4) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1169,12 +1106,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;38;) (type 1) (param $i i32)
+  (func (;39;) (type 1) (param $i i32)
     block (type 5) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1187,12 +1123,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;39;) (type 1) (param $i i32)
+  (func (;40;) (type 1) (param $i i32)
     block (type 6) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1205,12 +1140,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;40;) (type 1) (param $i i32)
+  (func (;41;) (type 1) (param $i i32)
     block (type 7) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1223,12 +1157,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;41;) (type 1) (param $i i32)
+  (func (;42;) (type 1) (param $i i32)
     block (type 8) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1241,12 +1174,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;42;) (type 1) (param $i i32)
+  (func (;43;) (type 1) (param $i i32)
     block (type 9) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1259,12 +1191,11 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;43;) (type 1) (param $i i32)
+  (func (;44;) (type 1) (param $i i32)
     block (type 10) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1277,54 +1208,53 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "8u_good1" (func 2))
-  (export "8u_good2" (func 3))
-  (export "8u_good3" (func 4))
-  (export "8u_good4" (func 5))
-  (export "8u_good5" (func 6))
-  (export "8s_good1" (func 7))
-  (export "8s_good2" (func 8))
-  (export "8s_good3" (func 9))
-  (export "8s_good4" (func 10))
-  (export "8s_good5" (func 11))
-  (export "16u_good1" (func 12))
-  (export "16u_good2" (func 13))
-  (export "16u_good3" (func 14))
-  (export "16u_good4" (func 15))
-  (export "16u_good5" (func 16))
-  (export "16s_good1" (func 17))
-  (export "16s_good2" (func 18))
-  (export "16s_good3" (func 19))
-  (export "16s_good4" (func 20))
-  (export "16s_good5" (func 21))
-  (export "32u_good1" (func 22))
-  (export "32u_good2" (func 23))
-  (export "32u_good3" (func 24))
-  (export "32u_good4" (func 25))
-  (export "32u_good5" (func 26))
-  (export "32s_good1" (func 27))
-  (export "32s_good2" (func 28))
-  (export "32s_good3" (func 29))
-  (export "32s_good4" (func 30))
-  (export "32s_good5" (func 31))
-  (export "64_good1" (func 32))
-  (export "64_good2" (func 33))
-  (export "64_good3" (func 34))
-  (export "64_good4" (func 35))
-  (export "64_good5" (func 36))
-  (export "8u_bad" (func 37))
-  (export "8s_bad" (func 38))
-  (export "16u_bad" (func 39))
-  (export "16s_bad" (func 40))
-  (export "32u_bad" (func 41))
-  (export "32s_bad" (func 42))
-  (export "64_bad" (func 43))
+  (export "8u_good1" (func 3))
+  (export "8u_good2" (func 4))
+  (export "8u_good3" (func 5))
+  (export "8u_good4" (func 6))
+  (export "8u_good5" (func 7))
+  (export "8s_good1" (func 8))
+  (export "8s_good2" (func 9))
+  (export "8s_good3" (func 10))
+  (export "8s_good4" (func 11))
+  (export "8s_good5" (func 12))
+  (export "16u_good1" (func 13))
+  (export "16u_good2" (func 14))
+  (export "16u_good3" (func 15))
+  (export "16u_good4" (func 16))
+  (export "16u_good5" (func 17))
+  (export "16s_good1" (func 18))
+  (export "16s_good2" (func 19))
+  (export "16s_good3" (func 20))
+  (export "16s_good4" (func 21))
+  (export "16s_good5" (func 22))
+  (export "32u_good1" (func 23))
+  (export "32u_good2" (func 24))
+  (export "32u_good3" (func 25))
+  (export "32u_good4" (func 26))
+  (export "32u_good5" (func 27))
+  (export "32s_good1" (func 28))
+  (export "32s_good2" (func 29))
+  (export "32s_good3" (func 30))
+  (export "32s_good4" (func 31))
+  (export "32s_good5" (func 32))
+  (export "64_good1" (func 33))
+  (export "64_good2" (func 34))
+  (export "64_good3" (func 35))
+  (export "64_good4" (func 36))
+  (export "64_good5" (func 37))
+  (export "8u_bad" (func 38))
+  (export "8s_bad" (func 39))
+  (export "16u_bad" (func 40))
+  (export "16s_bad" (func 41))
+  (export "32u_bad" (func 42))
+  (export "32s_bad" (func 43))
+  (export "64_bad" (func 44))
   (data (;0;) (i32.const 0) "abcdefghijklmnopqrstuvwxyz")
 )
 (assert_return (invoke "8u_good1" (i32.const 0)) (i64.const 97))
@@ -1487,7 +1417,8 @@
   (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $i i32) (result f32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $i i32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
@@ -1497,25 +1428,9 @@
       local.get $i
       f32.load
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
-  )
-  (func (;3;) (type 0) (param $i i32) (result f32)
-    block (result f32) ;; label = @1
-      i64.const 4
-      i64.const 1
-      call 1
-      i64.const 2
-      call 0
-      local.get $i
-      f32.load align=1
-    end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 0) (param $i i32) (result f32)
     block (result f32) ;; label = @1
@@ -1525,12 +1440,11 @@
       i64.const 2
       call 0
       local.get $i
-      f32.load offset=1 align=1
+      f32.load align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;5;) (type 0) (param $i i32) (result f32)
     block (result f32) ;; label = @1
@@ -1540,12 +1454,11 @@
       i64.const 2
       call 0
       local.get $i
-      f32.load offset=2 align=2
+      f32.load offset=1 align=1
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (func (;6;) (type 0) (param $i i32) (result f32)
     block (result f32) ;; label = @1
@@ -1555,14 +1468,27 @@
       i64.const 2
       call 0
       local.get $i
+      f32.load offset=2 align=2
+    end
+    i64.const 4
+    i64.const 1
+    call 2
+  )
+  (func (;7;) (type 0) (param $i i32) (result f32)
+    block (result f32) ;; label = @1
+      i64.const 4
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
       f32.load offset=8
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
-  (func (;7;) (type 1) (param $i i32)
+  (func (;8;) (type 1) (param $i i32)
     block (type 4) ;; label = @1
       i64.const 4
       i64.const 1
@@ -1575,18 +1501,17 @@
       call 0
       drop
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call 1
+    i64.const 4
+    i64.const 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "32_good1" (func 2))
-  (export "32_good2" (func 3))
-  (export "32_good3" (func 4))
-  (export "32_good4" (func 5))
-  (export "32_good5" (func 6))
-  (export "32_bad" (func 7))
+  (export "32_good1" (func 3))
+  (export "32_good2" (func 4))
+  (export "32_good3" (func 5))
+  (export "32_good4" (func 6))
+  (export "32_good5" (func 7))
+  (export "32_bad" (func 8))
   (data (;0;) (i32.const 0) "\00\00\00\00\00\00\a0\7f\01\00\d0\7f")
 )
 (assert_return (invoke "32_good1" (i32.const 0)) (f32.const 0.0))
@@ -1623,7 +1548,8 @@
   (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param $i i32) (result f64)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $i i32) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1633,25 +1559,9 @@
       local.get $i
       f64.load
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
-  )
-  (func (;3;) (type 0) (param $i i32) (result f64)
-    block (result f64) ;; label = @1
-      i64.const 8
-      i64.const 1
-      call 1
-      i64.const 2
-      call 0
-      local.get $i
-      f64.load align=1
-    end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;4;) (type 0) (param $i i32) (result f64)
     block (result f64) ;; label = @1
@@ -1661,12 +1571,11 @@
       i64.const 2
       call 0
       local.get $i
-      f64.load offset=1 align=1
+      f64.load align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;5;) (type 0) (param $i i32) (result f64)
     block (result f64) ;; label = @1
@@ -1676,12 +1585,11 @@
       i64.const 2
       call 0
       local.get $i
-      f64.load offset=2 align=2
+      f64.load offset=1 align=1
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (func (;6;) (type 0) (param $i i32) (result f64)
     block (result f64) ;; label = @1
@@ -1691,14 +1599,27 @@
       i64.const 2
       call 0
       local.get $i
+      f64.load offset=2 align=2
+    end
+    i64.const 8
+    i64.const 1
+    call 2
+  )
+  (func (;7;) (type 0) (param $i i32) (result f64)
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
       f64.load offset=18
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
-  (func (;7;) (type 1) (param $i i32)
+  (func (;8;) (type 1) (param $i i32)
     block (type 4) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1711,18 +1632,17 @@
       call 0
       drop
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call 1
+    i64.const 8
+    i64.const 1
+    call 2
   )
   (memory (;0;) 1)
-  (export "64_good1" (func 2))
-  (export "64_good2" (func 3))
-  (export "64_good3" (func 4))
-  (export "64_good4" (func 5))
-  (export "64_good5" (func 6))
-  (export "64_bad" (func 7))
+  (export "64_good1" (func 3))
+  (export "64_good2" (func 4))
+  (export "64_good3" (func 5))
+  (export "64_good4" (func 6))
+  (export "64_good5" (func 7))
+  (export "64_bad" (func 8))
   (data (;0;) (i32.const 0) "\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\f4\7f\01\00\00\00\00\00\fc\7f")
 )
 (assert_return (invoke "64_good1" (i32.const 0)) (f64.const 0.0))

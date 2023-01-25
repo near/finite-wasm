@@ -158,6 +158,7 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
       (* This is validated with the `!internal-self-test-interpreter` test *)
       | Func.GasIntrinsic -> -2L
       | Func.StackIntrinsic -> -4L
+      | Func.UnstackIntrinsic -> -3L
     )
     (* The end instruction, pretty much *)
     | Label (_, _, (_, [])) -> 0L
@@ -176,6 +177,7 @@ let string_of_admin_instr (e: admin_instr) : string = Sexpr.to_string 120 (match
   | Refer _ -> Sexpr.Atom "admin.ref"
   | Invoke Func.GasIntrinsic -> Sexpr.Atom "admin.gasintrinsic"
   | Invoke Func.StackIntrinsic -> Sexpr.Atom "admin.stackintrinsic"
+  | Invoke Func.UnstackIntrinsic -> Sexpr.Atom "admin.unstackintrinsic"
   | Invoke _ -> Sexpr.Atom "admin.invoke"
   | Trapping _ -> Sexpr.Atom "admin.trapping"
   | Returning _ -> Sexpr.Atom "admin.returning"
@@ -707,11 +709,13 @@ let rec step (c : config) : config =
 
       | Func.StackIntrinsic ->
         (match args with
-          | [Num (I64 a1); Num (I64 a2)] ->
-                if (Int64.compare (Int64.logor a1 a2) 0L) >= 0 then
-                    (Printf.printf "reserve_stack: %Lu %Lu\n" a2 a1)
-                else
-                    (Printf.printf "return_stack: %Lu %Lu\n" (Int64.neg a2) (Int64.neg a1))
+          | [Num (I64 a1); Num (I64 a2)] -> Printf.printf "reserve_stack: %Lu %Lu\n" a2 a1
+          | _ -> Crash.error e.at "wrong types of arguments");
+        vs', []
+
+      | Func.UnstackIntrinsic ->
+        (match args with
+          | [Num (I64 a1); Num (I64 a2)] -> Printf.printf "return_stack: %Lu %Lu\n" a2 a1
           | _ -> Crash.error e.at "wrong types of arguments");
         vs', []
 

@@ -7,6 +7,7 @@ and 'inst func =
   | HostFunc of func_type * (value list -> value list)
   | GasIntrinsic
   | StackIntrinsic
+  | UnstackIntrinsic
 
 val alloc : func_type -> 'inst -> Ast.func -> 'inst func
 val alloc_host : func_type -> (value list -> value list) -> 'inst func

@@ -8,7 +8,8 @@
   (type (;6;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
-  (func (;2;) (type 0) (param $i i32) (result externref)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 5)))
+  (func (;3;) (type 0) (param $i i32) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
       i64.const 1
@@ -18,12 +19,11 @@
       local.get $i
       table.get $t
     end
-    i64.const -32
-    i64.const -1
-    nop
-    call 1
+    i64.const 32
+    i64.const 1
+    call 2
   )
-  (func (;3;) (type 1) (param $i i32) (param $r externref)
+  (func (;4;) (type 1) (param $i i32) (param $r externref)
     block (type 6) ;; label = @1
       i64.const 36
       i64.const 2
@@ -34,12 +34,11 @@
       local.get $r
       table.set $t
     end
-    i64.const -36
-    i64.const -2
-    nop
-    call 1
+    i64.const 36
+    i64.const 2
+    call 2
   )
-  (func (;4;) (type 2) (param $sz i32) (param $init externref) (result i32)
+  (func (;5;) (type 2) (param $sz i32) (param $init externref) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 2
@@ -52,12 +51,11 @@
       call 0
       table.grow $t
     end
-    i64.const -36
-    i64.const -2
-    nop
-    call 1
+    i64.const 36
+    i64.const 2
+    call 2
   )
-  (func (;5;) (type 3) (result i32)
+  (func (;6;) (type 3) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -66,16 +64,15 @@
       call 0
       table.size $t
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call 1
+    call 2
   )
   (table $t (;0;) 0 externref)
-  (export "get" (func 2))
-  (export "set" (func 3))
-  (export "grow" (func 4))
-  (export "size" (func 5))
+  (export "get" (func 3))
+  (export "set" (func 4))
+  (export "grow" (func 5))
+  (export "size" (func 6))
 )
 (assert_return (invoke "size") (i32.const 0))
 (assert_trap (invoke "set" (i32.const 0) (ref.extern 2)) "out of bounds table access")
@@ -109,7 +106,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
-  (func $f (;2;) (type 0) (result i32)
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (func $f (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 0
@@ -122,10 +120,9 @@
       call $finite_wasm_gas
       table.grow $t
     end
-    i64.const -36
+    i64.const 36
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
   (table $t (;0;) 16 funcref)
   (export "grow" (func $f))
@@ -140,7 +137,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0) (param i32) (result i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 1
@@ -153,13 +151,12 @@
       call 0
       table.grow $t
     end
-    i64.const -36
-    i64.const -1
-    nop
-    call 1
+    i64.const 36
+    i64.const 1
+    call 2
   )
   (table $t (;0;) 0 externref)
-  (export "grow" (func 2))
+  (export "grow" (func 3))
 )
 (assert_return (invoke "grow" (i32.const 0)) (i32.const 0))
 (assert_return (invoke "grow" (i32.const 1)) (i32.const 0))
@@ -174,7 +171,8 @@
   (type (;2;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (func (;2;) (type 0) (param i32) (result i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 1
@@ -187,13 +185,12 @@
       call 0
       table.grow $t
     end
-    i64.const -36
-    i64.const -1
-    nop
-    call 1
+    i64.const 36
+    i64.const 1
+    call 2
   )
   (table $t (;0;) 0 10 externref)
-  (export "grow" (func 2))
+  (export "grow" (func 3))
 )
 (assert_return (invoke "grow" (i32.const 0)) (i32.const 0))
 (assert_return (invoke "grow" (i32.const 1)) (i32.const 0))
@@ -212,7 +209,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param i32) (result i32)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 1
@@ -225,12 +223,11 @@
       call 0
       table.grow $t
     end
-    i64.const -36
-    i64.const -1
-    nop
-    call 1
+    i64.const 36
+    i64.const 1
+    call 2
   )
-  (func (;3;) (type 1) (param i32 i32) (result funcref)
+  (func (;4;) (type 1) (param i32 i32) (result funcref)
     (local funcref)
     block (result funcref) ;; label = @1
       i64.const 32
@@ -238,7 +235,7 @@
       call 1
       i64.const 3
       call 0
-      ref.func 3
+      ref.func 4
       local.set 2
       block ;; label = @2
         loop ;; label = @3
@@ -277,15 +274,14 @@
       call 0
       local.get 2
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (table $t (;0;) 10 funcref)
-  (export "grow" (func 2))
-  (export "check-table-null" (func 3))
-  (elem (;0;) declare func 3)
+  (export "grow" (func 3))
+  (export "check-table-null" (func 4))
+  (elem (;0;) declare func 4)
 )
 (assert_return (invoke "check-table-null" (i32.const 0) (i32.const 9)) (ref.null func))
 (assert_return (invoke "grow" (i32.const 10)) (i32.const 10))

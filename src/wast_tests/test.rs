@@ -464,12 +464,13 @@ impl<'a> TestContext {
               (type $stack_ty (func (param i64 i64)))
               (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (type $gas_ty)))
               (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (type $stack_ty)))
+              (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (type $stack_ty)))
               (func $main (export "main")
                 block
                     (call $finite_wasm_stack (i64.const 1) (i64.const {charge_for_stack}))
                     (call $finite_wasm_gas (i64.const {charge_for_gas}))
                 end
-                (call $finite_wasm_stack (i64.const -1) (i64.const -{charge_for_stack}) (nop))
+                (call $finite_wasm_unstack (i64.const 1) (i64.const {charge_for_stack}))
               )
             )
             (assert_return (invoke "main"))

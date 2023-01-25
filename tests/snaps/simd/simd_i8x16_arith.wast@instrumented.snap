@@ -5,7 +5,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param v128 v128) (result v128)
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -16,12 +17,11 @@
       local.get 1
       i8x16.add
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;3;) (type 0) (param v128 v128) (result v128)
+  (func (;4;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
@@ -32,12 +32,11 @@
       local.get 1
       i8x16.sub
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (func (;4;) (type 1) (param v128) (result v128)
+  (func (;5;) (type 1) (param v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 1
@@ -47,14 +46,13 @@
       local.get 0
       i8x16.neg
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call 1
+    i64.const 16
+    i64.const 1
+    call 2
   )
-  (export "i8x16.add" (func 2))
-  (export "i8x16.sub" (func 3))
-  (export "i8x16.neg" (func 4))
+  (export "i8x16.add" (func 3))
+  (export "i8x16.sub" (func 4))
+  (export "i8x16.neg" (func 5))
 )
 (assert_return (invoke "i8x16.add" (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
                                    (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
@@ -405,24 +403,7 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (func (;2;) (type 0) (param v128 v128 v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 3
-      call 1
-      i64.const 5
-      call 0
-      local.get 0
-      local.get 1
-      i8x16.sub
-      local.get 2
-      i8x16.add
-    end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
-  )
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
@@ -432,31 +413,30 @@
       call 0
       local.get 0
       local.get 1
+      i8x16.sub
+      local.get 2
+      i8x16.add
+    end
+    i64.const 32
+    i64.const 3
+    call 2
+  )
+  (func (;4;) (type 0) (param v128 v128 v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 3
+      call 1
+      i64.const 5
+      call 0
+      local.get 0
+      local.get 1
       i8x16.add
       local.get 2
       i8x16.sub
     end
-    i64.const -32
-    i64.const -3
-    nop
-    call 1
-  )
-  (func (;4;) (type 1) (param v128 v128) (result v128)
-    block (result v128) ;; label = @1
-      i64.const 32
-      i64.const 2
-      call 1
-      i64.const 4
-      call 0
-      local.get 0
-      i8x16.neg
-      local.get 1
-      i8x16.add
-    end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 3
+    call 2
   )
   (func (;5;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
@@ -468,17 +448,32 @@
       local.get 0
       i8x16.neg
       local.get 1
+      i8x16.add
+    end
+    i64.const 32
+    i64.const 2
+    call 2
+  )
+  (func (;6;) (type 1) (param v128 v128) (result v128)
+    block (result v128) ;; label = @1
+      i64.const 32
+      i64.const 2
+      call 1
+      i64.const 4
+      call 0
+      local.get 0
+      i8x16.neg
+      local.get 1
       i8x16.sub
     end
-    i64.const -32
-    i64.const -2
-    nop
-    call 1
+    i64.const 32
+    i64.const 2
+    call 2
   )
-  (export "add-sub" (func 2))
-  (export "sub-add" (func 3))
-  (export "add-neg" (func 4))
-  (export "sub-neg" (func 5))
+  (export "add-sub" (func 3))
+  (export "sub-add" (func 4))
+  (export "add-neg" (func 5))
+  (export "sub-neg" (func 6))
 )
 (assert_return (invoke "add-sub" (v128.const i8x16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15)
                                  (v128.const i8x16 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30)

@@ -46,14 +46,15 @@
   (type (;44;) (func (result f64 f32 i32 i32 i32 i64 f32 i32 i32 f32 f64 f64 i32 f32 i32 f64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 28)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 29)))
-  (func $dummy (;2;) (type $sig))
-  (func (;3;) (type $sig))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 29)))
+  (func $dummy (;3;) (type $sig))
   (func (;4;) (type $sig))
-  (func $f (;5;) (type $sig))
-  (func $h (;6;) (type $sig))
-  (func (;7;) (type $sig))
+  (func (;5;) (type $sig))
+  (func $f (;6;) (type $sig))
+  (func $h (;7;) (type $sig))
   (func (;8;) (type $sig))
-  (func (;9;) (type $sig)
+  (func (;9;) (type $sig))
+  (func (;10;) (type $sig)
     (local i32)
     block ;; label = @1
       i64.const 0
@@ -61,11 +62,10 @@
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;10;) (type $sig)
+  (func (;11;) (type $sig)
     (local $x i32)
     block ;; label = @1
       i64.const 0
@@ -73,11 +73,10 @@
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;11;) (type $sig)
+  (func (;12;) (type $sig)
     (local i32 f64 i64)
     block ;; label = @1
       i64.const 0
@@ -85,11 +84,10 @@
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -3
-    nop
-    call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_unstack
   )
-  (func (;12;) (type $sig)
+  (func (;13;) (type $sig)
     (local i32 f64)
     block ;; label = @1
       i64.const 0
@@ -97,11 +95,10 @@
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;13;) (type $sig)
+  (func (;14;) (type $sig)
     (local i32 f32) (local $x i64) (local i32 f64)
     block ;; label = @1
       i64.const 0
@@ -109,91 +106,85 @@
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -5
-    nop
-    call $finite_wasm_stack
+    i64.const 5
+    call $finite_wasm_unstack
   )
-  (func (;14;) (type $sig))
   (func (;15;) (type $sig))
-  (func (;16;) (type $sig-3) (param i32)
+  (func (;16;) (type $sig))
+  (func (;17;) (type $sig-3) (param i32)
     block (type 30) ;; label = @1
       i64.const 0
       i64.const 1
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;17;) (type $sig-3) (param $x i32)
+  (func (;18;) (type $sig-3) (param $x i32)
     block (type 31) ;; label = @1
       i64.const 0
       i64.const 1
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;18;) (type 6) (param i32 f64 i64)
+  (func (;19;) (type 6) (param i32 f64 i64)
     block (type 32) ;; label = @1
       i64.const 0
       i64.const 3
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -3
-    nop
-    call $finite_wasm_stack
+    i64.const 3
+    call $finite_wasm_unstack
   )
-  (func (;19;) (type 7) (param i32 f64)
+  (func (;20;) (type 7) (param i32 f64)
     block (type 33) ;; label = @1
       i64.const 0
       i64.const 2
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;20;) (type 8) (param i32 f32) (param $x i64) (param i32 f64)
+  (func (;21;) (type 8) (param i32 f32) (param $x i64) (param i32 f64)
     block (type 34) ;; label = @1
       i64.const 0
       i64.const 5
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -5
-    nop
-    call $finite_wasm_stack
+    i64.const 5
+    call $finite_wasm_unstack
   )
-  (func (;21;) (type $sig))
   (func (;22;) (type $sig))
-  (func (;23;) (type $sig-2) (result i32)
+  (func (;23;) (type $sig))
+  (func (;24;) (type $sig-2) (result i32)
     i64.const 1
     call $finite_wasm_gas
     unreachable
   )
-  (func (;24;) (type 9) (result i32 f64 f32)
+  (func (;25;) (type 9) (result i32 f64 f32)
     i64.const 1
     call $finite_wasm_gas
     unreachable
   )
-  (func (;25;) (type 10) (result i32 f64)
+  (func (;26;) (type 10) (result i32 f64)
     i64.const 1
     call $finite_wasm_gas
     unreachable
   )
-  (func (;26;) (type 11) (result i32 f32 i64 i32 f64)
+  (func (;27;) (type 11) (result i32 f32 i64 i32 f64)
     i64.const 1
     call $finite_wasm_gas
     unreachable
   )
-  (func (;27;) (type $sig-1))
-  (func (;28;) (type $sig-2) (result i32)
+  (func (;28;) (type $sig-1))
+  (func (;29;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -202,23 +193,21 @@
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;29;) (type $sig-3) (param i32)
+  (func (;30;) (type $sig-3) (param i32)
     block (type 35) ;; label = @1
       i64.const 0
       i64.const 1
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;30;) (type $sig-4) (param i32 f64 i32) (result i32)
+  (func (;31;) (type $sig-4) (param i32 f64 i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 3
@@ -227,12 +216,11 @@
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const -4
-    i64.const -3
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 3
+    call $finite_wasm_unstack
   )
-  (func (;31;) (type $sig-2) (result i32)
+  (func (;32;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -241,23 +229,21 @@
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;32;) (type $sig-3) (param i32)
+  (func (;33;) (type $sig-3) (param i32)
     block (type 36) ;; label = @1
       i64.const 0
       i64.const 1
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;33;) (type $sig-4) (param i32 f64 i32) (result i32)
+  (func (;34;) (type $sig-4) (param i32 f64 i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 3
@@ -266,14 +252,13 @@
       call $finite_wasm_gas
       i32.const 0
     end
-    i64.const -4
-    i64.const -3
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 3
+    call $finite_wasm_unstack
   )
-  (func (;34;) (type $sig))
-  (func (;35;) (type $forward))
-  (func $complex (;36;) (type 12) (param i32 f32) (param $x i64) (param i32) (result i32 i64 i32)
+  (func (;35;) (type $sig))
+  (func (;36;) (type $forward))
+  (func $complex (;37;) (type 12) (param i32 f32) (param $x i64) (param i32) (result i32 i64 i32)
     (local f32) (local $y i32) (local i64 i32 f64 i32)
     block (type 37) (result i32 i64 i32) ;; label = @1
       i64.const 0
@@ -285,11 +270,10 @@
       unreachable
     end
     i64.const 0
-    i64.const -10
-    nop
-    call $finite_wasm_stack
+    i64.const 10
+    call $finite_wasm_unstack
   )
-  (func $complex-sig (;37;) (type $sig)
+  (func $complex-sig (;38;) (type $sig)
     (local f32) (local $y i32) (local i64 i32 f64 i32)
     block ;; label = @1
       i64.const 0
@@ -301,11 +285,10 @@
       unreachable
     end
     i64.const 0
-    i64.const -6
-    nop
-    call $finite_wasm_stack
+    i64.const 6
+    call $finite_wasm_unstack
   )
-  (func (;38;) (type $sig-2) (result i32)
+  (func (;39;) (type $sig-2) (result i32)
     (local i32 i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -315,12 +298,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;39;) (type 13) (result i64)
+  (func (;40;) (type 13) (result i64)
     (local i64 i64)
     block (result i64) ;; label = @1
       i64.const 8
@@ -330,12 +312,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;40;) (type 14) (result f32)
+  (func (;41;) (type 14) (result f32)
     (local f32 f32)
     block (result f32) ;; label = @1
       i64.const 4
@@ -345,12 +326,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;41;) (type 15) (result f64)
+  (func (;42;) (type 15) (result f64)
     (local f64 f64)
     block (result f64) ;; label = @1
       i64.const 8
@@ -360,12 +340,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;42;) (type $sig-2) (result i32)
+  (func (;43;) (type $sig-2) (result i32)
     (local i32 i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -375,12 +354,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;43;) (type 13) (result i64)
+  (func (;44;) (type 13) (result i64)
     (local i64 i64)
     block (result i64) ;; label = @1
       i64.const 8
@@ -390,12 +368,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;44;) (type 14) (result f32)
+  (func (;45;) (type 14) (result f32)
     (local f32 f32)
     block (result f32) ;; label = @1
       i64.const 4
@@ -405,27 +382,25 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
-  )
-  (func (;45;) (type 15) (result f64)
-    (local f64 f64)
-    block (result f64) ;; label = @1
-      i64.const 8
-      i64.const 2
-      call $finite_wasm_stack
-      i64.const 1
-      call $finite_wasm_gas
-      local.get 1
-    end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
   (func (;46;) (type 15) (result f64)
+    (local f64 f64)
+    block (result f64) ;; label = @1
+      i64.const 8
+      i64.const 2
+      call $finite_wasm_stack
+      i64.const 1
+      call $finite_wasm_gas
+      local.get 1
+    end
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
+  )
+  (func (;47;) (type 15) (result f64)
     (local f32) (local $x i32) (local i64 i32 f64 i32)
     block (result f64) ;; label = @1
       i64.const 8
@@ -453,12 +428,11 @@
       drop
       local.get 4
     end
-    i64.const -8
-    i64.const -6
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 6
+    call $finite_wasm_unstack
   )
-  (func (;47;) (type 16) (param i32 i32) (result i32)
+  (func (;48;) (type 16) (param i32 i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 2
@@ -467,12 +441,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;48;) (type 17) (param i64 i64) (result i64)
+  (func (;49;) (type 17) (param i64 i64) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 2
@@ -481,12 +454,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;49;) (type 18) (param f32 f32) (result f32)
+  (func (;50;) (type 18) (param f32 f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 2
@@ -495,12 +467,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;50;) (type 19) (param f64 f64) (result f64)
+  (func (;51;) (type 19) (param f64 f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 2
@@ -509,12 +480,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;51;) (type 16) (param i32 i32) (result i32)
+  (func (;52;) (type 16) (param i32 i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 2
@@ -523,12 +493,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;52;) (type 17) (param i64 i64) (result i64)
+  (func (;53;) (type 17) (param i64 i64) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 2
@@ -537,12 +506,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;53;) (type 18) (param f32 f32) (result f32)
+  (func (;54;) (type 18) (param f32 f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 2
@@ -551,12 +519,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;54;) (type 19) (param f64 f64) (result f64)
+  (func (;55;) (type 19) (param f64 f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 2
@@ -565,12 +532,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -8
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;55;) (type 20) (param f32 i32) (param $x i64) (param i32 f64 i32) (result f64)
+  (func (;56;) (type 20) (param f32 i32) (param $x i64) (param i32 f64 i32) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 6
@@ -597,18 +563,17 @@
       drop
       local.get 4
     end
-    i64.const -8
-    i64.const -6
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 6
+    call $finite_wasm_unstack
   )
-  (func (;56;) (type $sig))
-  (func (;57;) (type $sig)
+  (func (;57;) (type $sig))
+  (func (;58;) (type $sig)
     i64.const 1
     call $finite_wasm_gas
     call $dummy
   )
-  (func (;58;) (type $sig-2) (result i32)
+  (func (;59;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -617,12 +582,11 @@
       call $finite_wasm_gas
       i32.const 77
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;59;) (type 13) (result i64)
+  (func (;60;) (type 13) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -631,12 +595,11 @@
       call $finite_wasm_gas
       i64.const 7777
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;60;) (type 14) (result f32)
+  (func (;61;) (type 14) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -645,12 +608,11 @@
       call $finite_wasm_gas
       f32.const 0x1.36ccccp+6 (;=77.7;)
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;61;) (type 15) (result f64)
+  (func (;62;) (type 15) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -659,12 +621,11 @@
       call $finite_wasm_gas
       f64.const 0x1.37147ae147ae1p+6 (;=77.77;)
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;62;) (type 10) (result i32 f64)
+  (func (;63;) (type 10) (result i32 f64)
     block (type 10) (result i32 f64) ;; label = @1
       i64.const 12
       i64.const 0
@@ -674,12 +635,11 @@
       i32.const 77
       f64.const 0x1.cp+2 (;=7;)
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;63;) (type 21) (result i32 i32 i32)
+  (func (;64;) (type 21) (result i32 i32 i32)
     block (type 21) (result i32 i32 i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -690,12 +650,11 @@
       i32.const 2
       i32.const 3
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;64;) (type $sig)
+  (func (;65;) (type $sig)
     i64.const 2
     call $finite_wasm_gas
     block ;; label = @1
@@ -705,7 +664,7 @@
       call $dummy
     end
   )
-  (func (;65;) (type $sig-2) (result i32)
+  (func (;66;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -719,12 +678,11 @@
         i32.const 77
       end
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;66;) (type 22) (result i32 i64)
+  (func (;67;) (type 22) (result i32 i64)
     block (type 22) (result i32 i64) ;; label = @1
       i64.const 12
       i64.const 0
@@ -739,17 +697,16 @@
         i64.const 2
       end
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;67;) (type $sig)
+  (func (;68;) (type $sig)
     i64.const 1
     call $finite_wasm_gas
     return
   )
-  (func (;68;) (type $sig-2) (result i32)
+  (func (;69;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -757,18 +714,16 @@
       i64.const 2
       call $finite_wasm_gas
       i32.const 78
-      i64.const -4
+      i64.const 4
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;69;) (type 13) (result i64)
+  (func (;70;) (type 13) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -776,18 +731,16 @@
       i64.const 2
       call $finite_wasm_gas
       i64.const 7878
-      i64.const -8
+      i64.const 8
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;70;) (type 14) (result f32)
+  (func (;71;) (type 14) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -795,18 +748,16 @@
       i64.const 2
       call $finite_wasm_gas
       f32.const 0x1.3accccp+6 (;=78.7;)
-      i64.const -4
+      i64.const 4
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;71;) (type 15) (result f64)
+  (func (;72;) (type 15) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -814,18 +765,16 @@
       i64.const 2
       call $finite_wasm_gas
       f64.const 0x1.3b1eb851eb852p+6 (;=78.78;)
-      i64.const -8
+      i64.const 8
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;72;) (type 10) (result i32 f64)
+  (func (;73;) (type 10) (result i32 f64)
     block (type 10) (result i32 f64) ;; label = @1
       i64.const 12
       i64.const 0
@@ -834,18 +783,16 @@
       call $finite_wasm_gas
       i32.const 78
       f64.const 0x1.3b1eb851eb852p+6 (;=78.78;)
-      i64.const -12
+      i64.const 12
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;73;) (type 21) (result i32 i32 i32)
+  (func (;74;) (type 21) (result i32 i32 i32)
     block (type 21) (result i32 i32 i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -855,18 +802,16 @@
       i32.const 1
       i32.const 2
       i32.const 3
-      i64.const -12
+      i64.const 12
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;74;) (type $sig-2) (result i32)
+  (func (;75;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -879,18 +824,16 @@
         call $finite_wasm_gas
         i32.const 77
       end
-      i64.const -4
+      i64.const 4
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;75;) (type 22) (result i32 i64)
+  (func (;76;) (type 22) (result i32 i64)
     block (type 22) (result i32 i64) ;; label = @1
       i64.const 12
       i64.const 0
@@ -904,23 +847,21 @@
         i32.const 1
         i64.const 2
       end
-      i64.const -12
+      i64.const 12
       i64.const 0
-      nop
-      call $finite_wasm_stack
+      call $finite_wasm_unstack
       return
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;76;) (type $sig)
+  (func (;77;) (type $sig)
     i64.const 1
     call $finite_wasm_gas
     br 0 (;@0;)
   )
-  (func (;77;) (type $sig-2) (result i32)
+  (func (;78;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -930,12 +871,11 @@
       i32.const 79
       br 0 (;@1;)
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;78;) (type 13) (result i64)
+  (func (;79;) (type 13) (result i64)
     block (result i64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -945,12 +885,11 @@
       i64.const 7979
       br 0 (;@1;)
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;79;) (type 14) (result f32)
+  (func (;80;) (type 14) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -960,12 +899,11 @@
       f32.const 0x1.3f999ap+6 (;=79.9;)
       br 0 (;@1;)
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;80;) (type 15) (result f64)
+  (func (;81;) (type 15) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -975,12 +913,11 @@
       f64.const 0x1.3f28f5c28f5c3p+6 (;=79.79;)
       br 0 (;@1;)
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;81;) (type 10) (result i32 f64)
+  (func (;82;) (type 10) (result i32 f64)
     block (type 10) (result i32 f64) ;; label = @1
       i64.const 12
       i64.const 0
@@ -991,12 +928,11 @@
       f64.const 0x1.3f28f5c28f5c3p+6 (;=79.79;)
       br 0 (;@1;)
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;82;) (type 21) (result i32 i32 i32)
+  (func (;83;) (type 21) (result i32 i32 i32)
     block (type 21) (result i32 i32 i32) ;; label = @1
       i64.const 12
       i64.const 0
@@ -1008,12 +944,11 @@
       i32.const 3
       br 0 (;@1;)
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;83;) (type $sig-2) (result i32)
+  (func (;84;) (type $sig-2) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -1028,12 +963,11 @@
       end
       br 0 (;@1;)
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;84;) (type 22) (result i32 i64)
+  (func (;85;) (type 22) (result i32 i64)
     block (type 22) (result i32 i64) ;; label = @1
       i64.const 12
       i64.const 0
@@ -1049,12 +983,11 @@
       end
       br 0 (;@1;)
     end
-    i64.const -12
+    i64.const 12
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;85;) (type $sig-3) (param i32)
+  (func (;86;) (type $sig-3) (param i32)
     block (type 38) ;; label = @1
       i64.const 4
       i64.const 1
@@ -1064,12 +997,11 @@
       local.get 0
       br_if 0 (;@1;)
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;86;) (type 23) (param i32) (result i32)
+  (func (;87;) (type 23) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1084,12 +1016,11 @@
       drop
       i32.const 51
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;87;) (type 24) (param i32) (result i32 i64)
+  (func (;88;) (type 24) (param i32) (result i32 i64)
     block (type 39) (result i32 i64) ;; label = @1
       i64.const 16
       i64.const 1
@@ -1107,12 +1038,11 @@
       i32.const 51
       i64.const 52
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 16
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;88;) (type $sig-3) (param i32)
+  (func (;89;) (type $sig-3) (param i32)
     block (type 40) ;; label = @1
       i64.const 4
       i64.const 1
@@ -1122,12 +1052,11 @@
       local.get 0
       br_table 0 (;@1;) 0 (;@1;) 0 (;@1;)
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;89;) (type 23) (param i32) (result i32)
+  (func (;90;) (type 23) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1139,12 +1068,11 @@
       br_table 0 (;@1;) 0 (;@1;)
       i32.const 51
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;90;) (type 24) (param i32) (result i32 i64)
+  (func (;91;) (type 24) (param i32) (result i32 i64)
     block (type 41) (result i32 i64) ;; label = @1
       i64.const 16
       i64.const 1
@@ -1158,12 +1086,11 @@
       i32.const 51
       i64.const 52
     end
-    i64.const -16
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 16
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;91;) (type $sig-3) (param i32)
+  (func (;92;) (type $sig-3) (param i32)
     block (type 42) ;; label = @1
       i64.const 4
       i64.const 1
@@ -1175,12 +1102,11 @@
         br_table 0 (;@2;) 1 (;@1;) 0 (;@2;)
       end
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;92;) (type 23) (param i32) (result i32)
+  (func (;93;) (type 23) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
       i64.const 1
@@ -1198,12 +1124,11 @@
       i32.const 2
       i32.add
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;93;) (type 25) (param i32) (result i32 i32)
+  (func (;94;) (type 25) (param i32) (result i32 i32)
     block (type 43) (result i32 i32) ;; label = @1
       i64.const 12
       i64.const 1
@@ -1223,12 +1148,11 @@
       i32.add
       i32.const 52
     end
-    i64.const -12
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 12
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;94;) (type 27) (param i32 i64 f32 f32 i32 f64 f32 i32 i32 i32 f32 f64 f64 f64 i32 i32 f32) (result f64 f32 i32 i32 i32 i64 f32 i32 i32 f32 f64 f64 i32 f32 i32 f64)
+  (func (;95;) (type 27) (param i32 i64 f32 f32 i32 f64 f32 i32 i32 i32 f32 f64 f64 f64 i32 i32 f32) (result f64 f32 i32 i32 i32 i64 f32 i32 i32 f32 f64 f64 i32 f32 i32 f64)
     block (type 44) (result f64 f32 i32 i32 i32 i64 f32 i32 i32 f32 f64 f64 i32 f32 i32 f64) ;; label = @1
       i64.const 84
       i64.const 17
@@ -1252,12 +1176,11 @@
       local.get 14
       local.get 12
     end
-    i64.const -84
-    i64.const -17
-    nop
-    call $finite_wasm_stack
+    i64.const 84
+    i64.const 17
+    call $finite_wasm_unstack
   )
-  (func (;95;) (type $sig-2) (result i32)
+  (func (;96;) (type $sig-2) (result i32)
     (local i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1267,12 +1190,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;96;) (type 13) (result i64)
+  (func (;97;) (type 13) (result i64)
     (local i64)
     block (result i64) ;; label = @1
       i64.const 8
@@ -1282,12 +1204,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;97;) (type 14) (result f32)
+  (func (;98;) (type 14) (result f32)
     (local f32)
     block (result f32) ;; label = @1
       i64.const 4
@@ -1297,12 +1218,11 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;98;) (type 15) (result f64)
+  (func (;99;) (type 15) (result f64)
     (local f64)
     block (result f64) ;; label = @1
       i64.const 8
@@ -1312,81 +1232,80 @@
       call $finite_wasm_gas
       local.get 0
     end
-    i64.const -8
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (export "f" (func 4))
+  (export "f" (func 5))
   (export "g" (func $h))
-  (export "type-use-1" (func 27))
-  (export "type-use-2" (func 28))
-  (export "type-use-3" (func 29))
-  (export "type-use-4" (func 30))
-  (export "type-use-5" (func 31))
-  (export "type-use-6" (func 32))
-  (export "type-use-7" (func 33))
-  (export "local-first-i32" (func 38))
-  (export "local-first-i64" (func 39))
-  (export "local-first-f32" (func 40))
-  (export "local-first-f64" (func 41))
-  (export "local-second-i32" (func 42))
-  (export "local-second-i64" (func 43))
-  (export "local-second-f32" (func 44))
-  (export "local-second-f64" (func 45))
-  (export "local-mixed" (func 46))
-  (export "param-first-i32" (func 47))
-  (export "param-first-i64" (func 48))
-  (export "param-first-f32" (func 49))
-  (export "param-first-f64" (func 50))
-  (export "param-second-i32" (func 51))
-  (export "param-second-i64" (func 52))
-  (export "param-second-f32" (func 53))
-  (export "param-second-f64" (func 54))
-  (export "param-mixed" (func 55))
-  (export "empty" (func 56))
-  (export "value-void" (func 57))
-  (export "value-i32" (func 58))
-  (export "value-i64" (func 59))
-  (export "value-f32" (func 60))
-  (export "value-f64" (func 61))
-  (export "value-i32-f64" (func 62))
-  (export "value-i32-i32-i32" (func 63))
-  (export "value-block-void" (func 64))
-  (export "value-block-i32" (func 65))
-  (export "value-block-i32-i64" (func 66))
-  (export "return-empty" (func 67))
-  (export "return-i32" (func 68))
-  (export "return-i64" (func 69))
-  (export "return-f32" (func 70))
-  (export "return-f64" (func 71))
-  (export "return-i32-f64" (func 72))
-  (export "return-i32-i32-i32" (func 73))
-  (export "return-block-i32" (func 74))
-  (export "return-block-i32-i64" (func 75))
-  (export "break-empty" (func 76))
-  (export "break-i32" (func 77))
-  (export "break-i64" (func 78))
-  (export "break-f32" (func 79))
-  (export "break-f64" (func 80))
-  (export "break-i32-f64" (func 81))
-  (export "break-i32-i32-i32" (func 82))
-  (export "break-block-i32" (func 83))
-  (export "break-block-i32-i64" (func 84))
-  (export "break-br_if-empty" (func 85))
-  (export "break-br_if-num" (func 86))
-  (export "break-br_if-num-num" (func 87))
-  (export "break-br_table-empty" (func 88))
-  (export "break-br_table-num" (func 89))
-  (export "break-br_table-num-num" (func 90))
-  (export "break-br_table-nested-empty" (func 91))
-  (export "break-br_table-nested-num" (func 92))
-  (export "break-br_table-nested-num-num" (func 93))
-  (export "large-sig" (func 94))
-  (export "init-local-i32" (func 95))
-  (export "init-local-i64" (func 96))
-  (export "init-local-f32" (func 97))
-  (export "init-local-f64" (func 98))
+  (export "type-use-1" (func 28))
+  (export "type-use-2" (func 29))
+  (export "type-use-3" (func 30))
+  (export "type-use-4" (func 31))
+  (export "type-use-5" (func 32))
+  (export "type-use-6" (func 33))
+  (export "type-use-7" (func 34))
+  (export "local-first-i32" (func 39))
+  (export "local-first-i64" (func 40))
+  (export "local-first-f32" (func 41))
+  (export "local-first-f64" (func 42))
+  (export "local-second-i32" (func 43))
+  (export "local-second-i64" (func 44))
+  (export "local-second-f32" (func 45))
+  (export "local-second-f64" (func 46))
+  (export "local-mixed" (func 47))
+  (export "param-first-i32" (func 48))
+  (export "param-first-i64" (func 49))
+  (export "param-first-f32" (func 50))
+  (export "param-first-f64" (func 51))
+  (export "param-second-i32" (func 52))
+  (export "param-second-i64" (func 53))
+  (export "param-second-f32" (func 54))
+  (export "param-second-f64" (func 55))
+  (export "param-mixed" (func 56))
+  (export "empty" (func 57))
+  (export "value-void" (func 58))
+  (export "value-i32" (func 59))
+  (export "value-i64" (func 60))
+  (export "value-f32" (func 61))
+  (export "value-f64" (func 62))
+  (export "value-i32-f64" (func 63))
+  (export "value-i32-i32-i32" (func 64))
+  (export "value-block-void" (func 65))
+  (export "value-block-i32" (func 66))
+  (export "value-block-i32-i64" (func 67))
+  (export "return-empty" (func 68))
+  (export "return-i32" (func 69))
+  (export "return-i64" (func 70))
+  (export "return-f32" (func 71))
+  (export "return-f64" (func 72))
+  (export "return-i32-f64" (func 73))
+  (export "return-i32-i32-i32" (func 74))
+  (export "return-block-i32" (func 75))
+  (export "return-block-i32-i64" (func 76))
+  (export "break-empty" (func 77))
+  (export "break-i32" (func 78))
+  (export "break-i64" (func 79))
+  (export "break-f32" (func 80))
+  (export "break-f64" (func 81))
+  (export "break-i32-f64" (func 82))
+  (export "break-i32-i32-i32" (func 83))
+  (export "break-block-i32" (func 84))
+  (export "break-block-i32-i64" (func 85))
+  (export "break-br_if-empty" (func 86))
+  (export "break-br_if-num" (func 87))
+  (export "break-br_if-num-num" (func 88))
+  (export "break-br_table-empty" (func 89))
+  (export "break-br_table-num" (func 90))
+  (export "break-br_table-num-num" (func 91))
+  (export "break-br_table-nested-empty" (func 92))
+  (export "break-br_table-nested-num" (func 93))
+  (export "break-br_table-nested-num-num" (func 94))
+  (export "large-sig" (func 95))
+  (export "init-local-i32" (func 96))
+  (export "init-local-i64" (func 97))
+  (export "init-local-f32" (func 98))
+  (export "init-local-f64" (func 99))
 )
 (assert_return (invoke "type-use-1"))
 (assert_return (invoke "type-use-2") (i32.const 0))
@@ -1579,7 +1498,8 @@
   (type (;6;) (func))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
-  (func $f (;2;) (type 1) (result f64)
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (func $f (;3;) (type 1) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -1588,34 +1508,31 @@
       call $finite_wasm_gas
       f64.const 0x0p+0 (;=0;)
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func $g (;3;) (type $t) (param i32)
+  (func $g (;4;) (type $t) (param i32)
     block (type 5) ;; label = @1
       i64.const 0
       i64.const 1
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func $i32->void (;4;) (type $t) (param i32)
+  (func $i32->void (;5;) (type $t) (param i32)
     block (type 6) ;; label = @1
       i64.const 0
       i64.const 1
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func $void->f64 (;5;) (type 1) (result f64)
+  (func $void->f64 (;6;) (type 1) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 0
@@ -1624,12 +1541,11 @@
       call $finite_wasm_gas
       f64.const 0x0p+0 (;=0;)
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func $check (;6;) (type 2)
+  (func $check (;7;) (type 2)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -1645,10 +1561,9 @@
       call $finite_wasm_gas
       drop
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
 )
 (module
@@ -1658,7 +1573,8 @@
   (type (;3;) (func (param i64 i64)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
-  (func (;2;) (type $sig) (param $var i32) (result i32)
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
+  (func (;3;) (type $sig) (param $var i32) (result i32)
     (local i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1668,12 +1584,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func $g (;3;) (type $sig) (param $var i32) (result i32)
+  (func $g (;4;) (type $sig) (param $var i32) (result i32)
     (local i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1683,12 +1598,11 @@
       call $finite_wasm_gas
       local.get 1
     end
-    i64.const -4
-    i64.const -2
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 2
+    call $finite_wasm_unstack
   )
-  (func (;4;) (type $sig) (param i32) (result i32)
+  (func (;5;) (type $sig) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 1
@@ -1698,12 +1612,11 @@
       local.get 0
       call $g
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (func (;5;) (type $proc) (result i32)
+  (func (;6;) (type $proc) (result i32)
     (local $var i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1715,14 +1628,13 @@
       local.set $var
       local.get $var
     end
-    i64.const -4
-    i64.const -1
-    nop
-    call $finite_wasm_stack
+    i64.const 4
+    i64.const 1
+    call $finite_wasm_unstack
   )
-  (export "f" (func 2))
-  (export "g" (func 4))
-  (export "p" (func 5))
+  (export "f" (func 3))
+  (export "g" (func 5))
+  (export "p" (func 6))
 )
 (assert_return (invoke "f" (i32.const 42)) (i32.const 0))
 (assert_return (invoke "g" (i32.const 42)) (i32.const 0))
@@ -1743,64 +1655,60 @@
   (type (;10;) (func))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
-  (func $empty-sig-1 (;2;) (type $sig))
-  (func $complex-sig-1 (;3;) (type 3) (param f64 i64 f64 i64 f64 i64 f32 i32)
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 5)))
+  (func $empty-sig-1 (;3;) (type $sig))
+  (func $complex-sig-1 (;4;) (type 3) (param f64 i64 f64 i64 f64 i64 f32 i32)
     block (type 6) ;; label = @1
       i64.const 0
       i64.const 8
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -8
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    call $finite_wasm_unstack
   )
-  (func $empty-sig-2 (;4;) (type $sig))
-  (func $complex-sig-2 (;5;) (type 3) (param f64 i64 f64 i64 f64 i64 f32 i32)
+  (func $empty-sig-2 (;5;) (type $sig))
+  (func $complex-sig-2 (;6;) (type 3) (param f64 i64 f64 i64 f64 i64 f32 i32)
     block (type 7) ;; label = @1
       i64.const 0
       i64.const 8
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -8
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    call $finite_wasm_unstack
   )
-  (func $complex-sig-3 (;6;) (type 3) (param f64 i64 f64 i64 f64 i64 f32 i32)
+  (func $complex-sig-3 (;7;) (type 3) (param f64 i64 f64 i64 f64 i64 f32 i32)
     block (type 8) ;; label = @1
       i64.const 0
       i64.const 8
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -8
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    call $finite_wasm_unstack
   )
-  (func $complex-sig-4 (;7;) (type $complex-sig-duplicate) (param i64 i64 f64 i64 f64 i64 f32 i32)
+  (func $complex-sig-4 (;8;) (type $complex-sig-duplicate) (param i64 i64 f64 i64 f64 i64 f32 i32)
     block (type 9) ;; label = @1
       i64.const 0
       i64.const 8
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -8
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    call $finite_wasm_unstack
   )
-  (func $complex-sig-5 (;8;) (type $complex-sig-duplicate) (param i64 i64 f64 i64 f64 i64 f32 i32)
+  (func $complex-sig-5 (;9;) (type $complex-sig-duplicate) (param i64 i64 f64 i64 f64 i64 f32 i32)
     block (type 10) ;; label = @1
       i64.const 0
       i64.const 8
       call $finite_wasm_stack
     end
     i64.const 0
-    i64.const -8
-    nop
-    call $finite_wasm_stack
+    i64.const 8
+    call $finite_wasm_unstack
   )
-  (func (;9;) (type $sig)
+  (func (;10;) (type $sig)
     block ;; label = @1
       i64.const 8
       i64.const 0
@@ -1814,12 +1722,11 @@
       i32.const 4
       call_indirect (type $sig)
     end
-    i64.const -8
+    i64.const 8
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;10;) (type $sig)
+  (func (;11;) (type $sig)
     block ;; label = @1
       i64.const 76
       i64.const 0
@@ -1861,12 +1768,11 @@
       i32.const 3
       call_indirect (type 3)
     end
-    i64.const -76
+    i64.const 76
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;11;) (type $sig)
+  (func (;12;) (type $sig)
     block ;; label = @1
       i64.const 4
       i64.const 0
@@ -1876,12 +1782,11 @@
       i32.const 1
       call_indirect (type $empty-sig-duplicate)
     end
-    i64.const -4
+    i64.const 4
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
-  (func (;12;) (type $sig)
+  (func (;13;) (type $sig)
     block ;; label = @1
       i64.const 68
       i64.const 0
@@ -1911,16 +1816,15 @@
       i32.const 6
       call_indirect (type $complex-sig-duplicate)
     end
-    i64.const -68
+    i64.const 68
     i64.const 0
-    nop
-    call $finite_wasm_stack
+    call $finite_wasm_unstack
   )
   (table (;0;) 7 7 funcref)
-  (export "signature-explicit-reused" (func 9))
-  (export "signature-implicit-reused" (func 10))
-  (export "signature-explicit-duplicate" (func 11))
-  (export "signature-implicit-duplicate" (func 12))
+  (export "signature-explicit-reused" (func 10))
+  (export "signature-implicit-reused" (func 11))
+  (export "signature-explicit-duplicate" (func 12))
+  (export "signature-implicit-duplicate" (func 13))
   (elem (;0;) (i32.const 0) func $complex-sig-3 $empty-sig-2 $complex-sig-1 $complex-sig-3 $empty-sig-1 $complex-sig-4 $complex-sig-5)
 )
 (assert_return (invoke "signature-explicit-reused"))

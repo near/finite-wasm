@@ -38,6 +38,7 @@ let lookup name t =
   match Utf8.encode name, t with
   | "finite_wasm_gas", _ -> ExternFunc Func.GasIntrinsic
   | "finite_wasm_stack", _ -> ExternFunc Func.StackIntrinsic
+  | "finite_wasm_unstack", _ -> ExternFunc Func.UnstackIntrinsic
   | "print", _ -> ExternFunc (func print (FuncType ([], [])))
   | "print_i32", _ -> ExternFunc (func print (FuncType ([NumType I32Type], [])))
   | "print_i64", _ -> ExternFunc (func print (FuncType ([NumType I64Type], [])))
