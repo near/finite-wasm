@@ -53,7 +53,7 @@ pub enum Error {
     #[error("could not parse an import section entry")]
     ParseImport(#[source] wp::BinaryReaderError),
     #[error("could not parse a function section entry")]
-    ParseFunctionTyId(#[source] wp::BinaryReaderError),
+    ParseFunctionTypeId(#[source] wp::BinaryReaderError),
     #[error("could not parse a constant expression operator")]
     ParseConstExprOperator(#[source] wp::BinaryReaderError),
     #[error("the analysis outcome missing a {0} entry for code section entry `{1}`")]
@@ -154,7 +154,7 @@ impl<'a> InstrumentContext<'a> {
                     let fn_types = reader
                         .into_iter()
                         .collect::<Result<Vec<u32>, _>>()
-                        .map_err(Error::ParseFunctionTyId)?;
+                        .map_err(Error::ParseFunctionTypeId)?;
                     for fnty in &fn_types {
                         self.function_section.function(*fnty);
                     }
