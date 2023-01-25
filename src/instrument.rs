@@ -325,11 +325,17 @@ impl<'a> InstrumentContext<'a> {
                     }
                     new_function.instruction(&we::Instruction::ReturnCall(function_index + 2))
                 }
-                wp::Operator::Return => {
+                wp::Operator::ReturnCallIndirect { .. } => {
                     if should_instrument_stack {
                         call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
                     }
                     new_function.raw(self.wasm[offset..end_offset].iter().copied())
+                }
+                wp::Operator::Return => {
+                    if should_instrument_stack {
+                        call_stack_instrumentation(&mut new_function, -stack_sz, -frame_sz);
+                    }
+                    new_function.instruction(&we::Instruction::Return)
                 }
                 wp::Operator::End if operators.eof() => {
                     // This is the last function end…
