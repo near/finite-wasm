@@ -19,6 +19,12 @@ path = "src/wast_tests/runner.rs"
 harness = false
 required-features = ["instrument"]
 
+[[bench]]
+name = "instrument_all"
+path = "benches/instrument_all.rs"
+harness = false
+required-features = ["instrument"]
+
 [dependencies]
 bitvec = "1.0.1"
 dissimilar = "1"
@@ -34,6 +40,9 @@ walkdir = "2.3.0"
 wast = "52"
 atoi = "2.0.0"
 rayon = "1.6.1"
+criterion = "0.4.0"
+wasm-instrument = "0.4"
+
 
 [features]
 instrument = ["wasm-encoder"]
