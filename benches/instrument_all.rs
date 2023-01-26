@@ -44,7 +44,6 @@ fn all_tests(c: &mut criterion::Criterion) {
         let test_contents = std::fs::read_to_string(entry_path).expect("read the test");
         let mut lexer = wast::lexer::Lexer::new(&test_contents);
         lexer.allow_confusing_unicode(true);
-        dbg!(&test_name);
         let buf = wast::parser::ParseBuffer::new_with_lexer(lexer).expect("parse buffer");
         let wast: wast::Wast = wast::parser::parse(&buf).expect("parse wast");
         let mut modules = vec![];
@@ -79,16 +78,17 @@ fn all_tests(c: &mut criterion::Criterion) {
             }
         }
 
-        let mut valid_finite_wasm = modules.clone();
-        valid_finite_wasm.retain(|m| instrument_finite_wasm(&m).is_ok());
+        // We must filter the list of modules to those valid for both approaches. This makes sure
+        // both of the crates are doing the same amount of work, and not running faster because
+        // e.g. they just failed to process the module entirely.
+        modules.retain(|m| {
+            instrument_finite_wasm(&m).is_ok() && instrument_wasm_instrument(&m).is_ok()
+        });
 
-        let mut valid_wasm_instrument = modules;
-        valid_wasm_instrument.retain(|m| instrument_wasm_instrument(&m).is_ok());
-
-        if !valid_finite_wasm.is_empty() {
+        if !modules.is_empty() {
             group.bench_with_input(
                 criterion::BenchmarkId::new("finite_wasm", &test_name),
-                &valid_finite_wasm,
+                &modules,
                 |b, i| {
                     b.iter(|| {
                         i.iter()
@@ -97,11 +97,9 @@ fn all_tests(c: &mut criterion::Criterion) {
                     })
                 },
             );
-        }
-        if !valid_wasm_instrument.is_empty() {
             group.bench_with_input(
                 criterion::BenchmarkId::new("wasm_instrument", &test_name),
-                &valid_wasm_instrument,
+                &modules,
                 |b, i| {
                     b.iter(|| {
                         i.iter()
