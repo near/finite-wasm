@@ -233,7 +233,7 @@
       local.set $i
       block $l ;; label = @2
         i32.const 1
-        if $l2 ;; label = @3
+        if $l ;; label = @3
           i64.const 1
           call 0
           br 0 (;@3;)
@@ -247,7 +247,7 @@
         i32.add
         local.set $i
         i32.const 1
-        if $l3 ;; label = @3
+        if $l ;; label = @3
           i64.const 1
           call 0
           br 0 (;@3;)
@@ -266,7 +266,7 @@
         i32.add
         local.set $i
         i32.const 1
-        if $l4 ;; label = @3
+        if $l ;; label = @3
           i64.const 1
           call 0
           br 0 (;@3;)
@@ -285,7 +285,7 @@
         i32.add
         local.set $i
         i32.const 0
-        if $l5 ;; label = @3
+        if $l ;; label = @3
           i64.const 2
           call 0
           i32.const 888
@@ -698,7 +698,7 @@
         else
           i64.const 4
           call 0
-          block $l2 ;; label = @4
+          block $l1 ;; label = @4
             block (result i32) ;; label = @5
               i32.const 1
               br 0 (;@5;)
@@ -742,8 +742,8 @@
       call 1
       i64.const 6
       call 0
-      block $l2 (result i32) ;; label = @2
-        block $l3 (result i32) ;; label = @3
+      block $l1 (result i32) ;; label = @2
+        block $l1 (result i32) ;; label = @3
           i32.const 2
         end
         block (result i32) ;; label = @3

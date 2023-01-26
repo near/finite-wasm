@@ -228,7 +228,77 @@
 (assert_return (invoke "call-7") (i32.const 65))
 (assert_return (invoke "call-9") (i32.const 66))
 
-;; Corner cases
+;; Same as the above, but use ref.null to ensure the elements use exprs.
+;; Note: some tools like wast2json avoid using exprs when possible.
+(module
+  (type $out-i32 (;0;) (func (result i32)))
+  (type (;1;) (func (param i64)))
+  (type (;2;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (func $const-i32-a (;3;) (type $out-i32) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call $finite_wasm_stack
+      i64.const 1
+      call $finite_wasm_gas
+      i32.const 65
+    end
+    i64.const 4
+    i64.const 0
+    call $finite_wasm_unstack
+  )
+  (func $const-i32-b (;4;) (type $out-i32) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 4
+      i64.const 0
+      call $finite_wasm_stack
+      i64.const 1
+      call $finite_wasm_gas
+      i32.const 66
+    end
+    i64.const 4
+    i64.const 0
+    call $finite_wasm_unstack
+  )
+  (func (;5;) (type $out-i32) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 0
+      call $finite_wasm_stack
+      i64.const 2
+      call $finite_wasm_gas
+      i32.const 7
+      call_indirect (type $out-i32)
+    end
+    i64.const 8
+    i64.const 0
+    call $finite_wasm_unstack
+  )
+  (func (;6;) (type $out-i32) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 8
+      i64.const 0
+      call $finite_wasm_stack
+      i64.const 2
+      call $finite_wasm_gas
+      i32.const 9
+      call_indirect (type $out-i32)
+    end
+    i64.const 8
+    i64.const 0
+    call $finite_wasm_unstack
+  )
+  (table (;0;) 11 funcref)
+  (export "call-7" (func 5))
+  (export "call-9" (func 6))
+  (elem (;0;) (i32.const 6) funcref (ref.null func) (ref.func $const-i32-a))
+  (elem (;1;) (i32.const 9) funcref (ref.func $const-i32-b) (ref.null func))
+)
+(assert_return (invoke "call-7") (i32.const 65))
+(assert_return (invoke "call-9") (i32.const 66))
 
 (module
   (type (;0;) (func))
@@ -800,3 +870,71 @@
 (assert_return (invoke $module1 "call-7") (i32.const 67))
 (assert_return (invoke $module1 "call-8") (i32.const 69))
 (assert_return (invoke $module1 "call-9") (i32.const 70))
+
+;; Element segments must match element type of table
+
+(module $m
+  (type (;0;) (func (param i32) (result externref)))
+  (type (;1;) (func (param i32 externref)))
+  (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0) (param $i i32) (result externref)
+    block (result externref) ;; label = @1
+      i64.const 32
+      i64.const 1
+      call 1
+      i64.const 2
+      call 0
+      local.get $i
+      table.get $t
+    end
+    i64.const 32
+    i64.const 1
+    call 2
+  )
+  (func (;4;) (type 1) (param $i i32) (param $x externref)
+    block (type 4) ;; label = @1
+      i64.const 36
+      i64.const 2
+      call 1
+      i64.const 3
+      call 0
+      local.get $i
+      local.get $x
+      table.set $t
+    end
+    i64.const 36
+    i64.const 2
+    call 2
+  )
+  (table $t (;0;) 2 externref)
+  (export "table" (table $t))
+  (export "get" (func 3))
+  (export "set" (func 4))
+)
+(register "exporter" $m)
+
+(assert_return (invoke $m "get" (i32.const 0)) (ref.null extern))
+(assert_return (invoke $m "get" (i32.const 1)) (ref.null extern))
+
+(assert_return (invoke $m "set" (i32.const 0) (ref.extern 42)))
+(assert_return (invoke $m "set" (i32.const 1) (ref.extern 137)))
+
+(assert_return (invoke $m "get" (i32.const 0)) (ref.extern 42))
+(assert_return (invoke $m "get" (i32.const 1)) (ref.extern 137))
+
+(module
+  (type (;0;) (func (param i64)))
+  (type (;1;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 0)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 1)))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 1)))
+  (import "exporter" "table" (table $t (;0;) 2 externref))
+  (elem (;0;) (i32.const 0) externref (ref.null extern))
+)
+(assert_return (invoke $m "get" (i32.const 0)) (ref.null extern))
+(assert_return (invoke $m "get" (i32.const 1)) (ref.extern 137))

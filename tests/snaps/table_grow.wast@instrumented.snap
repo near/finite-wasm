@@ -55,7 +55,24 @@
     i64.const 2
     call 2
   )
-  (func (;6;) (type 3) (result i32)
+  (func (;6;) (type 2) (param $sz i32) (param $init externref) (result i32)
+    block (result i32) ;; label = @1
+      i64.const 36
+      i64.const 2
+      call 1
+      i64.const 2
+      call 0
+      local.get $init
+      local.get $sz
+      i64.const 1
+      call 0
+      table.grow $t
+    end
+    i64.const 36
+    i64.const 2
+    call 2
+  )
+  (func (;7;) (type 3) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
@@ -72,7 +89,8 @@
   (export "get" (func 3))
   (export "set" (func 4))
   (export "grow" (func 5))
-  (export "size" (func 6))
+  (export "grow-abbrev" (func 6))
+  (export "size" (func 7))
 )
 (assert_return (invoke "size") (i32.const 0))
 (assert_trap (invoke "set" (i32.const 0) (ref.extern 2)) "out of bounds table access")
@@ -86,7 +104,7 @@
 (assert_trap (invoke "set" (i32.const 1) (ref.extern 2)) "out of bounds table access")
 (assert_trap (invoke "get" (i32.const 1)) "out of bounds table access")
 
-(assert_return (invoke "grow" (i32.const 4) (ref.extern 3)) (i32.const 1))
+(assert_return (invoke "grow-abbrev" (i32.const 4) (ref.extern 3)) (i32.const 1))
 (assert_return (invoke "size") (i32.const 5))
 (assert_return (invoke "get" (i32.const 0)) (ref.extern 2))
 (assert_return (invoke "set" (i32.const 0) (ref.extern 2)))

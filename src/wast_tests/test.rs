@@ -352,10 +352,13 @@ impl<'a> TestContext {
         let mut output_wast = String::new();
         let mut iter = wast.directives.into_iter().enumerate().peekable();
         while let Some((directive_index, directive)) = iter.next() {
-            let start_offset = directive.span().offset() - 1;
+            // saturating_sub here grabs the preceding parenthesis if any.
+            let start_offset = directive.span().offset().saturating_sub(1);
             let end_offset = iter
                 .peek()
-                .map(|(_, d)| d.span().offset() - 1)
+                // and this one ensures that we don't include the initial parenthesis of the next
+                // directive.
+                .map(|(_, d)| d.span().offset().saturating_sub(1))
                 .unwrap_or(test_contents.len());
             match directive {
                 wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(mut module))) => {

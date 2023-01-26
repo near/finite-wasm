@@ -4,6 +4,7 @@
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
   (type (;4;) (func))
+  (type (;5;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
@@ -25,7 +26,25 @@
     i64.const 3
     call 2
   )
-  (func (;4;) (type 1) (param $i i32) (result externref)
+  (func (;4;) (type 0) (param $i i32) (param $r externref) (param $n i32)
+    block (type 5) ;; label = @1
+      i64.const 40
+      i64.const 3
+      call 1
+      i64.const 3
+      call 0
+      local.get $i
+      local.get $r
+      local.get $n
+      i64.const 1
+      call 0
+      table.fill $t
+    end
+    i64.const 40
+    i64.const 3
+    call 2
+  )
+  (func (;5;) (type 1) (param $i i32) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
       i64.const 1
@@ -41,7 +60,8 @@
   )
   (table $t (;0;) 10 externref)
   (export "fill" (func 3))
-  (export "get" (func 4))
+  (export "fill-abbrev" (func 4))
+  (export "get" (func 5))
 )
 (assert_return (invoke "get" (i32.const 1)) (ref.null extern))
 (assert_return (invoke "get" (i32.const 2)) (ref.null extern))
@@ -72,7 +92,7 @@
 (assert_return (invoke "get" (i32.const 8)) (ref.extern 4))
 (assert_return (invoke "get" (i32.const 9)) (ref.extern 4))
 
-(assert_return (invoke "fill" (i32.const 9) (ref.null extern) (i32.const 1)))
+(assert_return (invoke "fill-abbrev" (i32.const 9) (ref.null extern) (i32.const 1)))
 (assert_return (invoke "get" (i32.const 8)) (ref.extern 4))
 (assert_return (invoke "get" (i32.const 9)) (ref.null extern))
 

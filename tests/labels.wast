@@ -89,28 +89,28 @@
         (then (br $l) (local.set $i (i32.const 666)))
       )
       (local.set $i (i32.add (local.get $i) (i32.const 1)))
-      (if $l2
+      (if $l
         (i32.const 1)
-        (then (br $l2) (local.set $i (i32.const 666)))
+        (then (br $l) (local.set $i (i32.const 666)))
         (else (local.set $i (i32.const 888)))
       )
       (local.set $i (i32.add (local.get $i) (i32.const 1)))
-      (if $l3
+      (if $l
         (i32.const 1)
-        (then (br $l3) (local.set $i (i32.const 666)))
+        (then (br $l) (local.set $i (i32.const 666)))
         (else (local.set $i (i32.const 888)))
       )
       (local.set $i (i32.add (local.get $i) (i32.const 1)))
-      (if $l4
+      (if $l
         (i32.const 0)
         (then (local.set $i (i32.const 888)))
-        (else (br $l4) (local.set $i (i32.const 666)))
+        (else (br $l) (local.set $i (i32.const 666)))
       )
       (local.set $i (i32.add (local.get $i) (i32.const 1)))
-      (if $l5
+      (if $l
         (i32.const 0)
         (then (local.set $i (i32.const 888)))
-        (else (br $l5) (local.set $i (i32.const 666)))
+        (else (br $l) (local.set $i (i32.const 666)))
       )
       (local.set $i (i32.add (local.get $i) (i32.const 1)))
     )
@@ -268,7 +268,7 @@
     (block $l0 (result i32)
       (if (i32.const 1)
         (then (br $l0 (block $l1 (result i32) (br $l1 (i32.const 1)))))
-        (else (block (drop (block $l2 (result i32) (br $l2 (i32.const 1))))))
+        (else (block (drop (block $l1 (result i32) (br $l1 (i32.const 1))))))
       )
       (i32.const 1)
     )
@@ -281,8 +281,8 @@
   (func (export "redefinition") (result i32)
     (block $l1 (result i32)
       (i32.add
-        (block $l2 (result i32) (i32.const 2))
-        (block $l3 (result i32) (br $l3 (i32.const 3)))
+        (block $l1 (result i32) (i32.const 2))
+        (block $l1 (result i32) (br $l1 (i32.const 3)))
       )
     )
   )

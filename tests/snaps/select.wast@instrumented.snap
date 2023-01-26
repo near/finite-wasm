@@ -1099,16 +1099,29 @@
     call 0
     unreachable
     select (result i32)
-    select (result i32)
   )
   (func (;10;) (type 0) (result i32)
+    i64.const 1
+    call 0
+    unreachable
+    select (result i32)
+    select
+  )
+  (func (;11;) (type 0) (result i32)
+    i64.const 1
+    call 0
+    unreachable
+    select (result i32)
+    select (result i32)
+  )
+  (func (;12;) (type 0) (result i32)
     i64.const 1
     call 0
     unreachable
     select
     call_indirect (type 1)
   )
-  (func (;11;) (type 0) (result i32)
+  (func (;13;) (type 0) (result i32)
     i64.const 1
     call 0
     unreachable

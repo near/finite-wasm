@@ -41,12 +41,12 @@
       i64.const 2
       call $finite_wasm_gas
       local.get 0
-      if $l0 ;; label = @2
+      if $l ;; label = @2
       end
       i64.const 2
       call $finite_wasm_gas
       local.get 0
-      if $l1 ;; label = @2
+      if $l ;; label = @2
       end
       i64.const 2
       call $finite_wasm_gas
