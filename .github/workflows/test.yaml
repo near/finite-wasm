@@ -24,3 +24,13 @@ jobs:
       - run: opam install ocamlbuild
       - run: opam exec -- make -Cinterpreter wasm
       - run: cargo test --all-features
+  cargo-deny:
+    name: Cargo Deny
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - run: rustup update --no-self-update stable
+      - run: cargo install cargo-deny
+      - run: cargo deny check

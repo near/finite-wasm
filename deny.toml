@@ -1,0 +1,29 @@
+targets = [
+    { triple = "x86_64-unknown-linux-gnu" },
+    { triple = "aarch64-unknown-linux-gnu" },
+    { triple = "x86_64-unknown-linux-musl" },
+    { triple = "aarch64-apple-darwin" },
+    { triple = "x86_64-apple-darwin" },
+    { triple = "x86_64-pc-windows-msvc" },
+]
+
+[bans]
+multiple-versions = "deny"
+wildcards = "deny"
+
+
+[licenses]
+allow = [
+    "Apache-2.0",
+    "MIT",
+    "Apache-2.0 WITH LLVM-exception",
+    "Unicode-DFS-2016"
+]
+
+[advisories]
+ignore = [
+    # parity-wasm is only ever used for dev-dependencies
+    "RUSTSEC-2022-0061",
+    # atty is only ever used for dev-dependencies
+    "RUSTSEC-2021-0145",
+]
