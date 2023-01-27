@@ -12,6 +12,7 @@ description = """
 Guarantee deterministic limits on execution time and space resources made available to the
 WebAssembly programs in a runtime-agnostic way.
 """
+exclude = ["/tests/snaps"]
 
 [[test]]
 name = "wast"
