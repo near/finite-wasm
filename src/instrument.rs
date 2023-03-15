@@ -393,10 +393,14 @@ impl<'a> InstrumentContext<'a> {
             match name {
                 wp::Name::Module { name, .. } => self.name_section.module(name),
                 wp::Name::Function(map) => {
-                    let mut new_name_map = namemap(map, true)?;
+                    let mut new_name_map = we::NameMap::new();
                     new_name_map.append(GAS_INSTRUMENTATION_FN, "finite_wasm_gas");
                     new_name_map.append(RESERVE_STACK_INSTRUMENTATION_FN, "finite_wasm_stack");
                     new_name_map.append(RELEASE_STACK_INSTRUMENTATION_FN, "finite_wasm_unstack");
+                    for naming in map {
+                        let naming = naming.map_err(Error::ParseNameMapName)?;
+                        new_name_map.append(F + naming.index, naming.name);
+                    }
                     self.name_section.functions(&new_name_map)
                 }
                 wp::Name::Local(map) => self.name_section.locals(&indirectnamemap(map)?),
