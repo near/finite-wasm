@@ -17,19 +17,15 @@
   (type (;15;) (func (param i64) (result i64)))
   (type (;16;) (func (param i64)))
   (type (;17;) (func (param i64 i64)))
-  (type (;18;) (func))
-  (type (;19;) (func (result i32 i32)))
-  (type (;20;) (func))
-  (type (;21;) (func))
-  (type (;22;) (func))
-  (type (;23;) (func (result i32 i32 i64)))
-  (type (;24;) (func (result i64 i32)))
+  (type (;18;) (func (result i32 i32)))
+  (type (;19;) (func (result i32 i32 i64)))
+  (type (;20;) (func (result i64 i32)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 16)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 17)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 17)))
   (func $dummy (;3;) (type $block-sig-1))
   (func (;4;) (type $block-sig-3) (param i32)
-    block (type 18) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
@@ -101,7 +97,7 @@
     call $finite_wasm_unstack
   )
   (func (;6;) (type 6) (param i32) (result i32 i32)
-    block (type 19) (result i32 i32) ;; label = @1
+    block (type 18) (result i32 i32) ;; label = @1
       i64.const 20
       i64.const 1
       call $finite_wasm_stack
@@ -856,7 +852,7 @@
     call $finite_wasm_unstack
   )
   (func (;23;) (type $block-sig-3) (param i32)
-    block (type 20) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
@@ -888,7 +884,7 @@
     call $finite_wasm_unstack
   )
   (func (;24;) (type $block-sig-3) (param i32)
-    block (type 21) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
@@ -1011,7 +1007,7 @@
     call $finite_wasm_unstack
   )
   (func (;29;) (type $block-sig-3) (param i32)
-    block (type 22) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
@@ -1601,7 +1597,7 @@
     call $finite_wasm_unstack
   )
   (func (;44;) (type 10) (param i32) (result i32 i32 i64)
-    block (type 23) (result i32 i32 i64) ;; label = @1
+    block (type 19) (result i32 i32 i64) ;; label = @1
       i64.const 16
       i64.const 1
       call $finite_wasm_stack
@@ -1843,7 +1839,7 @@
   )
   (func $add64_u_with_carry (;52;) (type 13) (param $i i64) (param $j i64) (param $c i32) (result i64 i32)
     (local $k i64)
-    block (type 24) (result i64 i32) ;; label = @1
+    block (type 20) (result i64 i32) ;; label = @1
       i64.const 24
       i64.const 4
       call $finite_wasm_stack

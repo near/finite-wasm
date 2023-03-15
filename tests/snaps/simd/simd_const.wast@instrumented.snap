@@ -7339,14 +7339,11 @@
   (type (;3;) (func (result v128)))
   (type (;4;) (func (param i64)))
   (type (;5;) (func (param i64 i64)))
-  (type (;6;) (func))
-  (type (;7;) (func))
-  (type (;8;) (func))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 5)))
   (func $set_g0 (;3;) (type 0) (param $0 v128)
-    block (type 6) ;; label = @1
+    block ;; label = @1
       i64.const 16
       i64.const 1
       call $finite_wasm_stack
@@ -7360,7 +7357,7 @@
     call $finite_wasm_unstack
   )
   (func $set_g1_g2 (;4;) (type 1) (param $0 v128) (param $1 v128)
-    block (type 7) ;; label = @1
+    block ;; label = @1
       i64.const 16
       i64.const 2
       call $finite_wasm_stack
@@ -7376,7 +7373,7 @@
     call $finite_wasm_unstack
   )
   (func $set_g0_g1_g2_g3 (;5;) (type 2) (param $0 v128) (param $1 v128) (param $2 v128) (param $3 v128)
-    block (type 8) ;; label = @1
+    block ;; label = @1
       i64.const 32
       i64.const 4
       call $finite_wasm_stack

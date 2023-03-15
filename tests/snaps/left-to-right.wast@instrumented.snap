@@ -14,10 +14,6 @@
   (type (;12;) (func (param f64 f64)))
   (type (;13;) (func (param i64)))
   (type (;14;) (func (param i64 i64)))
-  (type (;15;) (func))
-  (type (;16;) (func))
-  (type (;17;) (func))
-  (type (;18;) (func))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 13)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 14)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 14)))
@@ -614,7 +610,7 @@
     call $finite_wasm_unstack
   )
   (func $i32_dummy (;34;) (type 9) (param i32 i32)
-    block (type 15) ;; label = @1
+    block ;; label = @1
       i64.const 0
       i64.const 2
       call $finite_wasm_stack
@@ -624,7 +620,7 @@
     call $finite_wasm_unstack
   )
   (func $i64_dummy (;35;) (type 10) (param i64 i64)
-    block (type 16) ;; label = @1
+    block ;; label = @1
       i64.const 0
       i64.const 2
       call $finite_wasm_stack
@@ -634,7 +630,7 @@
     call $finite_wasm_unstack
   )
   (func $f32_dummy (;36;) (type 11) (param f32 f32)
-    block (type 17) ;; label = @1
+    block ;; label = @1
       i64.const 0
       i64.const 2
       call $finite_wasm_stack
@@ -644,7 +640,7 @@
     call $finite_wasm_unstack
   )
   (func $f64_dummy (;37;) (type 12) (param f64 f64)
-    block (type 18) ;; label = @1
+    block ;; label = @1
       i64.const 0
       i64.const 2
       call $finite_wasm_stack

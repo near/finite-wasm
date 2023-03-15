@@ -3,11 +3,6 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
-  (type (;4;) (func))
-  (type (;5;) (func))
-  (type (;6;) (func))
-  (type (;7;) (func))
-  (type (;8;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
@@ -362,7 +357,7 @@
     call 2
   )
   (func (;28;) (type 1) (param $i i32)
-    block (type 4) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call 1
@@ -379,7 +374,7 @@
     call 2
   )
   (func (;29;) (type 1) (param $i i32)
-    block (type 5) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call 1
@@ -396,7 +391,7 @@
     call 2
   )
   (func (;30;) (type 1) (param $i i32)
-    block (type 6) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call 1
@@ -413,7 +408,7 @@
     call 2
   )
   (func (;31;) (type 1) (param $i i32)
-    block (type 7) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call 1
@@ -430,7 +425,7 @@
     call 2
   )
   (func (;32;) (type 1) (param $i i32)
-    block (type 8) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call 1
@@ -593,13 +588,6 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
-  (type (;4;) (func))
-  (type (;5;) (func))
-  (type (;6;) (func))
-  (type (;7;) (func))
-  (type (;8;) (func))
-  (type (;9;) (func))
-  (type (;10;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
@@ -1094,7 +1082,7 @@
     call 2
   )
   (func (;38;) (type 1) (param $i i32)
-    block (type 4) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1111,7 +1099,7 @@
     call 2
   )
   (func (;39;) (type 1) (param $i i32)
-    block (type 5) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1128,7 +1116,7 @@
     call 2
   )
   (func (;40;) (type 1) (param $i i32)
-    block (type 6) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1145,7 +1133,7 @@
     call 2
   )
   (func (;41;) (type 1) (param $i i32)
-    block (type 7) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1162,7 +1150,7 @@
     call 2
   )
   (func (;42;) (type 1) (param $i i32)
-    block (type 8) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1179,7 +1167,7 @@
     call 2
   )
   (func (;43;) (type 1) (param $i i32)
-    block (type 9) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1196,7 +1184,7 @@
     call 2
   )
   (func (;44;) (type 1) (param $i i32)
-    block (type 10) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1
@@ -1414,7 +1402,6 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
-  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
@@ -1489,7 +1476,7 @@
     call 2
   )
   (func (;8;) (type 1) (param $i i32)
-    block (type 4) ;; label = @1
+    block ;; label = @1
       i64.const 4
       i64.const 1
       call 1
@@ -1545,7 +1532,6 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
-  (type (;4;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
@@ -1620,7 +1606,7 @@
     call 2
   )
   (func (;8;) (type 1) (param $i i32)
-    block (type 4) ;; label = @1
+    block ;; label = @1
       i64.const 8
       i64.const 1
       call 1

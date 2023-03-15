@@ -4,7 +4,6 @@
   (type (;2;) (func (param i32)))
   (type (;3;) (func (param i64)))
   (type (;4;) (func (param i64 i64)))
-  (type (;5;) (func))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
@@ -193,7 +192,7 @@
     call 2
   )
   (func (;14;) (type 2) (param $i i32)
-    block (type 5) ;; label = @1
+    block ;; label = @1
       i64.const 20
       i64.const 1
       call 1

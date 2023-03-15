@@ -294,7 +294,7 @@ impl<'a> InstrumentContext<'a> {
         // NOTE: Function parameters become locals, rather than operands, so we don’t need to
         // handle them in any way when inserting the block.
         let block_type = match (params, results) {
-            ([], []) => we::BlockType::Empty,
+            (_, []) => we::BlockType::Empty,
             (_, [result]) => we::BlockType::Result(valtype(*result)),
             ([], _) => we::BlockType::FunctionType(func_type_idx),
             (_, results) => {
