@@ -26,6 +26,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       i32.const 0
@@ -41,6 +43,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       i64.const 0
@@ -56,6 +60,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       f32.const 0x0p+0 (;=0;)
@@ -71,6 +77,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       f64.const 0x0p+0 (;=0;)
@@ -85,6 +93,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       i32.const 10
@@ -99,6 +109,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       i64.const 11
@@ -113,6 +125,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       f32.const 0x1.633334p+3 (;=11.1;)
@@ -127,6 +141,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       f64.const 0x1.8666666666666p+3 (;=12.2;)
@@ -142,6 +158,8 @@
       i64.const 8
       i64.const 9
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 36
       call $finite_wasm_gas
       i64.const 0
@@ -191,6 +209,8 @@
       i64.const 72
       i64.const 9
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 43
       call $finite_wasm_gas
       f32.const -0x1.333334p-2 (;=-0.3;)
@@ -247,6 +267,8 @@
       i64.const 72
       i64.const 9
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 33
       call $finite_wasm_gas
       i64.const 1
@@ -293,6 +315,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -310,6 +334,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -330,6 +356,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -352,6 +380,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       loop (result i32) ;; label = @2
         i64.const 4
         call $finite_wasm_gas
@@ -369,6 +399,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       loop (result i32) ;; label = @2
         i64.const 2
         call $finite_wasm_gas
@@ -389,6 +421,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       loop (result i32) ;; label = @2
         i64.const 2
         call $finite_wasm_gas
@@ -411,6 +445,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -428,6 +464,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       block ;; label = @2
@@ -445,6 +483,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -467,6 +507,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -489,6 +531,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       block ;; label = @2
@@ -506,6 +550,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -525,6 +571,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       block (result i32) ;; label = @2
@@ -544,6 +592,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 7
@@ -562,6 +612,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 2
@@ -585,6 +637,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       local.get 0
@@ -608,6 +662,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       local.get 0
@@ -631,6 +687,8 @@
       i64.const 12
       i64.const 2
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       i32.const 5
@@ -648,6 +706,8 @@
       i64.const 12
       i64.const 2
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       local.get 0
@@ -665,6 +725,8 @@
       i64.const 12
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       i32.const 0
@@ -682,6 +744,8 @@
       i64.const 4
       i64.const 3
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 1
       call $finite_wasm_gas
       i32.const -1
@@ -695,6 +759,8 @@
       i64.const 12
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       i32.const 12
@@ -712,6 +778,8 @@
       i64.const 12
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       i32.const 1
@@ -729,6 +797,8 @@
       i64.const 12
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       i32.const 1
@@ -746,6 +816,8 @@
       i64.const 16
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 6
       call $finite_wasm_gas
       i32.const 1
@@ -764,6 +836,8 @@
       i64.const 16
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 6
       call $finite_wasm_gas
       i32.const 1
@@ -782,6 +856,8 @@
       i64.const 16
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 6
       call $finite_wasm_gas
       i32.const 1
@@ -800,6 +876,8 @@
       i64.const 16
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 6
       call $finite_wasm_gas
       i32.const 1
@@ -819,6 +897,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 1
@@ -834,6 +914,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 1
@@ -850,6 +932,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 1
@@ -865,6 +949,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 1
@@ -880,6 +966,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 3
@@ -895,6 +983,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 30
@@ -911,6 +1001,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 2
@@ -927,6 +1019,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 1
@@ -943,6 +1037,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 2
@@ -959,6 +1055,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       f32.const nan:0xf1e2 (;=NaN;)
@@ -974,6 +1072,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 3
@@ -990,6 +1090,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 10
@@ -1006,6 +1108,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 0
@@ -1021,6 +1125,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 43
@@ -1037,6 +1143,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       i32.const 10
@@ -1053,6 +1161,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i64.const 41
@@ -1068,6 +1178,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       i32.const 40

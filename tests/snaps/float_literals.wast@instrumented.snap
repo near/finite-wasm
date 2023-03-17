@@ -13,6 +13,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const nan (;=NaN;)
@@ -27,6 +29,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const nan (;=NaN;)
@@ -41,6 +45,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const -nan (;=NaN;)
@@ -55,6 +61,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const nan (;=NaN;)
@@ -69,6 +77,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const nan:0x200000 (;=NaN;)
@@ -83,6 +93,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const -nan:0x7fffff (;=NaN;)
@@ -97,6 +109,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const nan:0x12345 (;=NaN;)
@@ -111,6 +125,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const nan:0x304050 (;=NaN;)
@@ -125,6 +141,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const -nan:0x2abcde (;=NaN;)
@@ -139,6 +157,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const inf (;=inf;)
@@ -153,6 +173,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const inf (;=inf;)
@@ -167,6 +189,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const -inf (;=-inf;)
@@ -181,6 +205,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x0p+0 (;=0;)
@@ -195,6 +221,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x0p+0 (;=0;)
@@ -209,6 +237,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const -0x0p+0 (;=-0;)
@@ -223,6 +253,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.921fb6p+2 (;=6.2831855;)
@@ -237,6 +269,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.p-149 (;=0.000000000000000000000000000000000000000000001;)
@@ -251,6 +285,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1p-126 (;=0.000000000000000000000000000000000000011754944;)
@@ -265,6 +301,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.fffffep+127 (;=340282350000000000000000000000000000000;)
@@ -279,6 +317,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.fffffcp-127 (;=0.000000000000000000000000000000000000011754942;)
@@ -293,6 +333,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1p+10 (;=1024;)
@@ -307,6 +349,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x0p+0 (;=0;)
@@ -321,6 +365,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x0p+0 (;=0;)
@@ -335,6 +381,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const -0x0p+0 (;=-0;)
@@ -349,6 +397,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.921fb6p+2 (;=6.2831855;)
@@ -363,6 +413,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.p-149 (;=0.000000000000000000000000000000000000000000001;)
@@ -377,6 +429,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1p-126 (;=0.000000000000000000000000000000000000011754944;)
@@ -391,6 +445,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.fffffcp-127 (;=0.000000000000000000000000000000000000011754942;)
@@ -405,6 +461,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.fffffep+127 (;=340282350000000000000000000000000000000;)
@@ -419,6 +477,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.2a05f2p+33 (;=10000000000;)
@@ -433,6 +493,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f32.const 0x1.000002p+0 (;=1.0000001;)
@@ -447,6 +509,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const nan (;=NaN;)
@@ -461,6 +525,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const nan (;=NaN;)
@@ -475,6 +541,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const -nan (;=NaN;)
@@ -489,6 +557,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const nan (;=NaN;)
@@ -503,6 +573,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const nan:0x4000000000000 (;=NaN;)
@@ -517,6 +589,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const -nan:0xfffffffffffff (;=NaN;)
@@ -531,6 +605,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const nan:0x123456789abc (;=NaN;)
@@ -545,6 +621,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const nan:0x3040506070809 (;=NaN;)
@@ -559,6 +637,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const -nan:0x2abcdef012345 (;=NaN;)
@@ -573,6 +653,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const inf (;=inf;)
@@ -587,6 +669,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const inf (;=inf;)
@@ -601,6 +685,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const -inf (;=-inf;)
@@ -615,6 +701,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x0p+0 (;=0;)
@@ -629,6 +717,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x0p+0 (;=0;)
@@ -643,6 +733,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const -0x0p+0 (;=-0;)
@@ -657,6 +749,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.921fb54442d18p+2 (;=6.283185307179586;)
@@ -671,6 +765,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.p-1074 (;=0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005;)
@@ -685,6 +781,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1p-1022 (;=0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000022250738585072014;)
@@ -699,6 +797,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.ffffffffffffep-1023 (;=0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002225073858507201;)
@@ -713,6 +813,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.fffffffffffffp+1023 (;=179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;)
@@ -727,6 +829,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1p+100 (;=1267650600228229400000000000000;)
@@ -741,6 +845,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x0p+0 (;=0;)
@@ -755,6 +861,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x0p+0 (;=0;)
@@ -769,6 +877,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const -0x0p+0 (;=-0;)
@@ -783,6 +893,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.921fb54442d18p+2 (;=6.283185307179586;)
@@ -797,6 +909,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.p-1074 (;=0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005;)
@@ -811,6 +925,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1p-1022 (;=0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000022250738585072014;)
@@ -825,6 +941,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.ffffffffffffep-1023 (;=0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002225073858507201;)
@@ -839,6 +957,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.fffffffffffffp+1023 (;=179769313486231570000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;)
@@ -853,6 +973,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.249ad2594c37dp+332 (;=10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;)
@@ -867,6 +989,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       f64.const 0x1.000001ff19e24p+0 (;=1.000000119;)
@@ -881,6 +1005,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.e848p+19 (;=1000000;)
@@ -894,6 +1020,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.f4p+9 (;=1000;)
@@ -907,6 +1035,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.f5922p+9 (;=1003.1416;)
@@ -920,6 +1050,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.c2332cp+49 (;=990000000000000;)
@@ -933,6 +1065,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.3b5ce8p+93 (;=12200012000000000000000000000;)
@@ -946,6 +1080,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.41e014p+27 (;=168755360;)
@@ -959,6 +1095,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.aa0fp+16 (;=109071;)
@@ -972,6 +1110,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.41ffe2p+15 (;=41215.94;)
@@ -985,6 +1125,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.ep+20 (;=1966080;)
@@ -998,6 +1140,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.57805p+44 (;=23605224000000;)
@@ -1011,6 +1155,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.e848p+19 (;=1000000;)
@@ -1024,6 +1170,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.f4p+9 (;=1000;)
@@ -1037,6 +1185,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.f5921fafc8bp+9 (;=1003.141592;)
@@ -1050,6 +1200,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.05c735bb7cc45p-402 (;=0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000099;)
@@ -1063,6 +1215,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.3b5ce725bde9cp+93 (;=12200011354000000000000000000;)
@@ -1076,6 +1230,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.5e01e00013332p+51 (;=3078696982321561;)
@@ -1089,6 +1245,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.aa0fp+16 (;=109071;)
@@ -1102,6 +1260,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.41ffe2834b34p+15 (;=41215.94240794191;)
@@ -1115,6 +1275,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.ep+20 (;=1966080;)
@@ -1128,6 +1290,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.578050f9f7p+44 (;=23605225168752;)
@@ -1318,6 +1482,8 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f64.const 0x1.ffffffa2p+31 (;=4294967249;)

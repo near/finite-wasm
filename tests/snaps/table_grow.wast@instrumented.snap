@@ -13,6 +13,8 @@
       i64.const 32
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       local.get $i
@@ -27,6 +29,8 @@
       i64.const 36
       i64.const 2
       call 1
+      i64.const 0
+      call 0
       i64.const 3
       call 0
       local.get $i
@@ -42,6 +46,8 @@
       i64.const 36
       i64.const 2
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       local.get $init
@@ -59,6 +65,8 @@
       i64.const 36
       i64.const 2
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       local.get $init
@@ -76,6 +84,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       table.size $t
@@ -129,6 +139,8 @@
       i64.const 36
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       ref.func $f
@@ -160,6 +172,8 @@
       i64.const 36
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       ref.null extern
@@ -194,6 +208,8 @@
       i64.const 36
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       ref.null extern
@@ -232,6 +248,8 @@
       i64.const 36
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       ref.null func
@@ -250,6 +268,8 @@
       i64.const 32
       i64.const 3
       call 1
+      i64.const 0
+      call 0
       i64.const 3
       call 0
       ref.func 4

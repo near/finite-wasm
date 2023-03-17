@@ -13,6 +13,8 @@
       i64.const 8
       i64.const 2
       call 1
+      i64.const 0
+      call 0
       i64.const 14
       call 0
       i32.const 100
@@ -90,6 +92,8 @@
       i64.const 16
       i64.const 2
       call 1
+      i64.const 0
+      call 0
       i64.const 15
       call 0
       i64.const 100
@@ -160,6 +164,8 @@
       i64.const 24
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 14
       call 0
       block $1 (result i32) ;; label = @2
@@ -205,6 +211,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 3
       call 0
       block ;; label = @2

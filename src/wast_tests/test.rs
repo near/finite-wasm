@@ -450,7 +450,7 @@ impl<'a> TestContext {
         .map_err(|_| Error::AnalyseModulePanic(id.into(), self.test_path.clone()))?
         .map_err(|e| Error::AnalyseModule(e, id.into(), self.test_path.clone()))?;
 
-        std::panic::catch_unwind(|| results.instrument("spectest", code))
+        std::panic::catch_unwind(|| results.instrument("spectest", code, &|_| 0))
             .map_err(|_| Error::InstrumentModulePanic(id.into(), self.test_path.clone()))?
             .map_err(Error::Instrument)
     }

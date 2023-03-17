@@ -278,8 +278,13 @@ impl AnalysisOutcome {
     /// host functions must keep track of the current total stack height and raise a trap if the
     /// stack limit is exceeded.
     #[cfg(feature = "instrument")]
-    pub fn instrument(&self, import_env: &str, wasm: &[u8]) -> Result<Vec<u8>, InstrumentError> {
-        instrument::InstrumentContext::new(wasm, import_env, self).run()
+    pub fn instrument(
+        &self,
+        import_env: &str,
+        wasm: &[u8],
+        stack_init_gas_cost: &impl Fn(u64) -> u64,
+    ) -> Result<Vec<u8>, InstrumentError> {
+        instrument::InstrumentContext::new(wasm, import_env, self).run(stack_init_gas_cost)
     }
 }
 

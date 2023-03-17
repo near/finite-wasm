@@ -10,6 +10,8 @@
       i64.const 4
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       local.get $x
@@ -37,6 +39,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       local.get $x
@@ -52,6 +56,8 @@
       i64.const 32
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 4
       call $finite_wasm_gas
       ref.func $ff1
@@ -72,6 +78,8 @@
       i64.const 32
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       ref.func $f
@@ -86,6 +94,8 @@
       i64.const 32
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       ref.func $g
@@ -100,6 +110,8 @@
       i64.const 32
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       global.get $v
@@ -114,6 +126,8 @@
       i64.const 32
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       ref.func $f
@@ -128,6 +142,8 @@
       i64.const 32
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       ref.func $g
@@ -142,6 +158,8 @@
       i64.const 36
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 0
@@ -162,6 +180,8 @@
       i64.const 36
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 0
@@ -182,6 +202,8 @@
       i64.const 36
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       i32.const 0
@@ -245,6 +267,8 @@
       i64.const 192
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 7
       call $finite_wasm_gas
       ref.func $f1

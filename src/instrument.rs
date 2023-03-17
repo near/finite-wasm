@@ -111,7 +111,10 @@ impl<'a> InstrumentContext<'a> {
         self.raw_sections.push(we::RawSection { id, data: &[] });
     }
 
-    pub(crate) fn run(mut self) -> Result<Vec<u8>, Error> {
+    pub(crate) fn run(
+        mut self,
+        stack_init_gas_cost: &impl Fn(u64) -> u64,
+    ) -> Result<Vec<u8>, Error> {
         let parser = wp::Parser::new(0);
         for payload in parser.parse_all(self.wasm) {
             let payload = payload.map_err(Error::ParseModuleSection)?;
@@ -170,7 +173,7 @@ impl<'a> InstrumentContext<'a> {
                         .function_types
                         .next()
                         .ok_or(Error::InsufficientFunctionTypes)?;
-                    self.transform_code_section(reader, type_index)?;
+                    self.transform_code_section(reader, type_index, stack_init_gas_cost)?;
                 }
                 wp::Payload::ExportSection(reader) => {
                     for export in reader {
@@ -243,6 +246,7 @@ impl<'a> InstrumentContext<'a> {
         &mut self,
         reader: wp::FunctionBody,
         func_type_idx: u32,
+        stack_init_gas_cost: impl Fn(u64) -> u64,
     ) -> Result<(), Error> {
         let func_type_idx_usize =
             usize::try_from(func_type_idx).map_err(|_| Error::InvalidTypeIndex)?;
@@ -271,6 +275,7 @@ impl<'a> InstrumentContext<'a> {
         let gas_offsets = get_idx!(analysis.gas_offsets)?;
         let stack_sz = *get_idx!(analysis.function_operand_stack_sizes)?;
         let frame_sz = *get_idx!(analysis.function_frame_sizes)?;
+        let stack_init_gas_cost = stack_init_gas_cost(frame_sz);
 
         let mut instrumentation_points = gas_offsets
             .iter()
@@ -311,6 +316,8 @@ impl<'a> InstrumentContext<'a> {
             new_function.instruction(&we::Instruction::I64Const(stack_sz as i64));
             new_function.instruction(&we::Instruction::I64Const(frame_sz as i64));
             new_function.instruction(&we::Instruction::Call(RESERVE_STACK_INSTRUMENTATION_FN));
+            new_function.instruction(&we::Instruction::I64Const(stack_init_gas_cost as i64));
+            new_function.instruction(&we::Instruction::Call(GAS_INSTRUMENTATION_FN));
         }
 
         while !operators.eof() {

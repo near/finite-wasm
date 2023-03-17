@@ -17,6 +17,8 @@
       i64.const 0
       i64.const 1
       call 1
+      i64.const 0
+      call 0
     end
     i64.const 0
     i64.const 1
@@ -27,6 +29,8 @@
       i64.const 0
       i64.const 1
       call 1
+      i64.const 0
+      call 0
     end
     i64.const 0
     i64.const 1
@@ -37,6 +41,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       i32.const 22
@@ -50,6 +56,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       f32.const 0x1.6p+3 (;=11;)
@@ -63,6 +71,8 @@
       i64.const 4
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       local.get 0
@@ -76,6 +86,8 @@
       i64.const 8
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       local.get 0
@@ -147,6 +159,8 @@
       i64.const 8
       i64.const 2
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 5
       call $finite_wasm_gas
       local.get $i
@@ -189,6 +203,8 @@
       i64.const 16
       i64.const 2
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       local.get $i
@@ -255,6 +271,8 @@
       i64.const 4
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       local.get $i
@@ -283,6 +301,8 @@
       i64.const 8
       i64.const 2
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 3
       call $finite_wasm_gas
       local.get $i
@@ -379,6 +399,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       global.get 0
@@ -392,6 +414,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       global.get 1
@@ -405,6 +429,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       global.get $x
@@ -418,6 +444,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       global.get $y
@@ -474,6 +502,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       local.get 0
@@ -488,6 +518,8 @@
       i64.const 4
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 1
       call $finite_wasm_gas
       i32.const 11
@@ -501,6 +533,8 @@
       i64.const 4
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 1
       call $finite_wasm_gas
       i32.const 22
@@ -533,6 +567,8 @@
       i64.const 8
       i64.const 1
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 2
       call $finite_wasm_gas
       local.get 0
@@ -547,6 +583,8 @@
       i64.const 4
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 1
       call $finite_wasm_gas
       i32.const 11
@@ -560,6 +598,8 @@
       i64.const 4
       i64.const 0
       call $finite_wasm_stack
+      i64.const 0
+      call $finite_wasm_gas
       i64.const 1
       call $finite_wasm_gas
       i32.const 22
@@ -762,6 +802,8 @@
       i64.const 4
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       local.get 0
@@ -792,6 +834,8 @@
       i64.const 4
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 2
       call 0
       local.get 0
@@ -894,6 +938,8 @@
       i64.const 4
       i64.const 1
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       local.get 0
@@ -925,6 +971,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       i32.const 1
@@ -955,6 +1003,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       i32.const 1
@@ -984,6 +1034,8 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 0
+      call 0
       i64.const 1
       call 0
       memory.size
