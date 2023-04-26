@@ -62,12 +62,10 @@ pub enum Error {
     InsufficientFunctionTypes,
     #[error("module contains a reference to an invalid type index")]
     InvalidTypeIndex,
-    #[error("module contains a reference to an invalid function index")]
-    InvalidFunctionIndex,
     #[error("size for custom section {0} is out of input bounds")]
     CustomSectionRange(u8, usize),
-    #[error("could not increment function index {0} to account for instrumentation!")]
-    IncreaseFunctionIndex(u32),
+    #[error("could not remap function index {0}")]
+    RemapFunctionIndex(u32),
 }
 
 pub(crate) struct InstrumentContext<'a> {
@@ -148,7 +146,7 @@ impl<'a> InstrumentContext<'a> {
                     self.transform_imports_section(imports)?;
                 }
                 wp::Payload::StartSection { func, .. } => {
-                    self.start_section.function_index = func + F;
+                    self.start_section.function_index = map_func(func)?;
                     self.schedule_section(self.start_section.id());
                 }
                 wp::Payload::ElementSection(reader) => {
@@ -182,7 +180,9 @@ impl<'a> InstrumentContext<'a> {
                     for export in reader {
                         let export = export.map_err(Error::ParseExport)?;
                         let (kind, index) = match export.kind {
-                            wp::ExternalKind::Func => (we::ExportKind::Func, export.index + F),
+                            wp::ExternalKind::Func => {
+                                (we::ExportKind::Func, map_func(export.index)?)
+                            }
                             wp::ExternalKind::Table => (we::ExportKind::Table, export.index),
                             wp::ExternalKind::Memory => (we::ExportKind::Memory, export.index),
                             wp::ExternalKind::Global => (we::ExportKind::Global, export.index),
@@ -340,14 +340,15 @@ impl<'a> InstrumentContext<'a> {
             }
             match op {
                 wp::Operator::RefFunc { function_index } => {
-                    new_function.instruction(&we::Instruction::RefFunc(function_index + F))
+                    new_function.instruction(&we::Instruction::RefFunc(map_func(function_index)?))
                 }
                 wp::Operator::Call { function_index } => {
-                    new_function.instruction(&we::Instruction::Call(function_index + F))
+                    new_function.instruction(&we::Instruction::Call(map_func(function_index)?))
                 }
                 wp::Operator::ReturnCall { function_index } => {
                     call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
-                    new_function.instruction(&we::Instruction::ReturnCall(function_index + F))
+                    new_function
+                        .instruction(&we::Instruction::ReturnCall(map_func(function_index)?))
                 }
                 wp::Operator::ReturnCallIndirect { .. } => {
                     call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
@@ -415,11 +416,7 @@ impl<'a> InstrumentContext<'a> {
                     new_name_map.append(RELEASE_STACK_INSTRUMENTATION_FN, "finite_wasm_unstack");
                     for naming in map {
                         let naming = naming.map_err(Error::ParseNameMapName)?;
-                        new_name_map.append(
-                            F.checked_add(naming.index)
-                                .ok_or(Error::InvalidFunctionIndex)?,
-                            naming.name,
-                        );
+                        new_name_map.append(map_func(naming.index)?, naming.name);
                     }
                     self.name_section.functions(&new_name_map)
                 }
@@ -480,13 +477,7 @@ impl<'a> InstrumentContext<'a> {
                 wp::ElementItems::Functions(fns) => {
                     functions = fns
                         .into_iter()
-                        .map(|v| {
-                            let func_idx = v.map_err(Error::ParseElementItem)?;
-                            let new_func_idx = func_idx
-                                .checked_add(F)
-                                .ok_or(Error::IncreaseFunctionIndex(func_idx))?;
-                            Ok(new_func_idx)
-                        })
+                        .map(|v| map_func(v.map_err(Error::ParseElementItem)?))
                         .collect::<Result<Vec<_>, _>>()?;
                     we::Elements::Functions(&functions)
                 }
@@ -564,11 +555,9 @@ fn constexpr(ep: wp::ConstExpr) -> Result<we::ConstExpr, Error> {
             .read_operator()
             .map_err(Error::ParseConstExprOperator)?
         {
-            wp::Operator::RefFunc { function_index } => we::ConstExpr::ref_func(
-                function_index
-                    .checked_add(F)
-                    .ok_or(Error::IncreaseFunctionIndex(function_index))?,
-            ),
+            wp::Operator::RefFunc { function_index } => {
+                we::ConstExpr::ref_func(map_func(function_index)?)
+            }
             _ => {
                 let expr_bytes = reader
                     .read_bytes(reader.bytes_remaining())
@@ -585,7 +574,14 @@ fn namemap(p: wp::NameMap, is_function: bool) -> Result<we::NameMap, Error> {
     let mut new_name_map = we::NameMap::new();
     for naming in p {
         let naming = naming.map_err(Error::ParseNameMapName)?;
-        new_name_map.append(naming.index + (F * is_function as u32), naming.name);
+        new_name_map.append(
+            if is_function {
+                map_func(naming.index)?
+            } else {
+                naming.index
+            },
+            naming.name,
+        );
     }
     Ok(new_name_map)
 }
@@ -594,7 +590,14 @@ fn indirectnamemap(p: wp::IndirectNameMap) -> Result<we::IndirectNameMap, Error>
     let mut new_name_map = we::IndirectNameMap::new();
     for naming in p {
         let naming = naming.map_err(Error::ParseIndirectNameMapName)?;
-        new_name_map.append(naming.index + F, &namemap(naming.names, false)?);
+        new_name_map.append(map_func(naming.index)?, &namemap(naming.names, false)?);
     }
     Ok(new_name_map)
+}
+
+#[inline(always)]
+fn map_func(func_idx: u32) -> Result<u32, Error> {
+    func_idx
+        .checked_add(F)
+        .ok_or(Error::RemapFunctionIndex(func_idx))
 }
