@@ -207,8 +207,14 @@ impl<'a> InstrumentContext<'a> {
                 }
                 wp::Payload::CustomSection(reader) if reader.name() == "name" => {
                     let names = wp::NameSectionReader::new(reader.data(), reader.data_offset());
-                    self.transform_name_section(names)?;
-                    self.schedule_section(PLACEHOLDER_FOR_NAMES)
+                    if let Ok(_) = self.transform_name_section(names) {
+                        // Keep valid name sections only. These sections don't have semantic
+                        // purposes, so it isn't a big deal if we only keep the old section, or
+                        // don't transform at all.
+                        //
+                        // (This is largely useful for fuzzing only)
+                        self.schedule_section(PLACEHOLDER_FOR_NAMES)
+                    }
                 }
                 // All the other sections are transparently copied over (they cannot reference a
                 // function id, or we don’t know how to handle it anyhow)
