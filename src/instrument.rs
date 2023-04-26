@@ -64,6 +64,8 @@ pub enum Error {
     InvalidTypeIndex,
     #[error("module contains a reference to an invalid function index")]
     InvalidFunctionIndex,
+    #[error("size for custom section {0} is out of input bounds")]
+    CustomSectionRange(u8, usize),
 }
 
 pub(crate) struct InstrumentContext<'a> {
@@ -212,9 +214,13 @@ impl<'a> InstrumentContext<'a> {
                     let (id, range) = payload
                         .as_section()
                         .expect("any non-section payloads should have been handled already");
+                    let len = range.len();
                     self.raw_sections.push(wasm_encoder::RawSection {
                         id,
-                        data: &self.wasm[range],
+                        data: self
+                            .wasm
+                            .get(range)
+                            .ok_or(Error::CustomSectionRange(id, len))?,
                     });
                 }
             }
