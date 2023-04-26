@@ -66,6 +66,8 @@ pub enum Error {
     InvalidFunctionIndex,
     #[error("size for custom section {0} is out of input bounds")]
     CustomSectionRange(u8, usize),
+    #[error("could not increment function index {0} to account for instrumentation!")]
+    IncreaseFunctionIndex(u32),
 }
 
 pub(crate) struct InstrumentContext<'a> {
@@ -472,7 +474,13 @@ impl<'a> InstrumentContext<'a> {
                 wp::ElementItems::Functions(fns) => {
                     functions = fns
                         .into_iter()
-                        .map(|v| Ok(v.map_err(Error::ParseElementItem)? + F))
+                        .map(|v| {
+                            let func_idx = v.map_err(Error::ParseElementItem)?;
+                            let new_func_idx = func_idx
+                                .checked_add(F)
+                                .ok_or(Error::IncreaseFunctionIndex(func_idx))?;
+                            Ok(new_func_idx)
+                        })
                         .collect::<Result<Vec<_>, _>>()?;
                     we::Elements::Functions(&functions)
                 }
@@ -550,7 +558,11 @@ fn constexpr(ep: wp::ConstExpr) -> Result<we::ConstExpr, Error> {
             .read_operator()
             .map_err(Error::ParseConstExprOperator)?
         {
-            wp::Operator::RefFunc { function_index } => we::ConstExpr::ref_func(function_index + F),
+            wp::Operator::RefFunc { function_index } => we::ConstExpr::ref_func(
+                function_index
+                    .checked_add(F)
+                    .ok_or(Error::IncreaseFunctionIndex(function_index))?,
+            ),
             _ => {
                 let expr_bytes = reader
                     .read_bytes(reader.bytes_remaining())
