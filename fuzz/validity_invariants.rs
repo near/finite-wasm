@@ -74,13 +74,39 @@ fuzz_target!(|data: &[u8]| {
                 let _ = std::fs::write("/tmp/input.wasm", data);
                 let _ = std::fs::write("/tmp/instrumented.wasm", res);
                 panic!(
-                    "valid module after instrumentation is no longer valid: {:?}",
+                    "valid module is no longer valid post-instrumentation: {:?}",
                     e
                 );
             }
         }
-        // Otherwise we're happy that things did not explode :)
-        Ok(_) => return,
+        // We're happy that things did not explode, but we also want to ensure that the module
+        // remains invalid if it was invalid initially.
+        Ok(_res) => {
+            // This unfortunately does not work right now. In particular we might have an input
+            // along the lines of:
+            //
+            // 0x0 | 00 61 73 6d | version 22 (Component)
+            //     | 16 00 01 00
+            //
+            // which becomes a
+            //
+            // 0x0 | 00 61 73 6d | version 1 (Module)
+            //     | 01 00 00 00
+            // 0x8 | 01 01       | type section
+            // 0xa | 00          | 0 count
+            // 0xb | 02 01       | import section
+            // 0xd | 00          | 0 count
+            //
+            // after the instrumentation. This is due to a few factors, one of which is that
+            // wasm_encoder does not allow us to directly write out the `Payload::Version`,
+            // unfortunately. At least as things are right now.
+            //
+            // if let Ok(_) = wasmparser::validate(&res) {
+            //     let _ = std::fs::write("/tmp/input.wasm", data);
+            //     let _ = std::fs::write("/tmp/instrumented.wasm", res);
+            //     panic!("invalid module after instrumentation has become valid");
+            // }
+        }
         Err(e) if is_valid => {
             let _ = std::fs::write("/tmp/input.wasm", data);
             panic!("valid module didn't instrument successfully: {:?}!", e)
