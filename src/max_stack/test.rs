@@ -193,13 +193,19 @@ fn test_operand_stack_size() {
 
     assert_eq!(0, fnstate.size);
     assert_eq!(0, fnstate.max_size);
-    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config
+        .make_visitor(&mstate, &mut fnstate)
+        .push(ValType::V128);
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config
+        .make_visitor(&mstate, &mut fnstate)
+        .push(ValType::V128);
     assert_eq!(18, fnstate.size);
     assert_eq!(18, fnstate.max_size);
-    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config
+        .make_visitor(&mstate, &mut fnstate)
+        .push(ValType::V128);
     assert_eq!(27, fnstate.size);
     assert_eq!(27, fnstate.max_size);
     config
@@ -273,10 +279,14 @@ fn test_operand_stack_size_with_frames() {
     assert_eq!(0, fnstate.size);
     assert_eq!(9, fnstate.max_size);
 
-    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config
+        .make_visitor(&mstate, &mut fnstate)
+        .push(ValType::V128);
     assert_eq!(9, fnstate.size);
     assert_eq!(9, fnstate.max_size);
-    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config
+        .make_visitor(&mstate, &mut fnstate)
+        .push(ValType::V128);
     assert_eq!(18, fnstate.size);
     assert_eq!(18, fnstate.max_size);
     let mut visitor = config.make_visitor(&mstate, &mut fnstate);
@@ -284,7 +294,9 @@ fn test_operand_stack_size_with_frames() {
     assert_eq!(2, fnstate.operands.len());
     assert_eq!(18, fnstate.size);
     assert_eq!(18, fnstate.max_size);
-    config.make_visitor(&mstate, &mut fnstate).push(ValType::V128);
+    config
+        .make_visitor(&mstate, &mut fnstate)
+        .push(ValType::V128);
     assert_eq!(27, fnstate.size);
     assert_eq!(27, fnstate.max_size);
     let mut visitor = config.make_visitor(&mstate, &mut fnstate);
