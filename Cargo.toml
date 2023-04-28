@@ -1,6 +1,6 @@
 [package]
 name = "finite-wasm"
-version = "0.3.1"
+version = "0.4.0"
 edition = "2021"
 authors = ["Simonas Kazlauskas <finite-wasm@kazlauskas.me>"]
 license = "MIT OR Apache-2.0"
@@ -29,8 +29,8 @@ required-features = ["instrument"]
 [dependencies]
 bitvec = "1.0.1"
 dissimilar = "1"
-wasmparser = "0.99"
-wasmprinter = "0.2.49"
+wasmparser = "^0.104.0"
+wasmprinter = "=0.2.56"
 thiserror = "1"
 num-traits = "0.2.15"
 prefix-sum-vec = "0.1.2"
