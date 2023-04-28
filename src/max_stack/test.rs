@@ -1,7 +1,7 @@
 use super::{Error, Frame, FunctionState, ModuleState};
 use crate::max_stack::Config;
 use crate::tests::SizeConfig as TestConfig;
-use wasmparser::{BlockType, ValType};
+use wasmparser::{BlockType, ValType, RefType};
 
 fn new_state() -> (TestConfig, ModuleState, FunctionState) {
     (
@@ -71,7 +71,7 @@ fn test_with_block_types_functype() {
     let (config, mut mstate, mut fnstate) = new_state();
     mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new(
         [ValType::V128],
-        [ValType::FuncRef],
+        [ValType::Ref(RefType::FUNCREF)],
     ))];
     let mut visitor = config.make_visitor(&mstate, &mut fnstate);
 
@@ -79,7 +79,7 @@ fn test_with_block_types_functype() {
     visitor
         .with_block_types(BlockType::FuncType(0), |_, params, results| {
             assert_eq!(params, [ValType::V128]);
-            assert_eq!(results, [ValType::FuncRef]);
+            assert_eq!(results, [ValType::Ref(RefType::FUNCREF)]);
             called = true;
             Ok(())
         })

@@ -169,7 +169,7 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                     for tbl in reader.into_iter() {
                         let tbl = tbl.map_err(Error::ParseTable)?;
                         self.max_stack_cfg
-                            .add_table(&mut module_state, tbl.element_type);
+                            .add_table(&mut module_state, tbl.ty.element_type);
                     }
                 }
                 wasmparser::Payload::FunctionSection(reader) => {
