@@ -98,7 +98,7 @@ macro_rules! binop_complete {
             // ishape1.dot_ishape2_s : [v128 v128] → [v128]
             V128.binop = visit_i32x4_dot_i16x8_s;
             // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-integer-dot-product
-            V128.binop = visit_i16x8_dot_i8x16_i7x16_s;
+            V128.binop = visit_i16x8_relaxed_dot_i8x16_i7x16_s;
 
 
             // ishape1.extmul_half_ishape2_sx : [v128 v128] → [v128]
@@ -207,10 +207,10 @@ macro_rules! cvtop_complete {
                        | visit_i32x4_extend_low_i16x8_u | visit_i32x4_extend_high_i16x8_u
                        | visit_i32x4_trunc_sat_f32x4_s | visit_i32x4_trunc_sat_f32x4_u
                        | visit_i32x4_trunc_sat_f64x2_s_zero | visit_i32x4_trunc_sat_f64x2_u_zero
-                       | visit_i32x4_relaxed_trunc_sat_f32x4_s
-                       | visit_i32x4_relaxed_trunc_sat_f32x4_u
-                       | visit_i32x4_relaxed_trunc_sat_f64x2_s_zero
-                       | visit_i32x4_relaxed_trunc_sat_f64x2_u_zero;
+                       | visit_i32x4_relaxed_trunc_f32x4_s
+                       | visit_i32x4_relaxed_trunc_f32x4_u
+                       | visit_i32x4_relaxed_trunc_f64x2_s_zero
+                       | visit_i32x4_relaxed_trunc_f64x2_u_zero;
 
             V128.cvtop = visit_i64x2_extend_low_i32x4_s | visit_i64x2_extend_high_i32x4_s
                        | visit_i64x2_extend_low_i32x4_u | visit_i64x2_extend_high_i32x4_u;
@@ -342,14 +342,11 @@ macro_rules! vternop {
             V128.vternop = visit_i64x2_relaxed_laneselect;
 
             // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-fused-multiply-add-and-fused-negative-multiply-add
-            V128.vternop = visit_f32x4_relaxed_fma | visit_f32x4_relaxed_fnma;
-            V128.vternop = visit_f64x2_relaxed_fma | visit_f64x2_relaxed_fnma;
+            V128.vternop = visit_f32x4_relaxed_madd | visit_f32x4_relaxed_nmadd;
+            V128.vternop = visit_f64x2_relaxed_madd | visit_f64x2_relaxed_nmadd;
 
             // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-integer-dot-product
-            V128.vternop = visit_i32x4_dot_i8x16_i7x16_add_s;
-
-            // https://github.com/WebAssembly/relaxed-simd/blob/main/proposals/relaxed-simd/Overview.md#relaxed-bfloat16-dot-product
-            V128.vternop = visit_f32x4_relaxed_dot_bf16x8_add_f32x4;
+            V128.vternop = visit_i32x4_relaxed_dot_i8x16_i7x16_add_s;
         }
     };
 }

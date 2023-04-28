@@ -574,8 +574,7 @@ impl max_stack::SizeConfig for DefaultStackConfig {
             F32 => 4,
             F64 => 8,
             V128 => 16,
-            FuncRef => 32,
-            ExternRef => 32,
+            Ref(_) => 32,
         }
     }
 

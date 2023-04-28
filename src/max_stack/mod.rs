@@ -22,7 +22,7 @@ pub struct ModuleState {
     functions: Vec<u32>,
     types: Vec<wasmparser::Type>,
     globals: Vec<wasmparser::ValType>,
-    tables: Vec<wasmparser::ValType>,
+    tables: Vec<wasmparser::RefType>,
 }
 
 impl ModuleState {

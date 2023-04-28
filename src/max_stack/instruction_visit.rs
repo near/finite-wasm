@@ -1,6 +1,6 @@
 use super::{Error, SizeConfig, Visitor};
 use crate::instruction_categories as gen;
-use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator};
+use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator, HeapType, RefType};
 
 pub(crate) type Output = Result<(), Error>;
 
@@ -128,14 +128,19 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
 
     gen::r#const!(instruction_category);
 
-    fn visit_ref_null(&mut self, t: ValType) -> Self::Output {
+    fn visit_ref_null(&mut self, t: HeapType) -> Self::Output {
         // [] -> [t]
-        self.push(t);
+        self.push(ValType::Ref(RefType::new(true, t).unwrap_or_else(|| todo!())));
+        Ok(())
+    }
+
+    fn visit_ref_as_non_null(&mut self) -> Self::Output {
+        // [(ref null ht)] -> [(ref ht)]
         Ok(())
     }
 
     fn visit_ref_func(&mut self, _: u32) -> Self::Output {
-        self.visit_ref_null(ValType::FuncRef)
+        self.visit_ref_null(HeapType::Func)
     }
 
     gen::unop!(instruction_category);
@@ -276,7 +281,7 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
             .get(table_usize)
             .ok_or(Error::TableIndex(table))?;
         self.pop()?;
-        self.push(table_ty);
+        self.push(ValType::Ref(table_ty));
         Ok(())
     }
 
@@ -349,6 +354,14 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
         self.visit_function_call(self.function_type_index(function_index)?)
     }
 
+    fn visit_call_ref(&mut self, ty: HeapType) -> Self::Output {
+        self.visit_function_call(match ty {
+            HeapType::TypedFunc(idx) => idx,
+            HeapType::Func => unreachable!(),
+            HeapType::Extern => unreachable!(),
+        })
+    }
+
     fn visit_call_indirect(&mut self, type_index: u32, _: u32, _: u8) -> Self::Output {
         self.visit_function_call(type_index)
     }
@@ -358,6 +371,10 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
         // of modelling the frame size of the _current_ function, only the `return` portion of this
         // computation is relevant (as it makes the stack polymorphic)
         self.visit_return()
+    }
+
+    fn visit_return_call_ref(&mut self, _: HeapType) -> Self::Output {
+        self.visit_return_call(0)
     }
 
     fn visit_return_call_indirect(&mut self, _: u32, _: u32) -> Self::Output {
@@ -452,6 +469,23 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
         self.pop()?;
         // …the condition.
         Ok(())
+    }
+
+    fn visit_br_on_null(&mut self, _relative_depth: u32) -> Self::Output {
+        // br_on_null $l : [t* (ref null ht)] -> [t* (ref ht)]
+        //
+        // Branches to $l on null, otherwise returns operand as non-null. See the comment above for
+        // why we don't need to pop or push back anything.
+        Ok(())
+    }
+
+    fn visit_br_on_non_null(&mut self, relative_depth:u32) -> Self::Output {
+        // br_on_non_null $l : [t* (ref null ht)] -> [t*]
+        //
+        // Branches to $l if operand is not null, passing the operand itself under non-null type
+        // (along with potential additional operands).
+        //
+        self.visit_br_if(relative_depth)
     }
 
     fn visit_br_table(&mut self, _: BrTable) -> Self::Output {

@@ -2,7 +2,7 @@ use super::Error;
 use super::{instruction_visit::Output, FunctionState, ModuleState, Visitor};
 use crate::prefix_sum_vec::PrefixSumVec;
 use crate::visitors::{self, VisitOperatorWithOffset};
-use crate::wasmparser::{Type, ValType};
+use crate::wasmparser::{Type, ValType, RefType};
 
 /// Configure size of various values that may end up on the stack.
 pub trait SizeConfig {
@@ -70,7 +70,7 @@ pub trait Config<'b> {
 
     fn add_function(&self, state: &mut ModuleState, type_index: u32);
     fn add_global(&self, state: &mut ModuleState, content_type: ValType);
-    fn add_table(&self, state: &mut ModuleState, content_type: ValType);
+    fn add_table(&self, state: &mut ModuleState, content_type: RefType);
     fn add_type(&self, state: &mut ModuleState, ty: Type);
 
     fn populate_locals(
@@ -141,7 +141,7 @@ impl<'b, S: SizeConfig> Config<'b> for S {
         state.globals.push(content_type);
     }
 
-    fn add_table(&self, state: &mut ModuleState, content_type: ValType) {
+    fn add_table(&self, state: &mut ModuleState, content_type: RefType) {
         state.tables.push(content_type);
     }
 
@@ -165,7 +165,7 @@ impl<'b> Config<'b> for crate::NoConfig {
 
     fn add_function(&self, _: &mut ModuleState, _: u32) {}
     fn add_global(&self, _: &mut ModuleState, _: ValType) {}
-    fn add_table(&self, _: &mut ModuleState, _: ValType) {}
+    fn add_table(&self, _: &mut ModuleState, _: RefType) {}
     fn add_type(&self, _: &mut ModuleState, _: Type) {}
     fn populate_locals(&self, _: &ModuleState, _: &mut FunctionState, _: u32) -> Result<(), Error> {
         Ok(())

@@ -409,6 +409,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
     // allow us to be less conservative, but it will already have been done during the
     // compilation from the source language to wasm, or wasm-opt, most of the time.
     trapping_insn!(fn visit_call(index: u32));
+    trapping_insn!(fn visit_call_ref(ht: wasmparser::HeapType));
     trapping_insn!(fn visit_call_indirect(ty_index: u32, table_index: u32, table_byte: u8));
     // TODO: double check if these may actually trap
     trapping_insn!(fn visit_memory_atomic_notify(mem: wasmparser::MemArg));
@@ -416,6 +417,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
     trapping_insn!(fn visit_memory_atomic_wait64(mem: wasmparser::MemArg));
     trapping_insn!(fn visit_table_set(table: u32));
     trapping_insn!(fn visit_table_get(table: u32));
+    trapping_insn!(fn visit_ref_as_non_null());
 
     fn visit_unreachable(&mut self) -> Self::Output {
         let cost = self.model.visit_unreachable();
@@ -439,7 +441,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
     gen::replacelane!(pure_insn);
     gen::testop!(pure_insn);
 
-    pure_insn!(fn visit_ref_null(t: wasmparser::ValType));
+    pure_insn!(fn visit_ref_null(t: wasmparser::HeapType));
     pure_insn!(fn visit_ref_func(index: u32));
     pure_insn!(fn visit_i8x16_shuffle(pattern: [u8; 16]));
     pure_insn!(fn visit_atomic_fence());
@@ -549,6 +551,14 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
         self.visit_branch(frame_idx)
     }
 
+    fn visit_br_on_null(&mut self, relative_depth: u32) -> Self::Output {
+        self.visit_br_if(relative_depth)
+    }
+
+    fn visit_br_on_non_null(&mut self, relative_depth: u32) -> Self::Output {
+        self.visit_br_if(relative_depth)
+    }
+
     fn visit_br_table(&mut self, targets: BrTable<'b>) -> Self::Output {
         let cost = self.model.visit_br_table(targets.clone());
         self.charge_before(InstrumentationKind::PreControlFlow, cost);
@@ -568,6 +578,11 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
 
     fn visit_return_call(&mut self, function_index: u32) -> Self::Output {
         let cost = self.model.visit_return_call(function_index);
+        self.visit_unconditional_branch(self.root_frame_index(), cost)
+    }
+
+    fn visit_return_call_ref(&mut self, ht: wasmparser::HeapType) -> Self::Output {
+        let cost = self.model.visit_return_call_ref(ht);
         self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 

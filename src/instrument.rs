@@ -440,7 +440,7 @@ impl<'a> InstrumentContext<'a> {
             let import_ty = match import.ty {
                 wp::TypeRef::Func(i) => we::EntityType::Function(i),
                 wp::TypeRef::Table(t) => we::EntityType::Table(we::TableType {
-                    element_type: valtype(t.element_type),
+                    element_type: reftype(t.element_type),
                     minimum: t.initial,
                     maximum: t.maximum,
                 }),
@@ -499,12 +499,12 @@ impl<'a> InstrumentContext<'a> {
                     } => {
                         offset = constexpr(offset_expr)?;
                         we::ElementMode::Active {
-                            table: Some(table_index),
+                            table: table_index,
                             offset: &offset,
                         }
                     }
                 },
-                element_type: valtype(elem.ty),
+                element_type: reftype(elem.ty),
                 elements: items,
             });
         }
@@ -542,8 +542,18 @@ fn valtype(wp: wp::ValType) -> we::ValType {
         wp::ValType::F32 => we::ValType::F32,
         wp::ValType::F64 => we::ValType::F64,
         wp::ValType::V128 => we::ValType::V128,
-        wp::ValType::FuncRef => we::ValType::FuncRef,
-        wp::ValType::ExternRef => we::ValType::ExternRef,
+        wp::ValType::Ref(r) => we::ValType::Ref(reftype(r)),
+    }
+}
+
+fn reftype(wp: wp::RefType) -> we::RefType {
+    we::RefType {
+        nullable: wp.is_nullable(),
+        heap_type: match wp.heap_type() {
+            wp::HeapType::Func => we::HeapType::Func,
+            wp::HeapType::Extern => we::HeapType::Extern,
+            wp::HeapType::TypedFunc(idx) => we::HeapType::TypedFunc(idx),
+        },
     }
 }
 
