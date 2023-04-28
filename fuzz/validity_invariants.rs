@@ -4,24 +4,15 @@ use libfuzzer_sys::fuzz_target;
 
 struct DefaultStackConfig;
 impl max_stack::SizeConfig for DefaultStackConfig {
-    fn size_of_value(&self, ty: wasmparser::ValType) -> u8 {
-        use wasmparser::ValType::*;
-        match ty {
-            I32 => 4,
-            I64 => 8,
-            F32 => 4,
-            F64 => 8,
-            V128 => 16,
-            FuncRef => 32,
-            ExternRef => 32,
-        }
+    fn size_of_value(&self, _ty: wasmparser::ValType) -> u8 {
+        u8::MAX
     }
 
     fn size_of_function_activation(
         &self,
-        locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
+        _locals: &prefix_sum_vec::PrefixSumVec<wasmparser::ValType, u32>,
     ) -> u64 {
-        u64::from(locals.max_index().map(|&v| v + 1).unwrap_or(0))
+        u64::MAX / 128
     }
 }
 
@@ -32,7 +23,7 @@ macro_rules! gas_visit {
     (visit_else => $({ $($arg:ident: $argty:ty),* })?) => {};
     ($visit:ident => $({ $($arg:ident: $argty:ty),* })?) => {
         fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
-            1u64
+            u64::MAX / 128 // allow for 128 operations before an overflow would occur.
         }
     };
 
