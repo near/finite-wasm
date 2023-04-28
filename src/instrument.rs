@@ -62,6 +62,8 @@ pub enum Error {
     InsufficientFunctionTypes,
     #[error("module contains a reference to an invalid type index")]
     InvalidTypeIndex,
+    #[error("module contains a reference to an invalid function index")]
+    InvalidFunctionIndex,
 }
 
 pub(crate) struct InstrumentContext<'a> {
@@ -399,7 +401,11 @@ impl<'a> InstrumentContext<'a> {
                     new_name_map.append(RELEASE_STACK_INSTRUMENTATION_FN, "finite_wasm_unstack");
                     for naming in map {
                         let naming = naming.map_err(Error::ParseNameMapName)?;
-                        new_name_map.append(F + naming.index, naming.name);
+                        new_name_map.append(
+                            F.checked_add(naming.index)
+                                .ok_or(Error::InvalidFunctionIndex)?,
+                            naming.name,
+                        );
                     }
                     self.name_section.functions(&new_name_map)
                 }
