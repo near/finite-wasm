@@ -2,7 +2,7 @@ use super::Error;
 use super::{instruction_visit::Output, FunctionState, ModuleState, Visitor};
 use crate::prefix_sum_vec::PrefixSumVec;
 use crate::visitors::{self, VisitOperatorWithOffset};
-use crate::wasmparser::{Type, ValType, RefType};
+use crate::wasmparser::{RefType, Type, ValType};
 
 /// Configure size of various values that may end up on the stack.
 ///

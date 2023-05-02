@@ -332,7 +332,7 @@ impl<'a> InstrumentContext<'a> {
         while !operators.eof() {
             let (op, offset) = operators.read_with_offset().map_err(Error::ParseOperator)?;
             let end_offset = operators.original_position();
-            if instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
+            while instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
                 let ((_, g), k) = instrumentation_points.next().expect("we just peeked");
                 if !matches!(k, InstrumentationKind::Unreachable) {
                     call_gas_instrumentation(&mut new_function, *g)

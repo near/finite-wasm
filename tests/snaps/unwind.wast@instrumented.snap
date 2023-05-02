@@ -340,9 +340,9 @@
         block ;; label = @3
           i64.const 1
           br 1 (;@2;)
-          i64.const 1
-          call 0
         end
+        i64.const 1
+        call 0
         drop
       end
       i64.const 1
@@ -438,9 +438,9 @@
           i64.const 1
           i32.const 1
           br_table 1 (;@2;)
-          i64.const 1
-          call 0
         end
+        i64.const 1
+        call 0
         drop
       end
       i64.const 1
@@ -886,9 +886,9 @@
       i64.const 4
       i64.const 0
       call 1
+      i64.const 3
+      call 0
       loop (result i32) ;; label = @2
-        i64.const 3
-        call 0
         f32.const 0x0p+0 (;=0;)
         unreachable
       end
@@ -964,9 +964,9 @@
       i64.const 8
       i64.const 0
       call 1
+      i64.const 4
+      call 0
       loop (result i32) ;; label = @2
-        i64.const 4
-        call 0
         f32.const 0x0p+0 (;=0;)
         i32.const 9
         i64.const 8

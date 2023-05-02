@@ -1,6 +1,6 @@
 use super::{Error, SizeConfig, Visitor};
 use crate::instruction_categories as gen;
-use wasmparser::{BlockType, BrTable, MemArg, ValType, VisitOperator, HeapType, RefType};
+use wasmparser::{BlockType, BrTable, HeapType, MemArg, RefType, ValType, VisitOperator};
 
 pub(crate) type Output = Result<(), Error>;
 
@@ -130,7 +130,9 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
 
     fn visit_ref_null(&mut self, t: HeapType) -> Self::Output {
         // [] -> [(ref null t)]
-        self.push(ValType::Ref(RefType::new(true, t).unwrap_or_else(|| todo!())));
+        self.push(ValType::Ref(
+            RefType::new(true, t).unwrap_or_else(|| todo!()),
+        ));
         Ok(())
     }
 
@@ -480,7 +482,7 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
         Ok(())
     }
 
-    fn visit_br_on_non_null(&mut self, relative_depth:u32) -> Self::Output {
+    fn visit_br_on_non_null(&mut self, relative_depth: u32) -> Self::Output {
         // br_on_non_null $l : [t* (ref null ht)] -> [t*]
         //
         // Branches to $l if operand is not null, passing the operand itself under non-null type
