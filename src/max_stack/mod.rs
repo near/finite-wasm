@@ -449,4 +449,11 @@ impl<'b, 's, Cfg: SizeConfig + ?Sized> Visitor<'s, Cfg> {
         }
         Ok(())
     }
+
+    fn visit_return_call_type_index(&mut self, _type_index: u32) -> Output {
+        // `return_call` behaves as-if a regular `return` followed by the `call`. For the purposes
+        // of modelling the frame size of the _current_ function, only the `return` portion of this
+        // computation is relevant (as it makes the stack polymorphic)
+        <Self as wasmparser::VisitOperator>::visit_return(self)
+    }
 }

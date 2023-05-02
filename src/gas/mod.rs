@@ -303,8 +303,8 @@ impl<'a, CostModel> Visitor<'a, CostModel> {
         usize::try_from(relative_depth).map_err(|_| Error::BranchDepthTooLarge(self.offset))
     }
 
-    fn visit_branch(&mut self, depth: usize) -> Result<(), Error> {
-        let frame = if let Some(frame_stack_index) = depth.checked_sub(1) {
+    fn visit_branch(&mut self, frame_index: usize) -> Result<(), Error> {
+        let frame = if let Some(frame_stack_index) = frame_index.checked_sub(1) {
             self.state
                 .frame_stack
                 .iter_mut()
@@ -323,12 +323,18 @@ impl<'a, CostModel> Visitor<'a, CostModel> {
         Ok(())
     }
 
-    fn visit_unconditional_branch(&mut self, depth: usize, cost: u64) -> Result<(), Error> {
+    fn visit_conditional_branch(&mut self, frame_index: usize, cost: u64) -> Result<(), Error> {
         self.charge_before(InstrumentationKind::PreControlFlow, cost);
-        self.visit_branch(depth)?;
+        self.visit_branch(frame_index)?;
+        Ok(())
+    }
+
+    fn visit_unconditional_branch(&mut self, frame_index: usize, cost: u64) -> Result<(), Error> {
+        self.visit_conditional_branch(frame_index, cost)?;
         self.make_polymorphic();
         Ok(())
     }
+
 }
 
 macro_rules! trapping_insn {
@@ -547,16 +553,19 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
     fn visit_br_if(&mut self, relative_depth: u32) -> Self::Output {
         let frame_idx = self.frame_index(relative_depth)?;
         let cost = self.model.visit_br_if(relative_depth);
-        self.charge_before(InstrumentationKind::PreControlFlow, cost);
-        self.visit_branch(frame_idx)
+        self.visit_conditional_branch(frame_idx, cost)
     }
 
     fn visit_br_on_null(&mut self, relative_depth: u32) -> Self::Output {
-        self.visit_br_if(relative_depth)
+        let frame_idx = self.frame_index(relative_depth)?;
+        let cost = self.model.visit_br_on_null(relative_depth);
+        self.visit_conditional_branch(frame_idx, cost)
     }
 
     fn visit_br_on_non_null(&mut self, relative_depth: u32) -> Self::Output {
-        self.visit_br_if(relative_depth)
+        let frame_idx = self.frame_index(relative_depth)?;
+        let cost = self.model.visit_br_on_non_null(relative_depth);
+        self.visit_conditional_branch(frame_idx, cost)
     }
 
     fn visit_br_table(&mut self, targets: BrTable<'b>) -> Self::Output {
