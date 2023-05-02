@@ -123,13 +123,13 @@ macro_rules! instruction_category {
     };
 }
 
-impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
+impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, Cfg> {
     type Output = Output;
 
     gen::r#const!(instruction_category);
 
     fn visit_ref_null(&mut self, t: HeapType) -> Self::Output {
-        // [] -> [t]
+        // [] -> [(ref null t)]
         self.push(ValType::Ref(RefType::new(true, t).unwrap_or_else(|| todo!())));
         Ok(())
     }
@@ -366,19 +366,20 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig> VisitOperator<'a> for Visitor<'s, Cfg> {
         self.visit_function_call(type_index)
     }
 
-    fn visit_return_call(&mut self, _: u32) -> Self::Output {
-        // `return_call` behaves as-if a regular `return` followed by the `call`. For the purposes
-        // of modelling the frame size of the _current_ function, only the `return` portion of this
-        // computation is relevant (as it makes the stack polymorphic)
-        self.visit_return()
+    fn visit_return_call(&mut self, function_index: u32) -> Self::Output {
+        self.visit_return_call_type_index(self.function_type_index(function_index)?)
     }
 
-    fn visit_return_call_ref(&mut self, _: HeapType) -> Self::Output {
-        self.visit_return_call(0)
+    fn visit_return_call_ref(&mut self, ty: HeapType) -> Self::Output {
+        self.visit_return_call_type_index(match ty {
+            HeapType::TypedFunc(idx) => idx,
+            HeapType::Func => unreachable!(),
+            HeapType::Extern => unreachable!(),
+        })
     }
 
-    fn visit_return_call_indirect(&mut self, _: u32, _: u32) -> Self::Output {
-        self.visit_return()
+    fn visit_return_call_indirect(&mut self, type_index: u32, _: u32) -> Self::Output {
+        self.visit_return_call_type_index(type_index)
     }
 
     fn visit_unreachable(&mut self) -> Self::Output {

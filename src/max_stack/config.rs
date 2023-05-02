@@ -5,6 +5,12 @@ use crate::visitors::{self, VisitOperatorWithOffset};
 use crate::wasmparser::{Type, ValType, RefType};
 
 /// Configure size of various values that may end up on the stack.
+///
+/// # Requirements
+///
+/// * Sizes of nullable (see [`RefType::is_nullable`]) and non-nullable references must match.
+///
+/// [`RefType::is_nullable`]: wasmparser::RefType::is_nullable
 pub trait SizeConfig {
     fn size_of_value(&self, ty: ValType) -> u8;
     fn size_of_function_activation(&self, locals: &PrefixSumVec<ValType, u32>) -> u64;
