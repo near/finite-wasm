@@ -1,7 +1,7 @@
 use super::{Error, Frame, FunctionState, ModuleState};
 use crate::max_stack::Config;
 use crate::tests::SizeConfig as TestConfig;
-use wasmparser::{BlockType, ValType, RefType};
+use wasmparser::{BlockType, RefType, ValType};
 
 fn new_state() -> (TestConfig, ModuleState, FunctionState) {
     (
