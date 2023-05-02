@@ -273,10 +273,10 @@ impl AnalysisOutcome {
     /// specification.
     ///
     /// The `finite_wasm_stack` and `finite_wasm_unstack` are called with two arguments. The first
-    /// argument is the size by which the operands stack increases, or decreases if the argument is
-    /// negative. Second is the size of the stack reserved or released by the function frame. These
-    /// host functions must keep track of the current total stack height and raise a trap if the
-    /// stack limit is exceeded.
+    /// argument is the size by which the operands stack increases, or decreases. Second is the
+    /// size of the stack reserved or released by the function frame. These host functions must
+    /// keep track of the current total stack height and raise a trap if the stack limit is
+    /// exceeded.
     #[cfg(feature = "instrument")]
     pub fn instrument(&self, import_env: &str, wasm: &[u8]) -> Result<Vec<u8>, InstrumentError> {
         instrument::InstrumentContext::new(wasm, import_env, self).run()
