@@ -50,6 +50,6 @@ impl<'b, V: wasmparser::VisitOperator<'b, Output = u64>> Config<'b> for V {
             stack_polymorphic: false,
             kind: BranchTargetKind::UntakenForward,
         };
-        state.next_offset_cost = None;
+        state.scheduled_instrumentation = None;
     }
 }
