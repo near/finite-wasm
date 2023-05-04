@@ -40,6 +40,7 @@ use wasmparser::{BlockType, BrTable, VisitOperator};
 
 mod config;
 mod error;
+mod optimize;
 
 /// The type of a particular instrumentation point (as denoted by its offset.)
 #[derive(Clone, Copy, Debug)]
@@ -83,6 +84,10 @@ pub enum InstrumentationKind {
     /// this).
     PostControlFlow,
 
+    /// This instrumentation point is between two control flow instructions (see
+    /// Pre/PostControlFlow).
+    BetweenControlFlow,
+
     /// This instrumentation point precedes an aggregate operation.
     ///
     /// Instructions such as `memory.fill` cause this categorization. The amount of work they do
@@ -90,33 +95,6 @@ pub enum InstrumentationKind {
     ///
     /// TODO: a variant for each such instruction may be warranted?
     Aggregate,
-
-    /// This instrumentation point is completely optimized and cannot be merged any further.
-    ///
-    /// This can happen when e.g. `PreControlFlow` and `PostControlFlow` instrumentation points
-    /// appear at the same offset.
-    Complete,
-}
-
-impl InstrumentationKind {
-    fn merge(self, other: Self) -> Option<Self> {
-        use InstrumentationKind::*;
-        match (self, other) {
-            // The changes to the remaining gas pool are not observable across a pure instruction.
-            (Pure, Pure) => Some(Pure),
-            // The unreachable code is never executed.
-            (Unreachable, Unreachable) => Some(Unreachable),
-            // Two control flow operators meet here.
-            (PostControlFlow, PreControlFlow) => Some(Complete),
-            // The next instruction is about to be a control-flow instruction. We can still merge
-            // into this instrumentation point from a previous, pure instrumentation point.
-            (Pure, PreControlFlow) => Some(PreControlFlow),
-            // The previous instrumentation point comes after a control-flow instruction. The
-            // current instruction is pure, though.
-            (PostControlFlow, Pure) => Some(Pure),
-            _ => None,
-        }
-    }
 }
 
 #[derive(Debug)]
@@ -206,37 +184,6 @@ impl FunctionState {
             scheduled_instrumentation: None,
         }
     }
-
-    /// Optimize the instruction tables.
-    ///
-    /// This reduces the number of entries in the supplied vectors while preserving the equivalence of
-    /// observable program behaviours.
-    pub(crate) fn optimize(&mut self) {
-        let mut kind_before_instruction = self
-            .kinds
-            .first()
-            .copied()
-            .unwrap_or(InstrumentationKind::PreControlFlow);
-        let mut output_idx = 0;
-        for input_idx in 1..self.kinds.len() {
-            let kind_after_instruction = self.kinds[input_idx];
-            let merge_across_instruction = kind_before_instruction.merge(kind_after_instruction);
-            if let Some(kind_after_merge) = merge_across_instruction {
-                self.kinds[output_idx] = kind_after_merge;
-                self.costs[output_idx] += self.costs[input_idx];
-                kind_before_instruction = kind_after_merge;
-            } else {
-                output_idx += 1;
-                self.kinds[output_idx] = kind_after_instruction;
-                self.costs[output_idx] = self.costs[input_idx];
-                self.offsets[output_idx] = self.offsets[input_idx];
-                kind_before_instruction = kind_after_instruction;
-            }
-        }
-        self.kinds.truncate(output_idx + 1);
-        self.costs.truncate(output_idx + 1);
-        self.offsets.truncate(output_idx + 1);
-    }
 }
 
 /// The core algorihtm of the `gas` analysis.
@@ -301,10 +248,11 @@ impl<'a, CostModel> Visitor<'a, CostModel> {
     /// Note that this method works by enqueueing a charge to be added to the tables at a next call
     /// of the `charge_before` or `charge_after` function.
     fn push_instrumentation_after(&mut self, kind: InstrumentationKind, cost: u64) {
-        assert!(self.state.scheduled_instrumentation.replace(ScheduledInstrumentation {
-            cost,
-            kind,
-        }).is_none());
+        assert!(self
+            .state
+            .scheduled_instrumentation
+            .replace(ScheduledInstrumentation { cost, kind })
+            .is_none());
     }
 
     /// Create a new frame on the frame stack.
