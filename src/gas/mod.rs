@@ -162,6 +162,11 @@ pub(crate) struct Frame {
     pub(crate) kind: BranchTargetKind,
 }
 
+pub(crate) struct ScheduledInstrumentation {
+    cost: u64,
+    kind: InstrumentationKind,
+}
+
 /// The per-function state used by the [`Visitor`].
 ///
 /// This type maintains the state accumulated during the analysis of a single function in a module.
@@ -183,7 +188,7 @@ pub struct FunctionState {
     /// Note that the implementation here depends on the fact that all instructions invoke
     /// `charge_before` or `charge_after`, even if with a 0-cost so that there is an opportunity to
     /// merge this cost into the table.
-    pub(crate) next_offset_cost: Option<(u64, InstrumentationKind)>,
+    pub(crate) scheduled_instrumentation: Option<ScheduledInstrumentation>,
 }
 
 impl FunctionState {
@@ -198,7 +203,7 @@ impl FunctionState {
                 stack_polymorphic: false,
                 kind: BranchTargetKind::UntakenForward,
             },
-            next_offset_cost: None,
+            scheduled_instrumentation: None,
         }
     }
 
@@ -281,11 +286,6 @@ impl<'a, CostModel> Visitor<'a, CostModel> {
 
     /// Charge some gas before the currently analyzed instruction.
     fn push_instrumentation_before(&mut self, kind: InstrumentationKind, cost: u64) {
-        if let Some((scheduled_cost, scheduled_kind)) = self.state.next_offset_cost.take() {
-            self.state.offsets.push(self.offset);
-            self.state.kinds.push(scheduled_kind);
-            self.state.costs.push(scheduled_cost);
-        }
         let kind = if self.state.current_frame.stack_polymorphic {
             InstrumentationKind::Unreachable
         } else {
@@ -301,10 +301,10 @@ impl<'a, CostModel> Visitor<'a, CostModel> {
     /// Note that this method works by enqueueing a charge to be added to the tables at a next call
     /// of the `charge_before` or `charge_after` function.
     fn push_instrumentation_after(&mut self, kind: InstrumentationKind, cost: u64) {
-        if let Some((cost, kind)) = self.state.next_offset_cost.take() {
-            self.push_instrumentation_before(kind, cost);
-        }
-        assert!(self.state.next_offset_cost.replace((cost, kind)).is_none());
+        assert!(self.state.scheduled_instrumentation.replace(ScheduledInstrumentation {
+            cost,
+            kind,
+        }).is_none());
     }
 
     /// Create a new frame on the frame stack.
@@ -740,5 +740,10 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>>
 {
     fn set_offset(&mut self, offset: usize) {
         self.offset = offset;
+        if let Some(scheduled) = self.state.scheduled_instrumentation.take() {
+            self.state.offsets.push(self.offset);
+            self.state.kinds.push(scheduled.kind);
+            self.state.costs.push(scheduled.cost);
+        }
     }
 }
