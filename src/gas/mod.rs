@@ -86,6 +86,10 @@ pub enum InstrumentationKind {
 
     /// This instrumentation point is between two control flow instructions (see
     /// Pre/PostControlFlow).
+    ///
+    /// This is largely used as a bottom type in optimization, representing a case where no further
+    /// optimizations involving this type can be made (important if optimization is run multiple
+    /// times, for example.)
     BetweenControlFlow,
 
     /// This instrumentation point precedes an aggregate operation.
@@ -93,7 +97,7 @@ pub enum InstrumentationKind {
     /// Instructions such as `memory.fill` cause this categorization. The amount of work they do
     /// depends on the operands.
     ///
-    /// TODO: a variant for each such instruction may be warranted?
+    // TODO: a variant for each such instruction may be warranted?
     Aggregate,
 }
 

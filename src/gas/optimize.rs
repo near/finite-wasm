@@ -29,7 +29,7 @@
 //!   able to observe if these instructions have executed or not.
 //!
 //!   That means we can move any gas instrumentation points within continuous runs of such pure
-//!   instructions to the beginning of a block, charging gds only once.
+//!   instructions to the beginning of a block, charging gas only once.
 
 use super::InstrumentationKind;
 
