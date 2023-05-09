@@ -41,13 +41,14 @@ pub(crate) struct InstrumentationPoint {
 
 impl InstrumentationKind {
     /// Instrumentation kind after merging two instrumentation points at the same offset.
-    fn merge_same_point(self, other: Self) -> Self {
+    fn merge_same_point(self, other: Self) -> Option<Self> {
         use InstrumentationKind::*;
-        match (self, other) {
+        // FIXME(#49): make this infallible to guarantee single instrumentation point per offset.
+        Some(match (self, other) {
             (Unreachable, _) => Unreachable,
             (_, Unreachable) => Unreachable,
-            (Aggregate, _) => Aggregate,
-            (_, Aggregate) => Aggregate,
+            (Aggregate, _) => return None,
+            (_, Aggregate) => return None,
             (Pure, Pure | PreControlFlow | PostControlFlow | BetweenControlFlow) => other,
             (PreControlFlow, PreControlFlow | Pure) => PreControlFlow,
             (PreControlFlow, PostControlFlow | BetweenControlFlow) => BetweenControlFlow,
@@ -56,7 +57,7 @@ impl InstrumentationKind {
             (BetweenControlFlow, Pure | PreControlFlow | PostControlFlow | BetweenControlFlow) => {
                 BetweenControlFlow
             }
-        }
+        })
     }
 
     /// Instrumentation kind after merging two instrumentation ranges separaated by an instruction.
@@ -86,10 +87,14 @@ impl InstrumentationKind {
 
 impl super::FunctionState {
     pub(crate) fn instrumentation_count(&self) -> usize {
-        std::cmp::min(
-            std::cmp::min(self.kinds.len(), self.offsets.len()),
-            self.costs.len(),
-        )
+        let Self {
+            kinds,
+            offsets,
+            costs,
+            ..
+        } = self;
+        debug_assert!(kinds.len() == offsets.len() && kinds.len() == costs.len());
+        kinds.len()
     }
 
     pub(crate) fn instrumentation_at(&self, index: usize) -> Option<InstrumentationPoint> {
@@ -152,7 +157,7 @@ impl super::FunctionState {
                 Some(InstrumentationPoint {
                     offset: prev.offset,
                     cost: prev.cost.checked_add(next.cost)?,
-                    kind: prev.kind.merge_same_point(next.kind),
+                    kind: prev.kind.merge_same_point(next.kind)?,
                 })
             } else {
                 None
