@@ -1,0 +1,35 @@
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param f64)))
+  (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0)
+    i64.const 1
+    call 0
+    unreachable
+    f64.const 0x0p+0 (;=0;)
+    loop (type 1) (param f64) ;; label = @1
+      drop
+    end
+  )
+)
+(module
+  (type (;0;) (func))
+  (type (;1;) (func (param f64)))
+  (type (;2;) (func (param i64)))
+  (type (;3;) (func (param i64 i64)))
+  (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
+  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (func (;3;) (type 0)
+    i64.const 1
+    call 0
+    unreachable
+    loop (type 1) (param f64) ;; label = @1
+      drop
+    end
+  )
+)

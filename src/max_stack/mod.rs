@@ -204,12 +204,15 @@ impl<'b, 's, Cfg: SizeConfig + ?Sized> Visitor<'s, Cfg> {
     /// push the same parameters that have been just pooped back onto the operand stack.
     fn new_frame(&mut self, block_type: BlockType, shift_operands: usize) -> Result<(), Error> {
         let stack_polymorphic = self.function_state.current_frame.stack_polymorphic;
-        let height = self
-            .function_state
-            .operands
-            .len()
-            .checked_sub(shift_operands)
-            .ok_or(Error::EmptyStack(self.offset))?;
+        let height = if stack_polymorphic {
+            self.function_state.operands.len()
+        } else {
+            self.function_state
+                .operands
+                .len()
+                .checked_sub(shift_operands)
+                .ok_or(Error::EmptyStack(self.offset))?
+        };
         self.function_state.frames.push(std::mem::replace(
             &mut self.function_state.current_frame,
             Frame {
