@@ -10,6 +10,7 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "0.4"
+wasm-smith = "0.12"
 
 [dependencies.finite-wasm]
 path = ".."
@@ -22,5 +23,11 @@ members = ["."]
 [[bin]]
 name = "validity_invariants"
 path = "validity_invariants.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "validity_invariants_smith"
+path = "validity_invariants_smith.rs"
 test = false
 doc = false
