@@ -29,13 +29,13 @@ required-features = ["instrument"]
 [dependencies]
 bitvec = "1.0.1"
 dissimilar = "1"
-wasmparser = "^0.104.0"
+wasmparser = { git = "https://github.com/bytecodealliance/wasm-tools.git", rev = "627fc96ffcb9fbf7a97ca23fed61eb0dc0f45556" }
 # Ensure that we depend on a single version of wasmparser only (patch versions bump wasmparser dep)
 wasmprinter = "=0.2.56"
 thiserror = "1"
 num-traits = "0.2.15"
 prefix-sum-vec = "0.1.2"
-wasm-encoder = { version = "0.26", optional = true }
+wasm-encoder = { git = "https://github.com/bytecodealliance/wasm-tools.git", rev = "627fc96ffcb9fbf7a97ca23fed61eb0dc0f45556", optional = true }
 
 [dev-dependencies]
 walkdir = "2.3.0"
