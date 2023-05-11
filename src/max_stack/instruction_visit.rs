@@ -131,7 +131,7 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
     fn visit_ref_null(&mut self, t: HeapType) -> Self::Output {
         // [] -> [(ref null t)]
         self.push(ValType::Ref(
-            RefType::new(true, t).unwrap_or_else(|| todo!()),
+            RefType::new(true, t).ok_or(Error::TypeTooLarge(self.offset))?,
         ));
         Ok(())
     }
