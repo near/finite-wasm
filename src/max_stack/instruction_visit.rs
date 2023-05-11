@@ -508,31 +508,31 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
     }
 
     fn visit_try(&mut self, _: BlockType) -> Self::Output {
-        todo!("exception handling has not been implemented");
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_rethrow(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling has not been implemented");
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_throw(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling has not been implemented");
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_delegate(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling has not been implemented");
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_catch(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling has not been implemented");
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_catch_all(&mut self) -> Self::Output {
-        todo!("exception handling has not been implemented");
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_memory_discard(&mut self, _: u32) -> Self::Output {
-        todo!("memory control proposal has not been implemented");
+        Err(Error::MemoryControlNotSupported(self.offset))
     }
 }
 

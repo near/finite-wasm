@@ -44,8 +44,12 @@ impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
 }
 
 fuzz_target!(|data: &[u8]| {
+    let mut validator = wasmparser::Validator::new_with_features(wasmparser::WasmFeatures {
+        exceptions: false,
+        ..Default::default()
+    });
     // First, try to validate the data.
-    let is_valid = wasmparser::validate(data).is_ok();
+    let is_valid = validator.validate_all(data).is_ok();
     let analysis_results = finite_wasm::Analysis::new()
         .with_stack(DefaultStackConfig)
         .with_gas(DefaultGasConfig)
@@ -61,7 +65,7 @@ fuzz_target!(|data: &[u8]| {
     match analysis_results.instrument("spectest", data) {
         // If the original input was valid, we want the instrumented module to be valid too!
         Ok(res) if is_valid => {
-            if let Err(e) = wasmparser::validate(&res) {
+            if let Err(e) = validator.validate_all(&res) {
                 let _ = std::fs::write("/tmp/input.wasm", data);
                 let _ = std::fs::write("/tmp/instrumented.wasm", res);
                 panic!(

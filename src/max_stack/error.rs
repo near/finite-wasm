@@ -31,4 +31,8 @@ pub enum Error {
     TooManyFrames,
     #[error("could not process function locals")]
     TooManyLocals(#[source] prefix_sum_vec::TryPushError),
+    #[error("the exceptions proposal is not supported (at offset {0})")]
+    ExceptionsNotSupported(usize),
+    #[error("the memory control proposal is not supported (at offset {0})")]
+    MemoryControlNotSupported(usize),
 }

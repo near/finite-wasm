@@ -43,34 +43,44 @@ impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
     wasmparser::for_each_operator!(gas_visit);
 }
 
-fuzz_target!(|module: wasm_smith::Module| {
+fuzz_target!(|module: wasm_smith::MaybeInvalidModule| {
     let data = module.to_bytes();
+    let features = wasmparser::WasmFeatures {
+        exceptions: false,
+        ..Default::default()
+    };
+    let is_valid = wasmparser::Validator::new_with_features(features).validate_all(&data).is_ok();
     let analysis_results = finite_wasm::Analysis::new()
         .with_stack(DefaultStackConfig)
         .with_gas(DefaultGasConfig)
         .analyze(&data);
     let analysis_results = match analysis_results {
         Ok(res) => res,
-        Err(e) => {
+        Err(e) if is_valid => {
             let _ = std::fs::write("/tmp/input.wasm", &data);
             panic!("valid module didn't analyze successfully: {:?}!", e)
         }
+        Err(_) => return,
     };
     match analysis_results.instrument("spectest", &data) {
         // If the original input was valid, we want the instrumented module to be valid too!
         Ok(res) => {
-            if let Err(e) = wasmparser::validate(&res) {
-                let _ = std::fs::write("/tmp/input.wasm", &data);
-                let _ = std::fs::write("/tmp/instrumented.wasm", res);
-                panic!(
-                    "valid module is no longer valid post-instrumentation: {:?}",
-                    e
-                );
+            match (wasmparser::Validator::new_with_features(features).validate_all(&res).is_ok(), is_valid) {
+                (true, true) | (false, false) => return,
+                (result, _) => {
+                    let _ = std::fs::write("/tmp/input.wasm", &data);
+                    let _ = std::fs::write("/tmp/instrumented.wasm", res);
+                    panic!(
+                        "validity changed post-instrumentation, is_valid: {:?}, result: {:?}",
+                        is_valid, result
+                    );
+                }
             }
         }
-        Err(e) => {
+        Err(e) if is_valid => {
             let _ = std::fs::write("/tmp/input.wasm", data);
             panic!("valid module didn't instrument successfully: {:?}!", e)
         }
+        Err(_) => return,
     };
 });
