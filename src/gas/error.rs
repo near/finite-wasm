@@ -6,4 +6,8 @@ pub enum Error {
     ParseBrTable(#[source] wasmparser::BinaryReaderError),
     #[error("the branch target is invalid at offset {0}")]
     InvalidBrTarget(usize),
+    #[error("the exceptions proposal is not supported (at offset {0})")]
+    ExceptionsNotSupported(usize),
+    #[error("the memory control proposal is not supported (at offset {0})")]
+    MemoryControlNotSupported(usize),
 }

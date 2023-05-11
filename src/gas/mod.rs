@@ -659,31 +659,31 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
     }
 
     fn visit_try(&mut self, _: BlockType) -> Self::Output {
-        todo!("exception handling extension")
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_catch(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling extension")
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_throw(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling extension")
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_rethrow(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling extension")
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_delegate(&mut self, _: u32) -> Self::Output {
-        todo!("exception handling extension")
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_catch_all(&mut self) -> Self::Output {
-        todo!("exception handling extension")
+        Err(Error::ExceptionsNotSupported(self.offset))
     }
 
     fn visit_memory_discard(&mut self, _: u32) -> Self::Output {
-        todo!("memory control extension")
+        Err(Error::MemoryControlNotSupported(self.offset))
     }
 }
 
