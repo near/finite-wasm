@@ -35,6 +35,9 @@ pub enum Error {
     ExceptionsNotSupported(usize),
     #[error("the memory control proposal is not supported (at offset {0})")]
     MemoryControlNotSupported(usize),
+    #[error("the garbage collection proposal is not supported (at offset {0})")]
+    GcNotSupported(usize),
     #[error("type is too large (at offset {0})")]
     TypeTooLarge(usize),
+
 }

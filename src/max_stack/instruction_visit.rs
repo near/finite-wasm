@@ -356,12 +356,8 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
         self.visit_function_call(self.function_type_index(function_index)?)
     }
 
-    fn visit_call_ref(&mut self, ty: HeapType) -> Self::Output {
-        self.visit_function_call(match ty {
-            HeapType::TypedFunc(idx) => idx,
-            HeapType::Func => unreachable!(),
-            HeapType::Extern => unreachable!(),
-        })
+    fn visit_call_ref(&mut self, type_index: u32) -> Self::Output {
+        self.visit_function_call(type_index)
     }
 
     fn visit_call_indirect(&mut self, type_index: u32, _: u32, _: u8) -> Self::Output {
@@ -372,12 +368,8 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
         self.visit_return_call_type_index(self.function_type_index(function_index)?)
     }
 
-    fn visit_return_call_ref(&mut self, ty: HeapType) -> Self::Output {
-        self.visit_return_call_type_index(match ty {
-            HeapType::TypedFunc(idx) => idx,
-            HeapType::Func => unreachable!(),
-            HeapType::Extern => unreachable!(),
-        })
+    fn visit_return_call_ref(&mut self, ty: u32) -> Self::Output {
+        self.visit_return_call_type_index(ty)
     }
 
     fn visit_return_call_indirect(&mut self, type_index: u32, _: u32) -> Self::Output {
@@ -533,6 +525,18 @@ impl<'a, 's, 'cfg, Cfg: SizeConfig + ?Sized> VisitOperator<'a> for Visitor<'s, C
 
     fn visit_memory_discard(&mut self, _: u32) -> Self::Output {
         Err(Error::MemoryControlNotSupported(self.offset))
+    }
+
+    fn visit_i31_new(&mut self) -> Self::Output {
+        Err(Error::GcNotSupported(self.offset))
+    }
+
+    fn visit_i31_get_s(&mut self) -> Self::Output {
+        Err(Error::GcNotSupported(self.offset))
+    }
+
+    fn visit_i31_get_u(&mut self) -> Self::Output {
+        Err(Error::GcNotSupported(self.offset))
     }
 }
 

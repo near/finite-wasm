@@ -409,7 +409,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
     // allow us to be less conservative, but it will already have been done during the
     // compilation from the source language to wasm, or wasm-opt, most of the time.
     trapping_insn!(fn visit_call(index: u32));
-    trapping_insn!(fn visit_call_ref(ht: wasmparser::HeapType));
+    trapping_insn!(fn visit_call_ref(type_index: u32));
     trapping_insn!(fn visit_call_indirect(ty_index: u32, table_index: u32, table_byte: u8));
     // TODO: double check if these may actually trap
     trapping_insn!(fn visit_memory_atomic_notify(mem: wasmparser::MemArg));
@@ -590,8 +590,8 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
         self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
-    fn visit_return_call_ref(&mut self, ht: wasmparser::HeapType) -> Self::Output {
-        let cost = self.model.visit_return_call_ref(ht);
+    fn visit_return_call_ref(&mut self, type_index: u32) -> Self::Output {
+        let cost = self.model.visit_return_call_ref(type_index);
         self.visit_unconditional_branch(self.root_frame_index(), cost)
     }
 
@@ -684,6 +684,18 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64>> VisitOperator<'b>
 
     fn visit_memory_discard(&mut self, _: u32) -> Self::Output {
         Err(Error::MemoryControlNotSupported(self.offset))
+    }
+
+    fn visit_i31_new(&mut self) -> Self::Output {
+        Err(Error::GcNotSupported(self.offset))
+    }
+
+    fn visit_i31_get_s(&mut self) -> Self::Output {
+        Err(Error::GcNotSupported(self.offset))
+    }
+
+    fn visit_i31_get_u(&mut self) -> Self::Output {
+        Err(Error::GcNotSupported(self.offset))
     }
 }
 

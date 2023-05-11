@@ -552,6 +552,14 @@ fn reftype(wp: wp::RefType) -> we::RefType {
         heap_type: match wp.heap_type() {
             wp::HeapType::Func => we::HeapType::Func,
             wp::HeapType::Extern => we::HeapType::Extern,
+            wp::HeapType::Any => we::HeapType::Any,
+            wp::HeapType::None => we::HeapType::None,
+            wp::HeapType::NoExtern => we::HeapType::NoExtern,
+            wp::HeapType::NoFunc => we::HeapType::NoFunc,
+            wp::HeapType::Eq => we::HeapType::Eq,
+            wp::HeapType::Struct => we::HeapType::Struct,
+            wp::HeapType::Array => we::HeapType::Array,
+            wp::HeapType::I31 => we::HeapType::I31,
             wp::HeapType::TypedFunc(idx) => we::HeapType::TypedFunc(idx),
         },
     }
