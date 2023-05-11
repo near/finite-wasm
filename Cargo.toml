@@ -18,7 +18,7 @@ exclude = ["/tests/snaps"]
 name = "wast"
 path = "src/wast_tests/runner.rs"
 harness = false
-required-features = ["instrument"]
+required-features = ["wast-tests"]
 
 [[bench]]
 name = "instrument_all"
@@ -48,6 +48,7 @@ wasm-instrument = "0.4"
 
 [features]
 instrument = ["wasm-encoder"]
+wast-tests = ["instrument"]
 
 [package.metadata.docs.rs]
 all-features = true
