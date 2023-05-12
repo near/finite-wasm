@@ -497,7 +497,6 @@ impl<'a> TestContext {
         std::fs::write(&test_path, code).map_err(|e| Error::WriteTempTest(e, test_path.clone()))?;
 
         let args = vec!["-tg".into(), "-i".into(), test_path.into()];
-        // TODO: basedir is this the project root, not cwd
         static INTERPRETER_BYTES: &[u8] = include_bytes!("../../interpreter/wasm");
         extern "C" fn delete_directory() {
             // lazy_static tempdirs aren’t actually deleted at the end of the program
