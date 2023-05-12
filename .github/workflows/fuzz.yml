@@ -27,5 +27,5 @@ jobs:
       - run: cargo +nightly fuzz build --release --debug-assertions
       - run: |
           NAME="finite-wasm-$(env TZ=Etc/UTC date +"%Y%m%d%H%M%S")"
-          tar --show-stored-names --transform="s|^|$NAME/|" -czvf "$NAME.tar.gz" -C ./fuzz/target/*/release/ "$(cargo +nightly fuzz list)"
+          tar --show-stored-names --transform="s|^|$NAME/|" -czvf "$NAME.tar.gz" -C ./fuzz/target/*/release/ $(cargo +nightly fuzz list)
           gsutil cp "$NAME.tar.gz" "gs://fuzzer_targets/finite-wasm/"
