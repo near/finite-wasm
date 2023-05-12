@@ -499,8 +499,12 @@ impl<'a> TestContext {
         let args = vec!["-tg".into(), "-i".into(), test_path.into()];
         // TODO: basedir is this the project root, not cwd
         static INTERPRETER_BYTES: &[u8] = include_bytes!("../../interpreter/wasm");
+        extern "C" fn delete_directory() {
+            // lazy_static tempdirs aren’t actually deleted at the end of the program
+            let _ = INTERPRETER.0.lock().map(|mut o| o.take().map(|d| d.close()));
+        }
         lazy_static::lazy_static! {
-            static ref INTERPRETER: (tempfile::TempDir, std::path::PathBuf) = {
+            static ref INTERPRETER: (std::sync::Mutex<Option<tempfile::TempDir>>, std::path::PathBuf) = {
                 let d = tempfile::Builder::new()
                     .prefix("finite-wasm-spec-interpreter.")
                     .tempdir()
@@ -512,7 +516,8 @@ impl<'a> TestContext {
                     .expect("failed writing spec interpreter binary");
                 f.set_permissions(std::os::unix::fs::PermissionsExt::from_mode(0o700))
                     .expect("failed making spec interpreter binary executable");
-                (d, path)
+                unsafe { libc::atexit(delete_directory) };
+                (std::sync::Mutex::new(Some(d)), path)
             };
         }
         let process = std::process::Command::new(&INTERPRETER.1)
