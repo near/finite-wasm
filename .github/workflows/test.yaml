@@ -24,7 +24,7 @@ jobs:
           ocaml-compiler: 4.13.1
       - run: rustup update --no-self-update stable
       - run: opam install ocamlbuild
-      - run: cargo test --all-features
+      - run: opam exec -- cargo test --all-features
   cargo-deny:
     name: Cargo Deny
     runs-on: ubuntu-latest
