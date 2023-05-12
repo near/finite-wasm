@@ -498,7 +498,24 @@ impl<'a> TestContext {
 
         let args = vec!["-tg".into(), "-i".into(), test_path.into()];
         // TODO: basedir is this the project root, not cwd
-        let process = std::process::Command::new("interpreter/wasm")
+        static INTERPRETER_BYTES: &[u8] = include_bytes!("../../interpreter/wasm");
+        lazy_static::lazy_static! {
+            static ref INTERPRETER: (tempfile::TempDir, std::path::PathBuf) = {
+                let d = tempfile::Builder::new()
+                    .prefix("finite-wasm-spec-interpreter.")
+                    .tempdir()
+                    .expect("failed creating spec interpreter binary directory");
+                let path = d.path().join("wasm");
+                let mut f = std::fs::File::create(&path)
+                    .expect("failed creating spec interpreter binary");
+                f.write_all(INTERPRETER_BYTES)
+                    .expect("failed writing spec interpreter binary");
+                f.set_permissions(std::os::unix::fs::PermissionsExt::from_mode(0o700))
+                    .expect("failed making spec interpreter binary executable");
+                (d, path)
+            };
+        }
+        let process = std::process::Command::new(&INTERPRETER.1)
             .stdin(std::process::Stdio::null())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped())
