@@ -38,12 +38,14 @@ prefix-sum-vec = "0.1.2"
 wasm-encoder = { version = "0.26", optional = true }
 
 [dev-dependencies]
-walkdir = "2.3.0"
-wast = "52"
 atoi = "2.0.0"
-rayon = "1.6.1"
 criterion = "0.4.0"
+lazy_static = "1.4"
+rayon = "1.6.1"
+tempfile = "3.5"
+walkdir = "2.3.0"
 wasm-instrument = "0.4"
+wast = "52"
 
 
 [features]
