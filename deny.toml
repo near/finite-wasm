@@ -10,6 +10,11 @@ targets = [
 [bans]
 multiple-versions = "deny"
 wildcards = "deny"
+skip = [
+    { name = "windows-sys" },
+    { name = "windows-targets" },
+    { name = "windows_x86_64_msvc" },
+]
 
 
 [licenses]
