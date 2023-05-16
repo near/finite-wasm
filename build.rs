@@ -1,3 +1,4 @@
+#[cfg(feature = "wast-tests")]
 fn build_interpreter() {
     println!("cargo:rerun-if-changed=interpreter");
     std::process::Command::new("make")

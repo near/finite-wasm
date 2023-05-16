@@ -1,9 +1,19 @@
-use finite_wasm::{max_stack, Analysis};
+use crate::{max_stack, Analysis};
 use std::error;
 use std::ffi::OsString;
-use std::io::{Read, Seek, SeekFrom, Write};
+use std::io::{self, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitStatus;
+
+pub fn write_error(mut to: impl io::Write, error: impl error::Error) -> std::io::Result<()> {
+    writeln!(to, "error: {}", error)?;
+    let mut source = error.source();
+    while let Some(error) = source {
+        writeln!(to, "caused by: {}", error)?;
+        source = error.source();
+    }
+    Ok(())
+}
 
 #[derive(Debug, PartialEq)]
 enum Line {
@@ -115,13 +125,13 @@ pub(crate) enum Error {
     #[error("interpreter output wasn’t valid UTF-8")]
     InterpreterOutput(#[source] std::string::FromUtf8Error),
     #[error("could not analyze the module {1} at {2:?}")]
-    AnalyseModule(#[source] finite_wasm::Error, String, PathBuf),
+    AnalyseModule(#[source] crate::Error, String, PathBuf),
     #[error("could not analyze the module {0} at {1:?}, analysis panicked")]
     AnalyseModulePanic(String, PathBuf),
     #[error("could not instrument the module {0} at {1:?}, instrumentation code panicked")]
     InstrumentModulePanic(String, PathBuf),
     #[error("could not instrument the test module")]
-    Instrument(#[source] finite_wasm::InstrumentError),
+    Instrument(#[source] crate::InstrumentError),
     #[error("could not write out the instrumented test module to a temporary file at {1:?}")]
     WriteTempTest(#[source] std::io::Error, PathBuf),
     #[error("interpreter (= {0}) and analysis (= {1}) disagree on gas consumption")]
@@ -182,17 +192,17 @@ enum Status {
 }
 
 #[derive(Debug)]
-pub(crate) struct TestContext {
+pub struct TestContext {
     test_name: String,
     test_path: PathBuf,
     snap_base: PathBuf,
     tmp_base: PathBuf,
-    pub(crate) output: Vec<u8>,
+    pub output: Vec<u8>,
     status: Status,
 }
 
 impl<'a> TestContext {
-    pub(crate) fn new(
+    pub fn new(
         test_name: String,
         test_path: PathBuf,
         snap_base: PathBuf,
@@ -208,7 +218,7 @@ impl<'a> TestContext {
         }
     }
 
-    pub(crate) fn failed(&self) -> bool {
+    pub fn failed(&self) -> bool {
         self.status == Status::Failed
     }
 
@@ -228,7 +238,7 @@ impl<'a> TestContext {
             self.output.extend_from_slice(b"\n");
             self.status = Status::Failed;
         }
-        super::write_error(&mut self.output, error).expect("this should be infallible");
+        write_error(&mut self.output, error).expect("this should be infallible");
     }
 
     fn fail_test_error(&mut self, error: &mut Error) {
@@ -236,7 +246,7 @@ impl<'a> TestContext {
         self.fail(&*error)
     }
 
-    pub(crate) fn run(&mut self) {
+    pub fn run(&mut self) {
         // There are some interesting properties of the interpreter that we want to verify, but
         // those properties are hard/infeasible to validate with our wast test runner
         // infrastructure.
@@ -257,8 +267,11 @@ impl<'a> TestContext {
             Err(mut e) => return self.fail_test_error(&mut e),
         };
 
-        if let Err(mut e) = self.compare_snapshot(&instrumented_wast, "instrumented") {
-            return self.fail_test_error(&mut e);
+        if cfg!(not(fuzz)) {
+            // fuzzers won’t have snapshots at hand
+            if let Err(mut e) = self.compare_snapshot(&instrumented_wast, "instrumented") {
+                return self.fail_test_error(&mut e);
+            }
         }
 
         // Run the interpreter here with the wast file in some sort of a tracing mode (needs to
