@@ -10,11 +10,12 @@ cargo-fuzz = true
 
 [dependencies]
 libfuzzer-sys = "0.4"
+tempfile = "3.5"
 wasm-smith = "0.12"
 
 [dependencies.finite-wasm]
 path = ".."
-features = ["instrument"]
+features = ["instrument", "wast-tests"]
 
 # Prevent this from interfering with workspaces
 [workspace]
@@ -29,5 +30,11 @@ doc = false
 [[bin]]
 name = "validity_invariants_smith"
 path = "validity_invariants_smith.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "compare_to_spec"
+path = "compare_to_spec.rs"
 test = false
 doc = false

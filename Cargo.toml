@@ -27,31 +27,30 @@ harness = false
 required-features = ["instrument"]
 
 [dependencies]
+atoi = { version = "2.0", optional = true }
 bitvec = "1.0.1"
 dissimilar = "1"
+lazy_static = { version = "1.4", optional = true }
+libc = { version = "0.2.144", optional = true }
 wasmparser = "0.105.0"
 # Ensure that we depend on a single version of wasmparser only (patch versions bump wasmparser dep)
 wasmprinter = "=0.2.57"
 thiserror = "1"
 num-traits = "0.2.15"
 prefix-sum-vec = "0.1.2"
+tempfile = { version = "3.5", optional = true }
 wasm-encoder = { version = "0.27.0", optional = true }
+wast = { version = "52", optional = true }
 
 [dev-dependencies]
-atoi = "2.0.0"
 criterion = "0.4.0"
-lazy_static = "1.4"
-libc = "0.2.144"
 rayon = "1.6.1"
-tempfile = "3.5"
 walkdir = "2.3.0"
 wasm-instrument = "0.4"
-wast = "52"
-
 
 [features]
 instrument = ["wasm-encoder"]
-wast-tests = ["instrument"]
+wast-tests = ["atoi", "instrument", "lazy_static", "libc", "tempfile", "wast"]
 
 [package.metadata.docs.rs]
 all-features = true

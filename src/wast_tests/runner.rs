@@ -1,11 +1,8 @@
+use finite_wasm::wast_tests::test;
 use rayon::prelude::*;
-use std::error;
 use std::ffi::OsStr;
-use std::io::{self, Write};
+use std::io::Write;
 use std::path::PathBuf;
-
-#[cfg(test)]
-mod test;
 
 #[derive(thiserror::Error, Debug)]
 enum Error {
@@ -21,16 +18,6 @@ enum Error {
 
 struct Test {
     path: PathBuf,
-}
-
-fn write_error(mut to: impl io::Write, error: impl error::Error) -> std::io::Result<()> {
-    writeln!(to, "error: {}", error)?;
-    let mut source = error.source();
-    while let Some(error) = source {
-        writeln!(to, "caused by: {}", error)?;
-        source = error.source();
-    }
-    Ok(())
 }
 
 fn run() -> Result<(), Error> {
@@ -106,7 +93,7 @@ fn main() {
     std::process::exit(match run() {
         Ok(()) => 0,
         Err(error) => {
-            write_error(std::io::stderr().lock(), &error).expect("failed writing out the error");
+            test::write_error(std::io::stderr().lock(), &error).expect("failed writing out the error");
             1
         }
     })

@@ -19,6 +19,12 @@ mod instrument;
 pub mod max_stack;
 mod visitors;
 
+#[doc(hidden)]
+#[cfg(feature = "wast-tests")]
+pub mod wast_tests {
+    pub mod test;
+}
+
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error("could not parse a part of the WASM payload")]
