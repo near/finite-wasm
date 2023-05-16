@@ -93,7 +93,8 @@ fn main() {
     std::process::exit(match run() {
         Ok(()) => 0,
         Err(error) => {
-            test::write_error(std::io::stderr().lock(), &error).expect("failed writing out the error");
+            test::write_error(std::io::stderr().lock(), &error)
+                .expect("failed writing out the error");
             1
         }
     })

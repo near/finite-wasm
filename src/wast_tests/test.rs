@@ -513,7 +513,10 @@ impl<'a> TestContext {
         static INTERPRETER_BYTES: &[u8] = include_bytes!("../../interpreter/wasm");
         extern "C" fn delete_directory() {
             // lazy_static tempdirs aren’t actually deleted at the end of the program
-            let _ = INTERPRETER.0.lock().map(|mut o| o.take().map(|d| d.close()));
+            let _ = INTERPRETER
+                .0
+                .lock()
+                .map(|mut o| o.take().map(|d| d.close()));
         }
         lazy_static::lazy_static! {
             static ref INTERPRETER: (std::sync::Mutex<Option<tempfile::TempDir>>, std::path::PathBuf) = {

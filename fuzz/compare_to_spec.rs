@@ -9,7 +9,8 @@ fuzz_target!(|data: wasm_smith::MaybeInvalidModule| {
         .prefix("fuzzed-module-")
         .tempfile()
         .expect("creating temp file");
-    f.write_all(&data.to_bytes()).expect("writing module to file");
+    f.write_all(&data.to_bytes())
+        .expect("writing module to file");
     let mut t = finite_wasm::wast_tests::test::TestContext::new(
         "fuzz".to_owned(),
         f.path().to_owned(),

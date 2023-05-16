@@ -49,7 +49,9 @@ fuzz_target!(|data: &[u8]| {
         ..Default::default()
     };
     // First, try to validate the data.
-    let is_valid = wasmparser::Validator::new_with_features(features).validate_all(data).is_ok();
+    let is_valid = wasmparser::Validator::new_with_features(features)
+        .validate_all(data)
+        .is_ok();
     let analysis_results = finite_wasm::Analysis::new()
         .with_stack(DefaultStackConfig)
         .with_gas(DefaultGasConfig)

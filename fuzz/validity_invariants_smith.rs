@@ -1,5 +1,5 @@
 #![no_main]
-use finite_wasm::{wasmparser, max_stack, prefix_sum_vec};
+use finite_wasm::{max_stack, prefix_sum_vec, wasmparser};
 use libfuzzer_sys::fuzz_target;
 
 struct DefaultStackConfig;
@@ -49,7 +49,9 @@ fuzz_target!(|module: wasm_smith::MaybeInvalidModule| {
         exceptions: false,
         ..Default::default()
     };
-    let is_valid = wasmparser::Validator::new_with_features(features).validate_all(&data).is_ok();
+    let is_valid = wasmparser::Validator::new_with_features(features)
+        .validate_all(&data)
+        .is_ok();
     let analysis_results = finite_wasm::Analysis::new()
         .with_stack(DefaultStackConfig)
         .with_gas(DefaultGasConfig)
@@ -65,7 +67,12 @@ fuzz_target!(|module: wasm_smith::MaybeInvalidModule| {
     match analysis_results.instrument("spectest", &data) {
         // If the original input was valid, we want the instrumented module to be valid too!
         Ok(res) => {
-            match (wasmparser::Validator::new_with_features(features).validate_all(&res).is_ok(), is_valid) {
+            match (
+                wasmparser::Validator::new_with_features(features)
+                    .validate_all(&res)
+                    .is_ok(),
+                is_valid,
+            ) {
                 (true, true) | (false, false) => return,
                 (result, _) => {
                     let _ = std::fs::write("/tmp/input.wasm", &data);
