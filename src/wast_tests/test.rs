@@ -267,7 +267,7 @@ impl<'a> TestContext {
             Err(mut e) => return self.fail_test_error(&mut e),
         };
 
-        if cfg!(not(fuzz)) {
+        if cfg!(not(fuzzing)) {
             // fuzzers won’t have snapshots at hand
             if let Err(mut e) = self.compare_snapshot(&instrumented_wast, "instrumented") {
                 return self.fail_test_error(&mut e);
