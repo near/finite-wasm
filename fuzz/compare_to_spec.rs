@@ -4,21 +4,37 @@ use libfuzzer_sys::fuzz_target;
 use std::fmt::Write;
 use std::path::PathBuf;
 
-fuzz_target!(|data: wasm_smith::Module| {
-    let bytes = data.to_bytes();
-
-    let mut exports = Vec::new();
-    for s in wasmparser::Parser::new(0).parse_all(&bytes) {
-        let s = s.expect("wasm-smith-generated module is invalid");
-        if let wasmparser::Payload::ExportSection(s) = s {
-            for e in s.into_iter() {
-                let e = e.expect("wasm-smith-generated module is invalid");
-                if e.kind == wasmparser::ExternalKind::Func {
-                    exports.push(e.name.to_owned());
+/// Finds all no-parameter exported functions
+pub fn find_entry_points(contract: &[u8]) -> Vec<String> {
+    let mut tys = Vec::new();
+    let mut fns = Vec::new();
+    let mut entries = Vec::new();
+    for payload in wasmparser::Parser::default().parse_all(contract) {
+        match payload {
+            Ok(wasmparser::Payload::FunctionSection(rdr)) => fns.extend(rdr),
+            Ok(wasmparser::Payload::TypeSection(rdr)) => tys.extend(rdr),
+            Ok(wasmparser::Payload::ExportSection(rdr)) => {
+                for export in rdr {
+                    if let Ok(wasmparser::Export { name, kind: wasmparser::ExternalKind::Func, index }) = export {
+                        if let Some(&Ok(ty_index)) = fns.get(index as usize) {
+                            if let Some(Ok(wasmparser::Type::Func(func_type))) = tys.get(ty_index as usize) {
+                                if func_type.params().is_empty() {
+                                    entries.push(name.to_string());
+                                }
+                            }
+                        }
+                    }
                 }
             }
+            _ => (),
         }
     }
+    entries
+}
+
+fuzz_target!(|data: wasm_smith::Module| {
+    let bytes = data.to_bytes();
+    let exports = find_entry_points(&bytes);
 
     if exports.is_empty() { // TODO: try removing once tests usually pass
         return;
