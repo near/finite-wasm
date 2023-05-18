@@ -216,7 +216,7 @@ let bind (mods : modules) x_opt m =
 let lookup (mods : modules) x_opt name at =
   let exports =
     try Map.find (of_var_opt mods x_opt) mods.env with Not_found ->
-      raise (Eval.Crash (at, 
+      raise (Eval.Crash (at,
         if x_opt = None then "no module defined within script"
         else "unknown module " ^ of_var_opt mods x_opt ^ " within script"))
   in try NameMap.find name exports with Not_found ->
@@ -537,6 +537,15 @@ let of_wrapper mods x_opt name wrap_action wrap_assertion at =
 let of_action mods act =
   match act.it with
   | Invoke (x_opt, name, vs) ->
+    "call(" ^ of_var_opt mods x_opt ^ ", " ^ of_name name ^ ", " ^
+      "[" ^ String.concat ", " (List.map of_value vs) ^ "])",
+    (match lookup mods x_opt name act.at with
+    | ExternFuncType ft when not (is_js_func_type ft) ->
+      let FuncType (_, out) = ft in
+      Some (of_wrapper mods x_opt name (invoke ft vs), out)
+    | _ -> None
+    )
+  | Run (x_opt, name, vs) ->
     "call(" ^ of_var_opt mods x_opt ^ ", " ^ of_name name ^ ", " ^
       "[" ^ String.concat ", " (List.map of_value vs) ^ "])",
     (match lookup mods x_opt name act.at with

@@ -359,6 +359,25 @@ let run_action act : Values.value list =
     | None -> Assert.error act.at "undefined export"
     )
 
+  | Run (x_opt, name, vs) ->
+    trace ("Invoking function \"" ^ Ast.string_of_name name ^ "\"...");
+    let inst = lookup_instance x_opt act.at in
+    (match Instance.export inst name with
+    | Some (Instance.ExternFunc f) ->
+      (try
+        let Types.FuncType (ins, out) = Func.type_of f in
+        if List.length vs <> List.length ins then
+          Script.error act.at "wrong number of arguments";
+        List.iter2 (fun v t ->
+          if Values.type_of_value v.it <> t then
+            Script.error v.at "wrong type of argument"
+        ) vs ins;
+        Eval.invoke f (List.map (fun v -> v.it) vs)
+      with _ -> [])
+    | Some _ -> Assert.error act.at "export is not a function"
+    | None -> Assert.error act.at "undefined export"
+    )
+
  | Get (x_opt, name) ->
     trace ("Getting global \"" ^ Ast.string_of_name name ^ "\"...");
     let inst = lookup_instance x_opt act.at in

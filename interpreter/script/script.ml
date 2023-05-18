@@ -14,6 +14,7 @@ and definition' =
 type action = action' Source.phrase
 and action' =
   | Invoke of var option * Ast.name * literal list
+  | Run of var option * Ast.name * literal list
   | Get of var option * Ast.name
 
 type nanop = nanop' Source.phrase
