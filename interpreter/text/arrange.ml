@@ -703,6 +703,8 @@ let action mode act =
   match act.it with
   | Invoke (x_opt, name, lits) ->
     Node ("invoke" ^ access x_opt name, List.map (literal mode) lits)
+  | Run (x_opt, name, lits) ->
+    Node ("just_run" ^ access x_opt name, List.map (literal mode) lits)
   | Get (x_opt, name) ->
     Node ("get" ^ access x_opt name, [])
 
