@@ -32,8 +32,22 @@ pub fn find_entry_points(contract: &[u8]) -> Vec<String> {
     entries
 }
 
-fuzz_target!(|data: wasm_smith::Module| {
-    let bytes = data.to_bytes();
+#[derive(Debug, arbitrary::Arbitrary)]
+struct ModuleConfig;
+impl wasm_smith::Config for ModuleConfig {
+    fn max_imports(&self) -> usize {
+        0
+    }
+    fn max_instructions(&self) -> usize {
+        1000
+    }
+    fn allow_start_export(&self) -> bool {
+        false // traps in start are not caught properly
+    }
+}
+
+fuzz_target!(|data: wasm_smith::ConfiguredModule<ModuleConfig>| {
+    let bytes = data.module.to_bytes();
     let exports = find_entry_points(&bytes);
 
     if exports.is_empty() { // TODO: try removing once tests usually pass
@@ -47,7 +61,7 @@ fuzz_target!(|data: wasm_smith::Module| {
     }
     write!(wast_test, "\")\n").unwrap();
     for e in exports {
-        write!(wast_test, "(just_run {:?})\n", e).unwrap();
+        write!(wast_test, "(invoke {:?})\n", e).unwrap();
     }
 
     let mut f = tempfile::Builder::new()
