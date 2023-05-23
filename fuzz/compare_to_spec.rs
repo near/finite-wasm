@@ -66,6 +66,7 @@ fuzz_target!(|data: wasm_smith::ConfiguredModule<ModuleConfig>| {
     write!(wast_test, "\")\n").unwrap();
     for e in exports {
         // `(invoke ...)` will be turned into `(just_run ...)` by the test framework after wast parsing.
+        // XREF:INVOKE-FOR-JUST-RUN
         write!(wast_test, "(invoke {:?})\n", e).unwrap();
     }
 

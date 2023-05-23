@@ -410,7 +410,8 @@ impl<'a> TestContext {
                     } else {
                         // When fuzzing we reuse the invoke instruction to pass the
                         // wast crate’s parsing while actually ignoring traps.
-                        // The saturating_add(8) removes the "invoke " string.
+                        // The saturating_add(7) removes the "invoke " string added by
+                        // the fuzzer. Grep XREF:INVOKE-FOR-JUST-RUN for more details.
                         output_wast.push_str("\n(just_run ");
                         output_wast.push_str(
                             &test_contents[i.span.offset().saturating_add(7)..end_offset],
