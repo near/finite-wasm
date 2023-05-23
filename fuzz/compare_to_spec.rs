@@ -16,6 +16,9 @@ pub fn find_entry_points(contract: &[u8]) -> Vec<String> {
             Ok(wasmparser::Payload::ExportSection(rdr)) => {
                 for export in rdr {
                     if let Ok(wasmparser::Export { name, kind: wasmparser::ExternalKind::Func, index }) = export {
+                        if name.chars().any(|c| !c.is_ascii_alphanumeric()) {
+                            continue; // ignore non-ascii-alnum exports for convenience
+                        }
                         if let Some(&Ok(ty_index)) = fns.get(index as usize) {
                             if let Some(Ok(wasmparser::Type::Func(func_type))) = tys.get(ty_index as usize) {
                                 if func_type.params().is_empty() {
