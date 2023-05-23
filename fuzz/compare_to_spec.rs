@@ -47,7 +47,7 @@ fuzz_target!(|data: wasm_smith::Module| {
     }
     write!(wast_test, "\")\n").unwrap();
     for e in exports {
-        write!(wast_test, "(invoke {:?})\n", e).unwrap();
+        write!(wast_test, "(just_run {:?})\n", e).unwrap();
     }
 
     let mut f = tempfile::Builder::new()
