@@ -53,7 +53,8 @@ fuzz_target!(|data: wasm_smith::ConfiguredModule<ModuleConfig>| {
     let bytes = data.module.to_bytes();
     let exports = find_entry_points(&bytes);
 
-    if exports.is_empty() { // TODO: try removing once tests usually pass
+    if exports.is_empty() {
+        // It’s pointless looking more into this test as we won’t be running anything anyway.
         return;
     }
 
@@ -64,6 +65,7 @@ fuzz_target!(|data: wasm_smith::ConfiguredModule<ModuleConfig>| {
     }
     write!(wast_test, "\")\n").unwrap();
     for e in exports {
+        // `(invoke ...)` will be turned into `(just_run ...)` by the test framework after wast parsing.
         write!(wast_test, "(invoke {:?})\n", e).unwrap();
     }
 
