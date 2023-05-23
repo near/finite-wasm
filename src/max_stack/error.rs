@@ -39,5 +39,4 @@ pub enum Error {
     GcNotSupported(usize),
     #[error("type is too large (at offset {0})")]
     TypeTooLarge(usize),
-
 }

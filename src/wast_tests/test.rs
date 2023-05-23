@@ -412,7 +412,9 @@ impl<'a> TestContext {
                         // wast crate’s parsing while actually ignoring traps.
                         // The saturating_add(8) removes the "invoke " string.
                         output_wast.push_str("\n(just_run ");
-                        output_wast.push_str(&test_contents[i.span.offset().saturating_add(7)..end_offset]);
+                        output_wast.push_str(
+                            &test_contents[i.span.offset().saturating_add(7)..end_offset],
+                        );
                     }
                     continue;
                 }
