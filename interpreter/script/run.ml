@@ -373,7 +373,13 @@ let run_action act : Values.value list =
             Script.error v.at "wrong type of argument"
         ) vs ins;
         Eval.invoke f (List.map (fun v -> v.it) vs)
-      with _ -> [])
+      with
+        | Eval.Exhaustion (_, "call stack exhausted") as exn -> raise exn
+        | Eval.Exhaustion (_, _) -> []
+        | Eval.Trap (_, _) -> []
+        | Eval.Crash (_, _) -> []
+        | Eval.Link (_, _) -> []
+        | exn -> raise exn)
     | Some _ -> Assert.error act.at "export is not a function"
     | None -> Assert.error act.at "undefined export"
     )
