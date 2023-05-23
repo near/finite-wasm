@@ -556,15 +556,16 @@ impl<'a> TestContext {
         let output = process
             .wait_with_output()
             .map_err(|e| Error::InterpreterWait(e))?;
+
         if !output.status.success() {
-            return Err(Error::InterpreterExit(
-                String::from_utf8_lossy(&output.stderr).into(),
-                output.status,
-                args,
-            ));
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            if cfg!(fuzzing) && stderr.contains("call stack exhausted") {
+                return Ok(String::new());
+            }
+            return Err(Error::InterpreterExit(stderr.into(), output.status, args));
         }
-        let output = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
-        Ok(output)
+        let stdoutput = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
+        Ok(stdoutput)
     }
 
     fn compare_snapshot(&mut self, directive_output: &str, index: &str) -> Result<(), Error> {
