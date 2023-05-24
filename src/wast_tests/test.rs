@@ -520,7 +520,11 @@ impl<'a> TestContext {
         let _ = std::fs::create_dir_all(&test_path.parent().unwrap());
         std::fs::write(&test_path, code).map_err(|e| Error::WriteTempTest(e, test_path.clone()))?;
 
-        let args = vec!["-tg".into(), "-i".into(), test_path.into()];
+        let mut args = vec!["-tg".into(), "-i".into(), test_path.into()];
+        if cfg!(fuzzing) {
+            args.push("-g".into());
+            args.push("1000".into());
+        }
         static INTERPRETER_BYTES: &[u8] = include_bytes!("../../interpreter/wasm");
         extern "C" fn delete_directory() {
             // lazy_static tempdirs aren’t actually deleted at the end of the program
@@ -556,15 +560,21 @@ impl<'a> TestContext {
         let output = process
             .wait_with_output()
             .map_err(|e| Error::InterpreterWait(e))?;
-
+        let stdoutput = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
-            if cfg!(fuzzing) && stderr.contains("call stack exhausted") {
+            if cfg!(fuzzing)
+                // Likely infinite recursion
+                && (stderr.contains("call stack exhausted")
+                    // Likely infinite looping, or somesuch case.
+                    || stderr.contains("gas pool is empty")
+                    // Likely module instantiation failed due to a runtime error of some sort.
+                    || !stdoutput.contains("charge_gas"))
+            {
                 return Ok(String::new());
             }
             return Err(Error::InterpreterExit(stderr.into(), output.status, args));
         }
-        let stdoutput = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
         Ok(stdoutput)
     }
 

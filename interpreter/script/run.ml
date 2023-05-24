@@ -374,12 +374,21 @@ let run_action act : Values.value list =
         ) vs ins;
         Eval.invoke f (List.map (fun v -> v.it) vs)
       with
-        | Eval.Exhaustion (_, "call stack exhausted") as exn -> raise exn
-        | Eval.Exhaustion (_, _) -> []
-        | Eval.Trap (_, _) -> []
-        | Eval.Crash (_, _) -> []
-        | Eval.Link (_, _) -> []
-        | exn -> raise exn)
+          | Decode.Code (_, _) as exn -> raise exn
+          | Parse.Syntax (_, _) as exn -> raise exn
+          | Valid.Invalid (_, _) as exn -> raise exn
+          | Import.Unknown (_, _) as exn -> raise exn
+          | Eval.Link (_, _) -> []
+          | Eval.Exhaustion (_, "call stack exhausted") as exn -> raise exn
+          | Eval.Exhaustion (_, "gas pool is empty") as exn -> raise exn
+          | Eval.Exhaustion (_, _) -> []
+          | Eval.Trap (_, _) -> []
+          | Eval.Crash (_, _) -> []
+          | Encode.Code (_, _) as exn -> raise exn
+          | Script.Error (_, _) as exn -> raise exn
+          | IO (_, _) as exn -> raise exn
+          | Assert (_, _) as exn -> raise exn
+      )
     | Some _ -> Assert.error act.at "export is not a function"
     | None -> Assert.error act.at "undefined export"
     )
