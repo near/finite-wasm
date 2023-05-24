@@ -1,8 +1,10 @@
 name: Package fuzz targets
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+      - fuzz-test # Push to this branch to trigger this workflow for testing changes.
 
 jobs:
   build:
@@ -13,18 +15,22 @@ jobs:
       id-token: "write"
 
     steps:
+      - uses: actions/checkout@v2
+      - uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: 4.13.1
       - id: "auth"
         uses: "google-github-actions/auth@v1"
         with:
           workload_identity_provider: "projects/968400232856/locations/global/workloadIdentityPools/project-identity-pool/providers/github-provider"
           service_account: "near-fuzzer-service-account@near-fuzzer.iam.gserviceaccount.com"
-      - run: rustup default nightly
-      - run: cargo install cargo-fuzz
       - uses: "google-github-actions/setup-gcloud@v1"
         with:
           version: ">= 416.0.0"
-      - uses: actions/checkout@master
-      - run: cargo +nightly fuzz build --release --debug-assertions
+      - run: rustup default nightly
+      - run: opam install ocamlbuild
+      - run: cargo install cargo-fuzz
+      - run: opam exec -- cargo +nightly fuzz build --release --debug-assertions
       - run: |
           NAME="finite-wasm-$(env TZ=Etc/UTC date +"%Y%m%d%H%M%S")"
           tar --show-stored-names --transform="s|^|$NAME/|" -czvf "$NAME.tar.gz" -C ./fuzz/target/*/release/ $(cargo +nightly fuzz list)
