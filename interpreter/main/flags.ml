@@ -8,3 +8,4 @@ let harness = ref true
 let budget = ref 256
 let gas = ref 0xFFFFFFFFFFFFFFFL
 let trace_gas = ref false
+let trace_gas_ops = ref false
