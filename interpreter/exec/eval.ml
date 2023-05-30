@@ -195,7 +195,7 @@ let apply_fees (c: config) : config =
   if (Int64.compare e_cost !gas) > 0 then
     Exhaustion.error e.at "gas pool is empty"
   else if (Int64.compare e_cost 0L) != 0 then
-    if c.trace_gas then Printf.printf "gas: %Ld %s" e_cost (string_of_admin_instr e);
+    if c.trace_gas then Printf.printf "gas: %Ld %s" e_cost (if !Flags.trace_gas_ops then string_of_admin_instr e else "\n");
     gas := Int64.sub !gas e_cost;
     c
 

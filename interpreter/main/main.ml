@@ -36,6 +36,7 @@ let argspec = Arg.align
   "-d", Arg.Set Flags.dry, " dry, do not run program";
   "-t", Arg.Set Flags.trace, " trace execution";
   "-tg", Arg.Set Flags.trace_gas, " trace gas charges";
+  "-tgo", Arg.Set Flags.trace_gas_ops, " log operations that incurred gas changes (good for debugging)";
   "-v", Arg.Unit banner, " show version"
 ]
 

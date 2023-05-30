@@ -4,6 +4,7 @@ use std::ffi::OsString;
 use std::io::{self, Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitStatus;
+use std::time::Duration;
 
 pub fn write_error(mut to: impl io::Write, error: impl error::Error) -> std::io::Result<()> {
     writeln!(to, "error: {}", error)?;
@@ -199,6 +200,8 @@ pub struct TestContext {
     tmp_base: PathBuf,
     pub output: Vec<u8>,
     status: Status,
+    analysis_duration: Duration,
+    interpreter_duration: Duration,
 }
 
 impl<'a> TestContext {
@@ -215,6 +218,8 @@ impl<'a> TestContext {
             tmp_base,
             output: vec![],
             status: Status::None,
+            analysis_duration: Duration::default(),
+            interpreter_duration: Duration::default(),
         }
     }
 
@@ -227,6 +232,13 @@ impl<'a> TestContext {
         self.status = Status::Passed;
         self.output.extend_from_slice(b"[PASS] ");
         self.output.extend_from_slice(self.test_name.as_bytes());
+        self.output.extend_from_slice(
+            format!(
+                " (analysis: {:?}; interpreter: {:?})",
+                self.analysis_duration,
+                self.interpreter_duration
+            ).as_bytes()
+        );
         self.output.extend_from_slice(b"\n");
     }
 
@@ -465,6 +477,7 @@ impl<'a> TestContext {
     }
 
     fn instrument_module(&mut self, id: &str, code: &[u8]) -> Result<Vec<u8>, Error> {
+        let start = std::time::Instant::now();
         let results = std::panic::catch_unwind(|| {
             Analysis::new()
                 .with_stack(DefaultStackConfig)
@@ -473,6 +486,7 @@ impl<'a> TestContext {
         })
         .map_err(|_| Error::AnalyseModulePanic(id.into(), self.test_path.clone()))?
         .map_err(|e| Error::AnalyseModule(e, id.into(), self.test_path.clone()))?;
+        self.analysis_duration += start.elapsed();
 
         std::panic::catch_unwind(|| results.instrument("spectest", code))
             .map_err(|_| Error::InstrumentModulePanic(id.into(), self.test_path.clone()))?
@@ -550,6 +564,7 @@ impl<'a> TestContext {
                 (std::sync::Mutex::new(Some(d)), path)
             };
         }
+        let start = std::time::Instant::now();
         let process = std::process::Command::new(&INTERPRETER.1)
             .stdin(std::process::Stdio::null())
             .stdout(std::process::Stdio::piped())
@@ -560,6 +575,7 @@ impl<'a> TestContext {
         let output = process
             .wait_with_output()
             .map_err(|e| Error::InterpreterWait(e))?;
+        self.interpreter_duration += start.elapsed();
         let stdoutput = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
