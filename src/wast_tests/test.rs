@@ -227,11 +227,7 @@ impl<'a> TestContext {
         self.status == Status::Failed
     }
 
-    fn pass(&mut self) {
-        assert!(self.status == Status::None);
-        self.status = Status::Passed;
-        self.output.extend_from_slice(b"[PASS] ");
-        self.output.extend_from_slice(self.test_name.as_bytes());
+    fn output_time(&mut self) {
         self.output.extend_from_slice(
             format!(
                 " (analysis: {:?}; interpreter: {:?})",
@@ -239,6 +235,14 @@ impl<'a> TestContext {
                 self.interpreter_duration
             ).as_bytes()
         );
+    }
+
+    fn pass(&mut self) {
+        assert!(self.status == Status::None);
+        self.status = Status::Passed;
+        self.output.extend_from_slice(b"[PASS] ");
+        self.output.extend_from_slice(self.test_name.as_bytes());
+        self.output_time();
         self.output.extend_from_slice(b"\n");
     }
 
@@ -247,6 +251,7 @@ impl<'a> TestContext {
         if let Status::None = self.status {
             self.output.extend_from_slice(b"[FAIL] ");
             self.output.extend_from_slice(self.test_name.as_bytes());
+            self.output_time();
             self.output.extend_from_slice(b"\n");
             self.status = Status::Failed;
         }
