@@ -43,10 +43,15 @@ wasm-encoder = { version = "0.27.0", optional = true }
 wast = { version = "52", optional = true }
 
 [dev-dependencies]
+arbitrary = { version = "1.3", features = ["derive"] }
+bolero = { git = "https://github.com/Ekleog-NEAR/bolero", rev = "362328af9f0539f9d6ee62bb4334afaa0a71b572", features = ["arbitrary"] }
 criterion = "0.4.0"
 rayon = "1.6.1"
+tempfile = "3.5"
 walkdir = "2.3.0"
 wasm-instrument = "0.4"
+wasm-smith = "0.12"
+wasmparser = "0.105.0"
 
 [features]
 instrument = ["wasm-encoder"]
@@ -55,3 +60,9 @@ wast-tests = ["atoi", "instrument", "lazy_static", "libc", "tempfile", "wast"]
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "finite_wasm_docs"]
+
+[profile.fuzz]
+inherits = "dev"
+opt-level = 3
+incremental = false
+codegen-units = 1
