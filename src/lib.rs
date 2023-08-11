@@ -12,6 +12,8 @@ use visitors::VisitOperatorWithOffset;
 pub use wasmparser;
 use wasmparser::BinaryReaderError;
 
+#[cfg(test)]
+mod fuzzers;
 pub mod gas;
 mod instruction_categories;
 #[cfg(feature = "instrument")]
