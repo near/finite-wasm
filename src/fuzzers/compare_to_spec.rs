@@ -111,6 +111,7 @@ fn fuzz() {
                 f.path().to_owned(),
                 PathBuf::from("/"),
                 PathBuf::from("/tmp"),
+                false,
             );
             t.run();
             if t.failed() {
