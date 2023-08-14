@@ -202,6 +202,7 @@ pub struct TestContext {
     status: Status,
     analysis_duration: Duration,
     interpreter_duration: Duration,
+    check_snapshot: bool,
 }
 
 impl<'a> TestContext {
@@ -210,6 +211,7 @@ impl<'a> TestContext {
         test_path: PathBuf,
         snap_base: PathBuf,
         tmp_base: PathBuf,
+        check_snapshot: bool,
     ) -> Self {
         Self {
             test_name,
@@ -220,6 +222,7 @@ impl<'a> TestContext {
             status: Status::None,
             analysis_duration: Duration::default(),
             interpreter_duration: Duration::default(),
+            check_snapshot,
         }
     }
 
@@ -279,8 +282,7 @@ impl<'a> TestContext {
             Err(mut e) => return self.fail_test_error(&mut e),
         };
 
-        if cfg!(not(fuzzing)) {
-            // fuzzers won’t have snapshots at hand
+        if self.check_snapshot {
             if let Err(mut e) = self.compare_snapshot(&instrumented_wast, "instrumented") {
                 return self.fail_test_error(&mut e);
             }
@@ -417,11 +419,12 @@ impl<'a> TestContext {
                     continue;
                 }
                 wast::WastDirective::Invoke(i) => {
-                    if cfg!(not(fuzzing)) {
+                    if self.check_snapshot {
                         output_wast.push_str(&test_contents[start_offset..end_offset]);
                     } else {
-                        // When fuzzing we reuse the invoke instruction to pass the
-                        // wast crate’s parsing while actually ignoring traps.
+                        // When there’s no snapshot (ie. when fuzzing) we reuse
+                        // the invoke instruction to pass the wast crate’s parsing
+                        // while actually ignoring traps.
                         // The saturating_add(7) removes the "invoke " string added by
                         // the fuzzer. Grep XREF:INVOKE-FOR-JUST-RUN for more details.
                         output_wast.push_str("\n(just_run ");
@@ -535,7 +538,8 @@ impl<'a> TestContext {
         std::fs::write(&test_path, code).map_err(|e| Error::WriteTempTest(e, test_path.clone()))?;
 
         let mut args = vec!["-tg".into(), "-i".into(), test_path.into()];
-        if cfg!(fuzzing) {
+        if !self.check_snapshot {
+            // Limit gas pool size, to avoid infinite loops
             args.push("-g".into());
             args.push("1000".into());
         }
@@ -579,7 +583,7 @@ impl<'a> TestContext {
         let stdoutput = String::from_utf8(output.stdout).map_err(Error::InterpreterOutput)?;
         if !output.status.success() {
             let stderr = String::from_utf8_lossy(&output.stderr);
-            if cfg!(fuzzing)
+            if !self.check_snapshot
                 // Likely infinite recursion
                 && (stderr.contains("call stack exhausted")
                     // Likely infinite looping, or somesuch case.

@@ -70,6 +70,7 @@ fn run() -> Result<(), Error> {
             test_path.into(),
             snaps_directory.clone(),
             temp_directory.clone(),
+            true,
         );
         context.run();
         if context.failed() {

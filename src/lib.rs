@@ -12,7 +12,7 @@ use visitors::VisitOperatorWithOffset;
 pub use wasmparser;
 use wasmparser::BinaryReaderError;
 
-#[cfg(test)]
+#[cfg(all(test, feature = "wast-tests"))]
 mod fuzzers;
 pub mod gas;
 mod instruction_categories;
