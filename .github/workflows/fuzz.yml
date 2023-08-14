@@ -29,6 +29,7 @@ jobs:
           version: ">= 416.0.0"
       - run: rustup default nightly
       - run: opam install ocamlbuild
+      # See Cargo.toml for reasons
       - run: cargo install --git https://github.com/Ekleog-NEAR/bolero --rev 362328af9f0539f9d6ee62bb4334afaa0a71b572
       - run: opam exec -- cargo +nightly bolero build-clusterfuzz --all-features
       - run: |
