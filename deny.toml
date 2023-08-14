@@ -14,8 +14,17 @@ skip = [
     { name = "windows-sys" },
     { name = "windows-targets" },
     { name = "windows_x86_64_msvc" },
+    # wasmparser 0.105 requires:
+    { name = "wasmparser", version = "0.105" },
+    { name = "hashbrown", version = "0.12" },
+    { name = "indexmap", version = "1.9" },
+    # bolero-generator-derive v0.9.2 requires:
+    { name = "syn", version = "1.0" },
 ]
 
+# our bolero fork requires:
+[sources]
+allow-git = ["https://github.com/Ekleog-NEAR/bolero?rev=362328af9f0539f9d6ee62bb4334afaa0a71b572#362328af9f0539f9d6ee62bb4334afaa0a71b572"]
 
 [licenses]
 allow = [
@@ -29,6 +38,4 @@ allow = [
 ignore = [
     # parity-wasm is only ever used for dev-dependencies
     "RUSTSEC-2022-0061",
-    # atty is only ever used for dev-dependencies
-    "RUSTSEC-2021-0145",
 ]
