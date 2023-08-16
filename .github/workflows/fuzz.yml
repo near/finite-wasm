@@ -34,4 +34,4 @@ jobs:
       - run: opam exec -- cargo +nightly bolero build-clusterfuzz --all-features
       - run: |
           NAME="finite-wasm-$(env TZ=Etc/UTC date +"%Y%m%d%H%M%S")"
-          gsutil cp -z target/fuzz/clusterfuzz.tar "gs://fuzzer_targets/finite-wasm/$NAME.tar.gz"
+          gsutil cp -Z target/fuzz/clusterfuzz.tar "gs://fuzzer_targets/finite-wasm/$NAME.tar.gz"
