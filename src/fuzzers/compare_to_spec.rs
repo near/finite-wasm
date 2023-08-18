@@ -126,7 +126,7 @@ Test output:
 {}",
                     bytes,
                     wast_test,
-                    String::from_utf8_lossy(&t.output),
+                    String::from_utf8_lossy(&t.output), // foo
                 );
             }
         })
