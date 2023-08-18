@@ -127,10 +127,7 @@ Test output:
 {}",
                     bytes, wast_test, output,
                 );
-                panic!(
-                    "{}",
-                    itertools::intersperse(output.lines(), "; ").collect::<String>()
-                );
+                panic!("{}", output.lines().collect::<Vec<_>>().join("; "));
             }
         })
 }
