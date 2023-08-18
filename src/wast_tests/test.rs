@@ -238,9 +238,9 @@ impl<'a> TestContext {
         self.output.extend_from_slice(
             format!(
                 " (analysis: {:?}; interpreter: {:?})",
-                self.analysis_duration,
-                self.interpreter_duration
-            ).as_bytes()
+                self.analysis_duration, self.interpreter_duration
+            )
+            .as_bytes(),
         );
         self.output.extend_from_slice(b"\n");
     }
