@@ -116,7 +116,8 @@ fn fuzz() {
             t.run();
             if t.failed() {
                 let _ = std::fs::write("/tmp/fuzz-crash.wasm", &bytes);
-                panic!(
+                let output = String::from_utf8_lossy(&t.output);
+                eprintln!(
                     "Test failed, module available in /tmp/fuzz-crash.wasm.
 Module bytes were:
 {:?}
@@ -124,9 +125,11 @@ Wast test was:
 {}
 Test output:
 {}",
-                    bytes,
-                    wast_test,
-                    String::from_utf8_lossy(&t.output),
+                    bytes, wast_test, output,
+                );
+                panic!(
+                    "{}",
+                    itertools::intersperse(output.lines(), "; ").collect::<String>()
                 );
             }
         })
