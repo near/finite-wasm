@@ -29,9 +29,10 @@ jobs:
           version: ">= 416.0.0"
       - run: rustup default nightly
       - run: opam install ocamlbuild
-      # See Cargo.toml for reasons
-      - run: cargo install --git https://github.com/Ekleog-NEAR/bolero --rev 362328af9f0539f9d6ee62bb4334afaa0a71b572
-      - run: opam exec -- cargo +nightly bolero build-clusterfuzz --all-features
+      - uses: baptiste0928/cargo-install@21a18ba3bf4a184d1804e8b759930d3471b1c941
+        with:
+          crate: cargo-bolero
       - run: |
           NAME="finite-wasm-$(env TZ=Etc/UTC date +"%Y%m%d%H%M%S")"
+          opam exec -- cargo +nightly bolero build-clusterfuzz --all-features --profile fuzz
           gsutil cp -Z target/fuzz/clusterfuzz.tar "gs://fuzzer_targets/finite-wasm/$NAME.tar.gz"
