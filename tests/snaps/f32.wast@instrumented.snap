@@ -6,6 +6,17 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "add" (func 3))
+  (export "sub" (func 4))
+  (export "mul" (func 5))
+  (export "div" (func 6))
+  (export "sqrt" (func 7))
+  (export "min" (func 8))
+  (export "max" (func 9))
+  (export "ceil" (func 10))
+  (export "floor" (func 11))
+  (export "trunc" (func 12))
+  (export "nearest" (func 13))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -166,18 +177,8 @@
     i64.const 1
     call 2
   )
-  (export "add" (func 3))
-  (export "sub" (func 4))
-  (export "mul" (func 5))
-  (export "div" (func 6))
-  (export "sqrt" (func 7))
-  (export "min" (func 8))
-  (export "max" (func 9))
-  (export "ceil" (func 10))
-  (export "floor" (func 11))
-  (export "trunc" (func 12))
-  (export "nearest" (func 13))
 )
+
 (assert_return (invoke "add" (f32.const -0x0p+0) (f32.const -0x0p+0)) (f32.const -0x0p+0))
 (assert_return (invoke "add" (f32.const -0x0p+0) (f32.const 0x0p+0)) (f32.const 0x0p+0))
 (assert_return (invoke "add" (f32.const 0x0p+0) (f32.const -0x0p+0)) (f32.const 0x0p+0))

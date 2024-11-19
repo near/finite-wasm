@@ -6,6 +6,8 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
+  (memory (;0;) 1)
+  (export "test-guard-page-skip" (func $test-guard-page-skip))
   (func $test-guard-page-skip (;3;) (type 0) (param $depth i32)
     block ;; label = @1
       i64.const 8
@@ -10607,6 +10609,5 @@
     i64.const 1056
     call $finite_wasm_unstack
   )
-  (memory (;0;) 1)
-  (export "test-guard-page-skip" (func $test-guard-page-skip))
 )
+

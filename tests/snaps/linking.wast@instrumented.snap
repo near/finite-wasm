@@ -5,6 +5,7 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (export "call" (func 3))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -31,8 +32,8 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (export "call" (func 3))
 )
+
 (register "Mf" $Mf)
 
 (module $Nf
@@ -43,6 +44,9 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
   (import "Mf" "call" (func $f (;3;) (type 0)))
+  (export "Mf.call" (func $f))
+  (export "call Mf.call" (func 4))
+  (export "call" (func 5))
   (func (;4;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -82,10 +86,8 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (export "Mf.call" (func $f))
-  (export "call Mf.call" (func 4))
-  (export "call" (func 5))
 )
+
 (assert_return (invoke $Mf "call") (i32.const 2))
 (assert_return (invoke $Nf "Mf.call") (i32.const 2))
 (assert_return (invoke $Nf "call") (i32.const 3))
@@ -101,6 +103,7 @@
   (import "spectest" "print_i32" (func $f (;3;) (type 0)))
   (export "print" (func $f))
 )
+
 (register "reexport_f")
 (module $Mg
   (type (;0;) (func (result i32)))
@@ -110,6 +113,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (global $glob (;0;) i32 i32.const 42)
+  (global $mut_glob (;1;) (mut i32) i32.const 142)
+  (export "glob" (global $glob))
+  (export "get" (func 3))
+  (export "mut_glob" (global $mut_glob))
+  (export "get_mut" (func 4))
+  (export "set_mut" (func 5))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -150,14 +160,8 @@
     i64.const 1
     call 2
   )
-  (global $glob (;0;) i32 i32.const 42)
-  (global $mut_glob (;1;) (mut i32) i32.const 142)
-  (export "glob" (global $glob))
-  (export "get" (func 3))
-  (export "mut_glob" (global $mut_glob))
-  (export "get_mut" (func 4))
-  (export "set_mut" (func 5))
 )
+
 (register "Mg" $Mg)
 
 (module $Ng
@@ -173,6 +177,14 @@
   (import "Mg" "get" (func $f (;3;) (type 0)))
   (import "Mg" "get_mut" (func $get_mut (;4;) (type 0)))
   (import "Mg" "set_mut" (func $set_mut (;5;) (type 1)))
+  (global $glob (;2;) i32 i32.const 43)
+  (export "Mg.glob" (global $x))
+  (export "Mg.get" (func $f))
+  (export "glob" (global $glob))
+  (export "get" (func 6))
+  (export "Mg.mut_glob" (global $mut_glob))
+  (export "Mg.get_mut" (func $get_mut))
+  (export "Mg.set_mut" (func $set_mut))
   (func (;6;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -186,15 +198,8 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (global $glob (;2;) i32 i32.const 43)
-  (export "Mg.glob" (global $x))
-  (export "Mg.get" (func $f))
-  (export "glob" (global $glob))
-  (export "get" (func 6))
-  (export "Mg.mut_glob" (global $mut_glob))
-  (export "Mg.get_mut" (func $get_mut))
-  (export "Mg.set_mut" (func $set_mut))
 )
+
 (assert_return (get $Mg "glob") (i32.const 42))
 (assert_return (get $Ng "Mg.glob") (i32.const 42))
 (assert_return (get $Ng "glob") (i32.const 43))
@@ -224,6 +229,7 @@
   (export "g-const-extern" (global 2))
   (export "g-var-extern" (global 3))
 )
+
 (register "Mref_ex" $Mref_ex)
 
 (module $Mref_im
@@ -237,6 +243,7 @@
   (import "Mref_ex" "g-var-func" (global (;2;) (mut funcref)))
   (import "Mref_ex" "g-var-extern" (global (;3;) (mut externref)))
 )
+
 (module $Mt
   (type (;0;) (func (result i32)))
   (type (;1;) (func))
@@ -246,6 +253,11 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 10 funcref)
+  (export "tab" (table 0))
+  (export "h" (func 4))
+  (export "call" (func 5))
+  (elem (;0;) (i32.const 2) func $g $g $g $g)
   (func $g (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -286,12 +298,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 10 funcref)
-  (export "tab" (table 0))
-  (export "h" (func 4))
-  (export "call" (func 5))
-  (elem (;0;) (i32.const 2) func $g $g $g $g)
 )
+
 (register "Mt" $Mt)
 
 (module $Nt
@@ -305,6 +313,11 @@
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
   (import "Mt" "call" (func $f (;3;) (type 2)))
   (import "Mt" "h" (func $h (;4;) (type 1)))
+  (table (;0;) 5 5 funcref)
+  (export "Mt.call" (func $f))
+  (export "call Mt.call" (func 6))
+  (export "call" (func 7))
+  (elem (;0;) (table 0) (i32.const 0) func $g $g $g $h $f)
   (func $g (;5;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -346,12 +359,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 5 5 funcref)
-  (export "Mt.call" (func $f))
-  (export "call Mt.call" (func 6))
-  (export "call" (func 7))
-  (elem (;0;) (i32.const 0) func $g $g $g $h $f)
 )
+
 (assert_return (invoke $Mt "call" (i32.const 2)) (i32.const 4))
 (assert_return (invoke $Nt "Mt.call" (i32.const 2)) (i32.const 4))
 (assert_return (invoke $Nt "call" (i32.const 2)) (i32.const 5))
@@ -385,6 +394,8 @@
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
   (import "Mt" "h" (func $h (;3;) (type 0)))
   (import "Mt" "tab" (table (;0;) 5 funcref))
+  (export "call" (func 5))
+  (elem (;0;) (i32.const 1) func $i $h)
   (func $i (;4;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -412,9 +423,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (export "call" (func 5))
-  (elem (;0;) (i32.const 1) func $i $h)
 )
+
 (assert_return (invoke $Mt "call" (i32.const 3)) (i32.const 4))
 (assert_return (invoke $Nt "Mt.call" (i32.const 3)) (i32.const 4))
 (assert_return (invoke $Nt "call Mt.call" (i32.const 3)) (i32.const 4))
@@ -448,13 +458,15 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
   (import "Mt" "tab" (table (;0;) 0 funcref))
-  (func $f (;3;) (type 0))
   (elem (;0;) (i32.const 9) func $f)
+  (func $f (;3;) (type 0))
 )
+
 (module $G1
   (global (;0;) i32 i32.const 5)
   (export "g" (global 0))
 )
+
 (register "G1" $G1)
 (module $G2
   (type (;0;) (func (param i64)))
@@ -466,6 +478,7 @@
   (global (;1;) i32 global.get 0)
   (export "g" (global 1))
 )
+
 (assert_return (get $G2 "g") (i32.const 5))
 
 
@@ -477,9 +490,10 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
   (import "Mt" "tab" (table (;0;) 0 funcref))
-  (func $f (;3;) (type 0))
   (elem (;0;) (i32.const 10) func $f)
-) "out of bounds table access")
+  (func $f (;3;) (type 0))
+)
+ "out of bounds table access")
 (assert_trap (invoke $Mt "call" (i32.const 7)) "uninitialized element")
 
 ;; Unlike in the v1 spec, active element segments stored before an
@@ -493,6 +507,8 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
   (import "Mt" "tab" (table (;0;) 10 funcref))
+  (elem (;0;) (i32.const 7) func $f)
+  (elem (;1;) (i32.const 8) func $f $f $f $f $f)
   (func $f (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -506,9 +522,8 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (elem (;0;) (i32.const 7) func $f)
-  (elem (;1;) (i32.const 8) func $f $f $f $f $f)
-) "out of bounds table access")
+)
+ "out of bounds table access")
 (assert_return (invoke $Mt "call" (i32.const 7)) (i32.const 0))
 (assert_trap (invoke $Mt "call" (i32.const 8)) "uninitialized element")
 
@@ -521,6 +536,8 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
   (import "Mt" "tab" (table (;0;) 10 funcref))
+  (memory (;0;) 1)
+  (elem (;0;) (i32.const 7) func $f)
   (func $f (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -534,10 +551,9 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (memory (;0;) 1)
-  (elem (;0;) (i32.const 7) func $f)
   (data (;0;) (i32.const 65536) "d")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 (assert_return (invoke $Mt "call" (i32.const 7)) (i32.const 0))
 
 
@@ -547,6 +563,7 @@
   (export "t-func" (table $t1))
   (export "t-extern" (table $t2))
 )
+
 (register "Mtable_ex" $Mtable_ex)
 
 (module
@@ -558,6 +575,7 @@
   (import "Mtable_ex" "t-func" (table (;0;) 1 funcref))
   (import "Mtable_ex" "t-extern" (table (;1;) 1 externref))
 )
+
 (module $Mm
   (type (;0;) (func (param i32) (result i32)))
   (type (;1;) (func (param i64)))
@@ -565,6 +583,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1 5)
+  (export "mem" (memory 0))
+  (export "load" (func 3))
   (func (;3;) (type 0) (param $a i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -579,11 +600,9 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1 5)
-  (export "mem" (memory 0))
-  (export "load" (func 3))
   (data (;0;) (i32.const 10) "\00\01\02\03\04\05\06\07\08\09")
 )
+
 (register "Mm" $Mm)
 
 (module $Nm
@@ -594,6 +613,9 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
   (import "Mm" "load" (func $loadM (;3;) (type 0)))
+  (memory (;0;) 1)
+  (export "Mm.load" (func $loadM))
+  (export "load" (func 4))
   (func (;4;) (type 0) (param $a i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -608,11 +630,9 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (memory (;0;) 1)
-  (export "Mm.load" (func $loadM))
-  (export "load" (func 4))
   (data (;0;) (i32.const 10) "\f0\f1\f2\f3\f4\f5")
 )
+
 (assert_return (invoke $Mm "load" (i32.const 12)) (i32.const 2))
 (assert_return (invoke $Nm "Mm.load" (i32.const 12)) (i32.const 2))
 (assert_return (invoke $Nm "load" (i32.const 12)) (i32.const 0xf2))
@@ -625,6 +645,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
   (import "Mm" "mem" (memory (;0;) 1))
+  (export "load" (func 3))
   (func (;3;) (type 0) (param $a i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -639,9 +660,9 @@
     i64.const 1
     call 2
   )
-  (export "load" (func 3))
   (data (;0;) (i32.const 5) "\a0\a1\a2\a3\a4\a5\a6\a7")
 )
+
 (assert_return (invoke $Mm "load" (i32.const 12)) (i32.const 0xa7))
 (assert_return (invoke $Nm "Mm.load" (i32.const 12)) (i32.const 0xa7))
 (assert_return (invoke $Nm "load" (i32.const 12)) (i32.const 0xf2))
@@ -657,6 +678,7 @@
   (data (;0;) (i32.const 65535) "a")
 )
 
+
 (assert_trap (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -665,7 +687,8 @@
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 1)))
   (import "Mm" "mem" (memory (;0;) 0))
   (data (;0;) (i32.const 65536) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 (module $Pm
   (type (;0;) (func (param i32) (result i32)))
   (type (;1;) (func (param i64)))
@@ -674,6 +697,7 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
   (import "Mm" "mem" (memory (;0;) 1 8))
+  (export "grow" (func 3))
   (func (;3;) (type 0) (param $a i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -690,8 +714,8 @@
     i64.const 1
     call 2
   )
-  (export "grow" (func 3))
 )
+
 (assert_return (invoke $Pm "grow" (i32.const 0)) (i32.const 1))
 (assert_return (invoke $Pm "grow" (i32.const 2)) (i32.const 1))
 (assert_return (invoke $Pm "grow" (i32.const 0)) (i32.const 3))
@@ -715,7 +739,8 @@
   (import "Mm" "mem" (memory (;0;) 1))
   (data (;0;) (i32.const 0) "abc")
   (data (;1;) (i32.const 327670) "zzzzzzzzzzzzzzzzzz")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 (assert_return (invoke $Mm "load" (i32.const 0)) (i32.const 97))
 (assert_return (invoke $Mm "load" (i32.const 327670)) (i32.const 0))
 
@@ -728,11 +753,12 @@
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
   (import "Mm" "mem" (memory (;0;) 1))
-  (func (;3;) (type 0))
   (table (;0;) 0 funcref)
   (elem (;0;) (i32.const 0) func 3)
+  (func (;3;) (type 0))
   (data (;0;) (i32.const 0) "abc")
-) "out of bounds table access")
+)
+ "out of bounds table access")
 (assert_return (invoke $Mm "load" (i32.const 0)) (i32.const 97))
 
 ;; Store is modified if the start function traps.
@@ -743,6 +769,12 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (table (;0;) 1 funcref)
+  (memory (;0;) 1)
+  (export "memory" (memory 0))
+  (export "table" (table 0))
+  (export "get memory[0]" (func 3))
+  (export "get table[0]" (func 4))
   (func (;3;) (type $t) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -771,13 +803,8 @@
     i64.const 0
     call 2
   )
-  (table (;0;) 1 funcref)
-  (memory (;0;) 1)
-  (export "memory" (memory 0))
-  (export "table" (table 0))
-  (export "get memory[0]" (func 3))
-  (export "get table[0]" (func 4))
 )
+
 (register "Ms" $Ms)
 
 
@@ -791,6 +818,8 @@
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
   (import "Ms" "memory" (memory (;0;) 1))
   (import "Ms" "table" (table (;0;) 1 funcref))
+  (start $main)
+  (elem (;0;) (i32.const 0) func $f)
   (func $f (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -809,9 +838,8 @@
     call $finite_wasm_gas
     unreachable
   )
-  (start $main)
-  (elem (;0;) (i32.const 0) func $f)
   (data (;0;) (i32.const 0) "hello")
-) "unreachable")
+)
+ "unreachable")
 (assert_return (invoke $Ms "get memory[0]") (i32.const 104))  ;; 'h'
 (assert_return (invoke $Ms "get table[0]") (i32.const 0xdead))

@@ -1,4 +1,5 @@
 use crate::{gas::InstrumentationKind, AnalysisOutcome};
+use std::borrow::Cow;
 use wasm_encoder::{self as we, Section};
 use wasmparser as wp;
 
@@ -130,7 +131,7 @@ impl<'a> InstrumentContext<'a> {
                         let ty = ty.map_err(Error::ParseType)?;
                         match &ty {
                             wp::Type::Func(f) => {
-                                self.type_section.function(
+                                self.type_section.ty().function(
                                     f.params().iter().copied().map(valtype),
                                     f.results().iter().copied().map(valtype),
                                 );
@@ -197,6 +198,7 @@ impl<'a> InstrumentContext<'a> {
                         let global = global.map_err(Error::ParseGlobal)?;
                         self.global_section.global(
                             we::GlobalType {
+                                shared: false,
                                 val_type: valtype(global.ty.content_type),
                                 mutable: global.ty.mutable,
                             },
@@ -316,6 +318,7 @@ impl<'a> InstrumentContext<'a> {
             (_, results) => {
                 let new_block_type_idx = self.type_section.len();
                 self.type_section
+                    .ty()
                     .function(std::iter::empty(), results.iter().copied().map(valtype));
                 we::BlockType::FunctionType(new_block_type_idx)
             }
@@ -381,8 +384,9 @@ impl<'a> InstrumentContext<'a> {
             let instrument_fn_ty = self.type_section.len();
             // By adding the type at the end of the type section we guarantee that any other
             // type references remain valid.
-            self.type_section.function([we::ValType::I64], []);
+            self.type_section.ty().function([we::ValType::I64], []);
             self.type_section
+                .ty()
                 .function([we::ValType::I64, we::ValType::I64], []);
             // By inserting the imports at the beginning of the import section we make the new
             // function index mapping trivial (it is always just an increment by F)
@@ -440,17 +444,21 @@ impl<'a> InstrumentContext<'a> {
             let import_ty = match import.ty {
                 wp::TypeRef::Func(i) => we::EntityType::Function(i),
                 wp::TypeRef::Table(t) => we::EntityType::Table(we::TableType {
+                    shared: false,
+                    table64: false,
                     element_type: reftype(t.element_type),
-                    minimum: t.initial,
-                    maximum: t.maximum,
+                    minimum: t.initial.into(),
+                    maximum: t.maximum.map(Into::into),
                 }),
                 wp::TypeRef::Memory(t) => we::EntityType::Memory(we::MemoryType {
                     minimum: t.initial,
                     maximum: t.maximum,
                     memory64: t.memory64,
                     shared: t.shared,
+                    page_size_log2: None,
                 }),
                 wp::TypeRef::Global(t) => we::EntityType::Global(we::GlobalType {
+                    shared: false,
                     val_type: valtype(t.content_type),
                     mutable: t.mutable,
                 }),
@@ -479,14 +487,14 @@ impl<'a> InstrumentContext<'a> {
                         .into_iter()
                         .map(|v| map_func(v.map_err(Error::ParseElementItem)?))
                         .collect::<Result<Vec<_>, _>>()?;
-                    we::Elements::Functions(&functions)
+                    we::Elements::Functions(Cow::Borrowed(&functions))
                 }
                 wp::ElementItems::Expressions(exprs) => {
                     expressions = exprs
                         .into_iter()
                         .map(|v| v.map_err(Error::ParseElementExpression).and_then(constexpr))
                         .collect::<Result<Vec<_>, _>>()?;
-                    we::Elements::Expressions(&expressions)
+                    we::Elements::Expressions(reftype(elem.ty), Cow::Borrowed(&expressions))
                 }
             };
             self.element_section.segment(we::ElementSegment {
@@ -504,7 +512,6 @@ impl<'a> InstrumentContext<'a> {
                         }
                     }
                 },
-                element_type: reftype(elem.ty),
                 elements: items,
             });
         }
@@ -547,21 +554,27 @@ fn valtype(wp: wp::ValType) -> we::ValType {
 }
 
 fn reftype(wp: wp::RefType) -> we::RefType {
+    let ty = match wp.heap_type() {
+        wp::HeapType::TypedFunc(idx) => {
+            return we::RefType {
+                nullable: wp.is_nullable(),
+                heap_type: we::HeapType::Concrete(idx),
+            }
+        }
+        wp::HeapType::Func => we::AbstractHeapType::Func,
+        wp::HeapType::Extern => we::AbstractHeapType::Extern,
+        wp::HeapType::Any => we::AbstractHeapType::Any,
+        wp::HeapType::None => we::AbstractHeapType::None,
+        wp::HeapType::NoExtern => we::AbstractHeapType::NoExtern,
+        wp::HeapType::NoFunc => we::AbstractHeapType::NoFunc,
+        wp::HeapType::Eq => we::AbstractHeapType::Eq,
+        wp::HeapType::Struct => we::AbstractHeapType::Struct,
+        wp::HeapType::Array => we::AbstractHeapType::Array,
+        wp::HeapType::I31 => we::AbstractHeapType::I31,
+    };
     we::RefType {
         nullable: wp.is_nullable(),
-        heap_type: match wp.heap_type() {
-            wp::HeapType::Func => we::HeapType::Func,
-            wp::HeapType::Extern => we::HeapType::Extern,
-            wp::HeapType::Any => we::HeapType::Any,
-            wp::HeapType::None => we::HeapType::None,
-            wp::HeapType::NoExtern => we::HeapType::NoExtern,
-            wp::HeapType::NoFunc => we::HeapType::NoFunc,
-            wp::HeapType::Eq => we::HeapType::Eq,
-            wp::HeapType::Struct => we::HeapType::Struct,
-            wp::HeapType::Array => we::HeapType::Array,
-            wp::HeapType::I31 => we::HeapType::I31,
-            wp::HeapType::TypedFunc(idx) => we::HeapType::TypedFunc(idx),
-        },
+        heap_type: we::HeapType::Abstract { shared: false, ty },
     }
 }
 

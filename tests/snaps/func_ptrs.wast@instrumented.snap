@@ -12,6 +12,10 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 8)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 8)))
   (import "spectest" "print_i32" (func $print (;3;) (type $U)))
+  (export "one" (func 6))
+  (export "two" (func 7))
+  (export "three" (func 8))
+  (export "four" (func 9))
   (func (;4;) (type 0))
   (func (;5;) (type $S))
   (func (;6;) (type 4) (result i32)
@@ -71,11 +75,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (export "one" (func 6))
-  (export "two" (func 7))
-  (export "three" (func 8))
-  (export "four" (func 9))
 )
+
 (assert_return (invoke "one") (i32.const 13))
 (assert_return (invoke "two" (i32.const 13)) (i32.const 14))
 (assert_return (invoke "three" (i32.const 13)) (i32.const 11))
@@ -90,6 +91,10 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 7 7 funcref)
+  (export "callt" (func 8))
+  (export "callu" (func 9))
+  (elem (;0;) (table 0) (i32.const 0) func $t1 $t2 $t3 $u1 $u2 $t1 $t3)
   (func $t1 (;3;) (type $T) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -183,11 +188,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 7 7 funcref)
-  (export "callt" (func 8))
-  (export "callu" (func 9))
-  (elem (;0;) (i32.const 0) func $t1 $t2 $t3 $u1 $u2 $t1 $t3)
 )
+
 (assert_return (invoke "callt" (i32.const 0)) (i32.const 1))
 (assert_return (invoke "callt" (i32.const 1)) (i32.const 2))
 (assert_return (invoke "callt" (i32.const 2)) (i32.const 3))
@@ -218,6 +220,9 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
+  (table (;0;) 2 2 funcref)
+  (export "callt" (func 5))
+  (elem (;0;) (table 0) (i32.const 0) func $t1 $t2)
   (func $t1 (;3;) (type $T) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -258,9 +263,7 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 2 2 funcref)
-  (export "callt" (func 5))
-  (elem (;0;) (i32.const 0) func $t1 $t2)
 )
+
 (assert_return (invoke "callt" (i32.const 0)) (i32.const 1))
 (assert_return (invoke "callt" (i32.const 1)) (i32.const 2))

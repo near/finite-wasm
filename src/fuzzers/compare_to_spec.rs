@@ -39,18 +39,11 @@ pub fn find_entry_points(contract: &[u8]) -> Vec<String> {
     entries
 }
 
-#[derive(Debug, arbitrary::Arbitrary)]
-struct ModuleConfig;
-impl wasm_smith::Config for ModuleConfig {
-    fn max_imports(&self) -> usize {
-        0
-    }
-    fn max_instructions(&self) -> usize {
-        1000
-    }
-    fn allow_start_export(&self) -> bool {
-        false // traps in start are not caught properly
-    }
+fn adjust_cfg(mut config: wasm_smith::Config) -> wasm_smith::Config {
+    config.max_imports = 0;
+    config.max_instructions = 1000;
+    config.allow_start_export = false;
+    config
 }
 
 #[derive(Debug)]
@@ -60,17 +53,15 @@ struct WasmSmithModule {
 
 impl<'a> arbitrary::Arbitrary<'a> for WasmSmithModule {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
-        wasm_smith::ConfiguredModule::<ModuleConfig>::arbitrary(u).map(|m| Self {
-            data: m.module.to_bytes(),
-        })
-    }
-    fn arbitrary_take_rest(u: arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
-        wasm_smith::ConfiguredModule::<ModuleConfig>::arbitrary_take_rest(u).map(|m| Self {
-            data: m.module.to_bytes(),
+        let config = adjust_cfg(wasm_smith::Config::arbitrary(u)?);
+        wasm_smith::Module::new(config, u).map(|m| Self {
+            data: m.to_bytes(),
         })
     }
     fn size_hint(depth: usize) -> (usize, Option<usize>) {
-        wasm_smith::ConfiguredModule::<ModuleConfig>::size_hint(depth)
+        let cfg_size = wasm_smith::Config::size_hint(depth);
+        let module_size = wasm_smith::Module::size_hint(depth);
+        (cfg_size.0 + module_size.0, None)
     }
 }
 

@@ -18,8 +18,8 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - uses: actions/checkout@v2
-      - uses: ocaml/setup-ocaml@v2
+      - uses: actions/checkout@v4
+      - uses: ocaml/setup-ocaml@36465e9a68c360c87f287ad8e2305ca507e54be8
         with:
           ocaml-compiler: 4.13.1
       - run: rustup update --no-self-update stable
@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: rustup update --no-self-update stable
       - run: cargo install cargo-deny
       - run: cargo deny check

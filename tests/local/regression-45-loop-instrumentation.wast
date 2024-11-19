@@ -3,8 +3,8 @@
     loop $l1
       loop $l2
         loop $l3
-          (i32.add (get_local $count) (i32.const 1))
-          (tee_local $count)
+          (i32.add (local.get $count) (i32.const 1))
+          (local.tee $count)
           (br_table $l2 $l2 $l2 $l2 $l2 $l2 $l2 3)
         end
       end

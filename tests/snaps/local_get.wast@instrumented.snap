@@ -14,6 +14,25 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 10)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 11)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 11)))
+  (export "type-local-i32" (func 3))
+  (export "type-local-i64" (func 4))
+  (export "type-local-f32" (func 5))
+  (export "type-local-f64" (func 6))
+  (export "type-param-i32" (func 7))
+  (export "type-param-i64" (func 8))
+  (export "type-param-f32" (func 9))
+  (export "type-param-f64" (func 10))
+  (export "type-mixed" (func 11))
+  (export "read" (func 12))
+  (export "as-block-value" (func 13))
+  (export "as-loop-value" (func 14))
+  (export "as-br-value" (func 15))
+  (export "as-br_if-value" (func 16))
+  (export "as-br_if-value-cond" (func 17))
+  (export "as-br_table-value" (func 18))
+  (export "as-return-value" (func 19))
+  (export "as-if-then" (func 20))
+  (export "as-if-else" (func 21))
   (func (;3;) (type 0) (result i32)
     (local i32)
     block (result i32) ;; label = @1
@@ -252,7 +271,7 @@
     call 2
   )
   (func (;16;) (type 4) (param i32) (result i32)
-    block $l0 (result i32) ;; label = @1
+    block $l0 (result i32)
       i64.const 8
       i64.const 1
       call 1
@@ -388,26 +407,8 @@
     i64.const 1
     call 2
   )
-  (export "type-local-i32" (func 3))
-  (export "type-local-i64" (func 4))
-  (export "type-local-f32" (func 5))
-  (export "type-local-f64" (func 6))
-  (export "type-param-i32" (func 7))
-  (export "type-param-i64" (func 8))
-  (export "type-param-f32" (func 9))
-  (export "type-param-f64" (func 10))
-  (export "type-mixed" (func 11))
-  (export "read" (func 12))
-  (export "as-block-value" (func 13))
-  (export "as-loop-value" (func 14))
-  (export "as-br-value" (func 15))
-  (export "as-br_if-value" (func 16))
-  (export "as-br_if-value-cond" (func 17))
-  (export "as-br_table-value" (func 18))
-  (export "as-return-value" (func 19))
-  (export "as-if-then" (func 20))
-  (export "as-if-else" (func 21))
 )
+
 (assert_return (invoke "type-local-i32") (i32.const 0))
 (assert_return (invoke "type-local-i64") (i64.const 0))
 (assert_return (invoke "type-local-f32") (f32.const 0))

@@ -5,15 +5,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "regression45" (func 3))
   (func (;3;) (type 0) (param $count i32)
-    block $l1 ;; label = @1
+    block $l1
       i64.const 8
       i64.const 1
       call 1
       i64.const 1
       call 0
-      loop $l2 ;; label = @2
-        loop $l3 ;; label = @3
+      loop $l2
+        loop $l3
           i64.const 7
           call 0
           loop ;; label = @4
@@ -21,7 +22,7 @@
             i32.const 1
             i32.add
             local.tee $count
-            br_table 1 (;@3;) 1 (;@3;) 1 (;@3;) 1 (;@3;) 1 (;@3;) 1 (;@3;) 1 (;@3;) 3 (;@1;)
+            br_table $l3 $l3 $l3 $l3 $l3 $l3 $l3 $l1
           end
         end
       end
@@ -30,6 +31,6 @@
     i64.const 1
     call 2
   )
-  (export "regression45" (func 3))
 )
+
 (invoke "regression45" (i32.const 0))

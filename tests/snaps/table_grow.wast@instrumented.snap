@@ -8,6 +8,12 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 5)))
+  (table $t (;0;) 0 externref)
+  (export "get" (func 3))
+  (export "set" (func 4))
+  (export "grow" (func 5))
+  (export "grow-abbrev" (func 6))
+  (export "size" (func 7))
   (func (;3;) (type 0) (param $i i32) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
@@ -84,13 +90,8 @@
     i64.const 0
     call 2
   )
-  (table $t (;0;) 0 externref)
-  (export "get" (func 3))
-  (export "set" (func 4))
-  (export "grow" (func 5))
-  (export "grow-abbrev" (func 6))
-  (export "size" (func 7))
 )
+
 (assert_return (invoke "size") (i32.const 0))
 (assert_trap (invoke "set" (i32.const 0) (ref.extern 2)) "out of bounds table access")
 (assert_trap (invoke "get" (i32.const 0)) "out of bounds table access")
@@ -124,6 +125,9 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (table $t (;0;) 16 funcref)
+  (export "grow" (func $f))
+  (elem (;0;) declare func $f)
   (func $f (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
@@ -141,10 +145,8 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (table $t (;0;) 16 funcref)
-  (export "grow" (func $f))
-  (elem (;0;) declare func $f)
 )
+
 (assert_return (invoke "grow") (i32.const -1))
 
 
@@ -155,6 +157,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (table $t (;0;) 0 externref)
+  (export "grow" (func 3))
   (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
@@ -172,9 +176,8 @@
     i64.const 1
     call 2
   )
-  (table $t (;0;) 0 externref)
-  (export "grow" (func 3))
 )
+
 (assert_return (invoke "grow" (i32.const 0)) (i32.const 0))
 (assert_return (invoke "grow" (i32.const 1)) (i32.const 0))
 (assert_return (invoke "grow" (i32.const 0)) (i32.const 1))
@@ -189,6 +192,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (table $t (;0;) 0 10 externref)
+  (export "grow" (func 3))
   (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
@@ -206,9 +211,8 @@
     i64.const 1
     call 2
   )
-  (table $t (;0;) 0 10 externref)
-  (export "grow" (func 3))
 )
+
 (assert_return (invoke "grow" (i32.const 0)) (i32.const 0))
 (assert_return (invoke "grow" (i32.const 1)) (i32.const 0))
 (assert_return (invoke "grow" (i32.const 1)) (i32.const 1))
@@ -227,6 +231,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t (;0;) 10 funcref)
+  (export "grow" (func 3))
+  (export "check-table-null" (func 4))
+  (elem (;0;) declare func 4)
   (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
@@ -293,11 +301,8 @@
     i64.const 3
     call 2
   )
-  (table $t (;0;) 10 funcref)
-  (export "grow" (func 3))
-  (export "check-table-null" (func 4))
-  (elem (;0;) declare func 4)
 )
+
 (assert_return (invoke "check-table-null" (i32.const 0) (i32.const 9)) (ref.null func))
 (assert_return (invoke "grow" (i32.const 10)) (i32.const 10))
 (assert_return (invoke "check-table-null" (i32.const 0) (i32.const 19)) (ref.null func))

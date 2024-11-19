@@ -5,6 +5,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "f64.no_contraction" (func 3))
   (func (;3;) (type 0) (param $x f64) (param $y f64) (param $z f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
@@ -22,8 +23,8 @@
     i64.const 3
     call 2
   )
-  (export "f64.no_contraction" (func 3))
 )
+
 (assert_return (invoke "f64.no_contraction" (f64.const -0x1.9e87ce14273afp-103) (f64.const 0x1.2515ad31db63ep+664) (f64.const 0x1.868c6685e6185p+533)) (f64.const -0x1.da94885b11493p+561))
 (assert_return (invoke "f64.no_contraction" (f64.const 0x1.da21c460a6f44p+52) (f64.const 0x1.60859d2e7714ap-321) (f64.const 0x1.e63f1b7b660e1p-302)) (f64.const 0x1.4672f256d1794p-268))
 (assert_return (invoke "f64.no_contraction" (f64.const -0x1.f3eaf43f327cp-594) (f64.const 0x1.dfcc009906b57p+533) (f64.const 0x1.5984e03c520a1p-104)) (f64.const -0x1.d4797fb3db166p-60))
@@ -40,6 +41,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fma" (func 3))
+  (export "f64.no_fma" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -74,9 +77,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_fma" (func 3))
-  (export "f64.no_fma" (func 4))
 )
+
 (assert_return (invoke "f32.no_fma" (f32.const 0x1.a78402p+124) (f32.const 0x1.cf8548p-23) (f32.const 0x1.992adap+107)) (f32.const 0x1.a5262cp+107))
 (assert_return (invoke "f32.no_fma" (f32.const 0x1.ed15a4p-28) (f32.const -0x1.613c72p-50) (f32.const 0x1.4757bp-88)) (f32.const -0x1.5406b8p-77))
 (assert_return (invoke "f32.no_fma" (f32.const 0x1.ae63a2p+37) (f32.const 0x1.b3a59ap-13) (f32.const 0x1.c16918p+10)) (f32.const 0x1.6e385cp+25))
@@ -99,6 +101,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_add_zero" (func 3))
+  (export "f64.no_fold_add_zero" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -129,9 +133,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_add_zero" (func 3))
-  (export "f64.no_fold_add_zero" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_add_zero" (f32.const -0.0)) (f32.const 0.0))
 (assert_return (invoke "f64.no_fold_add_zero" (f64.const -0.0)) (f64.const 0.0))
 (assert_return (invoke "f32.no_fold_add_zero" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
@@ -147,6 +150,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_zero_sub" (func 3))
+  (export "f64.no_fold_zero_sub" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -177,9 +182,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_zero_sub" (func 3))
-  (export "f64.no_fold_zero_sub" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_zero_sub" (f32.const 0.0)) (f32.const 0.0))
 (assert_return (invoke "f64.no_fold_zero_sub" (f64.const 0.0)) (f64.const 0.0))
 (assert_return (invoke "f32.no_fold_zero_sub" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
@@ -195,6 +199,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_sub_zero" (func 3))
+  (export "f64.no_fold_sub_zero" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -225,9 +231,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_sub_zero" (func 3))
-  (export "f64.no_fold_sub_zero" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_sub_zero" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "f64.no_fold_sub_zero" (f64.const nan:0x4000000000000)) (f64.const nan:arithmetic))
 
@@ -241,6 +246,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_mul_zero" (func 3))
+  (export "f64.no_fold_mul_zero" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -271,9 +278,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_mul_zero" (func 3))
-  (export "f64.no_fold_mul_zero" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_mul_zero" (f32.const -0.0)) (f32.const -0.0))
 (assert_return (invoke "f32.no_fold_mul_zero" (f32.const -1.0)) (f32.const -0.0))
 (assert_return (invoke "f32.no_fold_mul_zero" (f32.const -2.0)) (f32.const -0.0))
@@ -294,6 +300,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_mul_one" (func 3))
+  (export "f64.no_fold_mul_one" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -324,9 +332,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_mul_one" (func 3))
-  (export "f64.no_fold_mul_one" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_mul_one" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "f64.no_fold_mul_one" (f64.const nan:0x4000000000000)) (f64.const nan:arithmetic))
 
@@ -340,6 +347,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_zero_div" (func 3))
+  (export "f64.no_fold_zero_div" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -370,9 +379,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_zero_div" (func 3))
-  (export "f64.no_fold_zero_div" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_zero_div" (f32.const 0.0)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_zero_div" (f32.const -0.0)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_zero_div" (f32.const nan)) (f32.const nan:canonical))
@@ -392,6 +400,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_one" (func 3))
+  (export "f64.no_fold_div_one" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -422,9 +432,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div_one" (func 3))
-  (export "f64.no_fold_div_one" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_one" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "f64.no_fold_div_one" (f64.const nan:0x4000000000000)) (f64.const nan:arithmetic))
 
@@ -438,6 +447,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_neg1" (func 3))
+  (export "f64.no_fold_div_neg1" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -468,9 +479,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div_neg1" (func 3))
-  (export "f64.no_fold_div_neg1" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_neg1" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "f64.no_fold_div_neg1" (f64.const nan:0x4000000000000)) (f64.const nan:arithmetic))
 
@@ -484,6 +494,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_neg0_sub" (func 3))
+  (export "f64.no_fold_neg0_sub" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -514,9 +526,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_neg0_sub" (func 3))
-  (export "f64.no_fold_neg0_sub" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_neg0_sub" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "f64.no_fold_neg0_sub" (f64.const nan:0x4000000000000)) (f64.const nan:arithmetic))
 
@@ -530,6 +541,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_neg1_mul" (func 3))
+  (export "f64.no_fold_neg1_mul" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -560,9 +573,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_neg1_mul" (func 3))
-  (export "f64.no_fold_neg1_mul" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_neg1_mul" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "f64.no_fold_neg1_mul" (f64.const nan:0x4000000000000)) (f64.const nan:arithmetic))
 
@@ -576,6 +588,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_eq_self" (func 3))
+  (export "f64.no_fold_eq_self" (func 4))
   (func (;3;) (type 0) (param $x f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -606,9 +620,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_eq_self" (func 3))
-  (export "f64.no_fold_eq_self" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_eq_self" (f32.const nan)) (i32.const 0))
 (assert_return (invoke "f64.no_fold_eq_self" (f64.const nan)) (i32.const 0))
 
@@ -622,6 +635,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_ne_self" (func 3))
+  (export "f64.no_fold_ne_self" (func 4))
   (func (;3;) (type 0) (param $x f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -652,9 +667,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_ne_self" (func 3))
-  (export "f64.no_fold_ne_self" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_ne_self" (f32.const nan)) (i32.const 1))
 (assert_return (invoke "f64.no_fold_ne_self" (f64.const nan)) (i32.const 1))
 
@@ -668,6 +682,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_sub_self" (func 3))
+  (export "f64.no_fold_sub_self" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -698,9 +714,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_sub_self" (func 3))
-  (export "f64.no_fold_sub_self" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_sub_self" (f32.const inf)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_sub_self" (f32.const nan)) (f32.const nan:canonical))
 (assert_return (invoke "f64.no_fold_sub_self" (f64.const inf)) (f64.const nan:canonical))
@@ -716,6 +731,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_self" (func 3))
+  (export "f64.no_fold_div_self" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -746,9 +763,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div_self" (func 3))
-  (export "f64.no_fold_div_self" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_self" (f32.const inf)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_div_self" (f32.const nan)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_div_self" (f32.const 0.0)) (f32.const nan:canonical))
@@ -768,6 +784,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_3" (func 3))
+  (export "f64.no_fold_div_3" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -798,9 +816,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div_3" (func 3))
-  (export "f64.no_fold_div_3" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_3" (f32.const -0x1.359c26p+50)) (f32.const -0x1.9cd032p+48))
 (assert_return (invoke "f32.no_fold_div_3" (f32.const -0x1.e45646p+93)) (f32.const -0x1.42e42ep+92))
 (assert_return (invoke "f32.no_fold_div_3" (f32.const -0x1.2a3916p-83)) (f32.const -0x1.8da172p-85))
@@ -822,6 +839,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_factor" (func 3))
+  (export "f64.no_factor" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -860,9 +879,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_factor" (func 3))
-  (export "f64.no_factor" (func 4))
 )
+
 (assert_return (invoke "f32.no_factor" (f32.const -0x1.4e2352p+40) (f32.const -0x1.842e2cp+49) (f32.const 0x1.eea602p+59)) (f32.const -0x1.77a7dp+109))
 (assert_return (invoke "f32.no_factor" (f32.const -0x1.b4e7f6p-6) (f32.const 0x1.8c990cp-5) (f32.const -0x1.70cc02p-9)) (f32.const -0x1.00a342p-14))
 (assert_return (invoke "f32.no_factor" (f32.const -0x1.06722ep-41) (f32.const 0x1.eed3cep-64) (f32.const 0x1.5c5558p+123)) (f32.const -0x1.651aaep+82))
@@ -884,6 +902,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_distribute" (func 3))
+  (export "f64.no_distribute" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -918,9 +938,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_distribute" (func 3))
-  (export "f64.no_distribute" (func 4))
 )
+
 (assert_return (invoke "f32.no_distribute" (f32.const -0x1.4e2352p+40) (f32.const -0x1.842e2cp+49) (f32.const 0x1.eea602p+59)) (f32.const -0x1.77a7d2p+109))
 (assert_return (invoke "f32.no_distribute" (f32.const -0x1.b4e7f6p-6) (f32.const 0x1.8c990cp-5) (f32.const -0x1.70cc02p-9)) (f32.const -0x1.00a34p-14))
 (assert_return (invoke "f32.no_distribute" (f32.const -0x1.06722ep-41) (f32.const 0x1.eed3cep-64) (f32.const 0x1.5c5558p+123)) (f32.const -0x1.651abp+82))
@@ -942,6 +961,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_regroup_div_mul" (func 3))
+  (export "f64.no_regroup_div_mul" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -976,9 +997,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_regroup_div_mul" (func 3))
-  (export "f64.no_regroup_div_mul" (func 4))
 )
+
 (assert_return (invoke "f32.no_regroup_div_mul" (f32.const -0x1.2d14a6p-115) (f32.const -0x1.575a6cp-64) (f32.const 0x1.5cee0ep-116)) (f32.const 0x1.2844cap-63))
 (assert_return (invoke "f32.no_regroup_div_mul" (f32.const -0x1.454738p+91) (f32.const -0x1.b28a66p-115) (f32.const -0x1.f53908p+72)) (f32.const -0x0p+0))
 (assert_return (invoke "f32.no_regroup_div_mul" (f32.const -0x1.6be56ep+16) (f32.const -0x1.b46fc6p-21) (f32.const -0x1.a51df6p-123)) (f32.const -0x1.792258p+118))
@@ -1000,6 +1020,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_regroup_mul_div" (func 3))
+  (export "f64.no_regroup_mul_div" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1034,9 +1056,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_regroup_mul_div" (func 3))
-  (export "f64.no_regroup_mul_div" (func 4))
 )
+
 (assert_return (invoke "f32.no_regroup_mul_div" (f32.const -0x1.2d14a6p-115) (f32.const -0x1.575a6cp-64) (f32.const 0x1.5cee0ep-116)) (f32.const 0x0p+0))
 (assert_return (invoke "f32.no_regroup_mul_div" (f32.const -0x1.454738p+91) (f32.const -0x1.b28a66p-115) (f32.const -0x1.f53908p+72)) (f32.const -0x1.1a00e8p-96))
 (assert_return (invoke "f32.no_regroup_mul_div" (f32.const -0x1.6be56ep+16) (f32.const -0x1.b46fc6p-21) (f32.const -0x1.a51df6p-123)) (f32.const -0x1.79225ap+118))
@@ -1058,6 +1079,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_reassociate_add" (func 3))
+  (export "f64.no_reassociate_add" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (param $w f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1096,9 +1119,8 @@
     i64.const 4
     call 2
   )
-  (export "f32.no_reassociate_add" (func 3))
-  (export "f64.no_reassociate_add" (func 4))
 )
+
 (assert_return (invoke "f32.no_reassociate_add" (f32.const -0x1.5f7ddcp+44) (f32.const 0x1.854e1p+34) (f32.const -0x1.b2068cp+47) (f32.const -0x1.209692p+41)) (f32.const -0x1.e26c76p+47))
 (assert_return (invoke "f32.no_reassociate_add" (f32.const 0x1.da3b78p-9) (f32.const -0x1.4312fap-7) (f32.const 0x1.0395e6p-4) (f32.const -0x1.6d5ea6p-7)) (f32.const 0x1.78b31ap-5))
 (assert_return (invoke "f32.no_reassociate_add" (f32.const -0x1.fdb93ap+34) (f32.const -0x1.b6fce6p+41) (f32.const 0x1.c131d8p+44) (f32.const 0x1.8835b6p+38)) (f32.const 0x1.8ff3a2p+44))
@@ -1120,6 +1142,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_reassociate_mul" (func 3))
+  (export "f64.no_reassociate_mul" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (param $w f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1158,9 +1182,8 @@
     i64.const 4
     call 2
   )
-  (export "f32.no_reassociate_mul" (func 3))
-  (export "f64.no_reassociate_mul" (func 4))
 )
+
 (assert_return (invoke "f32.no_reassociate_mul" (f32.const 0x1.950ba8p-116) (f32.const 0x1.efdacep-33) (f32.const -0x1.5f9bcp+102) (f32.const 0x1.f04508p-56)) (f32.const -0x1.ff356ep-101))
 (assert_return (invoke "f32.no_reassociate_mul" (f32.const 0x1.5990aep-56) (f32.const -0x1.7dfb04p+102) (f32.const -0x1.4f774ap-125) (f32.const -0x1.595fe6p+70)) (f32.const -0x1.c7c8fcp-8))
 (assert_return (invoke "f32.no_reassociate_mul" (f32.const 0x1.6ad9a4p-48) (f32.const -0x1.9138aap+55) (f32.const -0x1.4a774ep-40) (f32.const 0x1.1ff08p+76)) (f32.const 0x1.9cd8ecp+44))
@@ -1182,6 +1205,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_0" (func 3))
+  (export "f64.no_fold_div_0" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1212,9 +1237,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div_0" (func 3))
-  (export "f64.no_fold_div_0" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_0" (f32.const 1.0)) (f32.const inf))
 (assert_return (invoke "f32.no_fold_div_0" (f32.const -1.0)) (f32.const -inf))
 (assert_return (invoke "f32.no_fold_div_0" (f32.const inf)) (f32.const inf))
@@ -1242,6 +1266,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_neg0" (func 3))
+  (export "f64.no_fold_div_neg0" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1272,9 +1298,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div_neg0" (func 3))
-  (export "f64.no_fold_div_neg0" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_neg0" (f32.const 1.0)) (f32.const -inf))
 (assert_return (invoke "f32.no_fold_div_neg0" (f32.const -1.0)) (f32.const inf))
 (assert_return (invoke "f32.no_fold_div_neg0" (f32.const inf)) (f32.const -inf))
@@ -1302,6 +1327,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_to_hypot" (func 3))
+  (export "f64.no_fold_to_hypot" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -1342,9 +1369,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_to_hypot" (func 3))
-  (export "f64.no_fold_to_hypot" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_to_hypot" (f32.const 0x1.c2f338p-81) (f32.const 0x1.401b5ep-68)) (f32.const 0x1.401cccp-68))
 (assert_return (invoke "f32.no_fold_to_hypot" (f32.const -0x1.c38d1p-71) (f32.const -0x1.359ddp-107)) (f32.const 0x1.c36a62p-71))
 (assert_return (invoke "f32.no_fold_to_hypot" (f32.const -0x1.99e0cap-114) (f32.const -0x1.ed0c6cp-69)) (f32.const 0x1.ed0e48p-69))
@@ -1365,6 +1391,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "f32.no_approximate_reciprocal" (func 3))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1380,8 +1407,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_approximate_reciprocal" (func 3))
 )
+
 (assert_return (invoke "f32.no_approximate_reciprocal" (f32.const -0x1.2900b6p-10)) (f32.const -0x1.b950d4p+9))
 (assert_return (invoke "f32.no_approximate_reciprocal" (f32.const 0x1.e7212p+127)) (f32.const 0x1.0d11f8p-128))
 (assert_return (invoke "f32.no_approximate_reciprocal" (f32.const -0x1.42a466p-93)) (f32.const -0x1.963ee6p+92))
@@ -1398,6 +1425,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_approximate_reciprocal_sqrt" (func 3))
+  (export "f64.no_fuse_reciprocal_sqrt" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1430,9 +1459,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_approximate_reciprocal_sqrt" (func 3))
-  (export "f64.no_fuse_reciprocal_sqrt" (func 4))
 )
+
 (assert_return (invoke "f32.no_approximate_reciprocal_sqrt" (f32.const 0x1.6af12ap-43)) (f32.const 0x1.300ed4p+21))
 (assert_return (invoke "f32.no_approximate_reciprocal_sqrt" (f32.const 0x1.e82fc6p-8)) (f32.const 0x1.72c376p+3))
 (assert_return (invoke "f32.no_approximate_reciprocal_sqrt" (f32.const 0x1.b9fa9cp-66)) (f32.const 0x1.85a9bap+32))
@@ -1454,6 +1482,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "f32.no_approximate_sqrt_reciprocal" (func 3))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1470,8 +1499,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_approximate_sqrt_reciprocal" (func 3))
 )
+
 (assert_return (invoke "f32.no_approximate_sqrt_reciprocal" (f32.const 0x1.a4c986p+60)) (f32.const 0x1.8f5ac6p-31))
 (assert_return (invoke "f32.no_approximate_sqrt_reciprocal" (f32.const 0x1.50511ep-9)) (f32.const 0x1.3bdd46p+4))
 (assert_return (invoke "f32.no_approximate_sqrt_reciprocal" (f32.const 0x1.125ec2p+69)) (f32.const 0x1.5db572p-35))
@@ -1488,6 +1517,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "i32.no_fold_f32_s" (func 3))
+  (export "i32.no_fold_f32_u" (func 4))
+  (export "i64.no_fold_f64_s" (func 5))
+  (export "i64.no_fold_f64_u" (func 6))
   (func (;3;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1548,11 +1581,8 @@
     i64.const 1
     call 2
   )
-  (export "i32.no_fold_f32_s" (func 3))
-  (export "i32.no_fold_f32_u" (func 4))
-  (export "i64.no_fold_f64_s" (func 5))
-  (export "i64.no_fold_f64_u" (func 6))
 )
+
 (assert_return (invoke "i32.no_fold_f32_s" (i32.const 0x1000000)) (i32.const 0x1000000))
 (assert_return (invoke "i32.no_fold_f32_s" (i32.const 0x1000001)) (i32.const 0x1000000))
 (assert_return (invoke "i32.no_fold_f32_s" (i32.const 0xf0000010)) (i32.const 0xf0000010))
@@ -1579,6 +1609,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_add_sub" (func 3))
+  (export "f64.no_fold_add_sub" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1613,9 +1645,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_add_sub" (func 3))
-  (export "f64.no_fold_add_sub" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_add_sub" (f32.const 0x1.b553e4p-47) (f32.const -0x1.67db2cp-26)) (f32.const 0x1.cp-47))
 (assert_return (invoke "f32.no_fold_add_sub" (f32.const -0x1.a884dp-23) (f32.const 0x1.f2ae1ep-19)) (f32.const -0x1.a884ep-23))
 (assert_return (invoke "f32.no_fold_add_sub" (f32.const -0x1.fc04fp+82) (f32.const -0x1.65403ap+101)) (f32.const -0x1p+83))
@@ -1638,6 +1669,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_sub_add" (func 3))
+  (export "f64.no_fold_sub_add" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1672,9 +1705,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_sub_add" (func 3))
-  (export "f64.no_fold_sub_add" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_sub_add" (f32.const -0x1.523cb8p+9) (f32.const 0x1.93096cp+8)) (f32.const -0x1.523cbap+9))
 (assert_return (invoke "f32.no_fold_sub_add" (f32.const -0x1.a31a1p-111) (f32.const 0x1.745efp-95)) (f32.const -0x1.a4p-111))
 (assert_return (invoke "f32.no_fold_sub_add" (f32.const 0x1.3d5328p+26) (f32.const 0x1.58567p+35)) (f32.const 0x1.3d54p+26))
@@ -1697,6 +1729,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_mul_div" (func 3))
+  (export "f64.no_fold_mul_div" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1731,9 +1765,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_mul_div" (func 3))
-  (export "f64.no_fold_mul_div" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_mul_div" (f32.const -0x1.cd859ap+54) (f32.const 0x1.6ca936p-47)) (f32.const -0x1.cd8598p+54))
 (assert_return (invoke "f32.no_fold_mul_div" (f32.const -0x1.0b56b8p-26) (f32.const 0x1.48264cp-106)) (f32.const -0x1.0b56a4p-26))
 (assert_return (invoke "f32.no_fold_mul_div" (f32.const -0x1.e7555cp-48) (f32.const -0x1.9161cp+48)) (f32.const -0x1.e7555ap-48))
@@ -1756,6 +1789,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_mul" (func 3))
+  (export "f64.no_fold_div_mul" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1790,9 +1825,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_div_mul" (func 3))
-  (export "f64.no_fold_div_mul" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_mul" (f32.const -0x1.dc6364p+38) (f32.const 0x1.d630ecp+29)) (f32.const -0x1.dc6362p+38))
 (assert_return (invoke "f32.no_fold_div_mul" (f32.const -0x1.1f9836p-52) (f32.const -0x1.16c4e4p-18)) (f32.const -0x1.1f9838p-52))
 (assert_return (invoke "f32.no_fold_div_mul" (f32.const 0x1.c5972cp-126) (f32.const -0x1.d6659ep+7)) (f32.const 0x1.c5980ep-126))
@@ -1815,6 +1849,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div2_mul2" (func 3))
+  (export "f64.no_fold_div2_mul2" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1849,9 +1885,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_div2_mul2" (func 3))
-  (export "f64.no_fold_div2_mul2" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div2_mul2" (f32.const 0x1.fffffep-126)) (f32.const 0x1p-125))
 (assert_return (invoke "f64.no_fold_div2_mul2" (f64.const 0x1.fffffffffffffp-1022)) (f64.const 0x1p-1021))
 
@@ -1864,6 +1899,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "no_fold_demote_promote" (func 3))
   (func (;3;) (type 0) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
@@ -1879,8 +1915,8 @@
     i64.const 1
     call 2
   )
-  (export "no_fold_demote_promote" (func 3))
 )
+
 (assert_return (invoke "no_fold_demote_promote" (f64.const -0x1.dece272390f5dp-133)) (f64.const -0x1.decep-133))
 (assert_return (invoke "no_fold_demote_promote" (f64.const -0x1.19e6c79938a6fp-85)) (f64.const -0x1.19e6c8p-85))
 (assert_return (invoke "no_fold_demote_promote" (f64.const 0x1.49b297ec44dc1p+107)) (f64.const 0x1.49b298p+107))
@@ -1897,6 +1933,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "no_fold_promote_demote" (func 3))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -1912,8 +1949,8 @@
     i64.const 1
     call 2
   )
-  (export "no_fold_promote_demote" (func 3))
 )
+
 (assert_return (invoke "no_fold_promote_demote" (f32.const nan:0x200000)) (f32.const nan:arithmetic))
 (assert_return (invoke "no_fold_promote_demote" (f32.const 0x0p+0)) (f32.const 0x0p+0))
 (assert_return (invoke "no_fold_promote_demote" (f32.const -0x0p+0)) (f32.const -0x0p+0))
@@ -1938,6 +1975,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "no_demote_mixed_add" (func 3))
+  (export "no_demote_mixed_add_commuted" (func 4))
   (func (;3;) (type 0) (param $x f64) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -1972,9 +2011,8 @@
     i64.const 2
     call 2
   )
-  (export "no_demote_mixed_add" (func 3))
-  (export "no_demote_mixed_add_commuted" (func 4))
 )
+
 (assert_return (invoke "no_demote_mixed_add" (f64.const 0x1.f51a9d04854f9p-95) (f32.const 0x1.3f4e9cp-119)) (f32.const 0x1.f51a9ep-95))
 (assert_return (invoke "no_demote_mixed_add" (f64.const 0x1.065b3d81ad8dp+37) (f32.const 0x1.758cd8p+38)) (f32.const 0x1.f8ba76p+38))
 (assert_return (invoke "no_demote_mixed_add" (f64.const 0x1.626c80963bd17p-119) (f32.const -0x1.9bbf86p-121)) (f32.const 0x1.f6f93ep-120))
@@ -1996,6 +2034,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "no_demote_mixed_sub" (func 3))
   (func (;3;) (type 0) (param $x f64) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -2013,8 +2052,8 @@
     i64.const 2
     call 2
   )
-  (export "no_demote_mixed_sub" (func 3))
 )
+
 (assert_return (invoke "no_demote_mixed_sub" (f64.const 0x1.a0a183220e9b1p+82) (f32.const 0x1.c5acf8p+61)) (f32.const 0x1.a0a174p+82))
 (assert_return (invoke "no_demote_mixed_sub" (f64.const -0x1.6e2c5ac39f63ep+30) (f32.const 0x1.d48ca4p+17)) (f32.const -0x1.6e3bp+30))
 (assert_return (invoke "no_demote_mixed_sub" (f64.const -0x1.98c74350dde6ap+6) (f32.const 0x1.9d69bcp-12)) (f32.const -0x1.98c7aap+6))
@@ -2031,6 +2070,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.i32.no_fold_trunc_s_convert_s" (func 3))
+  (export "f32.i32.no_fold_trunc_u_convert_s" (func 4))
+  (export "f32.i32.no_fold_trunc_s_convert_u" (func 5))
+  (export "f32.i32.no_fold_trunc_u_convert_u" (func 6))
+  (export "f64.i32.no_fold_trunc_s_convert_s" (func 7))
+  (export "f64.i32.no_fold_trunc_u_convert_s" (func 8))
+  (export "f64.i32.no_fold_trunc_s_convert_u" (func 9))
+  (export "f64.i32.no_fold_trunc_u_convert_u" (func 10))
+  (export "f32.i64.no_fold_trunc_s_convert_s" (func 11))
+  (export "f32.i64.no_fold_trunc_u_convert_s" (func 12))
+  (export "f32.i64.no_fold_trunc_s_convert_u" (func 13))
+  (export "f32.i64.no_fold_trunc_u_convert_u" (func 14))
+  (export "f64.i64.no_fold_trunc_s_convert_s" (func 15))
+  (export "f64.i64.no_fold_trunc_u_convert_s" (func 16))
+  (export "f64.i64.no_fold_trunc_s_convert_u" (func 17))
+  (export "f64.i64.no_fold_trunc_u_convert_u" (func 18))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
@@ -2303,23 +2358,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.i32.no_fold_trunc_s_convert_s" (func 3))
-  (export "f32.i32.no_fold_trunc_u_convert_s" (func 4))
-  (export "f32.i32.no_fold_trunc_s_convert_u" (func 5))
-  (export "f32.i32.no_fold_trunc_u_convert_u" (func 6))
-  (export "f64.i32.no_fold_trunc_s_convert_s" (func 7))
-  (export "f64.i32.no_fold_trunc_u_convert_s" (func 8))
-  (export "f64.i32.no_fold_trunc_s_convert_u" (func 9))
-  (export "f64.i32.no_fold_trunc_u_convert_u" (func 10))
-  (export "f32.i64.no_fold_trunc_s_convert_s" (func 11))
-  (export "f32.i64.no_fold_trunc_u_convert_s" (func 12))
-  (export "f32.i64.no_fold_trunc_s_convert_u" (func 13))
-  (export "f32.i64.no_fold_trunc_u_convert_u" (func 14))
-  (export "f64.i64.no_fold_trunc_s_convert_s" (func 15))
-  (export "f64.i64.no_fold_trunc_u_convert_s" (func 16))
-  (export "f64.i64.no_fold_trunc_s_convert_u" (func 17))
-  (export "f64.i64.no_fold_trunc_u_convert_u" (func 18))
 )
+
 (assert_return (invoke "f32.i32.no_fold_trunc_s_convert_s" (f32.const 1.5)) (f32.const 1.0))
 (assert_return (invoke "f32.i32.no_fold_trunc_s_convert_s" (f32.const -1.5)) (f32.const -1.0))
 (assert_return (invoke "f32.i32.no_fold_trunc_u_convert_s" (f32.const 1.5)) (f32.const 1.0))
@@ -2368,6 +2408,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "init" (func 3))
+  (export "run" (func 4))
+  (export "check" (func 5))
   (func (;3;) (type 0) (param $i i32) (param $x f32)
     block ;; label = @1
       i64.const 8
@@ -2385,13 +2429,13 @@
   )
   (func (;4;) (type 0) (param $n i32) (param $z f32)
     (local $i i32)
-    block $exit ;; label = @1
+    block $exit
       i64.const 12
       i64.const 3
       call 1
       i64.const 1
       call 0
-      block $cont ;; label = @2
+      block $cont
         loop ;; label = @3
           i64.const 4
           call 0
@@ -2434,11 +2478,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "init" (func 3))
-  (export "run" (func 4))
-  (export "check" (func 5))
 )
+
 (invoke "init" (i32.const  0) (f32.const 15.1))
 (invoke "init" (i32.const  4) (f32.const 15.2))
 (invoke "init" (i32.const  8) (f32.const 15.3))
@@ -2461,6 +2502,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "init" (func 3))
+  (export "run" (func 4))
+  (export "check" (func 5))
   (func (;3;) (type 0) (param $i i32) (param $x f64)
     block ;; label = @1
       i64.const 12
@@ -2478,13 +2523,13 @@
   )
   (func (;4;) (type 0) (param $n i32) (param $z f64)
     (local $i i32)
-    block $exit ;; label = @1
+    block $exit
       i64.const 20
       i64.const 3
       call 1
       i64.const 1
       call 0
-      block $cont ;; label = @2
+      block $cont
         loop ;; label = @3
           i64.const 4
           call 0
@@ -2527,11 +2572,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "init" (func 3))
-  (export "run" (func 4))
-  (export "check" (func 5))
 )
+
 (invoke "init" (i32.const  0) (f64.const 15.1))
 (invoke "init" (i32.const  8) (f64.const 15.2))
 (invoke "init" (i32.const 16) (f64.const 15.3))
@@ -2556,6 +2598,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.ult" (func 3))
+  (export "f32.ule" (func 4))
+  (export "f32.ugt" (func 5))
+  (export "f32.uge" (func 6))
+  (export "f64.ult" (func 7))
+  (export "f64.ule" (func 8))
+  (export "f64.ugt" (func 9))
+  (export "f64.uge" (func 10))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -2684,15 +2734,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.ult" (func 3))
-  (export "f32.ule" (func 4))
-  (export "f32.ugt" (func 5))
-  (export "f32.uge" (func 6))
-  (export "f64.ult" (func 7))
-  (export "f64.ule" (func 8))
-  (export "f64.ugt" (func 9))
-  (export "f64.uge" (func 10))
 )
+
 (assert_return (invoke "f32.ult" (f32.const 3.0) (f32.const 2.0)) (i32.const 0))
 (assert_return (invoke "f32.ult" (f32.const 2.0) (f32.const 2.0)) (i32.const 0))
 (assert_return (invoke "f32.ult" (f32.const 2.0) (f32.const 3.0)) (i32.const 1))
@@ -2736,6 +2779,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_lt_select" (func 3))
+  (export "f32.no_fold_le_select" (func 4))
+  (export "f32.no_fold_gt_select" (func 5))
+  (export "f32.no_fold_ge_select" (func 6))
+  (export "f64.no_fold_lt_select" (func 7))
+  (export "f64.no_fold_le_select" (func 8))
+  (export "f64.no_fold_gt_select" (func 9))
+  (export "f64.no_fold_ge_select" (func 10))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -2880,15 +2931,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_lt_select" (func 3))
-  (export "f32.no_fold_le_select" (func 4))
-  (export "f32.no_fold_gt_select" (func 5))
-  (export "f32.no_fold_ge_select" (func 6))
-  (export "f64.no_fold_lt_select" (func 7))
-  (export "f64.no_fold_le_select" (func 8))
-  (export "f64.no_fold_gt_select" (func 9))
-  (export "f64.no_fold_ge_select" (func 10))
 )
+
 (assert_return (invoke "f32.no_fold_lt_select" (f32.const 0.0) (f32.const nan)) (f32.const nan))
 (assert_return (invoke "f32.no_fold_lt_select" (f32.const nan) (f32.const 0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_lt_select" (f32.const 0.0) (f32.const -0.0)) (f32.const -0.0))
@@ -2932,6 +2976,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_lt_if" (func 3))
+  (export "f32.no_fold_le_if" (func 4))
+  (export "f32.no_fold_gt_if" (func 5))
+  (export "f32.no_fold_ge_if" (func 6))
+  (export "f64.no_fold_lt_if" (func 7))
+  (export "f64.no_fold_le_if" (func 8))
+  (export "f64.no_fold_gt_if" (func 9))
+  (export "f64.no_fold_ge_if" (func 10))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -3124,15 +3176,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_lt_if" (func 3))
-  (export "f32.no_fold_le_if" (func 4))
-  (export "f32.no_fold_gt_if" (func 5))
-  (export "f32.no_fold_ge_if" (func 6))
-  (export "f64.no_fold_lt_if" (func 7))
-  (export "f64.no_fold_le_if" (func 8))
-  (export "f64.no_fold_gt_if" (func 9))
-  (export "f64.no_fold_ge_if" (func 10))
 )
+
 (assert_return (invoke "f32.no_fold_lt_if" (f32.const 0.0) (f32.const nan)) (f32.const nan))
 (assert_return (invoke "f32.no_fold_lt_if" (f32.const nan) (f32.const 0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_lt_if" (f32.const 0.0) (f32.const -0.0)) (f32.const -0.0))
@@ -3176,6 +3221,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_lt_select_to_abs" (func 3))
+  (export "f32.no_fold_le_select_to_abs" (func 4))
+  (export "f32.no_fold_gt_select_to_abs" (func 5))
+  (export "f32.no_fold_ge_select_to_abs" (func 6))
+  (export "f64.no_fold_lt_select_to_abs" (func 7))
+  (export "f64.no_fold_le_select_to_abs" (func 8))
+  (export "f64.no_fold_gt_select_to_abs" (func 9))
+  (export "f64.no_fold_ge_select_to_abs" (func 10))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -3328,15 +3381,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_lt_select_to_abs" (func 3))
-  (export "f32.no_fold_le_select_to_abs" (func 4))
-  (export "f32.no_fold_gt_select_to_abs" (func 5))
-  (export "f32.no_fold_ge_select_to_abs" (func 6))
-  (export "f64.no_fold_lt_select_to_abs" (func 7))
-  (export "f64.no_fold_le_select_to_abs" (func 8))
-  (export "f64.no_fold_gt_select_to_abs" (func 9))
-  (export "f64.no_fold_ge_select_to_abs" (func 10))
 )
+
 (assert_return (invoke "f32.no_fold_lt_select_to_abs" (f32.const nan:0x200000)) (f32.const nan:0x200000))
 (assert_return (invoke "f32.no_fold_lt_select_to_abs" (f32.const -nan)) (f32.const -nan))
 (assert_return (invoke "f32.no_fold_lt_select_to_abs" (f32.const 0.0)) (f32.const 0.0))
@@ -3380,6 +3426,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_lt_if_to_abs" (func 3))
+  (export "f32.no_fold_le_if_to_abs" (func 4))
+  (export "f32.no_fold_gt_if_to_abs" (func 5))
+  (export "f32.no_fold_ge_if_to_abs" (func 6))
+  (export "f64.no_fold_lt_if_to_abs" (func 7))
+  (export "f64.no_fold_le_if_to_abs" (func 8))
+  (export "f64.no_fold_gt_if_to_abs" (func 9))
+  (export "f64.no_fold_ge_if_to_abs" (func 10))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -3580,15 +3634,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_lt_if_to_abs" (func 3))
-  (export "f32.no_fold_le_if_to_abs" (func 4))
-  (export "f32.no_fold_gt_if_to_abs" (func 5))
-  (export "f32.no_fold_ge_if_to_abs" (func 6))
-  (export "f64.no_fold_lt_if_to_abs" (func 7))
-  (export "f64.no_fold_le_if_to_abs" (func 8))
-  (export "f64.no_fold_gt_if_to_abs" (func 9))
-  (export "f64.no_fold_ge_if_to_abs" (func 10))
 )
+
 (assert_return (invoke "f32.no_fold_lt_if_to_abs" (f32.const nan:0x200000)) (f32.const nan:0x200000))
 (assert_return (invoke "f32.no_fold_lt_if_to_abs" (f32.const -nan)) (f32.const -nan))
 (assert_return (invoke "f32.no_fold_lt_if_to_abs" (f32.const 0.0)) (f32.const 0.0))
@@ -3633,6 +3680,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.incorrect_correction" (func 3))
+  (export "f64.incorrect_correction" (func 4))
   (func (;3;) (type 0) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -3671,9 +3720,8 @@
     i64.const 0
     call 2
   )
-  (export "f32.incorrect_correction" (func 3))
-  (export "f64.incorrect_correction" (func 4))
 )
+
 (assert_return (invoke "f32.incorrect_correction") (f32.const 0x1p-23))
 (assert_return (invoke "f64.incorrect_correction") (f64.const -0x1p-52))
 
@@ -3687,6 +3735,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "calculate" (func 3))
   (func (;3;) (type 0) (result f32)
     (local $x f32) (local $r f32) (local $q f32) (local $z0 f32) (local $z1 f32)
     block (result f32) ;; label = @1
@@ -3740,8 +3789,8 @@
     i64.const 5
     call 2
   )
-  (export "calculate" (func 3))
 )
+
 (assert_return (invoke "calculate") (f32.const -0x1.d2ed46p+8))
 
 (module
@@ -3751,6 +3800,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "calculate" (func 3))
   (func (;3;) (type 0) (result f64)
     (local $x f64) (local $r f64) (local $q f64) (local $z0 f64) (local $z1 f64)
     block (result f64) ;; label = @1
@@ -3804,8 +3854,8 @@
     i64.const 5
     call 2
   )
-  (export "calculate" (func 3))
 )
+
 (assert_return (invoke "calculate") (f64.const -0x1.d2ed4d0218c93p+8))
 
 ;; Test that 0 - (-0 - x) is not optimized to x.
@@ -3818,6 +3868,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "llvm_pr26746" (func 3))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -3835,8 +3886,8 @@
     i64.const 1
     call 2
   )
-  (export "llvm_pr26746" (func 3))
 )
+
 (assert_return (invoke "llvm_pr26746" (f32.const -0.0)) (f32.const 0.0))
 
 ;; Test for improperly reassociating an addition and a conversion.
@@ -3849,6 +3900,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "llvm_pr27153" (func 3))
   (func (;3;) (type 0) (param $x i32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -3867,8 +3919,8 @@
     i64.const 1
     call 2
   )
-  (export "llvm_pr27153" (func 3))
 )
+
 (assert_return (invoke "llvm_pr27153" (i32.const 33554434)) (f32.const 25165824.000000))
 
 ;; Test that (float)x + (float)y is not optimized to (float)(x + y) when unsafe.
@@ -3881,6 +3933,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "llvm_pr27036" (func 3))
   (func (;3;) (type 0) (param $x i32) (param $y i32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -3902,8 +3955,8 @@
     i64.const 2
     call 2
   )
-  (export "llvm_pr27036" (func 3))
 )
+
 (assert_return (invoke "llvm_pr27036" (i32.const -25034805) (i32.const 14942208)) (f32.const -0x1.340068p+23))
 
 ;; Test for bugs in old versions of historic IEEE 754 platforms as reported in:
@@ -3923,6 +3976,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (export "thepast0" (func 3))
+  (export "thepast1" (func 4))
+  (export "thepast2" (func 5))
   (func (;3;) (type 0) (param $a f64) (param $b f64) (param $c f64) (param $d f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 24
@@ -3976,10 +4032,8 @@
     i64.const 3
     call 2
   )
-  (export "thepast0" (func 3))
-  (export "thepast1" (func 4))
-  (export "thepast2" (func 5))
 )
+
 (assert_return (invoke "thepast0" (f64.const 0x1p-1021) (f64.const 0x1.fffffffffffffp-1) (f64.const 0x1p1) (f64.const 0x1p-1)) (f64.const 0x1.fffffffffffffp-1022))
 (assert_return (invoke "thepast1" (f64.const 0x1p-54) (f64.const 0x1.fffffffffffffp-1) (f64.const 0x1p-54)) (f64.const -0x1p-107))
 (assert_return (invoke "thepast2" (f32.const 0x1p-125) (f32.const 0x1p-1) (f32.const 0x1p0)) (f32.const 0x1p-126))
@@ -3994,6 +4048,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "inverse" (func 3))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4009,8 +4064,8 @@
     i64.const 1
     call 2
   )
-  (export "inverse" (func 3))
 )
+
 (assert_return (invoke "inverse" (f32.const 96.0)) (f32.const 0x1.555556p-7))
 
 ;; Test for incorrect rounding on sqrt(4.0).
@@ -4024,6 +4079,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32_sqrt_minus_2" (func 3))
+  (export "f64_sqrt_minus_2" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4056,9 +4113,8 @@
     i64.const 1
     call 2
   )
-  (export "f32_sqrt_minus_2" (func 3))
-  (export "f64_sqrt_minus_2" (func 4))
 )
+
 (assert_return (invoke "f32_sqrt_minus_2" (f32.const 4.0)) (f32.const 0.0))
 (assert_return (invoke "f64_sqrt_minus_2" (f64.const 4.0)) (f64.const 0.0))
 
@@ -4072,6 +4128,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_recip_recip" (func 3))
+  (export "f64.no_fold_recip_recip" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -4106,9 +4164,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_recip_recip" (func 3))
-  (export "f64.no_fold_recip_recip" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_recip_recip" (f32.const -0x1.e8bf18p+65)) (f32.const -0x1.e8bf16p+65))
 (assert_return (invoke "f32.no_fold_recip_recip" (f32.const 0x1.e24248p-77)) (f32.const 0x1.e24246p-77))
 (assert_return (invoke "f32.no_fold_recip_recip" (f32.const 0x1.caf0e8p-64)) (f32.const 0x1.caf0eap-64))
@@ -4141,6 +4198,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_algebraic_factoring" (func 3))
+  (export "f64.no_algebraic_factoring" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -4179,9 +4238,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_algebraic_factoring" (func 3))
-  (export "f64.no_algebraic_factoring" (func 4))
 )
+
 (assert_return (invoke "f32.no_algebraic_factoring" (f32.const -0x1.ef678ep-55) (f32.const 0x1.c160b8p-54)) (f32.const -0x1.129402p-107))
 (assert_return (invoke "f32.no_algebraic_factoring" (f32.const -0x1.2d76bcp+24) (f32.const 0x1.f4089cp+24)) (f32.const -0x1.36d89ap+49))
 (assert_return (invoke "f32.no_algebraic_factoring" (f32.const 0x1.7ca2b2p+45) (f32.const -0x1.08513cp+47)) (f32.const -0x1.db10dep+93))
@@ -4204,6 +4262,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_algebraic_factoring" (func 3))
+  (export "f64.no_algebraic_factoring" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -4242,9 +4302,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_algebraic_factoring" (func 3))
-  (export "f64.no_algebraic_factoring" (func 4))
 )
+
 (assert_return (invoke "f32.no_algebraic_factoring" (f32.const 0x1.8e2c14p-46) (f32.const 0x1.bad59ap-39)) (f32.const -0x1.7efe5p-77))
 (assert_return (invoke "f32.no_algebraic_factoring" (f32.const -0x1.7ef192p+41) (f32.const -0x1.db184ap+33)) (f32.const 0x1.1e6932p+83))
 (assert_return (invoke "f32.no_algebraic_factoring" (f32.const 0x1.7eb458p-12) (f32.const -0x1.52c498p-13)) (f32.const 0x1.cc0bc6p-24))
@@ -4268,6 +4327,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "f32.simple_x4_sum" (func 3))
+  (export "f32.load" (func 4))
   (func (;3;) (type 0) (param $i i32) (param $j i32) (param $k i32)
     (local $x0 f32) (local $x1 f32) (local $x2 f32) (local $x3 f32) (local $y0 f32) (local $y1 f32) (local $y2 f32) (local $y3 f32)
     block ;; label = @1
@@ -4361,11 +4423,9 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "f32.simple_x4_sum" (func 3))
-  (export "f32.load" (func 4))
   (data (;0;) (i32.const 0) "\01\00\00\00\01\00\00\80\01\00\00\00\01\00\00\80\01\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
 )
+
 (assert_return (invoke "f32.simple_x4_sum" (i32.const 0) (i32.const 16) (i32.const 32)))
 (assert_return (invoke "f32.load" (i32.const 32)) (f32.const 0x1p-148))
 (assert_return (invoke "f32.load" (i32.const 36)) (f32.const 0x0p+0))
@@ -4380,6 +4440,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "f64.simple_x4_sum" (func 3))
+  (export "f64.load" (func 4))
   (func (;3;) (type 0) (param $i i32) (param $j i32) (param $k i32)
     (local $x0 f64) (local $x1 f64) (local $x2 f64) (local $x3 f64) (local $y0 f64) (local $y1 f64) (local $y2 f64) (local $y3 f64)
     block ;; label = @1
@@ -4473,11 +4536,9 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "f64.simple_x4_sum" (func 3))
-  (export "f64.load" (func 4))
   (data (;0;) (i32.const 0) "\01\00\00\00\00\00\00\00\01\00\00\00\00\00\00\80\01\00\00\00\00\00\00\00\01\00\00\00\00\00\00\80\01\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00")
 )
+
 (assert_return (invoke "f64.simple_x4_sum" (i32.const 0) (i32.const 32) (i32.const 64)))
 (assert_return (invoke "f64.load" (i32.const 64)) (f64.const 0x0.0000000000001p-1021))
 (assert_return (invoke "f64.load" (i32.const 72)) (f64.const 0x0p+0))
@@ -4494,15 +4555,18 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1 1)
+  (export "f32.kahan_sum" (func 3))
+  (export "f32.plain_sum" (func 4))
   (func (;3;) (type 0) (param $p i32) (param $n i32) (result f32)
     (local $sum f32) (local $c f32) (local $t f32)
-    block $exit (result f32) ;; label = @1
+    block $exit (result f32)
       i64.const 12
       i64.const 5
       call 1
       i64.const 1
       call 0
-      block $top ;; label = @2
+      block $top
         loop ;; label = @3
           i64.const 4
           call 0
@@ -4544,13 +4608,13 @@
   )
   (func (;4;) (type 0) (param $p i32) (param $n i32) (result f32)
     (local $sum f32)
-    block $exit (result f32) ;; label = @1
+    block $exit (result f32)
       i64.const 8
       i64.const 3
       call 1
       i64.const 1
       call 0
-      block $top ;; label = @2
+      block $top
         loop ;; label = @3
           i64.const 4
           call 0
@@ -4581,11 +4645,9 @@
     i64.const 3
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "f32.kahan_sum" (func 3))
-  (export "f32.plain_sum" (func 4))
   (data (;0;) (i32.const 0) "\c4\c5W$\a5\84\c8\0bm\b8K.\f2v\17\1c\caJV\1e\1bnq\22]\17\1en\bf\cd\14\5c\c7!UQ9\9c\1f\b2Q\f0\a3\93\d7\c1,\ae~\a8(:\01!\f4\0aX\93\f8Bw\9f\839j_\ba\f7\0a\d8Qj4\ca\ad\c64\0e\d8&\dcL3\1c\ed)\90\a8x\0f\d1\cev1#\83\b85\e8\f2D\b0\d3\a1\fc\bb2\e1\b0\baiD\09\d6\d9}\ff.\c0Z6\143\14>\a9\fa\87m\8b\bc\ce\9d\a7\fd\c4\e9\85?\dd\d7\e1\18\a6P&rn?s\0f\f8\12\93#4av\12H\c0\9b\05\93\eb\ac\86\de\94>U\e8\8c\e8\dd\e4\fc\95G\beV\03! L\e6\bf{\f6\7f\d5\bas\1c\c1\14\8f\c4'\96\b3\bd3\ffxA_\c0Z\ce\f6gns\9a\17fp\03\f8\ce'\a3R\b2\9f;\bf\fb\ae\ed\d3Z\f87W\f0\f5n\ef\b1Mp=T\a7\01\9a\85\08H\91\f5\9d\0c`\87[\d9T\1eQm\88\8e\08\8c\a5q:V\08gF\8f\8f\13*,\ec,\1f\b4b+oA\0a\c4eB\a21k,}>\bbu\ac\86\970\d9H\cd\9a\1fV\c4\c6\e4\12\c0\9d\fb\ee\02\8c\ce\1c\f2\1e\a1x#\db\c4\1eI\03\d3q\cc\08P\c5\d8\5c\ed\d5\b5e\ac\b5\c9!\d2\c9)v\de\f00\1a[<\f2;\db:9\82:\16\08o\a8\f1\beii\99q\a6\05\d3\14\93*\16\f2/\11\c7~ \bb\91D\ee\f8\e4\01S\c0\b9\7f\f0\bf\f0\03\9cm\b1\df\a2D\01mkq+\5c\b3!\19F^\8f\db\91\d3|xk\b7\12\00\8f\eb\bd\8a\f5\d4.\c4\c1\1e\dfscYGI\03\0a\b7\cf$\cf\9c\0eDz\9e\14\fbB\bf\9d90\9e\a0\ab/\d1\ae\9ej\83C\e3U}\85\bfc\8a\f8\96\10\1f\fem\e7\22\1b\e1iF\8aD\c8\c8\f9\0c+\19\07\a5\02>\f20\10\9a\85\8a_\ef\81E\a0w\b1\03\10sK\ae\98\9dG\bf\9a-:\d5\0f\03f\e3=S\d9@\ce\1fo2/!+#!lb\d4\a7>\a8\ce(1-\00=g^\af\a0\cf.\d2\b9k\84\ebi\08<b6\be\12\fd6\7f\88>\ad\bc\0b\c0A\c4P\b6\e3P1\e8\ce\e2\96eU\9c\16F\e6\b0-:\e8\81\05\b0\bf4\f7\bc\10\1c\fb\cc<\f1\85\97B\9f\eb\14\8d<\bf\d7\17\88I\9d\8b+\b2:\83\d1O\04\9e\a1\0f\ad\08\9dT\af\d1\82\c3\ec2/\02\8f\05!-\a2\b7\e4\f4o.\81+\0b\9c\fc\cb\fet\02\f9\db\f4\f3\ea\00\a8\ec\d1\99t&\dd\d64\d5%\b1F\dd\9c\aaq\f5`\b0\88\c8\e0\0bYZ%O)f\f9\e3.\fe\e9\da\e5\18O'b\f4\ce\a4!\95t\c7Wd'\9aL\fdT}a\ce\c3\ac\87F\9c\fa\ff\09\cay\97g$t\ca\d4!\83&%\19\127d\19\e5e\e0tu\8e\dd\c8\eft\c7\d8!+y\04QFe`\03]\fa\d8\f4e\a4\9e]#\da\d7\8a\92\80\a4\dex<\f1WBm\cd\c9/\d5\a4\9e\ab@\f4\cb\1b\d7\a3\ca\fc\eb\a7\01\b2\9aiNF\9b\18N\ddy\a7\aa\a6R9\1e\ef0\cc\9b\bd[\eeL!m0\00r\b0F_\08\cf\c5\b9\e0>\c2\b3\0c\dc\8ed\de\19By\cfC\eaC]\8e\88\f7\ab\15\dc?\c8g \db\b8d\b1G\1f\de\f2\cb?Y\9f\d8F\90\dc\ae/\22\f9\e21\89\d9\9c\1cL\d3\a9JW\84\9c\9f\ea,<\ae<\c3\1e\8b\e5N\17\01%\db4F_\15\ea\05\0c|\d9E\8c\19\d0s\8a\96\16\ddD\f9\05\b7[q\b0\e6!6_u\89\91su\ab}\ae\d3s\ec7\c6\eaUu\ef\ea\ab\8b{\11\dcm\1a\b2j\c4%\cf\aa\e3\9fII\89\cb7\9b\0a\a7\01`p\dc\b7\c8\83\e1B\f5\be\adb\94\ad\8d\a1")
 )
+
 (assert_return (invoke "f32.kahan_sum" (i32.const 0) (i32.const 256)) (f32.const -0x1.101a1ap+104))
 (assert_return (invoke "f32.plain_sum" (i32.const 0) (i32.const 256)) (f32.const -0x1.a0343ap+103))
 
@@ -4596,15 +4658,18 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1 1)
+  (export "f64.kahan_sum" (func 3))
+  (export "f64.plain_sum" (func 4))
   (func (;3;) (type 0) (param $p i32) (param $n i32) (result f64)
     (local $sum f64) (local $c f64) (local $t f64)
-    block $exit (result f64) ;; label = @1
+    block $exit (result f64)
       i64.const 24
       i64.const 5
       call 1
       i64.const 1
       call 0
-      block $top ;; label = @2
+      block $top
         loop ;; label = @3
           i64.const 4
           call 0
@@ -4646,13 +4711,13 @@
   )
   (func (;4;) (type 0) (param $p i32) (param $n i32) (result f64)
     (local $sum f64)
-    block $exit (result f64) ;; label = @1
+    block $exit (result f64)
       i64.const 16
       i64.const 3
       call 1
       i64.const 1
       call 0
-      block $top ;; label = @2
+      block $top
         loop ;; label = @3
           i64.const 4
           call 0
@@ -4683,11 +4748,9 @@
     i64.const 3
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "f64.kahan_sum" (func 3))
-  (export "f64.plain_sum" (func 4))
   (data (;0;) (i32.const 0) "\13\05\84B]\a2,\c6C\dbU\a9\cd\daU\e3s\fcX\d6\ba\d5\00\fd\835B\88\8b\13]8JG\0drs\a1\1a\ef\c4E\17W\d8\c9F\e0\8dl\e17p\c8\83[U^Z-s\1eV\c8\e1mi\14x\0a\8aZd:\09\c7\a8\87\c5\f0\d3]\e6\03\fc\93\be&\ca\d6\a9\91`\bd\b0\ed\ae\f70~\92:o\a7Y\8e\aa}\bfgX*T\f8N\fe\ed5X\a6Q\bfB\e5Kf'$m\7fB-(\92\18\ec\08\ae\e7U\da\b1\a6e\a5rPG\1b\b8\a9T\d7\a6\06[\0fBX\83\8a\17\82\c6\10C\a0\c0.m\bcZ\85Sr\7f\adD\bc0<U\b2$\9at:\9e\e1\d8\0fp\fc\a9:\cd\93K\ec\e3~\dd]'\cd\f8\a0\9d\1c\11\c0W.\fd\c8\132\cc:\1a}\a3AU\ed\c3\82I*\04\1e\efs\b9..\e3_\f4\df\e6\b23\0c9?oDj\03\c1B\b9\fa\b1\c8\ed\a5X\99\7f\ed\b4r\9ey\eb\fbC\82E\aa\bb\95\d2\ff(\9e\f6\a1\ad\95\d6U\95\0do`\11\c7x>I\f2~H\f4\a2q\d0\13\8e\b3\de\99R\e3Et\eav\0e\1b*\c8\ee\14\01\c4P[6<\ef\bar\a2\a6\08\f8{6\9d\f9\ef\0b\c7V-\5c\f0\9d]\de\fc\b8\ad\0fd\0e\97\152&\c21\e6\05\1e\ef\cb\17\1bm\15\0bt]\d3.\f8k\86\b4\basRS\99\a9v E\c9@\80k\14\ed\a1\fa\80F\e6&\d2\e6\98\c4W\bf\c4\1c\a4\90z6\94\14\ba\15\89n\e6\9c7\8c\f4\de\12\22]\a1yPg\0d=z\e9\d4\aa.\7f*z0=\ea]\12H\fe\e1\18\cd\a4W\a2\87>\b6\9a\8b\db\da\9dx\9c\cf\8d\b1O\90\b44\e0\9d\f6\ca\feL;xm\0a\5c\18\9fa\b9\dd\b4\e0\0fv\e0\1bi\0d^Xsp^\0e-\a1}\ff \eb\914\92\ac8r*\1f\8eq.j\f1\af\c7'p\d9\c4W\f7\d2<\1d\b8\f0\f0d\cf\dc\ae\be\a3\cc>\22}Ni!c\17\ed\03\02T\9a\0fPN\13Z5\a1\22\a4\df\86\c2ty\16\b8ii\a0R]\11d\bd[\93\fci\a0\f4\13\d0\81Q\dd\fa\0c\15\c3z\c9bz\a9\1d\c9\e6Z\b3[\97\02<d\22\12<\22\90d-0TL\b4\a1\22\09W\22^\8e8+\02\a8\ae\f6\be\0d+\f2\03\ad\fa\10\01qw*0\02\95\f6\00>\d0\c4\8d4\19P!\0a\bcP\da<0\d6:1\94\8d:\fe\ef\14W\9dK\93\00\96$\0co\fd\bc#v\02l\ebRr\80\11~\80:\13\128\1d8I\95@'\8aD{\e8\dcm\8c\8c\8e<\b5\b3\18\0e\f6\08\1a\84A5\ff\8b\b8\93@\ea\e1Q\1d\89\a5\8dBh)\ea/\c1zR\eb\90]M\d6\80\e3\d7uH\ce\ed\d3\01\1c\8d[\a5\94\0dx\cf\f1\06\13/\98\02\a4m.l\f2\d5t)\89L\f9\03\f5\c7\18\adz\f0h\f8\5c\d6Y\87n\d6?\06\be\86 \e3A\91\22\f3n\8b\f0h\1cW\a7\fc\b0|\9e\99\0b\96\1a\89_\e6\0d|\08Q\a0\a2g\9aG\00\93k\f9(\f0h\dbb\f1\e0e,S3\e0\a7\ca\11B0\f6\af\01\c1e=2\01o\ab.\be\d3\8b\be\14\c3\ff\ec\fb\f0\f9\c5\0c\05o\01\09k\e341\0c\1ff\a6B\bc\1a\87I\16\16\8c\b0\90\0d4\8c\0a\e1\09^\10\a4kV\cc\f0\c9\bb\dc\b8\5c\ce\f6\cc\8du~\b3\07\88\04/\b4^\c9\e3J#s\19bl\9a\03vD\86\9c`\fc\dbr\8f'\a0\dd\b3\c5\da\ff\f9\ecj\b1{\d3\cfP7\c9zx\0c\e4:\b6\f5\e6\f4\98nB}5s\8bE\c0V\97\cdm\ce\cf\ad1\b3\c3T\fa\ef\d5\c0\f4j_T\e7I>3\0a08\fd\d9\05\ff\a5?WF\14\b5\91\17\cak\98#ze\b3l\02\b4\ccy]X\d8\b3\d5\94\ae\f4mue\f7\92\bf~GL<\ee\db\ac\f12]\fboA\1c4\c8\83O\c2X\01\be\05>f\16\a6\04m]O\86\09'\82%\12\cd:\cd\cek\bc\ca\ac(\9b\eej%\86\9eEp\c6\d2\bd;}B\e5'\af\c7\1d\f4\81\c8\b3v\8a\a86\a3\ae*\e6\18\e16\22\ad\f6%r\b09\8b\01\9a\22{\84\c3-_r\a4\98\ac\15p\e7\d4\18\e2}\d20|3\08\cd\ca\c4\22\85\88u\81\c6JtX\8d\e0\e8\ac\c5\abuZ\f4(\12\f0\18ER\f2\97\b2\93Ao\8d\7f\dbp\fb\a3]\1f\a7\8d\98 +\22\9f:\01\b5\8b\1b\d2\cb\14\03\0e\14\14\d2\19Z\1f\ce^\cd\81y\15\01\ca\dest\8cV \9fw-%\16\f6aQ\1d\a4\8e\9b\98\a5\c6\ec\a8EW\82Yx\0d\90\b4\dfQ\b0\c3\82\94\cc\b3S\09\15m\96l:@G\b7Jz\05/\a1\1e\8c\9d\a0 \88\fbR\b7\9f\f3\f3\bb_\e7\8aa\a7!\b1\ac\fa\09\aa\a4l\bc$\80\ba*\e9e\ffp\ff\cc\fae\87v\f3\c5\15\ce\cb\e8B1\00\0c\91W\d9\e0\9d5T$\ad\a4\d8\f9\08gc\c8\cf\81\dd\90\a2\d7\c4\07J\e6\10og\e7'\d4#Y\18\f2\a8\9d_\d8\940\aaT\86O\87\9d\82\b5&\ca\a6\96\bf\cfU\f9\9d7\01\19HC\c5\94l\f3t\97XL<\9d\08\e8\04\c2X0v\e1\a0\f8\ea\e9\c5\ae\cfx\9e\a9\0c\ac\b3DB\e0\bc]\1b\9cIXJ\1c\19I\c1:\ea\f5\eb;\81\a9Kp\0c\cc\9e\1a\d3/\b7R/ ;\ebdQ\1d\a0-\b2>\be\13\85H\922.\db\5c\a1\e7\8cE\915\01\0a\93\c2\eb\09\ce\f3\d2\22$\d0\8c\cc\1d\9d8\c8M\e3\82\ccd\15\06-\e7\01/\ab\bb\b5\04L\92\1cz\d6?\e8_1\15\0c\dc\e41\b4\c4%>*\aa\00\9e\c8\e5!z\7f)\f1\c0\af\1d^\e8c9\ad\f8~l\c8\c5\7f\c2\a8\97'\0a\d9\f4!j\ea\03\09\fb\f7\96;\83y_|K0\9fV5\de\b4s\d4\95\f0\14\c3t/\0d\a3\1dN\8d1$\b3\1a\84\85bZ{<\149\17\e6m\eb7\c2\00X[\0b\e3<\8ab\e1\f85KV\e2\87`\8b\be\a78\91wT\a9Z$%\90\9f\a5Bw\f3\5c9\df\fft\07v\a1\cd\1fb\0b\81\81h\af\05\c1\c0\7f&\ee\c0\91\a3j})aE'\e5W\88\dc\0d\97\04\1a3\a9D\8a\da\02\10E?\8eU\a6v\8cM\e3\f1\89\83\c8\d0\f8\9bPw\9fG\dfL\9cf\0d\aa\18\b8_O\c4\01\ce\dc\84\acF\9ei\e1vEka\89\e4]\94\bb\11\83\9fx\d8\0a\d2\f5~]C\ea\bc\10\f1:\c9\e2d\fbSe\d0\c7\b4\a7\fb\d4\05S%\d0\cd)\88\00V%$}]\b4\f3A\9f\e9\b5\f7\aed,\e3\c9m\d5\84:r\12\b8z\d9\1b\09\e88\da&O\04\ce\03qn\8aD{\5c\81Y\9c\d2\e4\c3\baY\a6\e5(\a7\8f\9a\e4\d5N\b9\ca\7f\cbu\b8+C>\b3\15F\b1\a5\bc\9d\9e8\15\f1\bd\1b!\aa\f1\82\00\95\fc\a7wG9\a73C\92\d7R@K\06\81\8a\a0\bd\f1k\99\84B[\e2;\c5^\12\5c(M\b6\0eN\c8\5c\e8\01\8a\c5\e7\e4\9dB\ee]\9c\c4\eb\ebh\09'\92\95\9a\11Ts\c4\12\80\fb}\fe\c5\08`\7f6A\e0\10\ba\d6+l\f1\b4\17\fe&4\e3K\f8\a8\e3\91\beO*\fc\da\81\b8\e7\fe\d5&PG\f3\1ae2\81\e0\05\b8O21&\00JS\97\c2\c3\0e.\a1&T\ab\05\8eV/}\af\22\84h\a5\8b\97\f6\a4\fd\a8\ccuA\96\86\fd'=)\86\8d\7fL\d4\8esA\f4\1e\e2\ddX'\97\ce\9c\94\cfz\04/\dc\ed")
 )
+
 (assert_return (invoke "f64.kahan_sum" (i32.const 0) (i32.const 256)) (f64.const 0x1.dd7cb2a5ffc88p+998))
 (assert_return (invoke "f64.plain_sum" (i32.const 0) (i32.const 256)) (f64.const 0x1.dd7cb2a63fc87p+998))
 
@@ -4701,6 +4764,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_neg_sub" (func 3))
+  (export "f64.no_fold_neg_sub" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4733,9 +4798,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_neg_sub" (func 3))
-  (export "f64.no_fold_neg_sub" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_neg_sub" (f32.const -0.0) (f32.const -0.0)) (f32.const -0.0))
 (assert_return (invoke "f32.no_fold_neg_sub" (f32.const 0.0) (f32.const -0.0)) (f32.const -0.0))
 (assert_return (invoke "f32.no_fold_neg_sub" (f32.const -0.0) (f32.const 0.0)) (f32.const 0.0))
@@ -4756,6 +4820,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_neg_add" (func 3))
+  (export "f64.no_fold_neg_add" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4788,9 +4854,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_neg_add" (func 3))
-  (export "f64.no_fold_neg_add" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_neg_add" (f32.const -0.0) (f32.const -0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_neg_add" (f32.const 0.0) (f32.const -0.0)) (f32.const -0.0))
 (assert_return (invoke "f32.no_fold_neg_add" (f32.const -0.0) (f32.const 0.0)) (f32.const -0.0))
@@ -4811,6 +4876,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_add_neg_neg" (func 3))
+  (export "f64.no_fold_add_neg_neg" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4845,9 +4912,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_add_neg_neg" (func 3))
-  (export "f64.no_fold_add_neg_neg" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_add_neg_neg" (f32.const -0.0) (f32.const -0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_add_neg_neg" (f32.const 0.0) (f32.const -0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_add_neg_neg" (f32.const -0.0) (f32.const 0.0)) (f32.const 0.0))
@@ -4868,6 +4934,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_add_neg" (func 3))
+  (export "f64.no_fold_add_neg" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4900,9 +4968,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_add_neg" (func 3))
-  (export "f64.no_fold_add_neg" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_add_neg" (f32.const 0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_add_neg" (f32.const -0.0)) (f32.const 0.0))
 (assert_return (invoke "f32.no_fold_add_neg" (f32.const inf)) (f32.const nan:canonical))
@@ -4923,6 +4990,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_6x_via_add" (func 3))
+  (export "f64.no_fold_6x_via_add" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -4969,9 +5038,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_6x_via_add" (func 3))
-  (export "f64.no_fold_6x_via_add" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_6x_via_add" (f32.const -0x1.598a0cp+99)) (f32.const -0x1.03278ap+102))
 (assert_return (invoke "f32.no_fold_6x_via_add" (f32.const -0x1.d3e7acp-77)) (f32.const -0x1.5eedc2p-74))
 (assert_return (invoke "f32.no_fold_6x_via_add" (f32.const 0x1.00fa02p-77)) (f32.const 0x1.817702p-75))
@@ -4995,6 +5063,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_div" (func 3))
+  (export "f64.no_fold_div_div" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -5029,9 +5099,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_fold_div_div" (func 3))
-  (export "f64.no_fold_div_div" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_div" (f32.const -0x1.f70228p+78) (f32.const -0x1.fbc612p-16) (f32.const -0x1.8c379p+10)) (f32.const -0x1.47b43cp+83))
 (assert_return (invoke "f32.no_fold_div_div" (f32.const 0x1.d29d2ep-70) (f32.const 0x1.f3a17ep+110) (f32.const -0x1.64d41p-112)) (f32.const -0x0p+0))
 (assert_return (invoke "f32.no_fold_div_div" (f32.const 0x1.867f98p+43) (f32.const 0x1.30acfcp-105) (f32.const 0x1.e210d8p+105)) (f32.const inf))
@@ -5056,6 +5125,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_mul_divs" (func 3))
+  (export "f64.no_fold_mul_divs" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (param $w f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -5094,9 +5165,8 @@
     i64.const 4
     call 2
   )
-  (export "f32.no_fold_mul_divs" (func 3))
-  (export "f64.no_fold_mul_divs" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_mul_divs" (f32.const -0x1.c483bep-109) (f32.const 0x1.ee1c3cp-92) (f32.const 0x1.800756p-88) (f32.const -0x1.95b972p+4)) (f32.const 0x1.bbd30cp-110))
 (assert_return (invoke "f32.no_fold_mul_divs" (f32.const -0x1.0f4262p+102) (f32.const 0x1.248498p+25) (f32.const 0x1.f66a7cp-17) (f32.const 0x1.897fc8p-3)) (f32.const -0x1.2f1aa4p+63))
 (assert_return (invoke "f32.no_fold_mul_divs" (f32.const -0x1.df5f22p+33) (f32.const -0x1.fcee3ep+39) (f32.const -0x1.9ea914p+29) (f32.const -0x1.2c4d3p+10)) (f32.const 0x1.4cf51cp+13))
@@ -5119,6 +5189,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_add_divs" (func 3))
+  (export "f64.no_fold_add_divs" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -5157,9 +5229,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_fold_add_divs" (func 3))
-  (export "f64.no_fold_add_divs" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_add_divs" (f32.const 0x1.795e7p+8) (f32.const -0x1.48a5eep-5) (f32.const -0x1.9a244cp+126)) (f32.const -0x1.d709b6p-119))
 (assert_return (invoke "f32.no_fold_add_divs" (f32.const -0x1.ae89e8p-63) (f32.const -0x1.e9903ep-49) (f32.const -0x1.370a8cp+47)) (f32.const 0x1.92f3f6p-96))
 (assert_return (invoke "f32.no_fold_add_divs" (f32.const -0x1.626408p-46) (f32.const 0x1.2ee5b2p-64) (f32.const -0x1.ecefaap+48)) (f32.const 0x1.701864p-95))
@@ -5182,6 +5253,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_sqrt_square" (func 3))
+  (export "f64.no_fold_sqrt_square" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -5214,9 +5287,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_fold_sqrt_square" (func 3))
-  (export "f64.no_fold_sqrt_square" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_sqrt_square" (f32.const -0x1.5cb316p-66)) (f32.const 0x1.5cb322p-66))
 (assert_return (invoke "f32.no_fold_sqrt_square" (f32.const -0x1.b0f9e4p-73)) (f32.const 0x1.b211b2p-73))
 (assert_return (invoke "f32.no_fold_sqrt_square" (f32.const -0x1.de417cp-71)) (f32.const 0x1.de65b8p-71))
@@ -5239,6 +5311,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_mul_sqrts" (func 3))
+  (export "f64.no_fold_mul_sqrts" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -5273,9 +5347,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_mul_sqrts" (func 3))
-  (export "f64.no_fold_mul_sqrts" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_mul_sqrts" (f32.const 0x1.dddda8p-125) (f32.const -0x1.25d22ap-83)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_mul_sqrts" (f32.const 0x1.418d14p-92) (f32.const 0x1.c6535cp-32)) (f32.const 0x1.7e373ap-62))
 (assert_return (invoke "f32.no_fold_mul_sqrts" (f32.const 0x1.4de7ep-88) (f32.const 0x1.84ff18p+6)) (f32.const 0x1.686668p-41))
@@ -5298,6 +5371,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_div_sqrts" (func 3))
+  (export "f64.no_fold_div_sqrts" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -5332,9 +5407,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_div_sqrts" (func 3))
-  (export "f64.no_fold_div_sqrts" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_div_sqrts" (f32.const -0x1.bea9bap+25) (f32.const -0x1.db776ep-58)) (f32.const nan:canonical))
 (assert_return (invoke "f32.no_fold_div_sqrts" (f32.const 0x1.b983b6p+32) (f32.const 0x1.901f1ep+27)) (f32.const 0x1.7c4df6p+2))
 (assert_return (invoke "f32.no_fold_div_sqrts" (f32.const 0x1.d45e72p-120) (f32.const 0x1.ab49ccp+15)) (f32.const 0x1.7b0b04p-68))
@@ -5357,6 +5431,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_mul_sqrt_div" (func 3))
+  (export "f64.no_fold_mul_sqrt_div" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -5393,9 +5469,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_mul_sqrt_div" (func 3))
-  (export "f64.no_fold_mul_sqrt_div" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_mul_sqrt_div" (f32.const -0x1.f4a7cap+81) (f32.const 0x1.c09adep+92)) (f32.const -inf))
 (assert_return (invoke "f32.no_fold_mul_sqrt_div" (f32.const -0x1.90bf1cp-120) (f32.const 0x1.8dbe88p-97)) (f32.const -0x0p+0))
 (assert_return (invoke "f32.no_fold_mul_sqrt_div" (f32.const 0x1.8570e8p+29) (f32.const 0x1.217d3p-128)) (f32.const 0x1.6e391ap+93))
@@ -5419,6 +5494,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_flush_intermediate_subnormal" (func 3))
+  (export "f64.no_flush_intermediate_subnormal" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -5453,9 +5530,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_flush_intermediate_subnormal" (func 3))
-  (export "f64.no_flush_intermediate_subnormal" (func 4))
 )
+
 (assert_return (invoke "f32.no_flush_intermediate_subnormal" (f32.const 0x1p-126) (f32.const 0x1p-23) (f32.const 0x1p23)) (f32.const 0x1p-126))
 (assert_return (invoke "f64.no_flush_intermediate_subnormal" (f64.const 0x1p-1022) (f64.const 0x1p-52) (f64.const 0x1p52)) (f64.const 0x1p-1022))
 
@@ -5471,6 +5547,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (export "f32.recoding_eq" (func 3))
+  (export "f32.recoding_le" (func 4))
+  (export "f32.recoding_lt" (func 5))
+  (export "f64.recoding_eq" (func 6))
+  (export "f64.recoding_le" (func 7))
+  (export "f64.recoding_lt" (func 8))
+  (export "recoding_demote" (func 9))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -5589,14 +5672,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.recoding_eq" (func 3))
-  (export "f32.recoding_le" (func 4))
-  (export "f32.recoding_lt" (func 5))
-  (export "f64.recoding_eq" (func 6))
-  (export "f64.recoding_le" (func 7))
-  (export "f64.recoding_lt" (func 8))
-  (export "recoding_demote" (func 9))
 )
+
 (assert_return (invoke "f32.recoding_eq" (f32.const -inf) (f32.const 3.0)) (i32.const 1))
 (assert_return (invoke "f32.recoding_le" (f32.const -inf) (f32.const 3.0)) (i32.const 1))
 (assert_return (invoke "f32.recoding_lt" (f32.const -inf) (f32.const 3.0)) (i32.const 0))
@@ -5626,6 +5703,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_extended_precision_div" (func 3))
+  (export "f64.no_extended_precision_div" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -5660,9 +5739,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_extended_precision_div" (func 3))
-  (export "f64.no_extended_precision_div" (func 4))
 )
+
 (assert_return (invoke "f32.no_extended_precision_div" (f32.const 3.0) (f32.const 7.0) (f32.const 0x1.b6db6ep-2)) (i32.const 1))
 (assert_return (invoke "f64.no_extended_precision_div" (f64.const 3.0) (f64.const 7.0) (f64.const 0x1.b6db6db6db6dbp-2)) (i32.const 1))
 
@@ -5679,6 +5757,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_distribute_exact" (func 3))
+  (export "f64.no_distribute_exact" (func 4))
   (func (;3;) (type 0) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -5717,9 +5797,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.no_distribute_exact" (func 3))
-  (export "f64.no_distribute_exact" (func 4))
 )
+
 (assert_return (invoke "f32.no_distribute_exact" (f32.const -0.0)) (f32.const 0.0))
 (assert_return (invoke "f64.no_distribute_exact" (f64.const -0.0)) (f64.const 0.0))
 
@@ -5738,6 +5817,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 6)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 7)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 7)))
+  (export "f32.sqrt" (func 3))
+  (export "f32.xkcd_sqrt_2" (func 4))
+  (export "f32.xkcd_sqrt_3" (func 5))
+  (export "f32.xkcd_sqrt_5" (func 6))
+  (export "f32.xkcd_better_sqrt_5" (func 7))
+  (export "f64.sqrt" (func 8))
+  (export "f64.xkcd_sqrt_2" (func 9))
+  (export "f64.xkcd_sqrt_3" (func 10))
+  (export "f64.xkcd_sqrt_5" (func 11))
+  (export "f64.xkcd_better_sqrt_5" (func 12))
   (func (;3;) (type 0) (param f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
@@ -5926,17 +6015,8 @@
     i64.const 4
     call 2
   )
-  (export "f32.sqrt" (func 3))
-  (export "f32.xkcd_sqrt_2" (func 4))
-  (export "f32.xkcd_sqrt_3" (func 5))
-  (export "f32.xkcd_sqrt_5" (func 6))
-  (export "f32.xkcd_better_sqrt_5" (func 7))
-  (export "f64.sqrt" (func 8))
-  (export "f64.xkcd_sqrt_2" (func 9))
-  (export "f64.xkcd_sqrt_3" (func 10))
-  (export "f64.xkcd_sqrt_5" (func 11))
-  (export "f64.xkcd_better_sqrt_5" (func 12))
 )
+
 (assert_return (invoke "f32.sqrt" (f32.const 2.0)) (f32.const 0x1.6a09e6p+0))
 (assert_return (invoke "f32.xkcd_sqrt_2" (f32.const 3.0) (f32.const 5.0) (f32.const 0x1.921fb6p+1) (f32.const 7.0)) (f32.const 0x1.6a0a54p+0))
 (assert_return (invoke "f32.sqrt" (f32.const 3.0)) (f32.const 0x1.bb67aep+0))
@@ -5964,12 +6044,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.compute_radix" (func 3))
+  (export "f64.compute_radix" (func 4))
   (func (;3;) (type 0) (param $0 f32) (param $1 f32) (result f32)
-    block $label$0 (result f32) ;; label = @1
+    block $label$0 (result f32)
       i64.const 12
       i64.const 2
       call 1
-      loop $label$2 ;; label = @2
+      loop $label$2
         i64.const 14
         call 0
         local.get $0
@@ -5984,7 +6066,7 @@
         f32.add
         f32.const 0x0p+0 (;=0;)
         f32.eq
-        br_if 0 (;@2;)
+        br_if $label$2
       end
       loop ;; label = @2
         i64.const 14
@@ -6012,11 +6094,11 @@
     call 2
   )
   (func (;4;) (type 1) (param $0 f64) (param $1 f64) (result f64)
-    block $label$0 (result f64) ;; label = @1
+    block $label$0 (result f64)
       i64.const 24
       i64.const 2
       call 1
-      loop $label$2 ;; label = @2
+      loop $label$2
         i64.const 14
         call 0
         local.get $0
@@ -6031,7 +6113,7 @@
         f64.add
         f64.const 0x0p+0 (;=0;)
         f64.eq
-        br_if 0 (;@2;)
+        br_if $label$2
       end
       loop ;; label = @2
         i64.const 14
@@ -6058,9 +6140,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.compute_radix" (func 3))
-  (export "f64.compute_radix" (func 4))
 )
+
 (assert_return (invoke "f32.compute_radix" (f32.const 1.0) (f32.const 1.0)) (f32.const 2.0))
 (assert_return (invoke "f64.compute_radix" (f64.const 1.0) (f64.const 1.0)) (f64.const 2.0))
 
@@ -6075,6 +6156,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_sub1_mul_add" (func 3))
+  (export "f64.no_fold_sub1_mul_add" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
@@ -6113,9 +6196,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_sub1_mul_add" (func 3))
-  (export "f64.no_fold_sub1_mul_add" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_sub1_mul_add" (f32.const 0x1p-32) (f32.const 1.0)) (f32.const 0x0p+0))
 (assert_return (invoke "f64.no_fold_sub1_mul_add" (f64.const 0x1p-64) (f64.const 1.0)) (f64.const 0x0p+0))
 
@@ -6130,6 +6212,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_add_le_monotonicity" (func 3))
+  (export "f32.no_fold_add_ge_monotonicity" (func 4))
+  (export "f64.no_fold_add_le_monotonicity" (func 5))
+  (export "f64.no_fold_add_ge_monotonicity" (func 6))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (param $z f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
@@ -6206,11 +6292,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.no_fold_add_le_monotonicity" (func 3))
-  (export "f32.no_fold_add_ge_monotonicity" (func 4))
-  (export "f64.no_fold_add_le_monotonicity" (func 5))
-  (export "f64.no_fold_add_ge_monotonicity" (func 6))
 )
+
 (assert_return (invoke "f32.no_fold_add_le_monotonicity" (f32.const 0.0) (f32.const 0.0) (f32.const nan)) (i32.const 0))
 (assert_return (invoke "f32.no_fold_add_le_monotonicity" (f32.const inf) (f32.const -inf) (f32.const inf)) (i32.const 0))
 (assert_return (invoke "f64.no_fold_add_le_monotonicity" (f64.const 0.0) (f64.const 0.0) (f64.const nan)) (i32.const 0))
@@ -6226,6 +6309,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.not_lt" (func 3))
+  (export "f32.not_le" (func 4))
+  (export "f32.not_gt" (func 5))
+  (export "f32.not_ge" (func 6))
+  (export "f64.not_lt" (func 7))
+  (export "f64.not_le" (func 8))
+  (export "f64.not_gt" (func 9))
+  (export "f64.not_ge" (func 10))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -6354,15 +6445,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.not_lt" (func 3))
-  (export "f32.not_le" (func 4))
-  (export "f32.not_gt" (func 5))
-  (export "f32.not_ge" (func 6))
-  (export "f64.not_lt" (func 7))
-  (export "f64.not_le" (func 8))
-  (export "f64.not_gt" (func 9))
-  (export "f64.not_ge" (func 10))
 )
+
 (assert_return (invoke "f32.not_lt" (f32.const nan) (f32.const 0.0)) (i32.const 1))
 (assert_return (invoke "f32.not_le" (f32.const nan) (f32.const 0.0)) (i32.const 1))
 (assert_return (invoke "f32.not_gt" (f32.const nan) (f32.const 0.0)) (i32.const 1))
@@ -6384,6 +6468,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.epsilon" (func 3))
+  (export "f64.epsilon" (func 4))
   (func (;3;) (type 0) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -6426,9 +6512,8 @@
     i64.const 0
     call 2
   )
-  (export "f32.epsilon" (func 3))
-  (export "f64.epsilon" (func 4))
 )
+
 (assert_return (invoke "f32.epsilon") (f32.const -0x1p-23))
 (assert_return (invoke "f64.epsilon") (f64.const 0x1p-52))
 
@@ -6444,9 +6529,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.epsilon" (func 3))
+  (export "f64.epsilon" (func 4))
   (func (;3;) (type 0) (result f32)
     (local $x f32) (local $result f32)
-    block $loop (result f32) ;; label = @1
+    block $loop (result f32)
       i64.const 8
       i64.const 2
       call 1
@@ -6478,7 +6565,7 @@
   )
   (func (;4;) (type 1) (result f64)
     (local $x f64) (local $result f64)
-    block $loop (result f64) ;; label = @1
+    block $loop (result f64)
       i64.const 16
       i64.const 2
       call 1
@@ -6508,9 +6595,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.epsilon" (func 3))
-  (export "f64.epsilon" (func 4))
 )
+
 (assert_return (invoke "f32.epsilon") (f32.const 0x1p-23))
 (assert_return (invoke "f64.epsilon") (f64.const 0x1p-52))
 
@@ -6525,6 +6611,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_trichotomy_lt" (func 3))
+  (export "f32.no_trichotomy_le" (func 4))
+  (export "f32.no_trichotomy_gt" (func 5))
+  (export "f32.no_trichotomy_ge" (func 6))
+  (export "f64.no_trichotomy_lt" (func 7))
+  (export "f64.no_trichotomy_le" (func 8))
+  (export "f64.no_trichotomy_gt" (func 9))
+  (export "f64.no_trichotomy_ge" (func 10))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result i32)
     block (result i32) ;; label = @1
       i64.const 12
@@ -6677,15 +6771,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_trichotomy_lt" (func 3))
-  (export "f32.no_trichotomy_le" (func 4))
-  (export "f32.no_trichotomy_gt" (func 5))
-  (export "f32.no_trichotomy_ge" (func 6))
-  (export "f64.no_trichotomy_lt" (func 7))
-  (export "f64.no_trichotomy_le" (func 8))
-  (export "f64.no_trichotomy_gt" (func 9))
-  (export "f64.no_trichotomy_ge" (func 10))
 )
+
 (assert_return (invoke "f32.no_trichotomy_lt" (f32.const 0.0) (f32.const nan)) (i32.const 0))
 (assert_return (invoke "f32.no_trichotomy_le" (f32.const 0.0) (f32.const nan)) (i32.const 0))
 (assert_return (invoke "f32.no_trichotomy_gt" (f32.const 0.0) (f32.const nan)) (i32.const 0))
@@ -6708,6 +6795,25 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 5)))
+  (export "f32.arithmetic_nan_bitpattern" (func 3))
+  (export "f32.canonical_nan_bitpattern" (func 4))
+  (export "f32.nonarithmetic_nan_bitpattern" (func 5))
+  (export "f64.arithmetic_nan_bitpattern" (func 6))
+  (export "f64.canonical_nan_bitpattern" (func 7))
+  (export "f64.nonarithmetic_nan_bitpattern" (func 8))
+  (export "f32.no_fold_sub_zero" (func 9))
+  (export "f32.no_fold_neg0_sub" (func 10))
+  (export "f32.no_fold_mul_one" (func 11))
+  (export "f32.no_fold_neg1_mul" (func 12))
+  (export "f32.no_fold_div_one" (func 13))
+  (export "f32.no_fold_div_neg1" (func 14))
+  (export "f64.no_fold_sub_zero" (func 15))
+  (export "f64.no_fold_neg0_sub" (func 16))
+  (export "f64.no_fold_mul_one" (func 17))
+  (export "f64.no_fold_neg1_mul" (func 18))
+  (export "f64.no_fold_div_one" (func 19))
+  (export "f64.no_fold_div_neg1" (func 20))
+  (export "no_fold_promote_demote" (func 21))
   (func (;3;) (type 0) (param $x i32) (param $y i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -7067,26 +7173,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.arithmetic_nan_bitpattern" (func 3))
-  (export "f32.canonical_nan_bitpattern" (func 4))
-  (export "f32.nonarithmetic_nan_bitpattern" (func 5))
-  (export "f64.arithmetic_nan_bitpattern" (func 6))
-  (export "f64.canonical_nan_bitpattern" (func 7))
-  (export "f64.nonarithmetic_nan_bitpattern" (func 8))
-  (export "f32.no_fold_sub_zero" (func 9))
-  (export "f32.no_fold_neg0_sub" (func 10))
-  (export "f32.no_fold_mul_one" (func 11))
-  (export "f32.no_fold_neg1_mul" (func 12))
-  (export "f32.no_fold_div_one" (func 13))
-  (export "f32.no_fold_div_neg1" (func 14))
-  (export "f64.no_fold_sub_zero" (func 15))
-  (export "f64.no_fold_neg0_sub" (func 16))
-  (export "f64.no_fold_mul_one" (func 17))
-  (export "f64.no_fold_neg1_mul" (func 18))
-  (export "f64.no_fold_div_one" (func 19))
-  (export "f64.no_fold_div_neg1" (func 20))
-  (export "no_fold_promote_demote" (func 21))
 )
+
 (assert_return (invoke "f32.arithmetic_nan_bitpattern" (i32.const 0x7f803210) (i32.const 0x7f803210)) (i32.const 0x7fc00000))
 (assert_return (invoke "f32.canonical_nan_bitpattern" (i32.const 0) (i32.const 0)) (i32.const 0x7fc00000))
 (assert_return (invoke "f32.canonical_nan_bitpattern" (i32.const 0x7fc00000) (i32.const 0x7fc00000)) (i32.const 0x7fc00000))
@@ -7131,6 +7219,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "dot_product_example" (func 3))
+  (export "with_binary_sum_collapse" (func 4))
   (func (;3;) (type 0) (param $x0 f64) (param $x1 f64) (param $x2 f64) (param $x3 f64) (param $y0 f64) (param $y1 f64) (param $y2 f64) (param $y3 f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 24
@@ -7185,9 +7275,8 @@
     i64.const 8
     call 2
   )
-  (export "dot_product_example" (func 3))
-  (export "with_binary_sum_collapse" (func 4))
 )
+
 (assert_return (invoke "dot_product_example"
     (f64.const 3.2e7) (f64.const 1.0) (f64.const -1.0) (f64.const 8.0e7)
     (f64.const 4.0e7) (f64.const 1.0) (f64.const -1.0) (f64.const -1.6e7))
@@ -7207,6 +7296,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.contract2fma" (func 3))
+  (export "f64.contract2fma" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -7247,9 +7338,8 @@
     i64.const 2
     call 2
   )
-  (export "f32.contract2fma" (func 3))
-  (export "f64.contract2fma" (func 4))
 )
+
 (assert_return (invoke "f32.contract2fma" (f32.const 1.0) (f32.const 1.0)) (f32.const 0.0))
 (assert_return (invoke "f32.contract2fma" (f32.const 0x1.19999ap+0) (f32.const 0x1.19999ap+0)) (f32.const 0.0))
 (assert_return (invoke "f32.contract2fma" (f32.const 0x1.333332p+0) (f32.const 0x1.333332p+0)) (f32.const 0.0))
@@ -7268,6 +7358,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.division_by_small_number" (func 3))
+  (export "f64.division_by_small_number" (func 4))
   (func (;3;) (type 0) (param $a f32) (param $b f32) (param $c f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -7302,9 +7394,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.division_by_small_number" (func 3))
-  (export "f64.division_by_small_number" (func 4))
 )
+
 (assert_return (invoke "f32.division_by_small_number" (f32.const 112000000) (f32.const 100000) (f32.const 0.0009)) (f32.const 888888))
 (assert_return (invoke "f64.division_by_small_number" (f64.const 112000000) (f64.const 100000) (f64.const 0.0009)) (f64.const 888888.8888888806))
 
@@ -7319,6 +7410,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.golden_ratio" (func 3))
+  (export "f64.golden_ratio" (func 4))
   (func (;3;) (type 0) (param $a f32) (param $b f32) (param $c f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 12
@@ -7355,9 +7448,8 @@
     i64.const 3
     call 2
   )
-  (export "f32.golden_ratio" (func 3))
-  (export "f64.golden_ratio" (func 4))
 )
+
 (assert_return (invoke "f32.golden_ratio" (f32.const 0.5) (f32.const 1.0) (f32.const 5.0)) (f32.const 1.618034))
 (assert_return (invoke "f64.golden_ratio" (f64.const 0.5) (f64.const 1.0) (f64.const 5.0)) (f64.const 1.618033988749895))
 
@@ -7372,6 +7464,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.silver_means" (func 3))
+  (export "f64.silver_means" (func 4))
   (func (;3;) (type 0) (param $n f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -7416,9 +7510,8 @@
     i64.const 1
     call 2
   )
-  (export "f32.silver_means" (func 3))
-  (export "f64.silver_means" (func 4))
 )
+
 (assert_return (invoke "f32.silver_means" (f32.const 0.0)) (f32.const 1.0))
 (assert_return (invoke "f32.silver_means" (f32.const 1.0)) (f32.const 1.6180340))
 (assert_return (invoke "f32.silver_means" (f32.const 2.0)) (f32.const 2.4142136))
@@ -7442,6 +7535,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "point_four" (func 3))
   (func (;3;) (type 0) (param $four f64) (param $ten f64) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
@@ -7459,8 +7553,8 @@
     i64.const 2
     call 2
   )
-  (export "point_four" (func 3))
 )
+
 (assert_return (invoke "point_four" (f64.const 4.0) (f64.const 10.0)) (i32.const 0))
 
 ;; Test an approximation function for tau; it should produces the correctly
@@ -7473,6 +7567,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "tau" (func 3))
   (func (;3;) (type 0) (param i32) (result f64)
     (local f64 f64 f64 f64)
     block (result f64) ;; label = @1
@@ -7551,8 +7646,8 @@
     i64.const 5
     call 2
   )
-  (export "tau" (func 3))
 )
+
 (assert_return (invoke "tau" (i32.const 10)) (f64.const 0x1.921fb54442d14p+2))
 (assert_return (invoke "tau" (i32.const 11)) (f64.const 0x1.921fb54442d18p+2))
 
@@ -7566,6 +7661,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32.no_fold_conditional_inc" (func 3))
+  (export "f64.no_fold_conditional_inc" (func 4))
   (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 16
@@ -7606,8 +7703,7 @@
     i64.const 2
     call 2
   )
-  (export "f32.no_fold_conditional_inc" (func 3))
-  (export "f64.no_fold_conditional_inc" (func 4))
 )
+
 (assert_return (invoke "f32.no_fold_conditional_inc" (f32.const -0.0) (f32.const -1.0)) (f32.const -0.0))
 (assert_return (invoke "f64.no_fold_conditional_inc" (f64.const -0.0) (f64.const -1.0)) (f64.const -0.0))

@@ -6,6 +6,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 0)
+  (export "size" (func 3))
+  (export "grow" (func 4))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -38,10 +41,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 0)
-  (export "size" (func 3))
-  (export "grow" (func 4))
 )
+
 (assert_return (invoke "size") (i32.const 0))
 (assert_return (invoke "grow" (i32.const 1)))
 (assert_return (invoke "size") (i32.const 1))
@@ -58,6 +59,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1)
+  (export "size" (func 3))
+  (export "grow" (func 4))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -90,10 +94,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1)
-  (export "size" (func 3))
-  (export "grow" (func 4))
 )
+
 (assert_return (invoke "size") (i32.const 1))
 (assert_return (invoke "grow" (i32.const 1)))
 (assert_return (invoke "size") (i32.const 2))
@@ -110,6 +112,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 0 2)
+  (export "size" (func 3))
+  (export "grow" (func 4))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -142,10 +147,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 0 2)
-  (export "size" (func 3))
-  (export "grow" (func 4))
 )
+
 (assert_return (invoke "size") (i32.const 0))
 (assert_return (invoke "grow" (i32.const 3)))
 (assert_return (invoke "size") (i32.const 0))
@@ -166,6 +169,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 3 8)
+  (export "size" (func 3))
+  (export "grow" (func 4))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -198,10 +204,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 3 8)
-  (export "size" (func 3))
-  (export "grow" (func 4))
 )
+
 (assert_return (invoke "size") (i32.const 3))
 (assert_return (invoke "grow" (i32.const 1)))
 (assert_return (invoke "size") (i32.const 4))

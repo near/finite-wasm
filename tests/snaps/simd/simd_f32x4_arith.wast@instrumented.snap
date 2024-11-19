@@ -6,6 +6,12 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "f32x4.add" (func 3))
+  (export "f32x4.sub" (func 4))
+  (export "f32x4.mul" (func 5))
+  (export "f32x4.div" (func 6))
+  (export "f32x4.neg" (func 7))
+  (export "f32x4.sqrt" (func 8))
   (func (;3;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
@@ -94,13 +100,8 @@
     i64.const 1
     call 2
   )
-  (export "f32x4.add" (func 3))
-  (export "f32x4.sub" (func 4))
-  (export "f32x4.mul" (func 5))
-  (export "f32x4.div" (func 6))
-  (export "f32x4.neg" (func 7))
-  (export "f32x4.sqrt" (func 8))
 )
+
 (assert_return (invoke "f32x4.add" (v128.const f32x4 0x0p+0 0x0p+0 0x0p+0 0x0p+0)
                                    (v128.const f32x4 0x0p+0 0x0p+0 0x0p+0 0x0p+0))
                                    (v128.const f32x4 0x0.0p+0 0x0.0p+0 0x0.0p+0 0x0.0p+0))
@@ -5375,6 +5376,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "f32x4_sqrt_arith" (func 3))
+  (export "f32x4_sqrt_canon" (func 4))
+  (export "f32x4_sqrt_mixed" (func 5))
   (func (;3;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
@@ -5417,10 +5421,8 @@
     i64.const 0
     call 2
   )
-  (export "f32x4_sqrt_arith" (func 3))
-  (export "f32x4_sqrt_canon" (func 4))
-  (export "f32x4_sqrt_mixed" (func 5))
 )
+
 (assert_return (invoke "f32x4_sqrt_arith") (v128.const f32x4 nan:arithmetic nan:arithmetic 4.0 5.0))
 (assert_return (invoke "f32x4_sqrt_canon") (v128.const f32x4 nan:canonical nan:canonical 2.0 3.0))
 (assert_return (invoke "f32x4_sqrt_mixed") (v128.const f32x4 nan:canonical nan:arithmetic 6.0 7.0))
@@ -5434,6 +5436,22 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "add-sub" (func 3))
+  (export "div-add" (func 4))
+  (export "div-mul" (func 5))
+  (export "div-sub" (func 6))
+  (export "mul-add" (func 7))
+  (export "mul-div" (func 8))
+  (export "mul-sub" (func 9))
+  (export "sub-add" (func 10))
+  (export "add-neg" (func 11))
+  (export "add-sqrt" (func 12))
+  (export "div-neg" (func 13))
+  (export "div-sqrt" (func 14))
+  (export "mul-neg" (func 15))
+  (export "mul-sqrt" (func 16))
+  (export "sub-neg" (func 17))
+  (export "sub-sqrt" (func 18))
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
@@ -5698,23 +5716,8 @@
     i64.const 2
     call 2
   )
-  (export "add-sub" (func 3))
-  (export "div-add" (func 4))
-  (export "div-mul" (func 5))
-  (export "div-sub" (func 6))
-  (export "mul-add" (func 7))
-  (export "mul-div" (func 8))
-  (export "mul-sub" (func 9))
-  (export "sub-add" (func 10))
-  (export "add-neg" (func 11))
-  (export "add-sqrt" (func 12))
-  (export "div-neg" (func 13))
-  (export "div-sqrt" (func 14))
-  (export "mul-neg" (func 15))
-  (export "mul-sqrt" (func 16))
-  (export "sub-neg" (func 17))
-  (export "sub-sqrt" (func 18))
 )
+
 (assert_return (invoke "add-sub" (v128.const f32x4 1.125 1.125 1.125 1.125)
                                  (v128.const f32x4 0.25 0.25 0.25 0.25)
                                  (v128.const f32x4 0.125 0.125 0.125 0.125))

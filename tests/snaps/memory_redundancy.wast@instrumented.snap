@@ -8,6 +8,13 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 4)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 5)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 5)))
+  (memory (;0;) 1 1)
+  (export "zero_everything" (func 3))
+  (export "test_store_to_load" (func 4))
+  (export "test_redundant_load" (func 5))
+  (export "test_dead_store" (func 6))
+  (export "malloc" (func $malloc))
+  (export "malloc_aliasing" (func 8))
   (func (;3;) (type 0)
     block ;; label = @1
       i64.const 8
@@ -170,14 +177,8 @@
     i64.const 2
     call $finite_wasm_unstack
   )
-  (memory (;0;) 1 1)
-  (export "zero_everything" (func 3))
-  (export "test_store_to_load" (func 4))
-  (export "test_redundant_load" (func 5))
-  (export "test_dead_store" (func 6))
-  (export "malloc" (func $malloc))
-  (export "malloc_aliasing" (func 8))
 )
+
 (assert_return (invoke "test_store_to_load") (i32.const 0x00000080))
 (invoke "zero_everything")
 (assert_return (invoke "test_redundant_load") (i32.const 0x00000080))

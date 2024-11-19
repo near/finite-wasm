@@ -393,7 +393,7 @@ impl<'a> TestContext {
                 .map(|(_, d)| d.span().offset().saturating_sub(1))
                 .unwrap_or(test_contents.len());
             match directive {
-                wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Module(mut module))) => {
+                wast::WastDirective::Module(wast::QuoteWat::Wat(wast::Wat::Module(mut module))) => {
                     let id = module.id.map_or_else(
                         || format!("[directive {directive_index}]"),
                         |id| format!("{id:?}"),
@@ -402,20 +402,28 @@ impl<'a> TestContext {
                         .encode()
                         .map_err(|e| Error::EncodeModule(e, id.clone()))?;
                     let instrumented = self.instrument_module(&id, &module)?;
-                    let print = wasmprinter::print_bytes(&instrumented).expect("print");
-                    output_wast.push_str(&print);
+                    let mut printer = ModulePrint(&mut output_wast);
+                    wasmprinter::Config::new()
+                        .print(&instrumented, &mut printer)
+                        .expect("print");
                     output_wast.push_str("\n");
                 }
-                wast::WastDirective::Wat(wast::QuoteWat::QuoteModule(_, _)) => {
+                wast::WastDirective::Module(wast::QuoteWat::QuoteModule(_, _)) => {
                     unreachable!("doesn’t actually occur in our test suite");
                 }
-                wast::WastDirective::Wat(wast::QuoteWat::Wat(wast::Wat::Component(_))) => {
+                wast::WastDirective::Module(wast::QuoteWat::Wat(wast::Wat::Component(_))) => {
                     // These are difficult and I would rather skip them for now...
                     continue;
                 }
-                wast::WastDirective::Wat(wast::QuoteWat::QuoteComponent(_, _)) => {
+                wast::WastDirective::Module(wast::QuoteWat::QuoteComponent(_, _)) => {
                     // Same
                     continue;
+                }
+                wast::WastDirective::ModuleDefinition(_) => {
+                    unreachable!("doesn’t actually occur in our test suite");
+                }
+                wast::WastDirective::ModuleInstance { .. } => {
+                    unreachable!("doesn’t actually occur in our test suite");
                 }
 
                 // Ignore the “operations”, we only care about module analysis results.
@@ -454,8 +462,10 @@ impl<'a> TestContext {
                                 .map_err(|e| Error::EncodeModule(e, id.clone()))?;
                             let instrumented = self.instrument_module(&id, &module)?;
                             output_wast.push_str("\n(assert_trap ");
-                            let print = wasmprinter::print_bytes(&instrumented).expect("print");
-                            output_wast.push_str(&print);
+                            let mut printer = ModulePrint(&mut output_wast);
+                            wasmprinter::Config::new()
+                                .print(&instrumented, &mut printer)
+                                .expect("print");
                             output_wast.push_str(" \"");
                             output_wast.push_str(message);
                             output_wast.push_str("\")\n");
@@ -479,6 +489,15 @@ impl<'a> TestContext {
                 wast::WastDirective::AssertMalformed { .. } => continue,
                 wast::WastDirective::AssertInvalid { .. } => continue,
                 wast::WastDirective::AssertUnlinkable { .. } => continue,
+                wast::WastDirective::AssertSuspension { .. } => {
+                    unreachable!("doesn’t actually occur in our test suite");
+                }
+                wast::WastDirective::Thread(_) => {
+                    unreachable!("doesn’t actually occur in our test suite");
+                }
+                wast::WastDirective::Wait { .. } => {
+                    unreachable!("doesn’t actually occur in our test suite");
+                }
             };
         }
         Ok(output_wast)
@@ -645,6 +664,16 @@ impl<'a> TestContext {
                 .map_err(|e| Error::WriteSnap(e, snap_path))?;
             Ok(())
         }
+    }
+}
+
+struct ModulePrint<'a>(&'a mut String);
+impl<'a> wasmprinter::Print for ModulePrint<'a> {
+    fn write_str(&mut self, s: &str) -> io::Result<()> {
+        Ok(self.0.push_str(s))
+    }
+    fn print_custom_section(&mut self, _n: &str, _bo: usize, _d: &[u8]) -> io::Result<bool> {
+        Ok(true)
     }
 }
 

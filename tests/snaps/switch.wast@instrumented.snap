@@ -7,9 +7,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (export "stmt" (func 3))
+  (export "expr" (func 4))
+  (export "arg" (func 5))
+  (export "corner" (func 6))
   (func (;3;) (type 0) (param $i i32) (result i32)
     (local $j i32)
-    block $switch (result i32) ;; label = @1
+    block $switch (result i32)
       i64.const 8
       i64.const 2
       call 1
@@ -17,18 +21,18 @@
       call 0
       i32.const 100
       local.set $j
-      block $7 ;; label = @2
-        block $default ;; label = @3
-          block $6 ;; label = @4
-            block $5 ;; label = @5
-              block $4 ;; label = @6
-                block $3 ;; label = @7
-                  block $2 ;; label = @8
-                    block $1 ;; label = @9
-                      block $0 ;; label = @10
+      block $7
+        block $default
+          block $6
+            block $5
+              block $4
+                block $3
+                  block $2
+                    block $1
+                      block $0
                         block ;; label = @11
                           local.get $i
-                          br_table 0 (;@11;) 1 (;@10;) 2 (;@9;) 3 (;@8;) 4 (;@7;) 5 (;@6;) 6 (;@5;) 8 (;@3;) 7 (;@4;)
+                          br_table 0 (;@11;) $0 $1 $2 $3 $4 $5 $default $6
                         end
                         i64.const 2
                         call 0
@@ -49,17 +53,17 @@
                   local.get $i
                   i32.sub
                   local.set $j
-                  br 5 (;@2;)
+                  br $7
                 end
                 i64.const 1
                 call 0
-                br 4 (;@2;)
+                br $7
               end
               i64.const 3
               call 0
               i32.const 101
               local.set $j
-              br 3 (;@2;)
+              br $7
             end
             i64.const 2
             call 0
@@ -86,7 +90,7 @@
   )
   (func (;4;) (type 1) (param $i i64) (result i64)
     (local $j i64)
-    block $switch (result i64) ;; label = @1
+    block $switch (result i64)
       i64.const 16
       i64.const 2
       call 1
@@ -94,19 +98,19 @@
       call 0
       i64.const 100
       local.set $j
-      block $7 (result i64) ;; label = @2
-        block $default ;; label = @3
-          block $4 ;; label = @4
-            block $5 ;; label = @5
-              block $6 ;; label = @6
-                block $3 ;; label = @7
-                  block $2 ;; label = @8
-                    block $1 ;; label = @9
-                      block $0 ;; label = @10
+      block $7 (result i64)
+        block $default
+          block $4
+            block $5
+              block $6
+                block $3
+                  block $2
+                    block $1
+                      block $0
                         block ;; label = @11
                           local.get $i
                           i32.wrap_i64
-                          br_table 0 (;@11;) 1 (;@10;) 2 (;@9;) 3 (;@8;) 6 (;@5;) 5 (;@6;) 4 (;@7;) 8 (;@3;) 7 (;@4;)
+                          br_table 0 (;@11;) $0 $1 $2 $5 $6 $3 $default $4
                         end
                         i64.const 2
                         call 0
@@ -126,7 +130,7 @@
                   i64.const 0
                   local.get $i
                   i64.sub
-                  br 5 (;@2;)
+                  br $7
                 end
                 i64.const 2
                 call 0
@@ -138,7 +142,7 @@
           i64.const 2
           call 0
           local.get $j
-          br 1 (;@2;)
+          br $7
         end
         i64.const 1
         call 0
@@ -156,17 +160,17 @@
     call 2
   )
   (func (;5;) (type 0) (param $i i32) (result i32)
-    block $2 (result i32) ;; label = @1
+    block $2 (result i32)
       i64.const 24
       i64.const 1
       call 1
       i64.const 14
       call 0
-      block $1 (result i32) ;; label = @2
+      block $1 (result i32)
         i32.const 10
-        block $0 (result i32) ;; label = @3
+        block $0 (result i32)
           i32.const 100
-          block $default (result i32) ;; label = @4
+          block $default (result i32)
             i32.const 1000
             block (result i32) ;; label = @5
               i32.const 2
@@ -175,7 +179,7 @@
               i32.const 3
               local.get $i
               i32.and
-              br_table 1 (;@4;) 2 (;@3;) 3 (;@2;) 0 (;@5;)
+              br_table $default $0 $1 0 (;@5;)
             end
             i64.const 1
             call 0
@@ -219,11 +223,8 @@
     i64.const 0
     call 2
   )
-  (export "stmt" (func 3))
-  (export "expr" (func 4))
-  (export "arg" (func 5))
-  (export "corner" (func 6))
 )
+
 (assert_return (invoke "stmt" (i32.const 0)) (i32.const 0))
 (assert_return (invoke "stmt" (i32.const 1)) (i32.const -1))
 (assert_return (invoke "stmt" (i32.const 2)) (i32.const -2))

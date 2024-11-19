@@ -5,6 +5,15 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1)
+  (export "v128.store_i8x16" (func 3))
+  (export "v128.store_i16x8" (func 4))
+  (export "v128.store_i16x8_2" (func 5))
+  (export "v128.store_i16x8_3" (func 6))
+  (export "v128.store_i32x4" (func 7))
+  (export "v128.store_i32x4_2" (func 8))
+  (export "v128.store_i32x4_3" (func 9))
+  (export "v128.store_f32x4" (func 10))
   (func (;3;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 20
@@ -157,16 +166,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1)
-  (export "v128.store_i8x16" (func 3))
-  (export "v128.store_i16x8" (func 4))
-  (export "v128.store_i16x8_2" (func 5))
-  (export "v128.store_i16x8_3" (func 6))
-  (export "v128.store_i32x4" (func 7))
-  (export "v128.store_i32x4_2" (func 8))
-  (export "v128.store_i32x4_3" (func 9))
-  (export "v128.store_f32x4" (func 10))
 )
+
 (assert_return (invoke "v128.store_i8x16") (v128.const i8x16 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
 (assert_return (invoke "v128.store_i16x8") (v128.const i16x8 0 1 2 3 4 5 6 7))
 (assert_return (invoke "v128.store_i16x8_2") (v128.const i16x8 12345 12345 12345 12345 12345 12345 12345 12345))
@@ -186,6 +187,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1)
+  (export "as-block-value" (func 3))
+  (export "as-loop-value" (func 4))
+  (export "as-br-value" (func 5))
+  (export "as-br_if-value" (func 6))
+  (export "as-br_if-value-cond" (func 7))
+  (export "as-br_table-value" (func 8))
+  (export "as-return-value" (func 9))
+  (export "as-if-then" (func 10))
+  (export "as-if-else" (func 11))
   (func (;3;) (type 0)
     block ;; label = @1
       i64.const 20
@@ -365,17 +376,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1)
-  (export "as-block-value" (func 3))
-  (export "as-loop-value" (func 4))
-  (export "as-br-value" (func 5))
-  (export "as-br_if-value" (func 6))
-  (export "as-br_if-value-cond" (func 7))
-  (export "as-br_table-value" (func 8))
-  (export "as-return-value" (func 9))
-  (export "as-if-then" (func 10))
-  (export "as-if-else" (func 11))
 )
+
 (assert_return (invoke "as-block-value"))
 (assert_return (invoke "as-loop-value"))
 (assert_return (invoke "as-br-value"))
