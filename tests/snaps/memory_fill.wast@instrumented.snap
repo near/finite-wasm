@@ -6,8 +6,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -74,10 +77,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (invoke "test")
 
 (assert_return (invoke "checkRange" (i32.const 0) (i32.const 65280) (i32.const 0))
@@ -92,8 +93,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -160,10 +164,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (assert_trap (invoke "test") "out of bounds memory access")
 
 (module
@@ -174,8 +176,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -242,10 +247,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (assert_trap (invoke "test") "out of bounds memory access")
 
 (module
@@ -256,8 +259,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -324,10 +330,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (invoke "test")
 
 (assert_return (invoke "checkRange" (i32.const 0) (i32.const 65536) (i32.const 0))
@@ -340,8 +344,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -408,10 +415,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (invoke "test")
 
 (module
@@ -422,8 +427,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -490,10 +498,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (assert_trap (invoke "test") "out of bounds memory access")
 
 (module
@@ -504,8 +510,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -572,10 +581,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (invoke "test")
 
 (assert_return (invoke "checkRange" (i32.const 0) (i32.const 1) (i32.const 0))
@@ -593,8 +600,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "test" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -669,10 +679,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "test" (func 4))
 )
+
 (invoke "test")
 
 (assert_return (invoke "checkRange" (i32.const 0) (i32.const 18) (i32.const 0))
@@ -693,8 +701,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "run" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -761,10 +772,8 @@
     i64.const 3
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "run" (func 4))
 )
+
 (assert_trap (invoke "run" (i32.const 65280) (i32.const 37) (i32.const 512))
               "out of bounds memory access")
 
@@ -778,8 +787,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "run" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -846,10 +858,8 @@
     i64.const 3
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "run" (func 4))
 )
+
 (assert_trap (invoke "run" (i32.const 65279) (i32.const 37) (i32.const 514))
               "out of bounds memory access")
 
@@ -863,8 +873,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "checkRange" (func 3))
+  (export "run" (func 4))
   (func (;3;) (type 0) (param $from i32) (param $to i32) (param $expected i32) (result i32)
-    block $cont (result i32) ;; label = @1
+    block $cont (result i32)
       i64.const 8
       i64.const 3
       call 1
@@ -931,10 +944,8 @@
     i64.const 3
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "checkRange" (func 3))
-  (export "run" (func 4))
 )
+
 (assert_trap (invoke "run" (i32.const 65279) (i32.const 37) (i32.const 4294967295))
               "out of bounds memory access")
 

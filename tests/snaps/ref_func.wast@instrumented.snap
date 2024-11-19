@@ -5,6 +5,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "f" (func 3))
   (func (;3;) (type 0) (param $x i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -18,8 +19,8 @@
     i64.const 1
     call 2
   )
-  (export "f" (func 3))
 )
+
 (register "M")
 
 (module
@@ -32,6 +33,23 @@
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
   (import "M" "f" (func $f (;3;) (type 0)))
+  (table $t (;0;) 1 funcref)
+  (global (;0;) funcref ref.func $f)
+  (global (;1;) funcref ref.func $g)
+  (global $v (;2;) (mut funcref) ref.func $f)
+  (global (;3;) funcref ref.func $gf1)
+  (global (;4;) funcref ref.func $gf2)
+  (export "is_null-f" (func 10))
+  (export "is_null-g" (func 11))
+  (export "is_null-v" (func 12))
+  (export "set-f" (func 13))
+  (export "set-g" (func 14))
+  (export "call-f" (func 15))
+  (export "call-g" (func 16))
+  (export "call-v" (func 17))
+  (elem (;0;) declare func $gf1 $ff1)
+  (elem (;1;) declare funcref (ref.func $gf2) (ref.func $ff2))
+  (elem (;2;) declare func $f $g)
   (func $g (;4;) (type 0) (param $x i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 8
@@ -197,24 +215,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table $t (;0;) 1 funcref)
-  (global (;0;) funcref ref.func $f)
-  (global (;1;) funcref ref.func $g)
-  (global $v (;2;) (mut funcref) ref.func $f)
-  (global (;3;) funcref ref.func $gf1)
-  (global (;4;) funcref ref.func $gf2)
-  (export "is_null-f" (func 10))
-  (export "is_null-g" (func 11))
-  (export "is_null-v" (func 12))
-  (export "set-f" (func 13))
-  (export "set-g" (func 14))
-  (export "call-f" (func 15))
-  (export "call-g" (func 16))
-  (export "call-v" (func 17))
-  (elem (;0;) declare func $gf1 $ff1)
-  (elem (;1;) declare funcref (ref.func $gf2) (ref.func $ff2))
-  (elem (;2;) declare func $f $g)
 )
+
 (assert_return (invoke "is_null-f") (i32.const 0))
 (assert_return (invoke "is_null-g") (i32.const 0))
 (assert_return (invoke "is_null-v") (i32.const 0))
@@ -234,6 +236,13 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (table $t (;0;) 1 funcref)
+  (global (;0;) funcref ref.func $f1)
+  (export "f" (func $f2))
+  (elem (;0;) (table $t) (i32.const 0) func $f3)
+  (elem (;1;) (table $t) (i32.const 0) funcref (ref.func $f4))
+  (elem (;2;) func $f5)
+  (elem (;3;) funcref (ref.func $f6))
   (func $f1 (;3;) (type 0))
   (func $f2 (;4;) (type 0))
   (func $f3 (;5;) (type 0))
@@ -262,11 +271,5 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (table $t (;0;) 1 funcref)
-  (global (;0;) funcref ref.func $f1)
-  (export "f" (func $f2))
-  (elem (;0;) (i32.const 0) func $f3)
-  (elem (;1;) (i32.const 0) funcref (ref.func $f4))
-  (elem (;2;) func $f5)
-  (elem (;3;) funcref (ref.func $f6))
 )
+

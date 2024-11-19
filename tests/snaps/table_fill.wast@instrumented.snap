@@ -6,6 +6,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t (;0;) 10 externref)
+  (export "fill" (func 3))
+  (export "fill-abbrev" (func 4))
+  (export "get" (func 5))
   (func (;3;) (type 0) (param $i i32) (param $r externref) (param $n i32)
     block ;; label = @1
       i64.const 40
@@ -56,11 +60,8 @@
     i64.const 1
     call 2
   )
-  (table $t (;0;) 10 externref)
-  (export "fill" (func 3))
-  (export "fill-abbrev" (func 4))
-  (export "get" (func 5))
 )
+
 (assert_return (invoke "get" (i32.const 1)) (ref.null extern))
 (assert_return (invoke "get" (i32.const 2)) (ref.null extern))
 (assert_return (invoke "get" (i32.const 3)) (ref.null extern))

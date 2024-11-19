@@ -5,6 +5,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "ef0" (func 3))
+  (export "ef1" (func 4))
+  (export "ef2" (func 5))
+  (export "ef3" (func 6))
+  (export "ef4" (func 7))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -70,12 +75,8 @@
     i64.const 0
     call 2
   )
-  (export "ef0" (func 3))
-  (export "ef1" (func 4))
-  (export "ef2" (func 5))
-  (export "ef3" (func 6))
-  (export "ef4" (func 7))
 )
+
 (register "a")
 
 (module
@@ -92,6 +93,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -190,18 +202,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -278,6 +280,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -389,18 +402,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -477,6 +480,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -588,18 +602,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -676,6 +680,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -787,18 +802,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -875,6 +880,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -986,18 +1002,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -1074,6 +1080,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1185,18 +1202,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -1273,6 +1280,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1384,18 +1402,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -1472,6 +1480,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1583,18 +1602,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -1671,6 +1680,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1782,18 +1802,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (table $t1) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (table $t1) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -1870,6 +1880,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -1968,18 +1989,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -2056,6 +2067,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -2167,18 +2189,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -2255,6 +2267,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -2366,18 +2389,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -2454,6 +2467,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -2565,18 +2589,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -2653,6 +2667,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -2764,18 +2789,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -2852,6 +2867,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -2963,18 +2989,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -3051,6 +3067,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -3162,18 +3189,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -3250,6 +3267,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -3361,18 +3389,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -3449,6 +3467,17 @@
   (import "a" "ef2" (func (;5;) (type 0)))
   (import "a" "ef3" (func (;6;) (type 0)))
   (import "a" "ef4" (func (;7;) (type 0)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (export "check_t0" (func 14))
+  (export "check_t1" (func 15))
+  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
+  (elem (;4;) (table $t0) (i32.const 3) func 4 6 4 7)
+  (elem (;5;) (table $t0) (i32.const 11) func 9 6 5 8 10)
   (func (;8;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -3560,18 +3589,8 @@
     i64.const 1
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (export "check_t0" (func 14))
-  (export "check_t1" (func 15))
-  (elem (;0;) (table $t1) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (table $t1) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
-  (elem (;4;) (i32.const 3) func 4 6 4 7)
-  (elem (;5;) (i32.const 11) func 9 6 5 8 10)
 )
+
 (invoke "test")
 (assert_trap (invoke "check_t0" (i32.const 0)) "uninitialized element")
 (assert_trap (invoke "check_t0" (i32.const 1)) "uninitialized element")
@@ -3642,6 +3661,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -3790,14 +3816,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -3808,6 +3828,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -3956,14 +3983,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -3974,6 +3995,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -4122,14 +4150,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -4140,6 +4162,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -4288,14 +4317,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -4306,6 +4329,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -4454,14 +4484,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -4472,6 +4496,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -4620,14 +4651,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -4638,6 +4663,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -4786,14 +4818,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -4804,6 +4830,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -4952,14 +4985,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -4970,6 +4997,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -5118,14 +5152,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -5136,6 +5164,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -5284,14 +5319,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -5302,6 +5331,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -5450,14 +5486,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -5468,6 +5498,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -5616,14 +5653,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -5634,6 +5665,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -5782,14 +5820,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -5800,6 +5832,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -5948,14 +5987,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -5966,6 +5999,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -6114,14 +6154,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -6132,6 +6166,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -6280,14 +6321,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -6298,6 +6333,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -6446,14 +6488,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -6464,6 +6500,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -6612,14 +6655,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -6630,6 +6667,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -6778,14 +6822,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -6796,6 +6834,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -6944,14 +6989,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -6962,6 +7001,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -7110,14 +7156,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (invoke "test")
 
 (module
@@ -7128,6 +7168,13 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (table $t0 (;0;) 30 30 funcref)
+  (table $t1 (;1;) 30 30 funcref)
+  (export "test" (func 13))
+  (elem (;0;) (table $t0) (i32.const 2) func 6 4 7 4)
+  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
+  (elem (;2;) (table $t0) (i32.const 12) func 10 8 5 6 9)
+  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
   (func (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -7276,14 +7323,8 @@
     i64.const 0
     call 2
   )
-  (table $t0 (;0;) 30 30 funcref)
-  (table $t1 (;1;) 30 30 funcref)
-  (export "test" (func 13))
-  (elem (;0;) (i32.const 2) func 6 4 7 4)
-  (elem (;1;) funcref (ref.func 5) (ref.func 10) (ref.func 4) (ref.func 11))
-  (elem (;2;) (i32.const 12) func 10 8 5 6 9)
-  (elem (;3;) funcref (ref.func 8) (ref.func 12) (ref.func 5) (ref.func 10) (ref.func 9))
 )
+
 (assert_trap (invoke "test") "out of bounds table access")
 
 (module
@@ -7295,6 +7336,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 0) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -7535,27 +7596,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 0) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
 )
+
 (assert_trap (invoke "run" (i32.const 24) (i32.const 0) (i32.const 16))
              "out of bounds table access")
 (assert_return (invoke "test" (i32.const 0)) (i32.const 0))
@@ -7600,6 +7642,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 0) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -7840,27 +7902,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 0) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8)
 )
+
 (assert_trap (invoke "run" (i32.const 23) (i32.const 0) (i32.const 15))
              "out of bounds table access")
 (assert_return (invoke "test" (i32.const 0)) (i32.const 0))
@@ -7905,6 +7948,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 24) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -8145,27 +8208,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 24) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
 )
+
 (assert_trap (invoke "run" (i32.const 0) (i32.const 24) (i32.const 16))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -8210,6 +8254,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 23) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -8450,27 +8514,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 23) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8)
 )
+
 (assert_trap (invoke "run" (i32.const 0) (i32.const 23) (i32.const 15))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -8515,6 +8560,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 11) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -8755,27 +8820,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 11) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
 )
+
 (assert_trap (invoke "run" (i32.const 24) (i32.const 11) (i32.const 16))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -8820,6 +8866,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 24) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -9060,27 +9126,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 24) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
 )
+
 (assert_trap (invoke "run" (i32.const 11) (i32.const 24) (i32.const 16))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -9125,6 +9172,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 21) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -9365,27 +9432,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 21) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
 )
+
 (assert_trap (invoke "run" (i32.const 24) (i32.const 21) (i32.const 16))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -9430,6 +9478,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 24) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -9670,27 +9738,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 24) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7)
 )
+
 (assert_trap (invoke "run" (i32.const 21) (i32.const 24) (i32.const 16))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -9735,6 +9784,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 32 64 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 21) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8 $f9 $f10)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -9975,27 +10044,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 32 64 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 21) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8 $f9 $f10)
 )
+
 (assert_trap (invoke "run" (i32.const 21) (i32.const 21) (i32.const 16))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -10040,6 +10090,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 128 128 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 112) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8 $f9 $f10 $f11 $f12 $f13 $f14 $f15)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -10280,27 +10350,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 128 128 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 112) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8 $f9 $f10 $f11 $f12 $f13 $f14 $f15)
 )
+
 (assert_trap (invoke "run" (i32.const 0) (i32.const 112) (i32.const 4294967264))
              "out of bounds table access")
 (assert_trap (invoke "test" (i32.const 0)) "uninitialized element")
@@ -10441,6 +10492,26 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 128 128 funcref)
+  (export "f0" (func $f0))
+  (export "f1" (func $f1))
+  (export "f2" (func $f2))
+  (export "f3" (func $f3))
+  (export "f4" (func $f4))
+  (export "f5" (func $f5))
+  (export "f6" (func $f6))
+  (export "f7" (func $f7))
+  (export "f8" (func $f8))
+  (export "f9" (func $f9))
+  (export "f10" (func $f10))
+  (export "f11" (func $f11))
+  (export "f12" (func $f12))
+  (export "f13" (func $f13))
+  (export "f14" (func $f14))
+  (export "f15" (func $f15))
+  (export "test" (func 19))
+  (export "run" (func 20))
+  (elem (;0;) (i32.const 0) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8 $f9 $f10 $f11 $f12 $f13 $f14 $f15)
   (func $f0 (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -10681,27 +10752,8 @@
     i64.const 3
     call $finite_wasm_unstack
   )
-  (table (;0;) 128 128 funcref)
-  (export "f0" (func $f0))
-  (export "f1" (func $f1))
-  (export "f2" (func $f2))
-  (export "f3" (func $f3))
-  (export "f4" (func $f4))
-  (export "f5" (func $f5))
-  (export "f6" (func $f6))
-  (export "f7" (func $f7))
-  (export "f8" (func $f8))
-  (export "f9" (func $f9))
-  (export "f10" (func $f10))
-  (export "f11" (func $f11))
-  (export "f12" (func $f12))
-  (export "f13" (func $f13))
-  (export "f14" (func $f14))
-  (export "f15" (func $f15))
-  (export "test" (func 19))
-  (export "run" (func 20))
-  (elem (;0;) (i32.const 0) func $f0 $f1 $f2 $f3 $f4 $f5 $f6 $f7 $f8 $f9 $f10 $f11 $f12 $f13 $f14 $f15)
 )
+
 (assert_trap (invoke "run" (i32.const 112) (i32.const 0) (i32.const 4294967264))
              "out of bounds table access")
 (assert_return (invoke "test" (i32.const 0)) (i32.const 0))

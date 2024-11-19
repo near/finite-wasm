@@ -23,6 +23,59 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 16)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 17)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 17)))
+  (table (;0;) 1 1 funcref)
+  (memory (;0;) 1)
+  (global $a (;0;) (mut i32) i32.const 10)
+  (export "empty" (func 4))
+  (export "singular" (func 5))
+  (export "multi" (func 6))
+  (export "nested" (func 7))
+  (export "as-select-first" (func 8))
+  (export "as-select-mid" (func 9))
+  (export "as-select-last" (func 10))
+  (export "as-loop-first" (func 11))
+  (export "as-loop-mid" (func 12))
+  (export "as-loop-last" (func 13))
+  (export "as-if-condition" (func 14))
+  (export "as-br_if-first" (func 15))
+  (export "as-br_if-last" (func 16))
+  (export "as-br_table-first" (func 17))
+  (export "as-br_table-last" (func 18))
+  (export "as-call_indirect-first" (func 20))
+  (export "as-call_indirect-mid" (func 21))
+  (export "as-call_indirect-last" (func 22))
+  (export "as-store-first" (func 23))
+  (export "as-store-last" (func 24))
+  (export "as-memory.grow-value" (func 25))
+  (export "as-call-value" (func 27))
+  (export "as-return-value" (func 28))
+  (export "as-drop-operand" (func 29))
+  (export "as-br-value" (func 30))
+  (export "as-local.set-value" (func 31))
+  (export "as-local.tee-value" (func 32))
+  (export "as-global.set-value" (func 33))
+  (export "as-load-operand" (func 34))
+  (export "as-unary-operand" (func 35))
+  (export "as-binary-operand" (func 36))
+  (export "as-test-operand" (func 37))
+  (export "as-compare-operand" (func 38))
+  (export "as-binary-operands" (func 39))
+  (export "as-compare-operands" (func 40))
+  (export "as-mixed-operands" (func 41))
+  (export "break-bare" (func 42))
+  (export "break-value" (func 43))
+  (export "break-multi-value" (func 44))
+  (export "param" (func 45))
+  (export "params" (func 46))
+  (export "params-id" (func 47))
+  (export "param-break" (func 48))
+  (export "params-break" (func 49))
+  (export "params-id-break" (func 50))
+  (export "effects" (func 51))
+  (export "add64_u_with_carry" (func $add64_u_with_carry))
+  (export "add64_u_saturated" (func $add64_u_saturated))
+  (export "type-use" (func 54))
+  (elem (;0;) (table 0) (i32.const 0) func $func)
   (func $dummy (;3;) (type $block-sig-1))
   (func (;4;) (type $block-sig-3) (param i32)
     block ;; label = @1
@@ -37,17 +90,19 @@
       i64.const 2
       call $finite_wasm_gas
       local.get 0
-      if $l ;; label = @2
+      if $l
+      else
       end
       i64.const 2
       call $finite_wasm_gas
       local.get 0
-      if $l ;; label = @2
+      if $l
       end
       i64.const 2
       call $finite_wasm_gas
       local.get 0
       if ;; label = @2
+      else
       end
     end
     i64.const 4
@@ -1976,60 +2031,8 @@
     i64.const 0
     call $finite_wasm_unstack
   )
-  (table (;0;) 1 1 funcref)
-  (memory (;0;) 1)
-  (global $a (;0;) (mut i32) i32.const 10)
-  (export "empty" (func 4))
-  (export "singular" (func 5))
-  (export "multi" (func 6))
-  (export "nested" (func 7))
-  (export "as-select-first" (func 8))
-  (export "as-select-mid" (func 9))
-  (export "as-select-last" (func 10))
-  (export "as-loop-first" (func 11))
-  (export "as-loop-mid" (func 12))
-  (export "as-loop-last" (func 13))
-  (export "as-if-condition" (func 14))
-  (export "as-br_if-first" (func 15))
-  (export "as-br_if-last" (func 16))
-  (export "as-br_table-first" (func 17))
-  (export "as-br_table-last" (func 18))
-  (export "as-call_indirect-first" (func 20))
-  (export "as-call_indirect-mid" (func 21))
-  (export "as-call_indirect-last" (func 22))
-  (export "as-store-first" (func 23))
-  (export "as-store-last" (func 24))
-  (export "as-memory.grow-value" (func 25))
-  (export "as-call-value" (func 27))
-  (export "as-return-value" (func 28))
-  (export "as-drop-operand" (func 29))
-  (export "as-br-value" (func 30))
-  (export "as-local.set-value" (func 31))
-  (export "as-local.tee-value" (func 32))
-  (export "as-global.set-value" (func 33))
-  (export "as-load-operand" (func 34))
-  (export "as-unary-operand" (func 35))
-  (export "as-binary-operand" (func 36))
-  (export "as-test-operand" (func 37))
-  (export "as-compare-operand" (func 38))
-  (export "as-binary-operands" (func 39))
-  (export "as-compare-operands" (func 40))
-  (export "as-mixed-operands" (func 41))
-  (export "break-bare" (func 42))
-  (export "break-value" (func 43))
-  (export "break-multi-value" (func 44))
-  (export "param" (func 45))
-  (export "params" (func 46))
-  (export "params-id" (func 47))
-  (export "param-break" (func 48))
-  (export "params-break" (func 49))
-  (export "params-id-break" (func 50))
-  (export "effects" (func 51))
-  (export "add64_u_with_carry" (func $add64_u_with_carry))
-  (export "add64_u_saturated" (func $add64_u_saturated))
-  (export "type-use" (func 54))
-  (elem (;0;) (i32.const 0) func $func)
 )
+
 (assert_return (invoke "empty" (i32.const 0)))
 (assert_return (invoke "empty" (i32.const 1)))
 (assert_return (invoke "empty" (i32.const 100)))

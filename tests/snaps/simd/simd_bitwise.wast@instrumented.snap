@@ -7,6 +7,12 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 4)))
+  (export "not" (func 3))
+  (export "and" (func 4))
+  (export "or" (func 5))
+  (export "xor" (func 6))
+  (export "bitselect" (func 7))
+  (export "andnot" (func 8))
   (func (;3;) (type 0) (param $0 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
@@ -97,13 +103,8 @@
     i64.const 2
     call 2
   )
-  (export "not" (func 3))
-  (export "and" (func 4))
-  (export "or" (func 5))
-  (export "xor" (func 6))
-  (export "bitselect" (func 7))
-  (export "andnot" (func 8))
 )
+
 (assert_return (invoke "not" (v128.const i32x4 0 0 0 0))
                              (v128.const i32x4 -1 -1 -1 -1))
 (assert_return (invoke "not" (v128.const i32x4 -1 -1 -1 -1))
@@ -501,6 +502,20 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1)
+  (export "v128.not-in-block" (func 3))
+  (export "v128.and-in-block" (func 4))
+  (export "v128.or-in-block" (func 5))
+  (export "v128.xor-in-block" (func 6))
+  (export "v128.bitselect-in-block" (func 7))
+  (export "v128.andnot-in-block" (func 8))
+  (export "nested-v128.not" (func 9))
+  (export "nested-v128.and" (func 10))
+  (export "nested-v128.or" (func 11))
+  (export "nested-v128.xor" (func 12))
+  (export "nested-v128.bitselect" (func 13))
+  (export "nested-v128.andnot" (func 14))
+  (export "as-param" (func 15))
   (func (;3;) (type 0)
     block ;; label = @1
       i64.const 16
@@ -1091,21 +1106,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1)
-  (export "v128.not-in-block" (func 3))
-  (export "v128.and-in-block" (func 4))
-  (export "v128.or-in-block" (func 5))
-  (export "v128.xor-in-block" (func 6))
-  (export "v128.bitselect-in-block" (func 7))
-  (export "v128.andnot-in-block" (func 8))
-  (export "nested-v128.not" (func 9))
-  (export "nested-v128.and" (func 10))
-  (export "nested-v128.or" (func 11))
-  (export "nested-v128.xor" (func 12))
-  (export "nested-v128.bitselect" (func 13))
-  (export "nested-v128.andnot" (func 14))
-  (export "as-param" (func 15))
 )
+
 (assert_return (invoke "v128.not-in-block"))
 (assert_return (invoke "v128.and-in-block"))
 (assert_return (invoke "v128.or-in-block"))

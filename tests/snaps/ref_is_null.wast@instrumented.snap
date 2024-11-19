@@ -9,6 +9,15 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 5)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 6)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 6)))
+  (table $t1 (;0;) 2 funcref)
+  (table $t2 (;1;) 2 externref)
+  (export "funcref" (func $f1))
+  (export "externref" (func $f2))
+  (export "init" (func 6))
+  (export "deinit" (func 7))
+  (export "funcref-elem" (func 8))
+  (export "externref-elem" (func 9))
+  (elem (;0;) (table $t1) (i32.const 1) func $dummy)
   (func $f1 (;3;) (type 0) (param $x funcref) (result i32)
     block (result i32) ;; label = @1
       i64.const 32
@@ -107,16 +116,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table $t1 (;0;) 2 funcref)
-  (table $t2 (;1;) 2 externref)
-  (export "funcref" (func $f1))
-  (export "externref" (func $f2))
-  (export "init" (func 6))
-  (export "deinit" (func 7))
-  (export "funcref-elem" (func 8))
-  (export "externref-elem" (func 9))
-  (elem (;0;) (i32.const 1) func $dummy)
 )
+
 (assert_return (invoke "funcref" (ref.null func)) (i32.const 1))
 (assert_return (invoke "externref" (ref.null extern)) (i32.const 1))
 

@@ -2,6 +2,7 @@
   (memory (;0;) 1)
   (data (;0;) "foo")
 )
+
 (module
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
@@ -9,11 +10,12 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
-  (func (;3;) (type 0))
-  (func (;4;) (type 0))
   (table (;0;) 3 funcref)
   (elem (;0;) funcref (ref.func 3) (ref.null func) (ref.func 4))
+  (func (;3;) (type 0))
+  (func (;4;) (type 0))
 )
+
 (module
   (type (;0;) (func (param i32 i32 i32)))
   (type (;1;) (func (param i32) (result i32)))
@@ -22,6 +24,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1)
+  (export "fill" (func 3))
+  (export "load8_u" (func 4))
   (func (;3;) (type 0) (param i32 i32 i32)
     block ;; label = @1
       i64.const 12
@@ -54,10 +59,8 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1)
-  (export "fill" (func 3))
-  (export "load8_u" (func 4))
 )
+
 (invoke "fill" (i32.const 1) (i32.const 0xff) (i32.const 3))
 (assert_return (invoke "load8_u" (i32.const 0)) (i32.const 0))
 (assert_return (invoke "load8_u" (i32.const 1)) (i32.const 0xff))
@@ -96,6 +99,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1 1)
+  (export "copy" (func 3))
+  (export "load8_u" (func 4))
   (func (;3;) (type 0) (param i32 i32 i32)
     block ;; label = @1
       i64.const 12
@@ -128,11 +134,9 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1 1)
-  (export "copy" (func 3))
-  (export "load8_u" (func 4))
   (data (;0;) (i32.const 0) "\aa\bb\cc\dd")
 )
+
 (invoke "copy" (i32.const 10) (i32.const 0) (i32.const 4))
 
 (assert_return (invoke "load8_u" (i32.const 9)) (i32.const 0))
@@ -185,6 +189,9 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1)
+  (export "init" (func 3))
+  (export "load8_u" (func 4))
   (func (;3;) (type 0) (param i32 i32 i32)
     block ;; label = @1
       i64.const 12
@@ -217,11 +224,9 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1)
-  (export "init" (func 3))
-  (export "load8_u" (func 4))
   (data (;0;) "\aa\bb\cc\dd")
 )
+
 (invoke "init" (i32.const 0) (i32.const 1) (i32.const 2))
 (assert_return (invoke "load8_u" (i32.const 0)) (i32.const 0xbb))
 (assert_return (invoke "load8_u" (i32.const 1)) (i32.const 0xcc))
@@ -255,6 +260,11 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (memory (;0;) 1)
+  (export "drop_passive" (func 3))
+  (export "init_passive" (func 4))
+  (export "drop_active" (func 5))
+  (export "init_active" (func 6))
   (func (;3;) (type 0)
     i64.const 1
     call 0
@@ -301,14 +311,10 @@
     i64.const 1
     call 2
   )
-  (memory (;0;) 1)
-  (export "drop_passive" (func 3))
-  (export "init_passive" (func 4))
-  (export "drop_active" (func 5))
-  (export "init_active" (func 6))
   (data $p (;0;) "x")
   (data $a (;1;) (i32.const 0) "x")
 )
+
 (invoke "init_passive" (i32.const 1))
 (invoke "drop_passive")
 (invoke "drop_passive")
@@ -400,6 +406,7 @@
   (data (;63;) "")
   (data (;64;) "")
 )
+
 (module
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
@@ -414,6 +421,7 @@
   )
   (data (;0;) "goodbye")
 )
+
 (module
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32 i32 i32)))
@@ -423,6 +431,10 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 3 funcref)
+  (export "init" (func 5))
+  (export "call" (func 6))
+  (elem (;0;) funcref (ref.func $zero) (ref.func $one) (ref.func $zero) (ref.func $one))
   (func $zero (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -481,11 +493,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 3 funcref)
-  (export "init" (func 5))
-  (export "call" (func 6))
-  (elem (;0;) funcref (ref.func $zero) (ref.func $one) (ref.func $zero) (ref.func $one))
 )
+
 (assert_trap (invoke "init" (i32.const 2) (i32.const 0) (i32.const 2))
     "out of bounds table access")
 (assert_trap (invoke "call" (i32.const 2))
@@ -519,6 +528,13 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
+  (table (;0;) 1 funcref)
+  (export "drop_passive" (func 4))
+  (export "init_passive" (func 5))
+  (export "drop_active" (func 6))
+  (export "init_active" (func 7))
+  (elem $p (;0;) funcref (ref.func $f))
+  (elem $a (;1;) (table 0) (i32.const 0) func $f)
   (func $f (;3;) (type 0))
   (func (;4;) (type 0)
     i64.const 1
@@ -566,14 +582,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 1 funcref)
-  (export "drop_passive" (func 4))
-  (export "init_passive" (func 5))
-  (export "drop_active" (func 6))
-  (export "init_active" (func 7))
-  (elem $p (;0;) funcref (ref.func $f))
-  (elem $a (;1;) (i32.const 0) func $f)
 )
+
 (invoke "init_passive" (i32.const 1))
 (invoke "drop_passive")
 (invoke "drop_passive")
@@ -594,11 +604,6 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
-  (func (;3;) (type 0)
-    i64.const 1
-    call 0
-    elem.drop 64
-  )
   (elem (;0;) funcref)
   (elem (;1;) funcref)
   (elem (;2;) funcref)
@@ -664,7 +669,13 @@
   (elem (;62;) funcref)
   (elem (;63;) funcref)
   (elem (;64;) funcref)
+  (func (;3;) (type 0)
+    i64.const 1
+    call 0
+    elem.drop 64
+  )
 )
+
 (module
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
@@ -672,13 +683,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (elem (;0;) funcref (ref.func 3))
   (func (;3;) (type 0)
     i64.const 1
     call 0
     elem.drop 0
   )
-  (elem (;0;) funcref (ref.func 3))
 )
+
 (module
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i32 i32 i32)))
@@ -688,6 +700,10 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 3)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 4)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 4)))
+  (table (;0;) 10 funcref)
+  (export "copy" (func 6))
+  (export "call" (func 7))
+  (elem (;0;) (i32.const 0) func $zero $one $two)
   (func $zero (;3;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
@@ -759,11 +775,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table (;0;) 10 funcref)
-  (export "copy" (func 6))
-  (export "call" (func 7))
-  (elem (;0;) (i32.const 0) func $zero $one $two)
 )
+
 (invoke "copy" (i32.const 3) (i32.const 0) (i32.const 3))
 ;; Now [$zero, $one, $two, $zero, $one, $two, ...]
 (assert_return (invoke "call" (i32.const 3)) (i32.const 0))

@@ -48,13 +48,12 @@ struct WasmSmithModule {
 
 impl<'a> arbitrary::Arbitrary<'a> for WasmSmithModule {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
-        wasm_smith::MaybeInvalidModule::arbitrary(u).map(|m| Self { data: m.to_bytes() })
-    }
-    fn arbitrary_take_rest(u: arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
-        wasm_smith::MaybeInvalidModule::arbitrary_take_rest(u).map(|m| Self { data: m.to_bytes() })
+        let mut config = wasm_smith::Config::arbitrary(u)?;
+        config.allow_invalid_funcs = true;
+        wasm_smith::Module::new(config, u).map(|m| Self { data: m.to_bytes() })
     }
     fn size_hint(depth: usize) -> (usize, Option<usize>) {
-        wasm_smith::MaybeInvalidModule::size_hint(depth)
+        wasm_smith::Module::size_hint(depth)
     }
 }
 

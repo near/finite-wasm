@@ -5,6 +5,16 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (memory (;0;) 1)
+  (export "as-block-value" (func 3))
+  (export "as-loop-value" (func 4))
+  (export "as-br-value" (func 5))
+  (export "as-br_if-value" (func 6))
+  (export "as-br_if-value-cond" (func 7))
+  (export "as-br_table-value" (func 8))
+  (export "as-return-value" (func 9))
+  (export "as-if-then" (func 10))
+  (export "as-if-else" (func 11))
   (func (;3;) (type 0)
     block ;; label = @1
       i64.const 8
@@ -184,17 +194,8 @@
     i64.const 0
     call 2
   )
-  (memory (;0;) 1)
-  (export "as-block-value" (func 3))
-  (export "as-loop-value" (func 4))
-  (export "as-br-value" (func 5))
-  (export "as-br_if-value" (func 6))
-  (export "as-br_if-value-cond" (func 7))
-  (export "as-br_table-value" (func 8))
-  (export "as-return-value" (func 9))
-  (export "as-if-then" (func 10))
-  (export "as-if-else" (func 11))
 )
+
 (assert_return (invoke "as-block-value"))
 (assert_return (invoke "as-loop-value"))
 

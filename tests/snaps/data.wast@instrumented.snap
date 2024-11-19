@@ -25,10 +25,12 @@
   (data $d11 (;22;) (i32.const 0) "")
   (data $d12 (;23;) (i32.const 0) "abc")
 )
+
 (module
   (memory (;0;) 1)
   (data (;0;) (i32.const 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -38,6 +40,7 @@
   (import "spectest" "memory" (memory (;0;) 1))
   (data (;0;) (i32.const 0) "a")
 )
+
 (module
   (memory (;0;) 1)
   (data (;0;) (i32.const 0) "a")
@@ -46,6 +49,7 @@
   (data (;3;) (i32.const 5) "x")
   (data (;4;) (i32.const 3) "c")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -60,6 +64,7 @@
   (data (;4;) (i32.const 2) "g")
   (data (;5;) (i32.const 1) "h")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -70,6 +75,7 @@
   (memory (;0;) 1)
   (data (;0;) (global.get 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -80,6 +86,7 @@
   (import "spectest" "memory" (memory (;0;) 1))
   (data (;0;) (global.get 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -90,6 +97,7 @@
   (memory (;0;) 1)
   (data (;0;) (global.get $g) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -100,11 +108,13 @@
   (import "spectest" "memory" (memory (;0;) 1))
   (data (;0;) (global.get $g) "a")
 )
+
 (module
   (memory (;0;) 1)
   (data (;0;) (i32.const 0) "a")
   (data (;1;) (i32.const 65535) "b")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -115,14 +125,17 @@
   (data (;0;) (i32.const 0) "a")
   (data (;1;) (i32.const 65535) "b")
 )
+
 (module
   (memory (;0;) 2)
   (data (;0;) (i32.const 131071) "a")
 )
+
 (module
   (memory (;0;) 0)
   (data (;0;) (i32.const 0) "")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -132,18 +145,22 @@
   (import "spectest" "memory" (memory (;0;) 0))
   (data (;0;) (i32.const 0) "")
 )
+
 (module
   (memory (;0;) 0 0)
   (data (;0;) (i32.const 0) "")
 )
+
 (module
   (memory (;0;) 1)
   (data (;0;) (i32.const 65536) "")
 )
+
 (module
   (memory (;0;) 0)
   (data (;0;) (i32.const 0) "")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -153,10 +170,12 @@
   (import "spectest" "memory" (memory (;0;) 0))
   (data (;0;) (i32.const 0) "")
 )
+
 (module
   (memory (;0;) 0 0)
   (data (;0;) (i32.const 0) "")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -166,6 +185,7 @@
   (import "spectest" "memory" (memory (;0;) 0))
   (data (;0;) (i32.const 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -175,6 +195,7 @@
   (import "spectest" "memory" (memory (;0;) 0 3))
   (data (;0;) (i32.const 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -185,6 +206,7 @@
   (import "spectest" "memory" (memory (;0;) 0))
   (data (;0;) (global.get 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -195,6 +217,7 @@
   (import "spectest" "memory" (memory (;0;) 0 3))
   (data (;0;) (global.get 0) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -204,6 +227,7 @@
   (import "spectest" "memory" (memory (;0;) 0))
   (data (;0;) (i32.const 1) "a")
 )
+
 (module
   (type (;0;) (func (param i64)))
   (type (;1;) (func (param i64 i64)))
@@ -214,30 +238,36 @@
   (data (;0;) (i32.const 1) "a")
 )
 
+
 (assert_trap (module
   (memory (;0;) 0)
   (data (;0;) (i32.const 0) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 0 0)
   (data (;0;) (i32.const 0) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 0 1)
   (data (;0;) (i32.const 0) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 0)
   (data (;0;) (i32.const 1) "")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 0 1)
   (data (;0;) (i32.const 1) "")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (type (;0;) (func (param i64)))
@@ -248,12 +278,14 @@
   (import "spectest" "global_i32" (global (;0;) i32))
   (memory (;0;) 0)
   (data (;0;) (global.get 0) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 1 2)
   (data (;0;) (i32.const 65536) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (type (;0;) (func (param i64)))
@@ -263,22 +295,26 @@
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 1)))
   (import "spectest" "memory" (memory (;0;) 1))
   (data (;0;) (i32.const 65536) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 2)
   (data (;0;) (i32.const 131072) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 2 3)
   (data (;0;) (i32.const 131072) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 1)
   (data (;0;) (i32.const -1) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (type (;0;) (func (param i64)))
@@ -288,12 +324,14 @@
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 1)))
   (import "spectest" "memory" (memory (;0;) 1))
   (data (;0;) (i32.const -1) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (memory (;0;) 2)
   (data (;0;) (i32.const -100) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")
 
 (assert_trap (module
   (type (;0;) (func (param i64)))
@@ -303,4 +341,5 @@
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 1)))
   (import "spectest" "memory" (memory (;0;) 1))
   (data (;0;) (i32.const -100) "a")
-) "out of bounds memory access")
+)
+ "out of bounds memory access")

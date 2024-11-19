@@ -5,6 +5,8 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "i32x4.trunc_sat_f64x2_s_zero" (func 3))
+  (export "i32x4.trunc_sat_f64x2_u_zero" (func 4))
   (func (;3;) (type 0) (param v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
@@ -33,9 +35,8 @@
     i64.const 1
     call 2
   )
-  (export "i32x4.trunc_sat_f64x2_s_zero" (func 3))
-  (export "i32x4.trunc_sat_f64x2_u_zero" (func 4))
 )
+
 (assert_return (invoke "i32x4.trunc_sat_f64x2_s_zero" (v128.const f64x2 0.0 0.0))
                                                       (v128.const i32x4 0 0 0 0))
 (assert_return (invoke "i32x4.trunc_sat_f64x2_s_zero" (v128.const f64x2 -0.0 -0.0))

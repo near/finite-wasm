@@ -5,6 +5,7 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "i16x8.q15mulr_sat_s" (func 3))
   (func (;3;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
@@ -20,8 +21,8 @@
     i64.const 2
     call 2
   )
-  (export "i16x8.q15mulr_sat_s" (func 3))
 )
+
 (assert_return (invoke "i16x8.q15mulr_sat_s" (v128.const i16x8 0 0 0 0 0 0 0 0)
                                              (v128.const i16x8 0 0 0 0 0 0 0 0))
                                              (v128.const i16x8 0 0 0 0 0 0 0 0))

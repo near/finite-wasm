@@ -9,6 +9,13 @@
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 5)))
   (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 6)))
   (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 6)))
+  (table $t2 (;0;) 2 externref)
+  (table $t3 (;1;) 3 funcref)
+  (export "init" (func 4))
+  (export "get-externref" (func 5))
+  (export "get-funcref" (func $f3))
+  (export "is_null-funcref" (func 7))
+  (elem (;0;) (table $t3) (i32.const 1) func $dummy)
   (func $dummy (;3;) (type 0))
   (func (;4;) (type 1) (param $r externref)
     block ;; label = @1
@@ -78,14 +85,8 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (table $t2 (;0;) 2 externref)
-  (table $t3 (;1;) 3 funcref)
-  (export "init" (func 4))
-  (export "get-externref" (func 5))
-  (export "get-funcref" (func $f3))
-  (export "is_null-funcref" (func 7))
-  (elem (;0;) (table $t3) (i32.const 1) func $dummy)
 )
+
 (invoke "init" (ref.extern 1))
 
 (assert_return (invoke "get-externref" (i32.const 0)) (ref.null extern))

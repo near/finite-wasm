@@ -5,6 +5,10 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (export "i8x16.add_sat_s" (func 3))
+  (export "i8x16.add_sat_u" (func 4))
+  (export "i8x16.sub_sat_s" (func 5))
+  (export "i8x16.sub_sat_u" (func 6))
   (func (;3;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
@@ -65,11 +69,8 @@
     i64.const 2
     call 2
   )
-  (export "i8x16.add_sat_s" (func 3))
-  (export "i8x16.add_sat_u" (func 4))
-  (export "i8x16.sub_sat_s" (func 5))
-  (export "i8x16.sub_sat_u" (func 6))
 )
+
 (assert_return (invoke "i8x16.add_sat_s" (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0)
                                          (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
                                          (v128.const i8x16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0))
@@ -626,6 +627,14 @@
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
   (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
   (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (export "sat-add_s-sub_s" (func 3))
+  (export "sat-add_s-sub_u" (func 4))
+  (export "sat-add_u-sub_s" (func 5))
+  (export "sat-add_u-sub_u" (func 6))
+  (export "sat-add_s-neg" (func 7))
+  (export "sat-add_u-neg" (func 8))
+  (export "sat-sub_s-neg" (func 9))
+  (export "sat-sub_u-neg" (func 10))
   (func (;3;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
@@ -758,15 +767,8 @@
     i64.const 2
     call 2
   )
-  (export "sat-add_s-sub_s" (func 3))
-  (export "sat-add_s-sub_u" (func 4))
-  (export "sat-add_u-sub_s" (func 5))
-  (export "sat-add_u-sub_u" (func 6))
-  (export "sat-add_s-neg" (func 7))
-  (export "sat-add_u-neg" (func 8))
-  (export "sat-sub_s-neg" (func 9))
-  (export "sat-sub_u-neg" (func 10))
 )
+
 (assert_return (invoke "sat-add_s-sub_s" (v128.const i8x16 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64 64)
                                          (v128.const i8x16 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127)
                                          (v128.const i8x16 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128 -128))
