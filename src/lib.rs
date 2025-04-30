@@ -161,7 +161,7 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
                     }
                 }
                 wasmparser::Payload::TypeSection(reader) => {
-                    for ty in reader {
+                    for ty in reader.into_iter_err_on_gc_types() {
                         let ty = ty.map_err(Error::ParseTypes)?;
                         self.max_stack_cfg.add_type(&mut module_state, ty);
                     }
@@ -322,7 +322,7 @@ pub(crate) mod tests {
     }
 
     macro_rules! define_fee {
-        ($(@$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+        ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*))*) => {
             $(
                 fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { 1 }
             )*
@@ -332,7 +332,18 @@ pub(crate) mod tests {
     struct GasConfig;
     impl<'a> wasmparser::VisitOperator<'a> for GasConfig {
         type Output = u64;
-        wasmparser::for_each_operator!(define_fee);
+
+        fn simd_visitor(
+            &mut self,
+        ) -> Option<&mut dyn wasmparser::VisitSimdOperator<'a, Output = Self::Output>> {
+            Some(self)
+        }
+
+        wasmparser::for_each_visit_operator!(define_fee);
+    }
+
+    impl<'a> wasmparser::VisitSimdOperator<'a> for GasConfig {
+        wasmparser::for_each_visit_simd_operator!(define_fee);
     }
 
     #[test]
@@ -353,13 +364,14 @@ pub(crate) mod tests {
             .analyze(b"");
 
         let _ = crate::Analysis::new()
-            .with_gas(&mut dynamic_gas_config as &mut dyn wasmparser::VisitOperator<Output = u64>)
+            .with_gas(
+                &mut dynamic_gas_config as &mut dyn wasmparser::VisitSimdOperator<Output = u64>,
+            )
             .analyze(b"");
 
         let _ = crate::Analysis::new()
-            .with_gas(
-                Box::new(dynamic_gas_config) as Box<dyn wasmparser::VisitOperator<Output = u64>>
-            )
+            .with_gas(Box::new(dynamic_gas_config)
+                as Box<dyn wasmparser::VisitSimdOperator<Output = u64>>)
             .analyze(b"");
     }
 }

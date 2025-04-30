@@ -30,8 +30,11 @@ impl<'b> Config<'b> for crate::NoConfig {
     fn save_outcomes(&self, _: &mut gas::FunctionState, _: &mut crate::AnalysisOutcome) {}
 }
 
-impl<'b, V: wasmparser::VisitOperator<'b, Output = u64>> Config<'b> for V {
-    type GasVisitor<'s> = gas::Visitor<'s, V> where Self: 's;
+impl<'b, V: wasmparser::VisitSimdOperator<'b, Output = u64>> Config<'b> for V {
+    type GasVisitor<'s>
+        = gas::Visitor<'s, V>
+    where
+        Self: 's;
     fn make_visitor<'s>(&'s mut self, state: &'s mut gas::FunctionState) -> Self::GasVisitor<'s> {
         gas::Visitor {
             offset: 0,

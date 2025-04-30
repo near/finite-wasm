@@ -9,7 +9,9 @@ pub fn find_entry_points(contract: &[u8]) -> Vec<String> {
     for payload in wasmparser::Parser::default().parse_all(contract) {
         match payload {
             Ok(wasmparser::Payload::FunctionSection(rdr)) => fns.extend(rdr),
-            Ok(wasmparser::Payload::TypeSection(rdr)) => tys.extend(rdr),
+            Ok(wasmparser::Payload::TypeSection(rdr)) => {
+                tys.extend(rdr.into_iter_err_on_gc_types())
+            }
             Ok(wasmparser::Payload::ExportSection(rdr)) => {
                 for export in rdr {
                     if let Ok(wasmparser::Export {
@@ -22,9 +24,7 @@ pub fn find_entry_points(contract: &[u8]) -> Vec<String> {
                             continue; // ignore non-ascii-alnum exports for convenience
                         }
                         if let Some(&Ok(ty_index)) = fns.get(index as usize) {
-                            if let Some(Ok(wasmparser::Type::Func(func_type))) =
-                                tys.get(ty_index as usize)
-                            {
+                            if let Some(Ok(func_type)) = tys.get(ty_index as usize) {
                                 if func_type.params().is_empty() {
                                     entries.push(name.to_string());
                                 }
@@ -43,6 +43,8 @@ fn adjust_cfg(mut config: wasm_smith::Config) -> wasm_smith::Config {
     config.max_imports = 0;
     config.max_instructions = 1000;
     config.allow_start_export = false;
+    config.exceptions_enabled = false;
+    config.gc_enabled = false;
     config
 }
 
@@ -54,9 +56,7 @@ struct WasmSmithModule {
 impl<'a> arbitrary::Arbitrary<'a> for WasmSmithModule {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
         let config = adjust_cfg(wasm_smith::Config::arbitrary(u)?);
-        wasm_smith::Module::new(config, u).map(|m| Self {
-            data: m.to_bytes(),
-        })
+        wasm_smith::Module::new(config, u).map(|m| Self { data: m.to_bytes() })
     }
     fn size_hint(depth: usize) -> (usize, Option<usize>) {
         let cfg_size = wasm_smith::Config::size_hint(depth);

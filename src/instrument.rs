@@ -1,5 +1,10 @@
-use crate::{gas::InstrumentationKind, AnalysisOutcome};
-use std::borrow::Cow;
+// FIXME: Have `InstrumentContext` implement `Reencode` trait fully... rather than have it half way
+// manually implemented and half-way reliant on wasm_encoder::reencode...
+
+use crate::gas::InstrumentationKind;
+use crate::AnalysisOutcome;
+use std::convert::Infallible;
+use wasm_encoder::reencode::{Error as ReencodeError, Reencode};
 use wasm_encoder::{self as we, Section};
 use wasmparser as wp;
 
@@ -23,6 +28,18 @@ const F: u32 = RELEASE_STACK_INSTRUMENTATION_FN + 1;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
+    #[error("could not reencode the element section")]
+    ElementSection(#[source] ReencodeError<Infallible>),
+    #[error("could not reencode a function type")]
+    ReencodeFunctionType(#[source] ReencodeError<Infallible>),
+    #[error("could not reencode the globals section")]
+    ReencodeGlobals(#[source] ReencodeError<Infallible>),
+    #[error("could not reencode the imports section")]
+    ReencodeImports(#[source] ReencodeError<Infallible>),
+    #[error("could not reencode a local type")]
+    ReencodeLocal(#[source] ReencodeError<Infallible>),
+    #[error("could not reencode the result types for a wrapper block")]
+    BlockResults(#[source] ReencodeError<Infallible>),
     #[error("could not parse an element")]
     ParseElement(#[source] wp::BinaryReaderError),
     #[error("could not parse an element item")]
@@ -85,8 +102,50 @@ pub(crate) struct InstrumentContext<'a> {
     start_section: we::StartSection,
     raw_sections: Vec<we::RawSection<'a>>,
 
-    types: Vec<wp::Type>,
+    types: Vec<we::FuncType>,
     function_types: std::vec::IntoIter<u32>,
+}
+
+struct InstrumentationReencoder;
+
+impl InstrumentationReencoder {
+    fn namemap(&mut self, p: wp::NameMap, is_function: bool) -> Result<we::NameMap, Error> {
+        let mut new_name_map = we::NameMap::new();
+        for naming in p {
+            let naming = naming.map_err(Error::ParseNameMapName)?;
+            new_name_map.append(
+                if is_function {
+                    self.function_index(naming.index)
+                } else {
+                    naming.index
+                },
+                naming.name,
+            );
+        }
+        Ok(new_name_map)
+    }
+
+    fn indirectnamemap(&mut self, p: wp::IndirectNameMap) -> Result<we::IndirectNameMap, Error> {
+        let mut new_name_map = we::IndirectNameMap::new();
+        for naming in p {
+            let naming = naming.map_err(Error::ParseIndirectNameMapName)?;
+            new_name_map.append(
+                self.function_index(naming.index),
+                &self.namemap(naming.names, false)?,
+            );
+        }
+        Ok(new_name_map)
+    }
+}
+
+impl<'a> Reencode for InstrumentationReencoder {
+    type Error = Infallible; // FIXME
+
+    fn function_index(&mut self, func: u32) -> u32 {
+        func.checked_add(F)
+            .ok_or(Error::RemapFunctionIndex(func))
+            .expect("TODO: update wasm-encoder")
+    }
 }
 
 impl<'a> InstrumentContext<'a> {
@@ -118,6 +177,7 @@ impl<'a> InstrumentContext<'a> {
 
     pub(crate) fn run(mut self) -> Result<Vec<u8>, Error> {
         let parser = wp::Parser::new(0);
+        let mut renc = InstrumentationReencoder;
         for payload in parser.parse_all(self.wasm) {
             let payload = payload.map_err(Error::ParseModuleSection)?;
             match payload {
@@ -127,31 +187,33 @@ impl<'a> InstrumentContext<'a> {
                 // We must manually reconstruct the type section because we’re appending types to
                 // it.
                 wp::Payload::TypeSection(types) => {
-                    for ty in types {
+                    for ty in types.into_iter_err_on_gc_types() {
                         let ty = ty.map_err(Error::ParseType)?;
-                        match &ty {
-                            wp::Type::Func(f) => {
-                                self.type_section.ty().function(
-                                    f.params().iter().copied().map(valtype),
-                                    f.results().iter().copied().map(valtype),
-                                );
-                            }
-                        }
+                        let ty = renc.func_type(ty).map_err(Error::ReencodeFunctionType)?;
+                        self.type_section.ty().func_type(&ty);
                         self.types.push(ty);
                     }
                 }
+
                 // We must manually reconstruct the imports section because we’re appending imports
                 // to it.
                 wp::Payload::ImportSection(imports) => {
                     self.maybe_add_imports();
-                    self.transform_imports_section(imports)?;
+                    for import in imports {
+                        let import = import.map_err(Error::ParseImport)?;
+                        renc.parse_import(&mut self.import_section, import)
+                            .map_err(Error::ReencodeImports)?;
+                    }
                 }
                 wp::Payload::StartSection { func, .. } => {
-                    self.start_section.function_index = map_func(func)?;
+                    self.start_section = we::StartSection {
+                        function_index: renc.start_section(func),
+                    };
                     self.schedule_section(self.start_section.id());
                 }
                 wp::Payload::ElementSection(reader) => {
-                    self.transform_elem_section(reader)?;
+                    renc.parse_element_section(&mut self.element_section, reader)
+                        .map_err(Error::ElementSection)?;
                     self.schedule_section(self.element_section.id());
                 }
                 wp::Payload::FunctionSection(reader) => {
@@ -175,14 +237,14 @@ impl<'a> InstrumentContext<'a> {
                         .function_types
                         .next()
                         .ok_or(Error::InsufficientFunctionTypes)?;
-                    self.transform_code_section(reader, type_index)?;
+                    self.transform_code_section(&mut renc, reader, type_index)?;
                 }
                 wp::Payload::ExportSection(reader) => {
                     for export in reader {
                         let export = export.map_err(Error::ParseExport)?;
                         let (kind, index) = match export.kind {
                             wp::ExternalKind::Func => {
-                                (we::ExportKind::Func, map_func(export.index)?)
+                                (we::ExportKind::Func, renc.function_index(export.index))
                             }
                             wp::ExternalKind::Table => (we::ExportKind::Table, export.index),
                             wp::ExternalKind::Memory => (we::ExportKind::Memory, export.index),
@@ -196,23 +258,19 @@ impl<'a> InstrumentContext<'a> {
                 wp::Payload::GlobalSection(reader) => {
                     for global in reader {
                         let global = global.map_err(Error::ParseGlobal)?;
-                        self.global_section.global(
-                            we::GlobalType {
-                                shared: false,
-                                val_type: valtype(global.ty.content_type),
-                                mutable: global.ty.mutable,
-                            },
-                            &constexpr(global.init_expr)?,
-                        );
+                        renc.parse_global(&mut self.global_section, global)
+                            .map_err(Error::ReencodeGlobals)?;
                     }
                     self.schedule_section(self.global_section.id());
                 }
                 wp::Payload::CustomSection(reader) if reader.name() == "name" => {
-                    let names = wp::NameSectionReader::new(reader.data(), reader.data_offset());
-                    if let Ok(_) = self.transform_name_section(names) {
-                        // Keep valid name sections only. These sections don't have semantic
-                        // purposes, so it isn't a big deal if we only keep the old section, or
-                        // don't transform at all.
+                    let wasmparser::KnownCustom::Name(names) = reader.as_known() else {
+                        continue;
+                    };
+                    if let Ok(_) = self.transform_name_section(&mut renc, names) {
+                        // Keep valid name sections only. These sections don't have
+                        // semantic purposes, so it isn't a big deal if we only keep the
+                        // old section, or don't transform at all.
                         //
                         // (This is largely useful for fuzzing only)
                         self.schedule_section(PLACEHOLDER_FOR_NAMES)
@@ -259,6 +317,7 @@ impl<'a> InstrumentContext<'a> {
 
     fn transform_code_section(
         &mut self,
+        renc: &mut InstrumentationReencoder,
         reader: wp::FunctionBody,
         func_type_idx: u32,
     ) -> Result<(), Error> {
@@ -272,9 +331,11 @@ impl<'a> InstrumentContext<'a> {
             .get_locals_reader()
             .map_err(Error::ParseLocals)?
             .into_iter()
-            .map(|v| v.map(|(c, t)| (c, valtype(t))))
-            .collect::<Result<Vec<_>, _>>()
-            .map_err(Error::ParseLocal)?;
+            .map(|v| {
+                v.map_err(Error::ParseLocal)
+                    .and_then(|(c, t)| Ok((c, renc.val_type(t).map_err(Error::ReencodeLocal)?)))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
         let mut new_function = we::Function::new(locals);
         let code_idx = self.code_section.len() as usize;
         macro_rules! get_idx {
@@ -306,20 +367,18 @@ impl<'a> InstrumentContext<'a> {
         // these branching instructions are conditional: we could replace `br $well_chosen_index`
         // with a `return` and handle it much the same way, but we can’t do anything of the sort
         // for `br_if $well_chosen_index`.
-        let (params, results) = match func_type {
-            wp::Type::Func(fnty) => (fnty.params(), fnty.results()),
-        };
+        let (params, results) = (func_type.params(), func_type.results());
         // NOTE: Function parameters become locals, rather than operands, so we don’t need to
         // handle them in any way when inserting the block.
         let block_type = match (params, results) {
             (_, []) => we::BlockType::Empty,
-            (_, [result]) => we::BlockType::Result(valtype(*result)),
+            (_, [result]) => we::BlockType::Result(*result),
             ([], _) => we::BlockType::FunctionType(func_type_idx),
             (_, results) => {
                 let new_block_type_idx = self.type_section.len();
                 self.type_section
                     .ty()
-                    .function(std::iter::empty(), results.iter().copied().map(valtype));
+                    .function(std::iter::empty(), results.iter().copied());
                 we::BlockType::FunctionType(new_block_type_idx)
             }
         };
@@ -342,16 +401,16 @@ impl<'a> InstrumentContext<'a> {
                 }
             }
             match op {
-                wp::Operator::RefFunc { function_index } => {
-                    new_function.instruction(&we::Instruction::RefFunc(map_func(function_index)?))
-                }
-                wp::Operator::Call { function_index } => {
-                    new_function.instruction(&we::Instruction::Call(map_func(function_index)?))
-                }
+                wp::Operator::RefFunc { function_index } => new_function.instruction(
+                    &we::Instruction::RefFunc(renc.function_index(function_index)),
+                ),
+                wp::Operator::Call { function_index } => new_function
+                    .instruction(&we::Instruction::Call(renc.function_index(function_index))),
                 wp::Operator::ReturnCall { function_index } => {
                     call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
-                    new_function
-                        .instruction(&we::Instruction::ReturnCall(map_func(function_index)?))
+                    new_function.instruction(&we::Instruction::ReturnCall(
+                        renc.function_index(function_index),
+                    ))
                 }
                 wp::Operator::ReturnCallIndirect { .. } => {
                     call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
@@ -408,7 +467,11 @@ impl<'a> InstrumentContext<'a> {
         }
     }
 
-    fn transform_name_section(&mut self, names: wp::NameSectionReader) -> Result<(), Error> {
+    fn transform_name_section(
+        &mut self,
+        renc: &mut InstrumentationReencoder,
+        names: wp::NameSectionReader,
+    ) -> Result<(), Error> {
         for name in names {
             let name = name.map_err(Error::ParseName)?;
             match name {
@@ -420,100 +483,22 @@ impl<'a> InstrumentContext<'a> {
                     new_name_map.append(RELEASE_STACK_INSTRUMENTATION_FN, "finite_wasm_unstack");
                     for naming in map {
                         let naming = naming.map_err(Error::ParseNameMapName)?;
-                        new_name_map.append(map_func(naming.index)?, naming.name);
+                        new_name_map.append(renc.function_index(naming.index), naming.name);
                     }
                     self.name_section.functions(&new_name_map)
                 }
-                wp::Name::Local(map) => self.name_section.locals(&indirectnamemap(map)?),
-                wp::Name::Label(map) => self.name_section.labels(&indirectnamemap(map)?),
-                wp::Name::Type(map) => self.name_section.types(&namemap(map, false)?),
-                wp::Name::Table(map) => self.name_section.tables(&namemap(map, false)?),
-                wp::Name::Memory(map) => self.name_section.memories(&namemap(map, false)?),
-                wp::Name::Global(map) => self.name_section.globals(&namemap(map, false)?),
-                wp::Name::Element(map) => self.name_section.elements(&namemap(map, false)?),
-                wp::Name::Data(map) => self.name_section.data(&namemap(map, false)?),
+                wp::Name::Local(map) => self.name_section.locals(&renc.indirectnamemap(map)?),
+                wp::Name::Label(map) => self.name_section.labels(&renc.indirectnamemap(map)?),
+                wp::Name::Type(map) => self.name_section.types(&renc.namemap(map, false)?),
+                wp::Name::Table(map) => self.name_section.tables(&renc.namemap(map, false)?),
+                wp::Name::Memory(map) => self.name_section.memories(&renc.namemap(map, false)?),
+                wp::Name::Global(map) => self.name_section.globals(&renc.namemap(map, false)?),
+                wp::Name::Element(map) => self.name_section.elements(&renc.namemap(map, false)?),
+                wp::Name::Data(map) => self.name_section.data(&renc.namemap(map, false)?),
+                wp::Name::Field(map) => self.name_section.fields(&renc.indirectnamemap(map)?),
+                wp::Name::Tag(map) => self.name_section.tag(&renc.namemap(map, false)?),
                 wp::Name::Unknown { .. } => {}
             }
-        }
-        Ok(())
-    }
-
-    fn transform_imports_section(&mut self, imports: wp::ImportSectionReader) -> Result<(), Error> {
-        for import in imports {
-            let import = import.map_err(Error::ParseImport)?;
-            let import_ty = match import.ty {
-                wp::TypeRef::Func(i) => we::EntityType::Function(i),
-                wp::TypeRef::Table(t) => we::EntityType::Table(we::TableType {
-                    shared: false,
-                    table64: false,
-                    element_type: reftype(t.element_type),
-                    minimum: t.initial.into(),
-                    maximum: t.maximum.map(Into::into),
-                }),
-                wp::TypeRef::Memory(t) => we::EntityType::Memory(we::MemoryType {
-                    minimum: t.initial,
-                    maximum: t.maximum,
-                    memory64: t.memory64,
-                    shared: t.shared,
-                    page_size_log2: None,
-                }),
-                wp::TypeRef::Global(t) => we::EntityType::Global(we::GlobalType {
-                    shared: false,
-                    val_type: valtype(t.content_type),
-                    mutable: t.mutable,
-                }),
-                wp::TypeRef::Tag(t) => we::EntityType::Tag(we::TagType {
-                    kind: match t.kind {
-                        wp::TagKind::Exception => we::TagKind::Exception,
-                    },
-                    func_type_idx: t.func_type_idx,
-                }),
-            };
-            self.import_section
-                .import(import.module, import.name, import_ty);
-        }
-        Ok(())
-    }
-
-    fn transform_elem_section(&mut self, reader: wp::ElementSectionReader) -> Result<(), Error> {
-        for elem in reader {
-            let elem = elem.map_err(Error::ParseElement)?;
-            let functions;
-            let expressions;
-            let offset;
-            let items = match elem.items {
-                wp::ElementItems::Functions(fns) => {
-                    functions = fns
-                        .into_iter()
-                        .map(|v| map_func(v.map_err(Error::ParseElementItem)?))
-                        .collect::<Result<Vec<_>, _>>()?;
-                    we::Elements::Functions(Cow::Borrowed(&functions))
-                }
-                wp::ElementItems::Expressions(exprs) => {
-                    expressions = exprs
-                        .into_iter()
-                        .map(|v| v.map_err(Error::ParseElementExpression).and_then(constexpr))
-                        .collect::<Result<Vec<_>, _>>()?;
-                    we::Elements::Expressions(reftype(elem.ty), Cow::Borrowed(&expressions))
-                }
-            };
-            self.element_section.segment(we::ElementSegment {
-                mode: match elem.kind {
-                    wp::ElementKind::Passive => we::ElementMode::Passive,
-                    wp::ElementKind::Declared => we::ElementMode::Declared,
-                    wp::ElementKind::Active {
-                        table_index,
-                        offset_expr,
-                    } => {
-                        offset = constexpr(offset_expr)?;
-                        we::ElementMode::Active {
-                            table: table_index,
-                            offset: &offset,
-                        }
-                    }
-                },
-                elements: items,
-            });
         }
         Ok(())
     }
@@ -540,95 +525,4 @@ fn call_gas_instrumentation(func: &mut we::Function, gas: u64) {
         func.instruction(&we::Instruction::I64Const(gas as i64));
         func.instruction(&we::Instruction::Call(GAS_INSTRUMENTATION_FN));
     }
-}
-
-fn valtype(wp: wp::ValType) -> we::ValType {
-    match wp {
-        wp::ValType::I32 => we::ValType::I32,
-        wp::ValType::I64 => we::ValType::I64,
-        wp::ValType::F32 => we::ValType::F32,
-        wp::ValType::F64 => we::ValType::F64,
-        wp::ValType::V128 => we::ValType::V128,
-        wp::ValType::Ref(r) => we::ValType::Ref(reftype(r)),
-    }
-}
-
-fn reftype(wp: wp::RefType) -> we::RefType {
-    let ty = match wp.heap_type() {
-        wp::HeapType::TypedFunc(idx) => {
-            return we::RefType {
-                nullable: wp.is_nullable(),
-                heap_type: we::HeapType::Concrete(idx),
-            }
-        }
-        wp::HeapType::Func => we::AbstractHeapType::Func,
-        wp::HeapType::Extern => we::AbstractHeapType::Extern,
-        wp::HeapType::Any => we::AbstractHeapType::Any,
-        wp::HeapType::None => we::AbstractHeapType::None,
-        wp::HeapType::NoExtern => we::AbstractHeapType::NoExtern,
-        wp::HeapType::NoFunc => we::AbstractHeapType::NoFunc,
-        wp::HeapType::Eq => we::AbstractHeapType::Eq,
-        wp::HeapType::Struct => we::AbstractHeapType::Struct,
-        wp::HeapType::Array => we::AbstractHeapType::Array,
-        wp::HeapType::I31 => we::AbstractHeapType::I31,
-    };
-    we::RefType {
-        nullable: wp.is_nullable(),
-        heap_type: we::HeapType::Abstract { shared: false, ty },
-    }
-}
-
-fn constexpr(ep: wp::ConstExpr) -> Result<we::ConstExpr, Error> {
-    let mut reader = ep.get_binary_reader();
-    Ok(
-        match reader
-            .clone()
-            .read_operator()
-            .map_err(Error::ParseConstExprOperator)?
-        {
-            wp::Operator::RefFunc { function_index } => {
-                we::ConstExpr::ref_func(map_func(function_index)?)
-            }
-            _ => {
-                let expr_bytes = reader
-                    .read_bytes(reader.bytes_remaining())
-                    .expect("can't fail");
-                // ConstExpr introduces its own `End` operand, so we want want to drop it.
-                let without_end = &expr_bytes[0..expr_bytes.len() - 1];
-                we::ConstExpr::raw(without_end.iter().copied())
-            }
-        },
-    )
-}
-
-fn namemap(p: wp::NameMap, is_function: bool) -> Result<we::NameMap, Error> {
-    let mut new_name_map = we::NameMap::new();
-    for naming in p {
-        let naming = naming.map_err(Error::ParseNameMapName)?;
-        new_name_map.append(
-            if is_function {
-                map_func(naming.index)?
-            } else {
-                naming.index
-            },
-            naming.name,
-        );
-    }
-    Ok(new_name_map)
-}
-
-fn indirectnamemap(p: wp::IndirectNameMap) -> Result<we::IndirectNameMap, Error> {
-    let mut new_name_map = we::IndirectNameMap::new();
-    for naming in p {
-        let naming = naming.map_err(Error::ParseIndirectNameMapName)?;
-        new_name_map.append(map_func(naming.index)?, &namemap(naming.names, false)?);
-    }
-    Ok(new_name_map)
-}
-
-#[inline(always)]
-fn map_func(func_idx: u32) -> Result<u32, Error> {
-    func_idx
-        .checked_add(F)
-        .ok_or(Error::RemapFunctionIndex(func_idx))
 }

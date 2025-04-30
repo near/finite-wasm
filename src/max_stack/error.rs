@@ -37,6 +37,12 @@ pub enum Error {
     MemoryControlNotSupported(usize),
     #[error("the garbage collection proposal is not supported (at offset {0})")]
     GcNotSupported(usize),
+    #[error("the threads proposal is not supported (at offset {0})")]
+    ThreadsNotSupported(usize),
+    #[error("the stack switching proposal is not supported (at offset {0})")]
+    StackSwitchingNotSupported(usize),
+    #[error("the wide arithmetic proposal is not supported (at offset {0})")]
+    WideArithmeticNotSupported(usize),
     #[error("type is too large (at offset {0})")]
     TypeTooLarge(usize),
 }
