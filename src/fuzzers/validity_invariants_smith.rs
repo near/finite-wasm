@@ -25,7 +25,7 @@ macro_rules! gas_visit {
         }
     };
 
-    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*))*) => {
         $(gas_visit!{ $visit => $({ $($arg: $argty),* })? })*
     }
 }
@@ -38,7 +38,17 @@ impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
     fn visit_else(&mut self) -> u64 {
         0
     }
-    wasmparser::for_each_operator!(gas_visit);
+    wasmparser::for_each_visit_operator!(gas_visit);
+
+    fn simd_visitor(
+        &mut self,
+    ) -> Option<&mut dyn wasmparser::VisitSimdOperator<'a, Output = Self::Output>> {
+        Some(self)
+    }
+}
+
+impl<'a> wasmparser::VisitSimdOperator<'a> for DefaultGasConfig {
+    wasmparser::for_each_visit_simd_operator!(gas_visit);
 }
 
 #[derive(Debug)]
@@ -50,6 +60,8 @@ impl<'a> arbitrary::Arbitrary<'a> for WasmSmithModule {
     fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
         let mut config = wasm_smith::Config::arbitrary(u)?;
         config.allow_invalid_funcs = true;
+        config.exceptions_enabled = false;
+        config.gc_enabled = false;
         wasm_smith::Module::new(config, u).map(|m| Self { data: m.to_bytes() })
     }
     fn size_hint(depth: usize) -> (usize, Option<usize>) {
@@ -63,10 +75,9 @@ fn fuzz() {
         .with_arbitrary::<WasmSmithModule>()
         .for_each(|module| {
             let data = &module.data;
-            let features = wasmparser::WasmFeatures {
-                exceptions: false,
-                ..Default::default()
-            };
+            let features = wasmparser::WasmFeatures::default()
+                & !wasmparser::WasmFeatures::EXCEPTIONS
+                & !wasmparser::WasmFeatures::LEGACY_EXCEPTIONS;
             // First, try to validate the data.
             let is_valid = wasmparser::Validator::new_with_features(features)
                 .validate_all(data)

@@ -15,7 +15,7 @@ fn new_state() -> (TestConfig, ModuleState, FunctionState) {
 fn test_function_type_index_oob() {
     let (config, mut mstate, mut fnstate) = new_state();
     mstate.functions = vec![1];
-    mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new([], []))];
+    mstate.types = vec![wasmparser::FuncType::new([], [])];
     let visitor = config.make_visitor(&mstate, &mut fnstate);
 
     assert_eq!(Some(1), visitor.function_type_index(0).ok());
@@ -69,10 +69,10 @@ fn test_with_block_types_type() {
 #[test]
 fn test_with_block_types_functype() {
     let (config, mut mstate, mut fnstate) = new_state();
-    mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new(
+    mstate.types = vec![wasmparser::FuncType::new(
         [ValType::V128],
         [ValType::Ref(RefType::FUNCREF)],
-    ))];
+    )];
     let mut visitor = config.make_visitor(&mstate, &mut fnstate);
 
     let mut called = false;
@@ -120,9 +120,15 @@ fn test_nested_polymorphic_frames() {
     visitor
         .pop()
         .expect("pops from polymorphic frames should never fail");
-    let Ok(Some(Frame { stack_polymorphic: true, .. })) = visitor.end_frame() else {
-        panic!("pushing a frame when parent frame is already polymorphic should \
-                have made this frame polymorphic too");
+    let Ok(Some(Frame {
+        stack_polymorphic: true,
+        ..
+    })) = visitor.end_frame()
+    else {
+        panic!(
+            "pushing a frame when parent frame is already polymorphic should \
+                have made this frame polymorphic too"
+        );
     };
 }
 
@@ -139,9 +145,15 @@ fn test_nested_polymorphic_frames_2() {
     visitor
         .pop()
         .expect("pops from polymorphic frames should never fail, even with empty stack");
-    let Ok(Some(Frame { stack_polymorphic: true, .. })) = visitor.end_frame() else {
-        panic!("pushing a frame when parent frame is already polymorphic should \
-                have made this frame polymorphic too");
+    let Ok(Some(Frame {
+        stack_polymorphic: true,
+        ..
+    })) = visitor.end_frame()
+    else {
+        panic!(
+            "pushing a frame when parent frame is already polymorphic should \
+                have made this frame polymorphic too"
+        );
     };
 
     assert!(!fnstate.current_frame.stack_polymorphic);
@@ -238,10 +250,7 @@ fn test_operand_stack_size() {
 #[test]
 fn test_operand_stack_size_with_frames() {
     let (config, mut mstate, mut fnstate) = new_state();
-    mstate.types = vec![wasmparser::Type::Func(wasmparser::FuncType::new(
-        [ValType::V128],
-        [],
-    ))];
+    mstate.types = vec![wasmparser::FuncType::new([ValType::V128], [])];
 
     assert_eq!(0, fnstate.size);
     assert_eq!(0, fnstate.max_size);

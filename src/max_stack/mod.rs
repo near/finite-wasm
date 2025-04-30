@@ -20,7 +20,7 @@ mod test;
 /// function sections.
 pub struct ModuleState {
     functions: Vec<u32>,
-    types: Vec<wasmparser::Type>,
+    types: Vec<wasmparser::FuncType>,
     globals: Vec<wasmparser::ValType>,
     tables: Vec<wasmparser::RefType>,
 }
@@ -172,14 +172,12 @@ impl<'b, 's, Cfg: SizeConfig + ?Sized> Visitor<'s, Cfg> {
     fn type_params_results(&self, type_idx: u32) -> Result<(&'s [ValType], &'s [ValType]), Error> {
         let type_idx_usize =
             usize::try_from(type_idx).map_err(|e| Error::TypeIndexRange(type_idx, e))?;
-        match self
+        let fnty = self
             .module_state
             .types
             .get(type_idx_usize)
-            .ok_or(Error::TypeIndex(type_idx))?
-        {
-            wasmparser::Type::Func(fnty) => Ok((fnty.params(), fnty.results())),
-        }
+            .ok_or(Error::TypeIndex(type_idx))?;
+        Ok((fnty.params(), fnty.results()))
     }
 
     fn with_block_types<F>(&mut self, block_type: BlockType, cb: F) -> Result<(), Error>

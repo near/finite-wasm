@@ -25,7 +25,7 @@ macro_rules! gas_visit {
         }
     };
 
-    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*))*) => {
         $(gas_visit!{ $visit => $({ $($arg: $argty),* })? })*
     }
 }
@@ -38,7 +38,11 @@ impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
     fn visit_else(&mut self) -> u64 {
         0
     }
-    wasmparser::for_each_operator!(gas_visit);
+    wasmparser::for_each_visit_operator!(gas_visit);
+}
+
+impl<'a> wasmparser::VisitSimdOperator<'a> for DefaultGasConfig {
+    wasmparser::for_each_visit_simd_operator!(gas_visit);
 }
 
 #[test]
@@ -47,10 +51,9 @@ fn fuzz() {
         .with_arbitrary::<Vec<u8>>()
         .for_each(|module| {
             let data = &module;
-            let features = wasmparser::WasmFeatures {
-                exceptions: false,
-                ..Default::default()
-            };
+            let features = wasmparser::WasmFeatures::default()
+                & !wasmparser::WasmFeatures::EXCEPTIONS
+                & !wasmparser::WasmFeatures::LEGACY_EXCEPTIONS;
             // First, try to validate the data.
             let is_valid = wasmparser::Validator::new_with_features(features)
                 .validate_all(data)

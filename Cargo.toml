@@ -32,13 +32,13 @@ bitvec = "1.0.1"
 dissimilar = "1"
 lazy_static = { version = "1.4", optional = true }
 libc = { version = "0.2.144", optional = true }
-wasmparser = "0.105.0"
+wasmparser = { version = "0.228.0", features = ["simd"] }
 # Ensure that we depend on a single version of wasmparser only (patch versions bump wasmparser dep)
 thiserror = "1"
 num-traits = "0.2.15"
 prefix-sum-vec = "0.1.2"
 tempfile = { version = "3.5", optional = true }
-wasm-encoder = { version = "0.228.0", optional = true }
+wasm-encoder = { version = "0.228.0", optional = true, features = ["wasmparser"] }
 wasmprinter = { version = "0.228", optional = true }
 wast = { version = "228", optional = true }
 
@@ -51,10 +51,9 @@ tempfile = "3.7"
 walkdir = "2.3.0"
 wasm-instrument = "0.4"
 wasm-smith = "0.228"
-wasmparser = "0.105.0"
+wasmparser = "0.228.0"
 
 [features]
-defaut = ["instrument", "wast-tests"]
 instrument = ["wasm-encoder"]
 wast-tests = ["atoi", "instrument", "lazy_static", "libc", "tempfile", "wast", "wasmprinter"]
 

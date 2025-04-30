@@ -710,7 +710,7 @@ macro_rules! gas_visit {
         }
     };
 
-    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident)*) => {
+    ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*))*) => {
         $(gas_visit!{ $visit => $({ $($arg: $argty),* })? })*
     }
 }
@@ -723,5 +723,15 @@ impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
     fn visit_else(&mut self) -> u64 {
         0
     }
-    wasmparser::for_each_operator!(gas_visit);
+    wasmparser::for_each_visit_operator!(gas_visit);
+
+    fn simd_visitor(
+        &mut self,
+    ) -> Option<&mut dyn wasmparser::VisitSimdOperator<'a, Output = Self::Output>> {
+        Some(self)
+    }
+}
+
+impl<'a> wasmparser::VisitSimdOperator<'a> for DefaultGasConfig {
+    wasmparser::for_each_visit_simd_operator!(gas_visit);
 }

@@ -1,8 +1,10 @@
+use wasmparser::FuncType;
+
 use super::Error;
 use super::{instruction_visit::Output, FunctionState, ModuleState, Visitor};
 use crate::prefix_sum_vec::PrefixSumVec;
 use crate::visitors::{self, VisitOperatorWithOffset};
-use crate::wasmparser::{RefType, Type, ValType};
+use crate::wasmparser::{RefType, ValType};
 
 /// Configure size of various values that may end up on the stack.
 ///
@@ -77,7 +79,7 @@ pub trait Config<'b> {
     fn add_function(&self, state: &mut ModuleState, type_index: u32);
     fn add_global(&self, state: &mut ModuleState, content_type: ValType);
     fn add_table(&self, state: &mut ModuleState, content_type: RefType);
-    fn add_type(&self, state: &mut ModuleState, ty: Type);
+    fn add_type(&self, state: &mut ModuleState, ty: FuncType);
 
     fn populate_locals(
         &self,
@@ -88,7 +90,10 @@ pub trait Config<'b> {
 }
 
 impl<'b, S: SizeConfig> Config<'b> for S {
-    type StackVisitor<'s> = Visitor<'s, Self> where Self: 's;
+    type StackVisitor<'s>
+        = Visitor<'s, Self>
+    where
+        Self: 's;
 
     fn make_visitor<'s>(
         &'s self,
@@ -124,17 +129,12 @@ impl<'b, S: SizeConfig> Config<'b> for S {
             .ok_or(Error::FunctionIndex(fn_idx))?;
         let type_id_usize =
             usize::try_from(type_id).map_err(|e| Error::TypeIndexRange(type_id, e))?;
-        let fn_type = module
+        let fnty = module
             .types
             .get(type_id_usize)
             .ok_or(Error::TypeIndex(type_id))?;
-
-        match fn_type {
-            wasmparser::Type::Func(fnty) => {
-                for param in fnty.params() {
-                    fn_state.add_locals(1, *param)?;
-                }
-            }
+        for param in fnty.params() {
+            fn_state.add_locals(1, *param)?;
         }
         Ok(())
     }
@@ -151,7 +151,7 @@ impl<'b, S: SizeConfig> Config<'b> for S {
         state.tables.push(content_type);
     }
 
-    fn add_type(&self, state: &mut ModuleState, ty: Type) {
+    fn add_type(&self, state: &mut ModuleState, ty: FuncType) {
         state.types.push(ty);
     }
 }
@@ -172,7 +172,7 @@ impl<'b> Config<'b> for crate::NoConfig {
     fn add_function(&self, _: &mut ModuleState, _: u32) {}
     fn add_global(&self, _: &mut ModuleState, _: ValType) {}
     fn add_table(&self, _: &mut ModuleState, _: RefType) {}
-    fn add_type(&self, _: &mut ModuleState, _: Type) {}
+    fn add_type(&self, _: &mut ModuleState, _: FuncType) {}
     fn populate_locals(&self, _: &ModuleState, _: &mut FunctionState, _: u32) -> Result<(), Error> {
         Ok(())
     }
