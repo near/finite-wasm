@@ -145,7 +145,7 @@ macro_rules! gas_visit {
     (visit_else => $({ $($arg:ident: $argty:ty),* })?) => {};
     ($visit:ident => $({ $($arg:ident: $argty:ty),* })?) => {
         fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
-            1u64
+            Fee::constant(1)
         }
     };
 
@@ -155,12 +155,12 @@ macro_rules! gas_visit {
 }
 
 impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
-    type Output = u64;
-    fn visit_end(&mut self) -> u64 {
-        0
+    type Output = Fee;
+    fn visit_end(&mut self) -> Fee {
+        Fee::ZERO
     }
-    fn visit_else(&mut self) -> u64 {
-        0
+    fn visit_else(&mut self) -> Fee {
+        Fee::ZERO
     }
 
     wasmparser::for_each_operator!(gas_visit);

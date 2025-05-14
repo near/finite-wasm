@@ -78,6 +78,8 @@ type config =
 let frame inst locals = {inst; locals}
 let config inst vs es =
   {frame = frame inst []; code = vs, es; budget = !Flags.budget; trace_gas = !Flags.trace_gas}
+let config_for_init inst vs es =
+  { frame = frame inst []; code = vs, es; budget = Int.max_int; trace_gas = false; }
 
 let plain e = Plain e.it @@ e.at
 let reduced_plain e = ReducedPlain e.it @@ e.at
@@ -157,6 +159,9 @@ let gas_fee (i: admin_instr) (vals: value list) : int64 =
       (* Compensate for setup and invocation of these intrinsics, as they're free *)
       (* This is validated with the `!internal-self-test-interpreter` test *)
       | Func.GasIntrinsic -> -2L
+      | Func.CopyIntrinsic -> -3L
+      | Func.FillIntrinsic -> -3L
+      | Func.InitIntrinsic -> -3L
       | Func.StackIntrinsic -> -4L
       | Func.UnstackIntrinsic -> -3L
     )
@@ -176,6 +181,9 @@ let string_of_admin_instr (e: admin_instr) : string = Sexpr.to_string 120 (match
   | ReducedPlain i -> let iex = Arrange.instr (i @@ e.at) in Sexpr.Node ("admin.reducedplain", [iex])
   | Refer _ -> Sexpr.Atom "admin.ref"
   | Invoke Func.GasIntrinsic -> Sexpr.Atom "admin.gasintrinsic"
+  | Invoke Func.CopyIntrinsic -> Sexpr.Atom "admin.copyintrinsic"
+  | Invoke Func.FillIntrinsic -> Sexpr.Atom "admin.fillintrinsic"
+  | Invoke Func.InitIntrinsic -> Sexpr.Atom "admin.initintrinsic"
   | Invoke Func.StackIntrinsic -> Sexpr.Atom "admin.stackintrinsic"
   | Invoke Func.UnstackIntrinsic -> Sexpr.Atom "admin.unstackintrinsic"
   | Invoke _ -> Sexpr.Atom "admin.invoke"
@@ -308,7 +316,9 @@ let rec step (c : config) : config =
 
       | TableFill x, Num (I32 n) :: Ref r :: Num (I32 i) :: vs' ->
         if table_oob frame x i n then
-          vs', [Trapping (table_error e.at Table.Bounds) @@ e.at]
+          let msg = table_error e.at Table.Bounds in
+          if c.trace_gas then Printf.printf "aggregate_trap: %s\n" msg;
+          vs', [Trapping msg @@ e.at]
         else if n = 0l then
           vs', []
         else
@@ -320,12 +330,14 @@ let rec step (c : config) : config =
             ReducedPlain (Const (I32 (I32.add i 1l) @@ e.at));
             Refer r;
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (TableFill x);
+            Plain (TableFill x);
           ]
 
       | TableCopy (x, y), Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
         if table_oob frame x d n || table_oob frame y s n then
-          vs', [Trapping (table_error e.at Table.Bounds) @@ e.at]
+          let msg = table_error e.at Table.Bounds in
+          if c.trace_gas then Printf.printf "aggregate_trap: %s\n" msg;
+          vs', [Trapping msg @@ e.at]
         else if n = 0l then
           vs', []
         else if I32.le_u d s then
@@ -337,14 +349,14 @@ let rec step (c : config) : config =
             ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (TableCopy (x, y));
+            Plain (TableCopy (x, y));
           ]
         else (* d > s *)
           vs', List.map (at e.at) [
             ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (TableCopy (x, y));
+            Plain (TableCopy (x, y));
             ReducedPlain (Const (I32 d @@ e.at));
             ReducedPlain (Const (I32 s @@ e.at));
             ReducedPlain (TableGet y);
@@ -353,7 +365,9 @@ let rec step (c : config) : config =
 
       | TableInit (x, y), Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
         if table_oob frame x d n || elem_oob frame y s n then
-          vs', [Trapping (table_error e.at Table.Bounds) @@ e.at]
+          let msg = table_error e.at Table.Bounds in
+          if c.trace_gas then Printf.printf "aggregate_trap: %s\n" msg;
+          vs', [Trapping msg @@ e.at]
         else if n = 0l then
           vs', []
         else
@@ -365,7 +379,7 @@ let rec step (c : config) : config =
             ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (TableInit (x, y));
+            Plain (TableInit (x, y));
           ]
 
       | ElemDrop x, vs ->
@@ -467,7 +481,9 @@ let rec step (c : config) : config =
 
       | MemoryFill, Num (I32 n) :: Num k :: Num (I32 i) :: vs' ->
         if mem_oob frame (0l @@ e.at) i n then
-          vs', [Trapping (memory_error e.at Memory.Bounds) @@ e.at]
+          let msg = memory_error e.at Memory.Bounds in
+          if c.trace_gas then Printf.printf "aggregate_trap: %s\n" msg;
+          vs', [Trapping msg @@ e.at]
         else if n = 0l then
           vs', []
         else
@@ -479,12 +495,14 @@ let rec step (c : config) : config =
             ReducedPlain (Const (I32 (I32.add i 1l) @@ e.at));
             ReducedPlain (Const (k @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (MemoryFill);
+            Plain (MemoryFill);
           ]
 
       | MemoryCopy, Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
         if mem_oob frame (0l @@ e.at) s n || mem_oob frame (0l @@ e.at) d n then
-          vs', [Trapping (memory_error e.at Memory.Bounds) @@ e.at]
+          let msg = memory_error e.at Memory.Bounds in
+          if c.trace_gas then Printf.printf "aggregate_trap: %s\n" msg;
+          vs', [Trapping msg @@ e.at]
         else if n = 0l then
           vs', []
         else if I32.le_u d s then
@@ -498,14 +516,14 @@ let rec step (c : config) : config =
             ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (MemoryCopy);
+            Plain (MemoryCopy);
           ]
         else (* d > s *)
           vs', List.map (at e.at) [
             ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (MemoryCopy);
+            Plain (MemoryCopy);
             ReducedPlain (Const (I32 d @@ e.at));
             ReducedPlain (Const (I32 s @@ e.at));
             ReducedPlain (Load
@@ -516,7 +534,9 @@ let rec step (c : config) : config =
 
       | MemoryInit x, Num (I32 n) :: Num (I32 s) :: Num (I32 d) :: vs' ->
         if mem_oob frame (0l @@ e.at) d n || data_oob frame x s n then
-          vs', [Trapping (memory_error e.at Memory.Bounds) @@ e.at]
+          let msg = memory_error e.at Memory.Bounds in
+          if c.trace_gas then Printf.printf "aggregate_trap: %s\n" msg;
+          vs', [Trapping msg @@ e.at]
         else if n = 0l then
           vs', []
         else
@@ -531,7 +551,7 @@ let rec step (c : config) : config =
             ReducedPlain (Const (I32 (I32.add d 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.add s 1l) @@ e.at));
             ReducedPlain (Const (I32 (I32.sub n 1l) @@ e.at));
-            ReducedPlain (MemoryInit x);
+            Plain (MemoryInit x);
           ]
 
       | DataDrop x, vs ->
@@ -706,6 +726,16 @@ let rec step (c : config) : config =
           | Num (I64 v) -> Printf.printf "charge_gas: %Lu\n" v
           | _ -> Crash.error e.at "wrong types of arguments");
         vs', []
+
+      | Func.CopyIntrinsic | Func.FillIntrinsic | Func.InitIntrinsic ->
+        (match args with
+          | [Num (I64 c); Num (I64 l); Num (I32 cnt)] -> let open Int64 in
+            logand (of_int32 cnt) 0xFFFF_FFFFL
+            |> mul l
+            |> add c
+            |> Printf.printf "charge_aggregate: %Lu\n"
+          | _ -> Crash.error e.at "wrong types of arguments");
+        (drop 2l vs e.at), []
 
       | Func.StackIntrinsic ->
         (match args with
@@ -884,6 +914,8 @@ let init (m : module_) (exts : extern list) : module_inst =
   let es_elem = List.concat (Lib.List32.mapi run_elem elems) in
   let es_data = List.concat (Lib.List32.mapi run_data datas) in
   let es_start = Lib.Option.get (Lib.Option.map run_start start) [] in
-  let c = config inst [] (List.map reduced_plain (es_elem @ es_data @ es_start)) in
+  let c_init = config_for_init inst [] (List.map reduced_plain (es_elem @ es_data)) in
+  ignore (eval c_init);
+  let c = config inst [] (List.map reduced_plain es_start) in
   ignore (eval c);
   inst

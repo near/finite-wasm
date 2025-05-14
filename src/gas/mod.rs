@@ -33,7 +33,7 @@
 //! instructions that participate in control flow cannot be merged together if an eventually
 //! accurate gas count is desired.
 
-use crate::instruction_categories as gen;
+use crate::{instruction_categories as gen, Fee};
 pub use config::Config;
 pub use error::Error;
 use wasmparser::{BlockType, BrTable, VisitOperator, VisitSimdOperator};
@@ -92,13 +92,38 @@ pub enum InstrumentationKind {
     /// times, for example.)
     BetweenControlFlow,
 
-    /// This instrumentation point precedes an aggregate operation.
+    /// This instrumentation point precedes a `memory.grow` aggregate operation.
     ///
-    /// Instructions such as `memory.fill` cause this categorization. The amount of work they do
-    /// depends on the operands.
+    /// The amount of work this operation does may depend on the operands.
+    MemoryGrow,
+    /// This instrumentation point precedes a `memory.init` aggregate operation.
     ///
-    // TODO: a variant for each such instruction may be warranted?
-    Aggregate,
+    /// The amount of work this operation does may depend on the operands.
+    MemoryInit,
+    /// This instrumentation point precedes a `memory.copy` aggregate operation.
+    ///
+    /// The amount of work this operation does may depend on the operands.
+    MemoryCopy,
+    /// This instrumentation point precedes a `memory.fill` aggregate operation.
+    ///
+    /// The amount of work this operation does may depend on the operands.
+    MemoryFill,
+    /// This instrumentation point precedes a `table.init` aggregate operation.
+    ///
+    /// The amount of work this operation does may depend on the operands.
+    TableInit,
+    /// This instrumentation point precedes a `table.grow` aggregate operation.
+    ///
+    /// The amount of work this operation does may depend on the operands.
+    TableGrow,
+    /// This instrumentation point precedes a `table.fill` aggregate operation.
+    ///
+    /// The amount of work this operation does may depend on the operands.
+    TableFill,
+    /// This instrumentation point precedes a `table.copy` aggregate operation.
+    ///
+    /// The amount of work this operation does may depend on the operands.
+    TableCopy,
 }
 
 #[derive(Debug)]
@@ -145,7 +170,7 @@ pub(crate) struct Frame {
 }
 
 pub(crate) struct ScheduledInstrumentation {
-    cost: u64,
+    cost: Fee,
     kind: InstrumentationKind,
 }
 
@@ -157,7 +182,7 @@ pub(crate) struct ScheduledInstrumentation {
 pub struct FunctionState {
     /// Table of instruction ranges, and the total gas cost of executing the range.
     pub(crate) offsets: Vec<usize>,
-    pub(crate) costs: Vec<u64>,
+    pub(crate) costs: Vec<Fee>,
     pub(crate) kinds: Vec<InstrumentationKind>,
 
     /// Information about the analyzed function’s frame stack.
@@ -211,7 +236,7 @@ impl<'a, 'b, CostModel> Visitor<'a, CostModel> {
     /// Pure instructions do not participate in control flow, have no side effects and execute in
     /// roughly a known amount of time (i.e. their execution time is largely independent of the
     /// inputs.)
-    fn visit_pure_instruction(&mut self, cost: u64) {
+    fn visit_pure_instruction(&mut self, cost: Fee) {
         self.push_instrumentation_before(InstrumentationKind::Pure, cost)
     }
 
@@ -220,23 +245,13 @@ impl<'a, 'b, CostModel> Visitor<'a, CostModel> {
     /// Side effectful instructions are those that are known to execute in roughly a known amount
     /// of time, but may branch, call into a host function or execute some other side effect.
     /// Instructions that are potential branch targets are not applicable.
-    fn visit_side_effect_instruction(&mut self, cost: u64) {
+    fn visit_side_effect_instruction(&mut self, cost: Fee) {
         self.push_instrumentation_before(InstrumentationKind::PreControlFlow, cost);
-        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, 0);
-    }
-
-    /// Charge fees before executing an aggregate instruction.
-    ///
-    /// Aggregate instructions are those, whose execution time is proportional to the amplitude or
-    /// number of the inputs it consumes. These instructions may be side-effectful (see
-    /// [`Self::visit_side_effect`].)
-    fn visit_aggregate_instruction(&mut self, cost: u64) {
-        self.push_instrumentation_before(InstrumentationKind::Aggregate, cost);
-        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, 0);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
     }
 
     /// Charge some gas before the currently analyzed instruction.
-    fn push_instrumentation_before(&mut self, kind: InstrumentationKind, cost: u64) {
+    fn push_instrumentation_before(&mut self, kind: InstrumentationKind, cost: Fee) {
         let kind = if self.state.current_frame.stack_polymorphic {
             InstrumentationKind::Unreachable
         } else {
@@ -251,7 +266,7 @@ impl<'a, 'b, CostModel> Visitor<'a, CostModel> {
     ///
     /// Note that this method works by enqueueing a charge to be added to the tables at a next call
     /// of the `charge_before` or `charge_after` function.
-    fn push_instrumentation_after(&mut self, kind: InstrumentationKind, cost: u64) {
+    fn push_instrumentation_after(&mut self, kind: InstrumentationKind, cost: Fee) {
         assert!(self
             .state
             .scheduled_instrumentation
@@ -320,13 +335,13 @@ impl<'a, 'b, CostModel> Visitor<'a, CostModel> {
         Ok(())
     }
 
-    fn visit_conditional_branch(&mut self, frame_index: usize, cost: u64) -> Result<(), Error> {
+    fn visit_conditional_branch(&mut self, frame_index: usize, cost: Fee) -> Result<(), Error> {
         self.visit_side_effect_instruction(cost);
         self.adjust_branch_target(frame_index)?;
         Ok(())
     }
 
-    fn visit_unconditional_branch(&mut self, frame_index: usize, cost: u64) -> Result<(), Error> {
+    fn visit_unconditional_branch(&mut self, frame_index: usize, cost: Fee) -> Result<(), Error> {
         self.visit_conditional_branch(frame_index, cost)?;
         self.make_polymorphic();
         Ok(())
@@ -392,7 +407,7 @@ macro_rules! pure_insn {
 
 type Output = Result<(), Error>;
 
-impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, Output = u64>>
+impl<'a, 'b, CostModel: VisitOperator<'b, Output = Fee> + VisitSimdOperator<'b, Output = Fee>>
     Visitor<'a, CostModel>
 {
     gen::atomic_cmpxchg!(trapping_insn);
@@ -422,7 +437,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
     fn visit_unreachable(&mut self) -> Output {
         let cost = self.model.visit_unreachable();
         self.push_instrumentation_before(InstrumentationKind::PreControlFlow, cost);
-        self.push_instrumentation_after(InstrumentationKind::Unreachable, 0);
+        self.push_instrumentation_after(InstrumentationKind::Unreachable, Fee::ZERO);
         self.make_polymorphic();
         Ok(())
     }
@@ -465,7 +480,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
         // branch target later. That's because as per the WebAssembly specification, the `loop`
         // instruction is executed on every iteration.
         let instrumentation_kind_index_pre = self.state.kinds.len();
-        self.push_instrumentation_before(InstrumentationKind::Pure, 0);
+        self.push_instrumentation_before(InstrumentationKind::Pure, Fee::ZERO);
         let instrumentation_kind_index_post = self.state.kinds.len();
         self.push_instrumentation_after(InstrumentationKind::Pure, cost);
         // This instruction will become a branch target if there is a branching instruction
@@ -483,8 +498,8 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
     fn visit_end(&mut self) -> Output {
         let cost = self.model.visit_end();
         assert!(
-            cost == 0,
-            "the `end` instruction costs aren’t handled right, set it to 0"
+            matches!(cost, Fee::ZERO),
+            "the `end` instruction costs aren’t handled right, set it to Fee::ZERO"
         );
 
         // TODO: this needs to note if this is a `if..end` or `if..else..end` branch. In the case
@@ -519,8 +534,8 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
     fn visit_else(&mut self) -> Output {
         let cost = self.model.visit_else();
         assert!(
-            cost == 0,
-            "the `else` instruction costs aren’t handled right, set it to 0"
+            matches!(cost, Fee::ZERO),
+            "the `else` instruction costs aren’t handled right, set it to Fee::ZERO"
         );
         // `else` is already a taken branch target from `if` (if the condition is false).
         self.end_frame();
@@ -604,12 +619,16 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
 
     fn visit_memory_grow(&mut self, mem: u32) -> Output {
         let cost = self.model.visit_memory_grow(mem);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::MemoryGrow, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_memory_init(&mut self, data_index: u32, mem: u32) -> Output {
         let cost = self.model.visit_memory_init(data_index, mem);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::MemoryInit, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_data_drop(&mut self, data_index: u32) -> Output {
@@ -622,17 +641,23 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
 
     fn visit_memory_copy(&mut self, dst_mem: u32, src_mem: u32) -> Output {
         let cost = self.model.visit_memory_copy(dst_mem, src_mem);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::MemoryCopy, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_memory_fill(&mut self, mem: u32) -> Output {
         let cost = self.model.visit_memory_fill(mem);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::MemoryFill, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_table_init(&mut self, elem_index: u32, table: u32) -> Output {
         let cost = self.model.visit_table_init(elem_index, table);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::TableInit, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_elem_drop(&mut self, elem_index: u32) -> Output {
@@ -645,17 +670,23 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b, 
 
     fn visit_table_copy(&mut self, dst_table: u32, src_table: u32) -> Output {
         let cost = self.model.visit_table_copy(dst_table, src_table);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::TableCopy, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_table_fill(&mut self, table: u32) -> Output {
         let cost = self.model.visit_table_fill(table);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::TableFill, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 
     fn visit_table_grow(&mut self, table: u32) -> Output {
         let cost = self.model.visit_table_grow(table);
-        Ok(self.visit_aggregate_instruction(cost))
+        self.push_instrumentation_before(InstrumentationKind::TableGrow, cost);
+        self.push_instrumentation_after(InstrumentationKind::PostControlFlow, Fee::ZERO);
+        Ok(())
     }
 }
 
@@ -711,7 +742,7 @@ macro_rules! delegate_to_inherent {
 }
 
 #[deny(unconditional_recursion)]
-impl<'b, 'a, CostModel: VisitSimdOperator<'a, Output = u64>> VisitOperator<'a>
+impl<'b, 'a, CostModel: VisitSimdOperator<'a, Output = Fee>> VisitOperator<'a>
     for Visitor<'b, CostModel>
 {
     type Output = Output;
@@ -726,13 +757,13 @@ impl<'b, 'a, CostModel: VisitSimdOperator<'a, Output = u64>> VisitOperator<'a>
 }
 
 #[deny(unconditional_recursion)]
-impl<'a, 'b, CostModel: VisitSimdOperator<'b, Output = u64>> VisitSimdOperator<'b>
+impl<'a, 'b, CostModel: VisitSimdOperator<'b, Output = Fee>> VisitSimdOperator<'b>
     for Visitor<'a, CostModel>
 {
     wasmparser::for_each_visit_simd_operator!(delegate_to_inherent);
 }
 
-impl<'a, 'b, CostModel: VisitOperator<'b, Output = u64> + VisitSimdOperator<'b>>
+impl<'a, 'b, CostModel: VisitOperator<'b, Output = Fee> + VisitSimdOperator<'b>>
     crate::visitors::VisitOperatorWithOffset<'b> for Visitor<'a, CostModel>
 {
     fn set_offset(&mut self, offset: usize) {

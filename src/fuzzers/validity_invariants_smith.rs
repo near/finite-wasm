@@ -1,4 +1,4 @@
-use crate::{max_stack, prefix_sum_vec, wasmparser};
+use crate::{max_stack, prefix_sum_vec, wasmparser, Fee};
 
 struct DefaultStackConfig;
 impl max_stack::SizeConfig for DefaultStackConfig {
@@ -21,7 +21,7 @@ macro_rules! gas_visit {
     (visit_else => $({ $($arg:ident: $argty:ty),* })?) => {};
     ($visit:ident => $({ $($arg:ident: $argty:ty),* })?) => {
         fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
-            u64::MAX / 128 // allow for 128 operations before an overflow would occur.
+            Fee::constant(u64::MAX / 128) // allow for 128 operations before an overflow would occur.
         }
     };
 
@@ -31,12 +31,12 @@ macro_rules! gas_visit {
 }
 
 impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
-    type Output = u64;
-    fn visit_end(&mut self) -> u64 {
-        0
+    type Output = Fee;
+    fn visit_end(&mut self) -> Fee {
+        Fee::constant(0)
     }
-    fn visit_else(&mut self) -> u64 {
-        0
+    fn visit_else(&mut self) -> Fee {
+        Fee::constant(0)
     }
     wasmparser::for_each_visit_operator!(gas_visit);
 

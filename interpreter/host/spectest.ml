@@ -37,6 +37,12 @@ let print (FuncType (_, out)) vs =
 let lookup name t =
   match Utf8.encode name, t with
   | "finite_wasm_gas", _ -> ExternFunc Func.GasIntrinsic
+  | "finite_wasm_memory_copy", _ -> ExternFunc Func.CopyIntrinsic
+  | "finite_wasm_table_copy", _ -> ExternFunc Func.CopyIntrinsic
+  | "finite_wasm_memory_fill", _ -> ExternFunc Func.FillIntrinsic
+  | "finite_wasm_table_fill", _ -> ExternFunc Func.FillIntrinsic
+  | "finite_wasm_memory_init", _ -> ExternFunc Func.InitIntrinsic
+  | "finite_wasm_table_init", _ -> ExternFunc Func.InitIntrinsic
   | "finite_wasm_stack", _ -> ExternFunc Func.StackIntrinsic
   | "finite_wasm_unstack", _ -> ExternFunc Func.UnstackIntrinsic
   | "print", _ -> ExternFunc (func print (FuncType ([], [])))

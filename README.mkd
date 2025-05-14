@@ -65,14 +65,16 @@ impl finite_wasm::max_stack::SizeConfig for MySizeConfig {
 macro_rules! define_fee {
     ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*))*) => {
         $(
-            fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { 1 }
+            fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
+                finite_wasm::Fee::constant(1)
+            }
         )*
     }
 }
 
 struct MyGasConfig;
 impl<'a> wp::VisitOperator<'a> for MyGasConfig {
-    type Output = u64;
+    type Output = finite_wasm::Fee;
 
     fn simd_visitor(&mut self)
     -> Option<&mut dyn wp::VisitSimdOperator<'a, Output = Self::Output>> {

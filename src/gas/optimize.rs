@@ -36,27 +36,37 @@ use super::InstrumentationKind;
 pub(crate) struct InstrumentationPoint {
     offset: usize,
     kind: InstrumentationKind,
-    cost: u64,
+    cost: crate::Fee,
 }
 
 impl InstrumentationKind {
     /// Instrumentation kind after merging two instrumentation points at the same offset.
     fn merge_same_point(self, other: Self) -> Option<Self> {
-        use InstrumentationKind::*;
+        use InstrumentationKind as IK;
         // FIXME(#49): make this infallible to guarantee single instrumentation point per offset.
         Some(match (self, other) {
-            (Unreachable, _) => Unreachable,
-            (_, Unreachable) => Unreachable,
-            (Aggregate, _) => return None,
-            (_, Aggregate) => return None,
-            (Pure, Pure | PreControlFlow | PostControlFlow | BetweenControlFlow) => other,
-            (PreControlFlow, PreControlFlow | Pure) => PreControlFlow,
-            (PreControlFlow, PostControlFlow | BetweenControlFlow) => BetweenControlFlow,
-            (PostControlFlow, PostControlFlow | Pure) => PostControlFlow,
-            (PostControlFlow, PreControlFlow | BetweenControlFlow) => BetweenControlFlow,
-            (BetweenControlFlow, Pure | PreControlFlow | PostControlFlow | BetweenControlFlow) => {
-                BetweenControlFlow
+            (IK::Unreachable, _) => IK::Unreachable,
+            (_, IK::Unreachable) => IK::Unreachable,
+            (IK::TableInit | IK::TableGrow | IK::TableFill | IK::TableCopy, _) => return None,
+            (_, IK::TableInit | IK::TableGrow | IK::TableFill | IK::TableCopy) => return None,
+            (IK::MemoryInit | IK::MemoryGrow | IK::MemoryCopy | IK::MemoryFill, _) => return None,
+            (_, IK::MemoryInit | IK::MemoryGrow | IK::MemoryCopy | IK::MemoryFill) => return None,
+            (
+                IK::Pure,
+                IK::Pure | IK::PreControlFlow | IK::PostControlFlow | IK::BetweenControlFlow,
+            ) => other,
+            (IK::PreControlFlow, IK::PreControlFlow | IK::Pure) => IK::PreControlFlow,
+            (IK::PreControlFlow, IK::PostControlFlow | IK::BetweenControlFlow) => {
+                IK::BetweenControlFlow
             }
+            (IK::PostControlFlow, IK::PostControlFlow | IK::Pure) => IK::PostControlFlow,
+            (IK::PostControlFlow, IK::PreControlFlow | IK::BetweenControlFlow) => {
+                IK::BetweenControlFlow
+            }
+            (
+                IK::BetweenControlFlow,
+                IK::Pure | IK::PreControlFlow | IK::PostControlFlow | IK::BetweenControlFlow,
+            ) => IK::BetweenControlFlow,
         })
     }
 
@@ -66,20 +76,20 @@ impl InstrumentationKind {
         // the inputs. That is, merging `Pure` with any other kind should never return a `Pure`,
         // because that might make it possible to merge two kinds that otherwise would never be
         // mergeable.
-        use InstrumentationKind::*;
+        use InstrumentationKind as IK;
         match (self, other) {
             // The changes to the remaining gas pool are not observable across a pure instruction.
-            (Pure, Pure) => Some(Pure),
+            (IK::Pure, IK::Pure) => Some(IK::Pure),
             // The unreachable code is never executed.
-            (Unreachable, Unreachable) => Some(Unreachable),
+            (IK::Unreachable, IK::Unreachable) => Some(IK::Unreachable),
             // Two control flow operators meet here.
-            (PostControlFlow, PreControlFlow) => Some(BetweenControlFlow),
+            (IK::PostControlFlow, IK::PreControlFlow) => Some(IK::BetweenControlFlow),
             // The next instruction is about to be a control-flow instruction. We can still merge
             // into this instrumentation point from a previous, pure instrumentation point.
-            (Pure, PreControlFlow) => Some(PreControlFlow),
+            (IK::Pure, IK::PreControlFlow) => Some(IK::PreControlFlow),
             // The previous instrumentation point comes after a control-flow instruction. The
             // current instruction is pure, though.
-            (PostControlFlow, Pure) => Some(PostControlFlow),
+            (IK::PostControlFlow, IK::Pure) => Some(IK::PostControlFlow),
             _ => None,
         }
     }

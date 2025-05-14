@@ -1,4 +1,4 @@
-use crate::{max_stack, Analysis};
+use crate::{max_stack, Analysis, Fee};
 use std::error;
 use std::ffi::OsString;
 use std::io::{self, Read, Seek, SeekFrom, Write};
@@ -137,6 +137,8 @@ pub(crate) enum Error {
     WriteTempTest(#[source] std::io::Error, PathBuf),
     #[error("interpreter (= {0}) and analysis (= {1}) disagree on gas consumption")]
     GasMismatch(i64, i64),
+    #[error("interpreter analysis ({0} !< {1} !< {2}) disagree on aggregate gas consumption")]
+    AggregateGasMismatch(i64, i64, i64),
     #[error("processing the interpreter output panicked")]
     InterpreterOutputProcessingPanic,
 }
@@ -161,6 +163,7 @@ impl Error {
             | Error::InstrumentModulePanic(_, _)
             | Error::Instrument(_)
             | Error::GasMismatch(_, _)
+            | Error::AggregateGasMismatch(_, _, _)
             | Error::InterpreterOutputProcessingPanic
             | Error::WriteTempTest(_, _) => {}
             Error::ParseBuffer(s) => set_wast_path(s, path),
@@ -330,19 +333,42 @@ impl<'a> TestContext {
 
         let mut interpreter_gas = 0;
         let mut instrumentation_gas = 0;
+        let mut instrumentation_aggregate_gas = 0;
         let mut total_stack_used = 0;
         let mut max_stack_used = 0;
         for line in interpreter_out.lines() {
             let Some((kind, rest)) = line.split_once(": ") else {
                 continue;
             };
-
             match kind {
+                // When a trap occurs, we want to verify that the gas falls somewhere within the
+                // budget of the last `aggregate_charge`.
+                "aggregate_trap" => {
+                    let max_allowed_gas = instrumentation_gas + instrumentation_aggregate_gas;
+                    if interpreter_gas < instrumentation_gas || interpreter_gas > max_allowed_gas {
+                        return Err(Error::AggregateGasMismatch(
+                            instrumentation_gas,
+                            interpreter_gas,
+                            max_allowed_gas,
+                        ));
+                    } else {
+                        interpreter_gas = 0;
+                        instrumentation_aggregate_gas = 0;
+                        instrumentation_gas = 0;
+                        total_stack_used = 0;
+                    }
+                }
                 "gas" => {
                     let count = parse_prefix_num(rest.as_bytes()).expect("TODO");
                     interpreter_gas += count;
                 }
+                "charge_aggregate" => {
+                    instrumentation_gas += std::mem::replace(&mut instrumentation_aggregate_gas, 0);
+                    let count = parse_prefix_num(rest.as_bytes()).expect("TODO");
+                    instrumentation_aggregate_gas = count;
+                }
                 "charge_gas" => {
+                    instrumentation_gas += std::mem::replace(&mut instrumentation_aggregate_gas, 0);
                     let count = parse_prefix_num(rest.as_bytes()).expect("TODO");
                     instrumentation_gas += count;
                 }
@@ -370,7 +396,7 @@ impl<'a> TestContext {
                 }
             }
         }
-
+        instrumentation_gas += std::mem::replace(&mut instrumentation_aggregate_gas, 0);
         Ok((interpreter_gas, instrumentation_gas))
     }
 
@@ -704,9 +730,15 @@ pub(crate) struct DefaultGasConfig;
 macro_rules! gas_visit {
     (visit_end => $({ $($arg:ident: $argty:ty),* })?) => {};
     (visit_else => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_memory_copy => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_memory_fill => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_memory_init => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_table_copy => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_table_fill => $({ $($arg:ident: $argty:ty),* })?) => {};
+    (visit_table_init => $({ $($arg:ident: $argty:ty),* })?) => {};
     ($visit:ident => $({ $($arg:ident: $argty:ty),* })?) => {
         fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output {
-            1u64
+            Fee::constant(1)
         }
     };
 
@@ -716,13 +748,50 @@ macro_rules! gas_visit {
 }
 
 impl<'a> wasmparser::VisitOperator<'a> for DefaultGasConfig {
-    type Output = u64;
-    fn visit_end(&mut self) -> u64 {
-        0
+    type Output = Fee;
+    fn visit_end(&mut self) -> Fee {
+        Fee::ZERO
     }
-    fn visit_else(&mut self) -> u64 {
-        0
+    fn visit_else(&mut self) -> Fee {
+        Fee::ZERO
     }
+    fn visit_memory_copy(&mut self, _: u32, _: u32) -> Fee {
+        Fee {
+            constant: 1,
+            linear: 1,
+        }
+    }
+    fn visit_memory_fill(&mut self, _: u32) -> Fee {
+        Fee {
+            constant: 1,
+            linear: 1,
+        }
+    }
+    fn visit_memory_init(&mut self, _: u32, _: u32) -> Fee {
+        Fee {
+            constant: 1,
+            linear: 1,
+        }
+    }
+    fn visit_table_copy(&mut self, _: u32, _: u32) -> Fee {
+        Fee {
+            constant: 1,
+            linear: 1,
+        }
+    }
+    fn visit_table_fill(&mut self, _: u32) -> Fee {
+        Fee {
+            constant: 1,
+            linear: 1,
+        }
+    }
+    fn visit_table_init(&mut self, _: u32, _: u32) -> Fee {
+        Fee {
+            constant: 1,
+            linear: 1,
+        }
+    }
+
     wasmparser::for_each_visit_operator!(gas_visit);
 
     fn simd_visitor(
