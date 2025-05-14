@@ -3,54 +3,63 @@
   (type (;1;) (func (param i32) (result externref)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
   (table $t (;0;) 10 externref)
-  (export "fill" (func 3))
-  (export "fill-abbrev" (func 4))
-  (export "get" (func 5))
-  (func (;3;) (type 0) (param $i i32) (param $r externref) (param $n i32)
+  (export "fill" (func 9))
+  (export "fill-abbrev" (func 10))
+  (export "get" (func 11))
+  (func (;9;) (type 0) (param $i i32) (param $r externref) (param $n i32)
     block ;; label = @1
       i64.const 40
       i64.const 3
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $i
       local.get $r
       local.get $n
       i64.const 1
-      call 0
+      i64.const 1
+      call 5
       table.fill $t
     end
     i64.const 40
     i64.const 3
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (param $i i32) (param $r externref) (param $n i32)
+  (func (;10;) (type 0) (param $i i32) (param $r externref) (param $n i32)
     block ;; label = @1
       i64.const 40
       i64.const 3
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $i
       local.get $r
       local.get $n
       i64.const 1
-      call 0
+      i64.const 1
+      call 5
       table.fill $t
     end
     i64.const 40
     i64.const 3
-    call 2
+    call 8
   )
-  (func (;5;) (type 1) (param $i i32) (result externref)
+  (func (;11;) (type 1) (param $i i32) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $i
@@ -58,7 +67,7 @@
     end
     i64.const 32
     i64.const 1
-    call 2
+    call 8
   )
 )
 

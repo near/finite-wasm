@@ -5,20 +5,27 @@
   (type (;3;) (func (result i32)))
   (type (;4;) (func (param i64)))
   (type (;5;) (func (param i64 i64)))
+  (type (;6;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 5)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 6)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 6)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 6)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 6)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 6)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 6)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 5)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 5)))
   (table $t (;0;) 0 externref)
-  (export "get" (func 3))
-  (export "set" (func 4))
-  (export "grow" (func 5))
-  (export "grow-abbrev" (func 6))
-  (export "size" (func 7))
-  (func (;3;) (type 0) (param $i i32) (result externref)
+  (export "get" (func 9))
+  (export "set" (func 10))
+  (export "grow" (func 11))
+  (export "grow-abbrev" (func 12))
+  (export "size" (func 13))
+  (func (;9;) (type 0) (param $i i32) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $i
@@ -26,13 +33,13 @@
     end
     i64.const 32
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;4;) (type 1) (param $i i32) (param $r externref)
+  (func (;10;) (type 1) (param $i i32) (param $r externref)
     block ;; label = @1
       i64.const 36
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $i
@@ -41,13 +48,13 @@
     end
     i64.const 36
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;5;) (type 2) (param $sz i32) (param $init externref) (result i32)
+  (func (;11;) (type 2) (param $sz i32) (param $init externref) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 2
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $init
@@ -58,13 +65,13 @@
     end
     i64.const 36
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;6;) (type 2) (param $sz i32) (param $init externref) (result i32)
+  (func (;12;) (type 2) (param $sz i32) (param $init externref) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 2
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $init
@@ -75,20 +82,20 @@
     end
     i64.const 36
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;7;) (type 3) (result i32)
+  (func (;13;) (type 3) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       table.size $t
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
 )
 
@@ -122,13 +129,20 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;8;) (type 2)))
   (table $t (;0;) 16 funcref)
   (export "grow" (func $f))
   (elem (;0;) declare func $f)
-  (func $f (;3;) (type 0) (result i32)
+  (func $f (;9;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 0
@@ -154,16 +168,23 @@
   (type (;0;) (func (param i32) (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (table $t (;0;) 0 externref)
-  (export "grow" (func 3))
-  (func (;3;) (type 0) (param i32) (result i32)
+  (export "grow" (func 9))
+  (func (;9;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null extern
@@ -174,7 +195,7 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
 )
 
@@ -189,16 +210,23 @@
   (type (;0;) (func (param i32) (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (table $t (;0;) 0 10 externref)
-  (export "grow" (func 3))
-  (func (;3;) (type 0) (param i32) (result i32)
+  (export "grow" (func 9))
+  (func (;9;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null extern
@@ -209,7 +237,7 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
 )
 
@@ -228,18 +256,25 @@
   (type (;1;) (func (param i32 i32) (result funcref)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
   (table $t (;0;) 10 funcref)
-  (export "grow" (func 3))
-  (export "check-table-null" (func 4))
-  (elem (;0;) declare func 4)
-  (func (;3;) (type 0) (param i32) (result i32)
+  (export "grow" (func 9))
+  (export "check-table-null" (func 10))
+  (elem (;0;) declare func 10)
+  (func (;9;) (type 0) (param i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null func
@@ -250,17 +285,17 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;4;) (type 1) (param i32 i32) (result funcref)
+  (func (;10;) (type 1) (param i32 i32) (result funcref)
     (local funcref)
     block (result funcref) ;; label = @1
       i64.const 32
       i64.const 3
-      call 1
+      call 7
       i64.const 3
       call 0
-      ref.func 4
+      ref.func 10
       local.set 2
       block ;; label = @2
         loop ;; label = @3
@@ -299,7 +334,7 @@
     end
     i64.const 32
     i64.const 3
-    call 2
+    call 8
   )
 )
 

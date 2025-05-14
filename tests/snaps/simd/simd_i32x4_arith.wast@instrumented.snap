@@ -3,18 +3,25 @@
   (type (;1;) (func (param v128) (result v128)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
-  (export "i32x4.add" (func 3))
-  (export "i32x4.sub" (func 4))
-  (export "i32x4.mul" (func 5))
-  (export "i32x4.neg" (func 6))
-  (func (;3;) (type 0) (param v128 v128) (result v128)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
+  (export "i32x4.add" (func 9))
+  (export "i32x4.sub" (func 10))
+  (export "i32x4.mul" (func 11))
+  (export "i32x4.neg" (func 12))
+  (func (;9;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get 0
@@ -23,13 +30,13 @@
     end
     i64.const 32
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (param v128 v128) (result v128)
+  (func (;10;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get 0
@@ -38,13 +45,13 @@
     end
     i64.const 32
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;5;) (type 0) (param v128 v128) (result v128)
+  (func (;11;) (type 0) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get 0
@@ -53,13 +60,13 @@
     end
     i64.const 32
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;6;) (type 1) (param v128) (result v128)
+  (func (;12;) (type 1) (param v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get 0
@@ -67,7 +74,7 @@
     end
     i64.const 16
     i64.const 1
-    call 2
+    call 8
   )
 )
 
@@ -591,21 +598,28 @@
   (type (;1;) (func (param v128 v128) (result v128)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
-  (export "add-sub" (func 3))
-  (export "mul-add" (func 4))
-  (export "mul-sub" (func 5))
-  (export "sub-add" (func 6))
-  (export "add-neg" (func 7))
-  (export "mul-neg" (func 8))
-  (export "sub-neg" (func 9))
-  (func (;3;) (type 0) (param v128 v128 v128) (result v128)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
+  (export "add-sub" (func 9))
+  (export "mul-add" (func 10))
+  (export "mul-sub" (func 11))
+  (export "sub-add" (func 12))
+  (export "add-neg" (func 13))
+  (export "mul-neg" (func 14))
+  (export "sub-neg" (func 15))
+  (func (;9;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 3
-      call 1
+      call 7
       i64.const 5
       call 0
       local.get 0
@@ -616,13 +630,13 @@
     end
     i64.const 32
     i64.const 3
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (param v128 v128 v128) (result v128)
+  (func (;10;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 3
-      call 1
+      call 7
       i64.const 5
       call 0
       local.get 0
@@ -633,13 +647,13 @@
     end
     i64.const 32
     i64.const 3
-    call 2
+    call 8
   )
-  (func (;5;) (type 0) (param v128 v128 v128) (result v128)
+  (func (;11;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 3
-      call 1
+      call 7
       i64.const 5
       call 0
       local.get 0
@@ -650,13 +664,13 @@
     end
     i64.const 32
     i64.const 3
-    call 2
+    call 8
   )
-  (func (;6;) (type 0) (param v128 v128 v128) (result v128)
+  (func (;12;) (type 0) (param v128 v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 3
-      call 1
+      call 7
       i64.const 5
       call 0
       local.get 0
@@ -667,13 +681,13 @@
     end
     i64.const 32
     i64.const 3
-    call 2
+    call 8
   )
-  (func (;7;) (type 1) (param v128 v128) (result v128)
+  (func (;13;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
-      call 1
+      call 7
       i64.const 4
       call 0
       local.get 0
@@ -683,13 +697,13 @@
     end
     i64.const 32
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;8;) (type 1) (param v128 v128) (result v128)
+  (func (;14;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
-      call 1
+      call 7
       i64.const 4
       call 0
       local.get 0
@@ -699,13 +713,13 @@
     end
     i64.const 32
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;9;) (type 1) (param v128 v128) (result v128)
+  (func (;15;) (type 1) (param v128 v128) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 2
-      call 1
+      call 7
       i64.const 4
       call 0
       local.get 0
@@ -715,7 +729,7 @@
     end
     i64.const 32
     i64.const 2
-    call 2
+    call 8
   )
 )
 

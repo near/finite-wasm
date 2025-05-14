@@ -5,42 +5,49 @@
   (type (;3;) (func (param f64) (result f64)))
   (type (;4;) (func (param i64)))
   (type (;5;) (func (param i64 i64)))
+  (type (;6;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 5)))
-  (export "f32.add" (func 3))
-  (export "f32.sub" (func 4))
-  (export "f32.mul" (func 5))
-  (export "f32.div" (func 6))
-  (export "f32.sqrt" (func 7))
-  (export "f32.abs" (func 8))
-  (export "f32.neg" (func 9))
-  (export "f32.copysign" (func 10))
-  (export "f32.ceil" (func 11))
-  (export "f32.floor" (func 12))
-  (export "f32.trunc" (func 13))
-  (export "f32.nearest" (func 14))
-  (export "f32.min" (func 15))
-  (export "f32.max" (func 16))
-  (export "f64.add" (func 17))
-  (export "f64.sub" (func 18))
-  (export "f64.mul" (func 19))
-  (export "f64.div" (func 20))
-  (export "f64.sqrt" (func 21))
-  (export "f64.abs" (func 22))
-  (export "f64.neg" (func 23))
-  (export "f64.copysign" (func 24))
-  (export "f64.ceil" (func 25))
-  (export "f64.floor" (func 26))
-  (export "f64.trunc" (func 27))
-  (export "f64.nearest" (func 28))
-  (export "f64.min" (func 29))
-  (export "f64.max" (func 30))
-  (func (;3;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 6)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 6)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 6)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 6)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 6)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 6)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 5)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 5)))
+  (export "f32.add" (func 9))
+  (export "f32.sub" (func 10))
+  (export "f32.mul" (func 11))
+  (export "f32.div" (func 12))
+  (export "f32.sqrt" (func 13))
+  (export "f32.abs" (func 14))
+  (export "f32.neg" (func 15))
+  (export "f32.copysign" (func 16))
+  (export "f32.ceil" (func 17))
+  (export "f32.floor" (func 18))
+  (export "f32.trunc" (func 19))
+  (export "f32.nearest" (func 20))
+  (export "f32.min" (func 21))
+  (export "f32.max" (func 22))
+  (export "f64.add" (func 23))
+  (export "f64.sub" (func 24))
+  (export "f64.mul" (func 25))
+  (export "f64.div" (func 26))
+  (export "f64.sqrt" (func 27))
+  (export "f64.abs" (func 28))
+  (export "f64.neg" (func 29))
+  (export "f64.copysign" (func 30))
+  (export "f64.ceil" (func 31))
+  (export "f64.floor" (func 32))
+  (export "f64.trunc" (func 33))
+  (export "f64.nearest" (func 34))
+  (export "f64.min" (func 35))
+  (export "f64.max" (func 36))
+  (func (;9;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -49,13 +56,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (func (;10;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -64,13 +71,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;5;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (func (;11;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -79,13 +86,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;6;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (func (;12;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -94,13 +101,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;7;) (type 1) (param $x f32) (result f32)
+  (func (;13;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -108,13 +115,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;8;) (type 1) (param $x f32) (result f32)
+  (func (;14;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -122,13 +129,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;9;) (type 1) (param $x f32) (result f32)
+  (func (;15;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -136,13 +143,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;10;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (func (;16;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -151,13 +158,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;11;) (type 1) (param $x f32) (result f32)
+  (func (;17;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -165,13 +172,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;12;) (type 1) (param $x f32) (result f32)
+  (func (;18;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -179,13 +186,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;13;) (type 1) (param $x f32) (result f32)
+  (func (;19;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -193,13 +200,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;14;) (type 1) (param $x f32) (result f32)
+  (func (;20;) (type 1) (param $x f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -207,13 +214,13 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;15;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (func (;21;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -222,13 +229,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;16;) (type 0) (param $x f32) (param $y f32) (result f32)
+  (func (;22;) (type 0) (param $x f32) (param $y f32) (result f32)
     block (result f32) ;; label = @1
       i64.const 8
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -237,13 +244,13 @@
     end
     i64.const 8
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;17;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;23;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -252,13 +259,13 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;18;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;24;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -267,13 +274,13 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;19;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;25;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -282,13 +289,13 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;20;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;26;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -297,13 +304,13 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;21;) (type 3) (param $x f64) (result f64)
+  (func (;27;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -311,13 +318,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;22;) (type 3) (param $x f64) (result f64)
+  (func (;28;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -325,13 +332,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;23;) (type 3) (param $x f64) (result f64)
+  (func (;29;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -339,13 +346,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;24;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;30;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -354,13 +361,13 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;25;) (type 3) (param $x f64) (result f64)
+  (func (;31;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -368,13 +375,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;26;) (type 3) (param $x f64) (result f64)
+  (func (;32;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -382,13 +389,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;27;) (type 3) (param $x f64) (result f64)
+  (func (;33;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -396,13 +403,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;28;) (type 3) (param $x f64) (result f64)
+  (func (;34;) (type 3) (param $x f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 8
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get $x
@@ -410,13 +417,13 @@
     end
     i64.const 8
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;29;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;35;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -425,13 +432,13 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
-  (func (;30;) (type 2) (param $x f64) (param $y f64) (result f64)
+  (func (;36;) (type 2) (param $x f64) (param $y f64) (result f64)
     block (result f64) ;; label = @1
       i64.const 16
       i64.const 2
-      call 1
+      call 7
       i64.const 3
       call 0
       local.get $x
@@ -440,7 +447,7 @@
     end
     i64.const 16
     i64.const 2
-    call 2
+    call 8
   )
 )
 

@@ -2,16 +2,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "v128.load" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "v128.load" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -19,7 +26,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\00\01\02\03")
 )
@@ -35,16 +42,23 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-i8x16_extract_lane_s-value/0" (func 3))
-  (func (;3;) (type 0) (result i32)
+  (export "as-i8x16_extract_lane_s-value/0" (func 9))
+  (func (;9;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -55,7 +69,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\00\01\02\03")
 )
@@ -66,16 +80,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-i8x16.eq-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-i8x16.eq-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -90,7 +111,7 @@
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\00\01\02\03")
 )
@@ -102,17 +123,24 @@
   (type (;1;) (func (result i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
   (memory (;0;) 1)
-  (export "as-v128.not-operand" (func 3))
-  (export "as-i8x16.all_true-operand" (func 4))
-  (func (;3;) (type 0) (result v128)
+  (export "as-v128.not-operand" (func 9))
+  (export "as-i8x16.all_true-operand" (func 10))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -123,13 +151,13 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;4;) (type 1) (result i32)
+  (func (;10;) (type 1) (result i32)
     block (result i32) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -140,7 +168,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\00\01\02\03")
 )
@@ -152,16 +180,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-v128.bitselect-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-v128.bitselect-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 48
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -180,7 +215,7 @@
     end
     i64.const 48
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa")
   (data (;1;) (i32.const 16) "\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb\bb")
@@ -193,16 +228,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-i8x16.shl-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-i8x16.shl-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 20
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -214,7 +256,7 @@
     end
     i64.const 20
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa")
 )
@@ -225,16 +267,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-add/sub-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-add/sub-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -254,7 +303,7 @@
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\02\00\00\00\02\00\00\00\02\00\00\00\02\00\00\00")
   (data (;1;) (i32.const 16) "\03\00\00\00\03\00\00\00\03\00\00\00\03\00\00\00")
@@ -266,16 +315,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-f32x4.mul-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-f32x4.mul-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -290,7 +346,7 @@
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\00\00C\00\00\80?ff\e6?\00\00\80\bf")
   (data (;1;) (i32.const 16) "\00\00\00@\00\00\00@\00\00\00@\00\00\00@")
@@ -302,16 +358,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-f32x4.abs-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-f32x4.abs-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -322,7 +385,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff\ff")
 )
@@ -333,16 +396,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-f32x4.min-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-f32x4.min-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -357,7 +427,7 @@
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa\aa")
   (data (;1;) (i32.const 16) "\02\00\00\00\02\00\00\00\02\00\00\00\02\00\00\00")
@@ -369,16 +439,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-i32x4.trunc_sat_f32x4_s-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-i32x4.trunc_sat_f32x4_s-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -389,7 +466,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\00\00C\00\00\80?ff\e6?\00\00\80\bf")
 )
@@ -400,16 +477,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-f32x4.convert_i32x4_u-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-f32x4.convert_i32x4_u-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -420,7 +504,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\02\00\00\00\02\00\00\00\02\00\00\00\02\00\00\00")
 )
@@ -431,16 +515,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-i8x16.swizzle-operand" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-i8x16.swizzle-operand" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -455,7 +546,7 @@
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "defghijklmnopqrs")
   (data (;1;) (i32.const 16) "\0f\0e\0d\0c\0b\0a\09\08\07\06\05\04\03\02\01\00")
@@ -467,16 +558,23 @@
   (type (;0;) (func (result v128)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
   (memory (;0;) 1)
-  (export "as-br-value" (func 3))
-  (func (;3;) (type 0) (result v128)
+  (export "as-br-value" (func 9))
+  (func (;9;) (type 0) (result v128)
     block (result v128) ;; label = @1
       i64.const 16
       i64.const 0
-      call 1
+      call 7
       i64.const 3
       call 0
       block (result v128) ;; label = @2
@@ -489,7 +587,7 @@
     end
     i64.const 16
     i64.const 0
-    call 2
+    call 8
   )
   (data (;0;) (i32.const 0) "\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\00\01\02\03")
 )

@@ -6,18 +6,25 @@
   (type (;4;) (func (param i32) (result i32)))
   (type (;5;) (func (param i64)))
   (type (;6;) (func (param i64 i64)))
+  (type (;7;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 5)))
-  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 6)))
-  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 6)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 7)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 7)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 7)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 7)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 7)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 7)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;7;) (type 6)))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;8;) (type 6)))
   (table $t2 (;0;) 2 externref)
   (table $t3 (;1;) 3 funcref)
-  (export "init" (func 4))
-  (export "get-externref" (func 5))
+  (export "init" (func 10))
+  (export "get-externref" (func 11))
   (export "get-funcref" (func $f3))
-  (export "is_null-funcref" (func 7))
+  (export "is_null-funcref" (func 13))
   (elem (;0;) (table $t3) (i32.const 1) func $dummy)
-  (func $dummy (;3;) (type 0))
-  (func (;4;) (type 1) (param $r externref)
+  (func $dummy (;9;) (type 0))
+  (func (;10;) (type 1) (param $r externref)
     block ;; label = @1
       i64.const 36
       i64.const 1
@@ -40,7 +47,7 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (func (;5;) (type 2) (param $i i32) (result externref)
+  (func (;11;) (type 2) (param $i i32) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
       i64.const 1
@@ -54,7 +61,7 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (func $f3 (;6;) (type 3) (param $i i32) (result funcref)
+  (func $f3 (;12;) (type 3) (param $i i32) (result funcref)
     block (result funcref) ;; label = @1
       i64.const 32
       i64.const 1
@@ -68,7 +75,7 @@
     i64.const 1
     call $finite_wasm_unstack
   )
-  (func (;7;) (type 4) (param $i i32) (result i32)
+  (func (;13;) (type 4) (param $i i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 32
       i64.const 1

@@ -3,10 +3,17 @@
   (type (;1;) (func (param i32 i32) (result i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func $finite_wasm_gas (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;2;) (type 3)))
-  (func $param_is_local (;3;) (type 0) (param $p1 i32) (param $p2 i64)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func $finite_wasm_stack (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func $finite_wasm_unstack (;8;) (type 3)))
+  (func $param_is_local (;9;) (type 0) (param $p1 i32) (param $p2 i64)
     block ;; label = @1
       i64.const 0
       i64.const 2
@@ -16,7 +23,7 @@
     i64.const 2
     call $finite_wasm_unstack
   )
-  (func $local_is_local (;4;) (type 0) (param $p1 i32) (param $p2 i64)
+  (func $local_is_local (;10;) (type 0) (param $p1 i32) (param $p2 i64)
     (local i32 i64)
     block ;; label = @1
       i64.const 0
@@ -27,7 +34,7 @@
     i64.const 4
     call $finite_wasm_unstack
   )
-  (func $return_is_operand (;5;) (type 1) (param $p1 i32) (param $p2 i32) (result i32)
+  (func $return_is_operand (;11;) (type 1) (param $p1 i32) (param $p2 i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 2

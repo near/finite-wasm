@@ -5,21 +5,28 @@
   (type (;3;) (func (result i64)))
   (type (;4;) (func (param i64)))
   (type (;5;) (func (param i64 i64)))
+  (type (;6;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 4)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 5)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 5)))
-  (export "select-trap-left" (func 3))
-  (export "select-trap-right" (func 4))
-  (export "select-unreached" (func 5))
-  (export "select_unreached_result_1" (func 6))
-  (export "select_unreached_result_2" (func 7))
-  (export "unreachable-num" (func 8))
-  (export "unreachable-ref" (func 9))
-  (func (;3;) (type 0) (param $cond i32) (result i32)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 6)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 6)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 6)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 6)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 6)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 6)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 5)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 5)))
+  (export "select-trap-left" (func 9))
+  (export "select-trap-right" (func 10))
+  (export "select-unreached" (func 11))
+  (export "select_unreached_result_1" (func 12))
+  (export "select_unreached_result_2" (func 13))
+  (export "unreachable-num" (func 14))
+  (export "unreachable-ref" (func 15))
+  (func (;9;) (type 0) (param $cond i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 0
       i64.const 1
-      call 1
+      call 7
       i64.const 1
       call 0
       unreachable
@@ -29,13 +36,13 @@
     end
     i64.const 0
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (param $cond i32) (result i32)
+  (func (;10;) (type 0) (param $cond i32) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       i32.const 0
@@ -45,9 +52,9 @@
     end
     i64.const 4
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;5;) (type 1)
+  (func (;11;) (type 1)
     i64.const 1
     call 0
     unreachable
@@ -70,14 +77,14 @@
     select
     unreachable
   )
-  (func (;6;) (type 2) (result i32)
+  (func (;12;) (type 2) (result i32)
     i64.const 1
     call 0
     unreachable
     select
     i32.add
   )
-  (func (;7;) (type 3) (result i64)
+  (func (;13;) (type 3) (result i64)
     i64.const 1
     call 0
     unreachable
@@ -86,7 +93,7 @@
     select
     i64.add
   )
-  (func (;8;) (type 1)
+  (func (;14;) (type 1)
     i64.const 1
     call 0
     unreachable
@@ -94,7 +101,7 @@
     i32.eqz
     drop
   )
-  (func (;9;) (type 1)
+  (func (;15;) (type 1)
     i64.const 1
     call 0
     unreachable
@@ -115,15 +122,22 @@
   (type (;0;) (func))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
-  (export "meet-bottom" (func 3))
-  (func (;3;) (type 0)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
+  (export "meet-bottom" (func 9))
+  (func (;9;) (type 0)
     block ;; label = @1
       i64.const 8
       i64.const 0
-      call 1
+      call 7
       i64.const 3
       call 0
       block (result f64) ;; label = @2
@@ -143,7 +157,7 @@
     end
     i64.const 8
     i64.const 0
-    call 2
+    call 8
   )
 )
 
