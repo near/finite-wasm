@@ -2,22 +2,29 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
-  (export "foo" (func 3))
-  (func (;3;) (type 0) (result i32)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
+  (export "foo" (func 9))
+  (func (;9;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 0
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
 )
 
@@ -29,22 +36,29 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
-  (export "foo" (func 3))
-  (func (;3;) (type 0) (result i32)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
+  (export "foo" (func 9))
+  (func (;9;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 1
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
 )
 
@@ -55,6714 +69,6721 @@
   (type (;0;) (func (result i32)))
   (type (;1;) (func (param i64)))
   (type (;2;) (func (param i64 i64)))
+  (type (;3;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 1)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 2)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 2)))
-  (export "" (func 3))
-  (export "0" (func 4))
-  (export "-0" (func 5))
-  (export "_" (func 6))
-  (export "$" (func 7))
-  (export "@" (func 8))
-  (export "~!@#$%^&*()_+`-={}|[]\u{5c}:\u{22};'<>?,./ " (func 9))
-  (export "NaN" (func 10))
-  (export "Infinity" (func 11))
-  (export "if" (func 12))
-  (export "malloc" (func 13))
-  (export "_malloc" (func 14))
-  (export "__malloc" (func 15))
-  (export "a" (func 16))
-  (export "A" (func 17))
-  (export "\u{feff}" (func 18))
-  (export "\u{c5}" (func 19))
-  (export "A\u{30a}" (func 20))
-  (export "\u{212b}" (func 21))
-  (export "\u{fb03}" (func 22))
-  (export "f\u{fb01}" (func 23))
-  (export "ffi" (func 24))
-  (export "\u{0}\u{1}\u{2}\u{3}\u{4}\u{5}\u{6}\u{7}\u{8}\u{9}\u{a}\u{b}\u{c}\u{d}\u{e}\u{f}" (func 25))
-  (export "\u{10}\u{11}\u{12}\u{13}\u{14}\u{15}\u{16}\u{17}\u{18}\u{19}\u{1a}\u{1b}\u{1c}\u{1d}\u{1e}\u{1f}" (func 26))
-  (export " \u{7f}" (func 27))
-  (export "\u{80}\u{81}\u{82}\u{83}\u{84}\u{85}\u{86}\u{87}\u{88}\u{89}\u{8a}\u{8b}\u{8c}\u{8d}\u{8e}\u{8f}" (func 28))
-  (export "\u{90}\u{91}\u{92}\u{93}\u{94}\u{95}\u{96}\u{97}\u{98}\u{99}\u{9a}\u{9b}\u{9c}\u{9d}\u{9e}\u{9f}" (func 29))
-  (export "\u{fff0}\u{fff1}\u{fff2}\u{fff3}\u{fff4}\u{fff5}\u{fff6}\u{fff7}" (func 30))
-  (export "\u{fff8}\u{fff9}\u{fffa}\u{fffb}\u{fffc}\u{fffd}\u{fffe}\u{ffff}" (func 31))
-  (export "\u{2400}\u{2401}\u{2402}\u{2403}\u{2404}\u{2405}\u{2406}\u{2407}\u{2408}\u{2409}\u{240a}\u{240b}\u{240c}\u{240d}\u{240e}\u{240f}" (func 32))
-  (export "\u{2410}\u{2411}\u{2412}\u{2413}\u{2414}\u{2415}\u{2416}\u{2417}\u{2418}\u{2419}\u{241a}\u{241b}\u{241c}\u{241d}\u{241e}\u{241f}" (func 33))
-  (export "\u{2420}\u{2421}" (func 34))
-  (export "\u{fff0}\u{fff1}\u{fff2}\u{fff3}\u{fff4}\u{fff5}\u{fff6}\u{fff7}\u{fff8}\u{fff9}\u{fffa}\u{fffb}\u{fffc}\u{fffd}" (func 35))
-  (export "\u{200d}" (func 36))
-  (export "\u{200c}" (func 37))
-  (export "\u{34f}" (func 38))
-  (export "\u{2060}" (func 39))
-  (export "\u{2d7f}" (func 40))
-  (export "\u{1107f}" (func 41))
-  (export "\u{180e}" (func 42))
-  (export "\u{ffef}\u{200b}\u{a0}\u{ad}\u{2060}\u{1680}\u{202e}\u{202d}" (func 43))
-  (export "\u{200e}\u{200f}\u{2011}\u{2028}\u{2029}\u{202a}\u{202b}\u{202c}\u{202f}\u{2066}\u{2067}\u{2068}\u{2069}" (func 44))
-  (export "\u{206a}\u{206b}\u{206c}\u{206d}\u{206e}\u{206f}" (func 45))
-  (export "\u{2061}\u{2062}\u{2063}\u{2064}" (func 46))
-  (export "\u{10000}\u{dffff}\u{10ffff}" (func 47))
-  (export "Z\u{30f}\u{346}\u{306}\u{35b}\u{34c}\u{334}\u{358}\u{35e}\u{347}\u{32b}\u{325}\u{32a}\u{353}\u{348}\u{354}\u{34e}\u{317}\u{31e}\u{33a}\u{32f}\u{331}\u{31e}\u{319}\u{331}\u{31c}\u{316}\u{320}a\u{357}\u{368}\u{30e}\u{304}\u{306}\u{357}\u{33f}\u{361}\u{35f}\u{340}\u{336}\u{341}\u{325}\u{330}\u{333}\u{32d}\u{359}\u{332}\u{331}\u{339}\u{31d}\u{34e}\u{33c}l\u{344}\u{34a}\u{31a}\u{357}\u{366}\u{344}\u{36b}\u{307}\u{341}\u{336}\u{337}\u{349}\u{329}\u{339}\u{32b}\u{31d}\u{356}\u{345}\u{319}\u{332}\u{33c}\u{347}\u{35a}\u{34d}\u{32e}\u{34e}\u{325}\u{345}\u{31e}g\u{343}\u{310}\u{305}\u{36e}\u{314}\u{310}\u{30e}\u{302}\u{30f}\u{33e}\u{34a}\u{30d}\u{34b}\u{34a}\u{367}\u{301}\u{306}\u{366}\u{35e}\u{336}\u{355}\u{354}\u{35a}\u{329}o\u{34b}\u{314}\u{350}\u{36a}\u{369}\u{321}\u{34f}\u{322}\u{327}\u{341}\u{32b}\u{319}\u{324}\u{32e}\u{356}\u{359}\u{353}\u{33a}\u{31c}\u{329}\u{33c}\u{318}\u{320}" (func 48))
-  (export "\u{115f}\u{1160}\u{3164}\u{ffa0}" (func 49))
-  (export "\u{fe00}" (func 50))
-  (export "\u{fe04}" (func 51))
-  (export "\u{e0100}" (func 52))
-  (export "\u{e01ef}" (func 53))
-  (export "\u{308}" (func 54))
-  (export "\u{a}" (func 55))
-  (export "\u{2424}" (func 56))
-  (export "\u{2028}" (func 57))
-  (export "\u{d}" (func 58))
-  (export "\u{d}\u{a}" (func 59))
-  (export "\u{a}\u{d}" (func 60))
-  (export "\u{1e}" (func 61))
-  (export "\u{b}" (func 62))
-  (export "\u{c}" (func 63))
-  (export "\u{85}" (func 64))
-  (export "\u{2029}" (func 65))
-  (export "\u{2026}" (func 66))
-  (export "\u{23ce}" (func 67))
-  (export "\u{8b}" (func 68))
-  (export "\u{8c}" (func 69))
-  (export "\u{8d}" (func 70))
-  (export "\u{21b5}" (func 71))
-  (export "\u{21a9}" (func 72))
-  (export "\u{2324}" (func 73))
-  (export "\u{2936}" (func 74))
-  (export "\u{21b2}" (func 75))
-  (export "\u{2ba8}" (func 76))
-  (export "\u{2bb0}" (func 77))
-  (export "\u{fffd}" (func 78))
-  (export "\u{fdd0}" (func 79))
-  (export "\u{fdd1}" (func 80))
-  (export "\u{fdd2}" (func 81))
-  (export "\u{fdd3}" (func 82))
-  (export "\u{fdd4}" (func 83))
-  (export "\u{fdd5}" (func 84))
-  (export "\u{fdd6}" (func 85))
-  (export "\u{fdd7}" (func 86))
-  (export "\u{fdd8}" (func 87))
-  (export "\u{fdd9}" (func 88))
-  (export "\u{fdda}" (func 89))
-  (export "\u{fddb}" (func 90))
-  (export "\u{fddc}" (func 91))
-  (export "\u{fddd}" (func 92))
-  (export "\u{fdde}" (func 93))
-  (export "\u{fddf}" (func 94))
-  (export "\u{fde0}" (func 95))
-  (export "\u{fde1}" (func 96))
-  (export "\u{fde2}" (func 97))
-  (export "\u{fde3}" (func 98))
-  (export "\u{fde4}" (func 99))
-  (export "\u{fde5}" (func 100))
-  (export "\u{fde6}" (func 101))
-  (export "\u{fde7}" (func 102))
-  (export "\u{fde8}" (func 103))
-  (export "\u{fde9}" (func 104))
-  (export "\u{fdea}" (func 105))
-  (export "\u{fdeb}" (func 106))
-  (export "\u{fdec}" (func 107))
-  (export "\u{fded}" (func 108))
-  (export "\u{fdee}" (func 109))
-  (export "\u{fdef}" (func 110))
-  (export "\u{fffe}" (func 111))
-  (export "\u{ffff}" (func 112))
-  (export "\u{1fffe}" (func 113))
-  (export "\u{1ffff}" (func 114))
-  (export "\u{2fffe}" (func 115))
-  (export "\u{2ffff}" (func 116))
-  (export "\u{3fffe}" (func 117))
-  (export "\u{3ffff}" (func 118))
-  (export "\u{4fffe}" (func 119))
-  (export "\u{4ffff}" (func 120))
-  (export "\u{5fffe}" (func 121))
-  (export "\u{5ffff}" (func 122))
-  (export "\u{6fffe}" (func 123))
-  (export "\u{6ffff}" (func 124))
-  (export "\u{7fffe}" (func 125))
-  (export "\u{7ffff}" (func 126))
-  (export "\u{8fffe}" (func 127))
-  (export "\u{8ffff}" (func 128))
-  (export "\u{9fffe}" (func 129))
-  (export "\u{9ffff}" (func 130))
-  (export "\u{afffe}" (func 131))
-  (export "\u{affff}" (func 132))
-  (export "\u{bfffe}" (func 133))
-  (export "\u{bffff}" (func 134))
-  (export "\u{cfffe}" (func 135))
-  (export "\u{cffff}" (func 136))
-  (export "\u{dfffe}" (func 137))
-  (export "\u{dffff}" (func 138))
-  (export "\u{efffe}" (func 139))
-  (export "\u{effff}" (func 140))
-  (export "\u{ffffe}" (func 141))
-  (export "\u{fffff}" (func 142))
-  (export "\u{10fffe}" (func 143))
-  (export "\u{10ffff}" (func 144))
-  (export "\u{308}\u{203d}\u{308}\u{309}" (func 145))
-  (export "abc" (func 146))
-  (export "\u{202d}abc" (func 147))
-  (export "\u{202e}cba" (func 148))
-  (export "\u{202d}abc\u{202e}" (func 149))
-  (export "\u{202e}cba\u{202d}" (func 150))
-  (export "\u{1d468}" (func 151))
-  (export "\u{1d434}" (func 152))
-  (export "\u{1d608}" (func 153))
-  (export "\u{1d63c}" (func 154))
-  (export "\u{1d400}" (func 155))
-  (export "\u{1d4d0}" (func 156))
-  (export "\u{1d56c}" (func 157))
-  (export "\u{1d5d4}" (func 158))
-  (export "\u{1d49c}" (func 159))
-  (export "\u{1d504}" (func 160))
-  (export "\u{1d538}" (func 161))
-  (export "\u{1d5a0}" (func 162))
-  (export "\u{1d670}" (func 163))
-  (export "\u{1d00}" (func 164))
-  (export "\u{1d2c}" (func 165))
-  (export "\u{24b6}" (func 166))
-  (export "\u{ff21}" (func 167))
-  (export "\u{1f110}" (func 168))
-  (export "\u{1f130}" (func 169))
-  (export "\u{e0041}" (func 170))
-  (export "U+0041" (func 171))
-  (export "A\u{200b}" (func 172))
-  (export "\u{410}" (func 173))
-  (export "\u{a656}" (func 174))
-  (export "\u{2dfc}" (func 175))
-  (export "\u{2df6}" (func 176))
-  (export "\u{2c6f}" (func 177))
-  (export "\u{1f150}" (func 178))
-  (export "\u{1f170}" (func 179))
-  (export "\u{2c2d}" (func 180))
-  (export "\u{10402}" (func 181))
-  (export "\u{10408}" (func 182))
-  (export "\u{104b0}" (func 183))
-  (export "\u{c0}" (func 184))
-  (export "\u{c1}" (func 185))
-  (export "\u{c2}" (func 186))
-  (export "\u{c3}" (func 187))
-  (export "\u{c4}" (func 188))
-  (export "\u{100}" (func 189))
-  (export "\u{102}" (func 190))
-  (export "\u{104}" (func 191))
-  (export "\u{1cd}" (func 192))
-  (export "\u{1de}" (func 193))
-  (export "\u{1e0}" (func 194))
-  (export "\u{1fa}" (func 195))
-  (export "\u{200}" (func 196))
-  (export "\u{202}" (func 197))
-  (export "\u{226}" (func 198))
-  (export "\u{23a}" (func 199))
-  (export "\u{4d0}" (func 200))
-  (export "\u{4d2}" (func 201))
-  (export "\u{7ca}" (func 202))
-  (export "\u{821}" (func 203))
-  (export "\u{822}" (func 204))
-  (export "\u{823}" (func 205))
-  (export "\u{824}" (func 206))
-  (export "\u{825}" (func 207))
-  (export "\u{904}" (func 208))
-  (export "\u{905}" (func 209))
-  (export "\u{972}" (func 210))
-  (export "\u{985}" (func 211))
-  (export "\u{a05}" (func 212))
-  (export "\u{a85}" (func 213))
-  (export "\u{b05}" (func 214))
-  (export "\u{b85}" (func 215))
-  (export "\u{c05}" (func 216))
-  (export "\u{c85}" (func 217))
-  (export "\u{d05}" (func 218))
-  (export "\u{e30}" (func 219))
-  (export "\u{eb0}" (func 220))
-  (export "\u{f01}" (func 221))
-  (export "\u{f68}" (func 222))
-  (export "\u{fb8}" (func 223))
-  (export "\u{1021}" (func 224))
-  (export "\u{1022}" (func 225))
-  (export "\u{109c}" (func 226))
-  (export "\u{1161}" (func 227))
-  (export "\u{12a0}" (func 228))
-  (export "\u{12d0}" (func 229))
-  (export "\u{13a0}" (func 230))
-  (export "\u{140a}" (func 231))
-  (export "\u{15b3}" (func 232))
-  (export "\u{16a8}" (func 233))
-  (export "\u{16aa}" (func 234))
-  (export "\u{16c6}" (func 235))
-  (export "\u{1700}" (func 236))
-  (export "\u{1720}" (func 237))
-  (export "\u{1740}" (func 238))
-  (export "\u{1760}" (func 239))
-  (export "\u{1820}" (func 240))
-  (export "\u{1887}" (func 241))
-  (export "\u{1920}" (func 242))
-  (export "\u{1963}" (func 243))
-  (export "\u{1a15}" (func 244))
-  (export "\u{1a4b}" (func 245))
-  (export "\u{1a61}" (func 246))
-  (export "\u{1b83}" (func 247))
-  (export "\u{1bc0}" (func 248))
-  (export "\u{1bc1}" (func 249))
-  (export "\u{1c23}" (func 250))
-  (export "\u{1e00}" (func 251))
-  (export "\u{1ea0}" (func 252))
-  (export "\u{1ea2}" (func 253))
-  (export "\u{1ea4}" (func 254))
-  (export "\u{1ea6}" (func 255))
-  (export "\u{1ea8}" (func 256))
-  (export "\u{1eaa}" (func 257))
-  (export "\u{1eac}" (func 258))
-  (export "\u{1eae}" (func 259))
-  (export "\u{1eb0}" (func 260))
-  (export "\u{1eb2}" (func 261))
-  (export "\u{1eb4}" (func 262))
-  (export "\u{1eb6}" (func 263))
-  (export "\u{3042}" (func 264))
-  (export "\u{30a2}" (func 265))
-  (export "\u{311a}" (func 266))
-  (export "\u{314f}" (func 267))
-  (export "\u{320e}" (func 268))
-  (export "\u{320f}" (func 269))
-  (export "\u{3210}" (func 270))
-  (export "\u{3211}" (func 271))
-  (export "\u{3212}" (func 272))
-  (export "\u{3213}" (func 273))
-  (export "\u{3214}" (func 274))
-  (export "\u{3215}" (func 275))
-  (export "\u{3216}" (func 276))
-  (export "\u{3217}" (func 277))
-  (export "\u{3218}" (func 278))
-  (export "\u{3219}" (func 279))
-  (export "\u{321a}" (func 280))
-  (export "\u{321b}" (func 281))
-  (export "\u{326e}" (func 282))
-  (export "\u{326f}" (func 283))
-  (export "\u{3270}" (func 284))
-  (export "\u{3271}" (func 285))
-  (export "\u{3272}" (func 286))
-  (export "\u{3273}" (func 287))
-  (export "\u{3274}" (func 288))
-  (export "\u{3275}" (func 289))
-  (export "\u{3276}" (func 290))
-  (export "\u{3277}" (func 291))
-  (export "\u{3278}" (func 292))
-  (export "\u{3279}" (func 293))
-  (export "\u{327a}" (func 294))
-  (export "\u{327b}" (func 295))
-  (export "\u{32d0}" (func 296))
-  (export "\u{a00a}" (func 297))
-  (export "\u{a4ee}" (func 298))
-  (export "\u{a549}" (func 299))
-  (export "\u{a6a0}" (func 300))
-  (export "\u{a800}" (func 301))
-  (export "\u{a823}" (func 302))
-  (export "\u{a85d}" (func 303))
-  (export "\u{a882}" (func 304))
-  (export "\u{a8ea}" (func 305))
-  (export "\u{a922}" (func 306))
-  (export "\u{a946}" (func 307))
-  (export "\u{a984}" (func 308))
-  (export "\u{aa00}" (func 309))
-  (export "\u{ff71}" (func 310))
-  (export "\u{ffc2}" (func 311))
-  (export "\u{10000}" (func 312))
-  (export "\u{10280}" (func 313))
-  (export "\u{102a0}" (func 314))
-  (export "\u{10300}" (func 315))
-  (export "\u{103a0}" (func 316))
-  (export "\u{10496}" (func 317))
-  (export "\u{10500}" (func 318))
-  (export "\u{10740}" (func 319))
-  (export "\u{10800}" (func 320))
-  (export "\u{10920}" (func 321))
-  (export "\u{10980}" (func 322))
-  (export "\u{109a0}" (func 323))
-  (export "\u{10a00}" (func 324))
-  (export "\u{10b00}" (func 325))
-  (export "\u{10c00}" (func 326))
-  (export "\u{10c01}" (func 327))
-  (export "\u{10c80}" (func 328))
-  (export "\u{11005}" (func 329))
-  (export "\u{11083}" (func 330))
-  (export "\u{11127}" (func 331))
-  (export "\u{11150}" (func 332))
-  (export "\u{11183}" (func 333))
-  (export "\u{11200}" (func 334))
-  (export "\u{11280}" (func 335))
-  (export "\u{112b0}" (func 336))
-  (export "\u{11305}" (func 337))
-  (export "\u{11370}" (func 338))
-  (export "\u{11400}" (func 339))
-  (export "\u{11481}" (func 340))
-  (export "\u{11580}" (func 341))
-  (export "\u{11600}" (func 342))
-  (export "\u{11680}" (func 343))
-  (export "\u{11712}" (func 344))
-  (export "\u{11720}" (func 345))
-  (export "\u{118a1}" (func 346))
-  (export "\u{11ad5}" (func 347))
-  (export "\u{11c00}" (func 348))
-  (export "\u{11c8f}" (func 349))
-  (export "\u{11caf}" (func 350))
-  (export "\u{12000}" (func 351))
-  (export "\u{169d5}" (func 352))
-  (export "\u{16a46}" (func 353))
-  (export "\u{16ae7}" (func 354))
-  (export "\u{16f54}" (func 355))
-  (export "\u{1bc41}" (func 356))
-  (export "\u{1bc64}" (func 357))
-  (export "\u{1e823}" (func 358))
-  (export "\u{1f1e6}" (func 359))
-  (export "\u{2c6d}" (func 360))
-  (export "\u{39b}" (func 361))
-  (export "\u{2c70}" (func 362))
-  (export "\u{aa}" (func 363))
-  (export "\u{2200}" (func 364))
-  (export "\u{20b3}" (func 365))
-  (export "\u{10900}" (func 366))
-  (export "\u{2c80}" (func 367))
-  (export "\u{10330}" (func 368))
-  (export "\u{386}" (func 369))
-  (export "\u{391}" (func 370))
-  (export "\u{1f08}" (func 371))
-  (export "\u{1f09}" (func 372))
-  (export "\u{1f0a}" (func 373))
-  (export "\u{1f0b}" (func 374))
-  (export "\u{1f0c}" (func 375))
-  (export "\u{1f0d}" (func 376))
-  (export "\u{1f0e}" (func 377))
-  (export "\u{1f0f}" (func 378))
-  (export "\u{1f88}" (func 379))
-  (export "\u{1f89}" (func 380))
-  (export "\u{1f8a}" (func 381))
-  (export "\u{1f8b}" (func 382))
-  (export "\u{1f8c}" (func 383))
-  (export "\u{1f8d}" (func 384))
-  (export "\u{1f8e}" (func 385))
-  (export "\u{1f8f}" (func 386))
-  (export "\u{1fb8}" (func 387))
-  (export "\u{1fb9}" (func 388))
-  (export "\u{1fba}" (func 389))
-  (export "\u{1fbb}" (func 390))
-  (export "\u{1fbc}" (func 391))
-  (export "\u{1d6a8}" (func 392))
-  (export "\u{1d6e2}" (func 393))
-  (export "\u{1d71c}" (func 394))
-  (export "\u{1d756}" (func 395))
-  (export "\u{1d790}" (func 396))
-  (export "\u{2376}" (func 397))
-  (export "\u{237a}" (func 398))
-  (export "\u{2a5c}" (func 399))
-  (export "\u{15c5}" (func 400))
-  (export "\u{13aa}" (func 401))
-  (export ")\u{2fa}\u{2fc}\u{145cf}\u{1d174}\u{1d176}\u{1d178}\u{1d17a}\u{207e}\u{208e}\u{2769}\u{276b}\u{27ef}\u{fd3f}\u{fe36}\u{fe5a}\u{ff09}\u{ff60}\u{e0029}\u{2773}\u{2775}\u{27e7}\u{27e9}\u{27eb}\u{27ed}\u{2988}\u{298a}\u{2996}\u{2e23}\u{2e25}\u{fe18}\u{fe38}\u{fe3a}\u{fe3c}\u{fe3e}\u{fe40}\u{fe42}\u{fe44}\u{fe48}\u{fe5c}\u{fe5e}\u{ff3d}\u{ff5d}\u{ff63}\u{e005d}\u{e007d}\u{bb}\u{2019}\u{201d}\u{203a}\u{276f}" (func 402))
-  (export "(\u{2f9}\u{2fb}\u{145ce}\u{1d173}\u{1d175}\u{1d177}\u{1d179}\u{207d}\u{208d}\u{2768}\u{276a}\u{27ee}\u{fd3e}\u{fe35}\u{fe59}\u{ff08}\u{ff5f}\u{e0028}\u{2772}\u{2774}\u{27e6}\u{27e8}\u{27ea}\u{27ec}\u{2987}\u{2989}\u{2995}\u{2e22}\u{2e24}\u{fe17}\u{fe37}\u{fe39}\u{fe3b}\u{fe3d}\u{fe3f}\u{fe41}\u{fe43}\u{fe47}\u{fe5b}\u{fe5d}\u{ff3b}\u{ff5b}\u{ff62}\u{e005b}\u{e007b}\u{ab}\u{2018}\u{201c}\u{2039}\u{276e}" (func 403))
-  (export "\u{1da8b}\u{1daa4}" (func 404))
-  (export "\u{1da8b}" (func 405))
-  (export "\u{bd}" (func 406))
-  (export "1\u{2044}2" (func 407))
-  (export "1/2" (func 408))
-  (export "\u{b73}" (func 409))
-  (export "\u{d74}" (func 410))
-  (export "\u{2cfd}" (func 411))
-  (export "\u{a831}" (func 412))
-  (export "\u{10141}" (func 413))
-  (export "\u{10175}" (func 414))
-  (export "\u{10176}" (func 415))
-  (export "\u{109bd}" (func 416))
-  (export "\u{10e7b}" (func 417))
-  (export "\u{ff02}" (func 418))
-  (export "\u{7f}" (func 419))
-  (export "\u{8}" (func 420))
-  (export "\u{232b}" (func 421))
-  (export "\u{2326}" (func 422))
-  (export "\u{2408}" (func 423))
-  (export "\u{2421}" (func 424))
-  (export "\u{1dfb}" (func 425))
-  (export "\u{f}" (func 426))
-  (export "\u{2190}" (func 427))
-  (export "\u{2327}" (func 428))
-  (export "\u{2352}" (func 429))
-  (export "\u{2354}" (func 430))
-  (export "\u{2362}" (func 431))
-  (export "\u{236b}" (func 432))
-  (export "\u{1a}" (func 433))
-  (export "\u{2426}" (func 434))
-  (export "\u{241a}" (func 435))
-  (export "\u{fffc}" (func 436))
-  (export "?" (func 437))
-  (export "\u{bf}" (func 438))
-  (export "\u{1945}" (func 439))
-  (export "\u{37e}" (func 440))
-  (export "\u{55e}" (func 441))
-  (export "\u{61f}" (func 442))
-  (export "\u{1367}" (func 443))
-  (export "\u{2047}" (func 444))
-  (export "\u{2370}" (func 445))
-  (export "\u{2753}" (func 446))
-  (export "\u{2754}" (func 447))
-  (export "\u{2cfa}" (func 448))
-  (export "\u{2cfb}" (func 449))
-  (export "\u{2e2e}" (func 450))
-  (export "\u{3244}" (func 451))
-  (export "\u{a60f}" (func 452))
-  (export "\u{a6f7}" (func 453))
-  (export "\u{fe16}" (func 454))
-  (export "\u{fe56}" (func 455))
-  (export "\u{ff1f}" (func 456))
-  (export "\u{11143}" (func 457))
-  (export "\u{1e95f}" (func 458))
-  (export "\u{e003f}" (func 459))
-  (export "\u{16844}" (func 460))
-  (export "\u{2bd1}" (func 461))
-  (export "\u{b6}" (func 462))
-  (export "\u{204b}" (func 463))
-  (export "\u{700}" (func 464))
-  (export "\u{10fb}" (func 465))
-  (export "\u{1368}" (func 466))
-  (export "\u{3037}" (func 467))
-  (export "\u{2761}" (func 468))
-  (export "\u{2e0f}" (func 469))
-  (export "\u{2e10}" (func 470))
-  (export "\u{2e11}" (func 471))
-  (export "\u{2e0e}" (func 472))
-  (export "\u{14}" (func 473))
-  (export "\u{2619}" (func 474))
-  (export "\u{2e3f}" (func 475))
-  (export "\u{3007}" (func 476))
-  (export "\u{e5b}" (func 477))
-  (export "\u{a66e}" (func 478))
-  (export "\u{3d3}" (func 479))
-  (export "\u{3d4}" (func 480))
-  (export "\u{1e9b}" (func 481))
-  (func (;3;) (type 0) (result i32)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 3)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 3)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 3)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 3)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 3)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 2)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 2)))
+  (export "" (func 9))
+  (export "0" (func 10))
+  (export "-0" (func 11))
+  (export "_" (func 12))
+  (export "$" (func 13))
+  (export "@" (func 14))
+  (export "~!@#$%^&*()_+`-={}|[]\u{5c}:\u{22};'<>?,./ " (func 15))
+  (export "NaN" (func 16))
+  (export "Infinity" (func 17))
+  (export "if" (func 18))
+  (export "malloc" (func 19))
+  (export "_malloc" (func 20))
+  (export "__malloc" (func 21))
+  (export "a" (func 22))
+  (export "A" (func 23))
+  (export "\u{feff}" (func 24))
+  (export "\u{c5}" (func 25))
+  (export "A\u{30a}" (func 26))
+  (export "\u{212b}" (func 27))
+  (export "\u{fb03}" (func 28))
+  (export "f\u{fb01}" (func 29))
+  (export "ffi" (func 30))
+  (export "\u{0}\u{1}\u{2}\u{3}\u{4}\u{5}\u{6}\u{7}\u{8}\u{9}\u{a}\u{b}\u{c}\u{d}\u{e}\u{f}" (func 31))
+  (export "\u{10}\u{11}\u{12}\u{13}\u{14}\u{15}\u{16}\u{17}\u{18}\u{19}\u{1a}\u{1b}\u{1c}\u{1d}\u{1e}\u{1f}" (func 32))
+  (export " \u{7f}" (func 33))
+  (export "\u{80}\u{81}\u{82}\u{83}\u{84}\u{85}\u{86}\u{87}\u{88}\u{89}\u{8a}\u{8b}\u{8c}\u{8d}\u{8e}\u{8f}" (func 34))
+  (export "\u{90}\u{91}\u{92}\u{93}\u{94}\u{95}\u{96}\u{97}\u{98}\u{99}\u{9a}\u{9b}\u{9c}\u{9d}\u{9e}\u{9f}" (func 35))
+  (export "\u{fff0}\u{fff1}\u{fff2}\u{fff3}\u{fff4}\u{fff5}\u{fff6}\u{fff7}" (func 36))
+  (export "\u{fff8}\u{fff9}\u{fffa}\u{fffb}\u{fffc}\u{fffd}\u{fffe}\u{ffff}" (func 37))
+  (export "\u{2400}\u{2401}\u{2402}\u{2403}\u{2404}\u{2405}\u{2406}\u{2407}\u{2408}\u{2409}\u{240a}\u{240b}\u{240c}\u{240d}\u{240e}\u{240f}" (func 38))
+  (export "\u{2410}\u{2411}\u{2412}\u{2413}\u{2414}\u{2415}\u{2416}\u{2417}\u{2418}\u{2419}\u{241a}\u{241b}\u{241c}\u{241d}\u{241e}\u{241f}" (func 39))
+  (export "\u{2420}\u{2421}" (func 40))
+  (export "\u{fff0}\u{fff1}\u{fff2}\u{fff3}\u{fff4}\u{fff5}\u{fff6}\u{fff7}\u{fff8}\u{fff9}\u{fffa}\u{fffb}\u{fffc}\u{fffd}" (func 41))
+  (export "\u{200d}" (func 42))
+  (export "\u{200c}" (func 43))
+  (export "\u{34f}" (func 44))
+  (export "\u{2060}" (func 45))
+  (export "\u{2d7f}" (func 46))
+  (export "\u{1107f}" (func 47))
+  (export "\u{180e}" (func 48))
+  (export "\u{ffef}\u{200b}\u{a0}\u{ad}\u{2060}\u{1680}\u{202e}\u{202d}" (func 49))
+  (export "\u{200e}\u{200f}\u{2011}\u{2028}\u{2029}\u{202a}\u{202b}\u{202c}\u{202f}\u{2066}\u{2067}\u{2068}\u{2069}" (func 50))
+  (export "\u{206a}\u{206b}\u{206c}\u{206d}\u{206e}\u{206f}" (func 51))
+  (export "\u{2061}\u{2062}\u{2063}\u{2064}" (func 52))
+  (export "\u{10000}\u{dffff}\u{10ffff}" (func 53))
+  (export "Z\u{30f}\u{346}\u{306}\u{35b}\u{34c}\u{334}\u{358}\u{35e}\u{347}\u{32b}\u{325}\u{32a}\u{353}\u{348}\u{354}\u{34e}\u{317}\u{31e}\u{33a}\u{32f}\u{331}\u{31e}\u{319}\u{331}\u{31c}\u{316}\u{320}a\u{357}\u{368}\u{30e}\u{304}\u{306}\u{357}\u{33f}\u{361}\u{35f}\u{340}\u{336}\u{341}\u{325}\u{330}\u{333}\u{32d}\u{359}\u{332}\u{331}\u{339}\u{31d}\u{34e}\u{33c}l\u{344}\u{34a}\u{31a}\u{357}\u{366}\u{344}\u{36b}\u{307}\u{341}\u{336}\u{337}\u{349}\u{329}\u{339}\u{32b}\u{31d}\u{356}\u{345}\u{319}\u{332}\u{33c}\u{347}\u{35a}\u{34d}\u{32e}\u{34e}\u{325}\u{345}\u{31e}g\u{343}\u{310}\u{305}\u{36e}\u{314}\u{310}\u{30e}\u{302}\u{30f}\u{33e}\u{34a}\u{30d}\u{34b}\u{34a}\u{367}\u{301}\u{306}\u{366}\u{35e}\u{336}\u{355}\u{354}\u{35a}\u{329}o\u{34b}\u{314}\u{350}\u{36a}\u{369}\u{321}\u{34f}\u{322}\u{327}\u{341}\u{32b}\u{319}\u{324}\u{32e}\u{356}\u{359}\u{353}\u{33a}\u{31c}\u{329}\u{33c}\u{318}\u{320}" (func 54))
+  (export "\u{115f}\u{1160}\u{3164}\u{ffa0}" (func 55))
+  (export "\u{fe00}" (func 56))
+  (export "\u{fe04}" (func 57))
+  (export "\u{e0100}" (func 58))
+  (export "\u{e01ef}" (func 59))
+  (export "\u{308}" (func 60))
+  (export "\u{a}" (func 61))
+  (export "\u{2424}" (func 62))
+  (export "\u{2028}" (func 63))
+  (export "\u{d}" (func 64))
+  (export "\u{d}\u{a}" (func 65))
+  (export "\u{a}\u{d}" (func 66))
+  (export "\u{1e}" (func 67))
+  (export "\u{b}" (func 68))
+  (export "\u{c}" (func 69))
+  (export "\u{85}" (func 70))
+  (export "\u{2029}" (func 71))
+  (export "\u{2026}" (func 72))
+  (export "\u{23ce}" (func 73))
+  (export "\u{8b}" (func 74))
+  (export "\u{8c}" (func 75))
+  (export "\u{8d}" (func 76))
+  (export "\u{21b5}" (func 77))
+  (export "\u{21a9}" (func 78))
+  (export "\u{2324}" (func 79))
+  (export "\u{2936}" (func 80))
+  (export "\u{21b2}" (func 81))
+  (export "\u{2ba8}" (func 82))
+  (export "\u{2bb0}" (func 83))
+  (export "\u{fffd}" (func 84))
+  (export "\u{fdd0}" (func 85))
+  (export "\u{fdd1}" (func 86))
+  (export "\u{fdd2}" (func 87))
+  (export "\u{fdd3}" (func 88))
+  (export "\u{fdd4}" (func 89))
+  (export "\u{fdd5}" (func 90))
+  (export "\u{fdd6}" (func 91))
+  (export "\u{fdd7}" (func 92))
+  (export "\u{fdd8}" (func 93))
+  (export "\u{fdd9}" (func 94))
+  (export "\u{fdda}" (func 95))
+  (export "\u{fddb}" (func 96))
+  (export "\u{fddc}" (func 97))
+  (export "\u{fddd}" (func 98))
+  (export "\u{fdde}" (func 99))
+  (export "\u{fddf}" (func 100))
+  (export "\u{fde0}" (func 101))
+  (export "\u{fde1}" (func 102))
+  (export "\u{fde2}" (func 103))
+  (export "\u{fde3}" (func 104))
+  (export "\u{fde4}" (func 105))
+  (export "\u{fde5}" (func 106))
+  (export "\u{fde6}" (func 107))
+  (export "\u{fde7}" (func 108))
+  (export "\u{fde8}" (func 109))
+  (export "\u{fde9}" (func 110))
+  (export "\u{fdea}" (func 111))
+  (export "\u{fdeb}" (func 112))
+  (export "\u{fdec}" (func 113))
+  (export "\u{fded}" (func 114))
+  (export "\u{fdee}" (func 115))
+  (export "\u{fdef}" (func 116))
+  (export "\u{fffe}" (func 117))
+  (export "\u{ffff}" (func 118))
+  (export "\u{1fffe}" (func 119))
+  (export "\u{1ffff}" (func 120))
+  (export "\u{2fffe}" (func 121))
+  (export "\u{2ffff}" (func 122))
+  (export "\u{3fffe}" (func 123))
+  (export "\u{3ffff}" (func 124))
+  (export "\u{4fffe}" (func 125))
+  (export "\u{4ffff}" (func 126))
+  (export "\u{5fffe}" (func 127))
+  (export "\u{5ffff}" (func 128))
+  (export "\u{6fffe}" (func 129))
+  (export "\u{6ffff}" (func 130))
+  (export "\u{7fffe}" (func 131))
+  (export "\u{7ffff}" (func 132))
+  (export "\u{8fffe}" (func 133))
+  (export "\u{8ffff}" (func 134))
+  (export "\u{9fffe}" (func 135))
+  (export "\u{9ffff}" (func 136))
+  (export "\u{afffe}" (func 137))
+  (export "\u{affff}" (func 138))
+  (export "\u{bfffe}" (func 139))
+  (export "\u{bffff}" (func 140))
+  (export "\u{cfffe}" (func 141))
+  (export "\u{cffff}" (func 142))
+  (export "\u{dfffe}" (func 143))
+  (export "\u{dffff}" (func 144))
+  (export "\u{efffe}" (func 145))
+  (export "\u{effff}" (func 146))
+  (export "\u{ffffe}" (func 147))
+  (export "\u{fffff}" (func 148))
+  (export "\u{10fffe}" (func 149))
+  (export "\u{10ffff}" (func 150))
+  (export "\u{308}\u{203d}\u{308}\u{309}" (func 151))
+  (export "abc" (func 152))
+  (export "\u{202d}abc" (func 153))
+  (export "\u{202e}cba" (func 154))
+  (export "\u{202d}abc\u{202e}" (func 155))
+  (export "\u{202e}cba\u{202d}" (func 156))
+  (export "\u{1d468}" (func 157))
+  (export "\u{1d434}" (func 158))
+  (export "\u{1d608}" (func 159))
+  (export "\u{1d63c}" (func 160))
+  (export "\u{1d400}" (func 161))
+  (export "\u{1d4d0}" (func 162))
+  (export "\u{1d56c}" (func 163))
+  (export "\u{1d5d4}" (func 164))
+  (export "\u{1d49c}" (func 165))
+  (export "\u{1d504}" (func 166))
+  (export "\u{1d538}" (func 167))
+  (export "\u{1d5a0}" (func 168))
+  (export "\u{1d670}" (func 169))
+  (export "\u{1d00}" (func 170))
+  (export "\u{1d2c}" (func 171))
+  (export "\u{24b6}" (func 172))
+  (export "\u{ff21}" (func 173))
+  (export "\u{1f110}" (func 174))
+  (export "\u{1f130}" (func 175))
+  (export "\u{e0041}" (func 176))
+  (export "U+0041" (func 177))
+  (export "A\u{200b}" (func 178))
+  (export "\u{410}" (func 179))
+  (export "\u{a656}" (func 180))
+  (export "\u{2dfc}" (func 181))
+  (export "\u{2df6}" (func 182))
+  (export "\u{2c6f}" (func 183))
+  (export "\u{1f150}" (func 184))
+  (export "\u{1f170}" (func 185))
+  (export "\u{2c2d}" (func 186))
+  (export "\u{10402}" (func 187))
+  (export "\u{10408}" (func 188))
+  (export "\u{104b0}" (func 189))
+  (export "\u{c0}" (func 190))
+  (export "\u{c1}" (func 191))
+  (export "\u{c2}" (func 192))
+  (export "\u{c3}" (func 193))
+  (export "\u{c4}" (func 194))
+  (export "\u{100}" (func 195))
+  (export "\u{102}" (func 196))
+  (export "\u{104}" (func 197))
+  (export "\u{1cd}" (func 198))
+  (export "\u{1de}" (func 199))
+  (export "\u{1e0}" (func 200))
+  (export "\u{1fa}" (func 201))
+  (export "\u{200}" (func 202))
+  (export "\u{202}" (func 203))
+  (export "\u{226}" (func 204))
+  (export "\u{23a}" (func 205))
+  (export "\u{4d0}" (func 206))
+  (export "\u{4d2}" (func 207))
+  (export "\u{7ca}" (func 208))
+  (export "\u{821}" (func 209))
+  (export "\u{822}" (func 210))
+  (export "\u{823}" (func 211))
+  (export "\u{824}" (func 212))
+  (export "\u{825}" (func 213))
+  (export "\u{904}" (func 214))
+  (export "\u{905}" (func 215))
+  (export "\u{972}" (func 216))
+  (export "\u{985}" (func 217))
+  (export "\u{a05}" (func 218))
+  (export "\u{a85}" (func 219))
+  (export "\u{b05}" (func 220))
+  (export "\u{b85}" (func 221))
+  (export "\u{c05}" (func 222))
+  (export "\u{c85}" (func 223))
+  (export "\u{d05}" (func 224))
+  (export "\u{e30}" (func 225))
+  (export "\u{eb0}" (func 226))
+  (export "\u{f01}" (func 227))
+  (export "\u{f68}" (func 228))
+  (export "\u{fb8}" (func 229))
+  (export "\u{1021}" (func 230))
+  (export "\u{1022}" (func 231))
+  (export "\u{109c}" (func 232))
+  (export "\u{1161}" (func 233))
+  (export "\u{12a0}" (func 234))
+  (export "\u{12d0}" (func 235))
+  (export "\u{13a0}" (func 236))
+  (export "\u{140a}" (func 237))
+  (export "\u{15b3}" (func 238))
+  (export "\u{16a8}" (func 239))
+  (export "\u{16aa}" (func 240))
+  (export "\u{16c6}" (func 241))
+  (export "\u{1700}" (func 242))
+  (export "\u{1720}" (func 243))
+  (export "\u{1740}" (func 244))
+  (export "\u{1760}" (func 245))
+  (export "\u{1820}" (func 246))
+  (export "\u{1887}" (func 247))
+  (export "\u{1920}" (func 248))
+  (export "\u{1963}" (func 249))
+  (export "\u{1a15}" (func 250))
+  (export "\u{1a4b}" (func 251))
+  (export "\u{1a61}" (func 252))
+  (export "\u{1b83}" (func 253))
+  (export "\u{1bc0}" (func 254))
+  (export "\u{1bc1}" (func 255))
+  (export "\u{1c23}" (func 256))
+  (export "\u{1e00}" (func 257))
+  (export "\u{1ea0}" (func 258))
+  (export "\u{1ea2}" (func 259))
+  (export "\u{1ea4}" (func 260))
+  (export "\u{1ea6}" (func 261))
+  (export "\u{1ea8}" (func 262))
+  (export "\u{1eaa}" (func 263))
+  (export "\u{1eac}" (func 264))
+  (export "\u{1eae}" (func 265))
+  (export "\u{1eb0}" (func 266))
+  (export "\u{1eb2}" (func 267))
+  (export "\u{1eb4}" (func 268))
+  (export "\u{1eb6}" (func 269))
+  (export "\u{3042}" (func 270))
+  (export "\u{30a2}" (func 271))
+  (export "\u{311a}" (func 272))
+  (export "\u{314f}" (func 273))
+  (export "\u{320e}" (func 274))
+  (export "\u{320f}" (func 275))
+  (export "\u{3210}" (func 276))
+  (export "\u{3211}" (func 277))
+  (export "\u{3212}" (func 278))
+  (export "\u{3213}" (func 279))
+  (export "\u{3214}" (func 280))
+  (export "\u{3215}" (func 281))
+  (export "\u{3216}" (func 282))
+  (export "\u{3217}" (func 283))
+  (export "\u{3218}" (func 284))
+  (export "\u{3219}" (func 285))
+  (export "\u{321a}" (func 286))
+  (export "\u{321b}" (func 287))
+  (export "\u{326e}" (func 288))
+  (export "\u{326f}" (func 289))
+  (export "\u{3270}" (func 290))
+  (export "\u{3271}" (func 291))
+  (export "\u{3272}" (func 292))
+  (export "\u{3273}" (func 293))
+  (export "\u{3274}" (func 294))
+  (export "\u{3275}" (func 295))
+  (export "\u{3276}" (func 296))
+  (export "\u{3277}" (func 297))
+  (export "\u{3278}" (func 298))
+  (export "\u{3279}" (func 299))
+  (export "\u{327a}" (func 300))
+  (export "\u{327b}" (func 301))
+  (export "\u{32d0}" (func 302))
+  (export "\u{a00a}" (func 303))
+  (export "\u{a4ee}" (func 304))
+  (export "\u{a549}" (func 305))
+  (export "\u{a6a0}" (func 306))
+  (export "\u{a800}" (func 307))
+  (export "\u{a823}" (func 308))
+  (export "\u{a85d}" (func 309))
+  (export "\u{a882}" (func 310))
+  (export "\u{a8ea}" (func 311))
+  (export "\u{a922}" (func 312))
+  (export "\u{a946}" (func 313))
+  (export "\u{a984}" (func 314))
+  (export "\u{aa00}" (func 315))
+  (export "\u{ff71}" (func 316))
+  (export "\u{ffc2}" (func 317))
+  (export "\u{10000}" (func 318))
+  (export "\u{10280}" (func 319))
+  (export "\u{102a0}" (func 320))
+  (export "\u{10300}" (func 321))
+  (export "\u{103a0}" (func 322))
+  (export "\u{10496}" (func 323))
+  (export "\u{10500}" (func 324))
+  (export "\u{10740}" (func 325))
+  (export "\u{10800}" (func 326))
+  (export "\u{10920}" (func 327))
+  (export "\u{10980}" (func 328))
+  (export "\u{109a0}" (func 329))
+  (export "\u{10a00}" (func 330))
+  (export "\u{10b00}" (func 331))
+  (export "\u{10c00}" (func 332))
+  (export "\u{10c01}" (func 333))
+  (export "\u{10c80}" (func 334))
+  (export "\u{11005}" (func 335))
+  (export "\u{11083}" (func 336))
+  (export "\u{11127}" (func 337))
+  (export "\u{11150}" (func 338))
+  (export "\u{11183}" (func 339))
+  (export "\u{11200}" (func 340))
+  (export "\u{11280}" (func 341))
+  (export "\u{112b0}" (func 342))
+  (export "\u{11305}" (func 343))
+  (export "\u{11370}" (func 344))
+  (export "\u{11400}" (func 345))
+  (export "\u{11481}" (func 346))
+  (export "\u{11580}" (func 347))
+  (export "\u{11600}" (func 348))
+  (export "\u{11680}" (func 349))
+  (export "\u{11712}" (func 350))
+  (export "\u{11720}" (func 351))
+  (export "\u{118a1}" (func 352))
+  (export "\u{11ad5}" (func 353))
+  (export "\u{11c00}" (func 354))
+  (export "\u{11c8f}" (func 355))
+  (export "\u{11caf}" (func 356))
+  (export "\u{12000}" (func 357))
+  (export "\u{169d5}" (func 358))
+  (export "\u{16a46}" (func 359))
+  (export "\u{16ae7}" (func 360))
+  (export "\u{16f54}" (func 361))
+  (export "\u{1bc41}" (func 362))
+  (export "\u{1bc64}" (func 363))
+  (export "\u{1e823}" (func 364))
+  (export "\u{1f1e6}" (func 365))
+  (export "\u{2c6d}" (func 366))
+  (export "\u{39b}" (func 367))
+  (export "\u{2c70}" (func 368))
+  (export "\u{aa}" (func 369))
+  (export "\u{2200}" (func 370))
+  (export "\u{20b3}" (func 371))
+  (export "\u{10900}" (func 372))
+  (export "\u{2c80}" (func 373))
+  (export "\u{10330}" (func 374))
+  (export "\u{386}" (func 375))
+  (export "\u{391}" (func 376))
+  (export "\u{1f08}" (func 377))
+  (export "\u{1f09}" (func 378))
+  (export "\u{1f0a}" (func 379))
+  (export "\u{1f0b}" (func 380))
+  (export "\u{1f0c}" (func 381))
+  (export "\u{1f0d}" (func 382))
+  (export "\u{1f0e}" (func 383))
+  (export "\u{1f0f}" (func 384))
+  (export "\u{1f88}" (func 385))
+  (export "\u{1f89}" (func 386))
+  (export "\u{1f8a}" (func 387))
+  (export "\u{1f8b}" (func 388))
+  (export "\u{1f8c}" (func 389))
+  (export "\u{1f8d}" (func 390))
+  (export "\u{1f8e}" (func 391))
+  (export "\u{1f8f}" (func 392))
+  (export "\u{1fb8}" (func 393))
+  (export "\u{1fb9}" (func 394))
+  (export "\u{1fba}" (func 395))
+  (export "\u{1fbb}" (func 396))
+  (export "\u{1fbc}" (func 397))
+  (export "\u{1d6a8}" (func 398))
+  (export "\u{1d6e2}" (func 399))
+  (export "\u{1d71c}" (func 400))
+  (export "\u{1d756}" (func 401))
+  (export "\u{1d790}" (func 402))
+  (export "\u{2376}" (func 403))
+  (export "\u{237a}" (func 404))
+  (export "\u{2a5c}" (func 405))
+  (export "\u{15c5}" (func 406))
+  (export "\u{13aa}" (func 407))
+  (export ")\u{2fa}\u{2fc}\u{145cf}\u{1d174}\u{1d176}\u{1d178}\u{1d17a}\u{207e}\u{208e}\u{2769}\u{276b}\u{27ef}\u{fd3f}\u{fe36}\u{fe5a}\u{ff09}\u{ff60}\u{e0029}\u{2773}\u{2775}\u{27e7}\u{27e9}\u{27eb}\u{27ed}\u{2988}\u{298a}\u{2996}\u{2e23}\u{2e25}\u{fe18}\u{fe38}\u{fe3a}\u{fe3c}\u{fe3e}\u{fe40}\u{fe42}\u{fe44}\u{fe48}\u{fe5c}\u{fe5e}\u{ff3d}\u{ff5d}\u{ff63}\u{e005d}\u{e007d}\u{bb}\u{2019}\u{201d}\u{203a}\u{276f}" (func 408))
+  (export "(\u{2f9}\u{2fb}\u{145ce}\u{1d173}\u{1d175}\u{1d177}\u{1d179}\u{207d}\u{208d}\u{2768}\u{276a}\u{27ee}\u{fd3e}\u{fe35}\u{fe59}\u{ff08}\u{ff5f}\u{e0028}\u{2772}\u{2774}\u{27e6}\u{27e8}\u{27ea}\u{27ec}\u{2987}\u{2989}\u{2995}\u{2e22}\u{2e24}\u{fe17}\u{fe37}\u{fe39}\u{fe3b}\u{fe3d}\u{fe3f}\u{fe41}\u{fe43}\u{fe47}\u{fe5b}\u{fe5d}\u{ff3b}\u{ff5b}\u{ff62}\u{e005b}\u{e007b}\u{ab}\u{2018}\u{201c}\u{2039}\u{276e}" (func 409))
+  (export "\u{1da8b}\u{1daa4}" (func 410))
+  (export "\u{1da8b}" (func 411))
+  (export "\u{bd}" (func 412))
+  (export "1\u{2044}2" (func 413))
+  (export "1/2" (func 414))
+  (export "\u{b73}" (func 415))
+  (export "\u{d74}" (func 416))
+  (export "\u{2cfd}" (func 417))
+  (export "\u{a831}" (func 418))
+  (export "\u{10141}" (func 419))
+  (export "\u{10175}" (func 420))
+  (export "\u{10176}" (func 421))
+  (export "\u{109bd}" (func 422))
+  (export "\u{10e7b}" (func 423))
+  (export "\u{ff02}" (func 424))
+  (export "\u{7f}" (func 425))
+  (export "\u{8}" (func 426))
+  (export "\u{232b}" (func 427))
+  (export "\u{2326}" (func 428))
+  (export "\u{2408}" (func 429))
+  (export "\u{2421}" (func 430))
+  (export "\u{1dfb}" (func 431))
+  (export "\u{f}" (func 432))
+  (export "\u{2190}" (func 433))
+  (export "\u{2327}" (func 434))
+  (export "\u{2352}" (func 435))
+  (export "\u{2354}" (func 436))
+  (export "\u{2362}" (func 437))
+  (export "\u{236b}" (func 438))
+  (export "\u{1a}" (func 439))
+  (export "\u{2426}" (func 440))
+  (export "\u{241a}" (func 441))
+  (export "\u{fffc}" (func 442))
+  (export "?" (func 443))
+  (export "\u{bf}" (func 444))
+  (export "\u{1945}" (func 445))
+  (export "\u{37e}" (func 446))
+  (export "\u{55e}" (func 447))
+  (export "\u{61f}" (func 448))
+  (export "\u{1367}" (func 449))
+  (export "\u{2047}" (func 450))
+  (export "\u{2370}" (func 451))
+  (export "\u{2753}" (func 452))
+  (export "\u{2754}" (func 453))
+  (export "\u{2cfa}" (func 454))
+  (export "\u{2cfb}" (func 455))
+  (export "\u{2e2e}" (func 456))
+  (export "\u{3244}" (func 457))
+  (export "\u{a60f}" (func 458))
+  (export "\u{a6f7}" (func 459))
+  (export "\u{fe16}" (func 460))
+  (export "\u{fe56}" (func 461))
+  (export "\u{ff1f}" (func 462))
+  (export "\u{11143}" (func 463))
+  (export "\u{1e95f}" (func 464))
+  (export "\u{e003f}" (func 465))
+  (export "\u{16844}" (func 466))
+  (export "\u{2bd1}" (func 467))
+  (export "\u{b6}" (func 468))
+  (export "\u{204b}" (func 469))
+  (export "\u{700}" (func 470))
+  (export "\u{10fb}" (func 471))
+  (export "\u{1368}" (func 472))
+  (export "\u{3037}" (func 473))
+  (export "\u{2761}" (func 474))
+  (export "\u{2e0f}" (func 475))
+  (export "\u{2e10}" (func 476))
+  (export "\u{2e11}" (func 477))
+  (export "\u{2e0e}" (func 478))
+  (export "\u{14}" (func 479))
+  (export "\u{2619}" (func 480))
+  (export "\u{2e3f}" (func 481))
+  (export "\u{3007}" (func 482))
+  (export "\u{e5b}" (func 483))
+  (export "\u{a66e}" (func 484))
+  (export "\u{3d3}" (func 485))
+  (export "\u{3d4}" (func 486))
+  (export "\u{1e9b}" (func 487))
+  (func (;9;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 0
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (result i32)
+  (func (;10;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 1
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;5;) (type 0) (result i32)
+  (func (;11;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 2
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;6;) (type 0) (result i32)
+  (func (;12;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 3
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;7;) (type 0) (result i32)
+  (func (;13;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 4
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;8;) (type 0) (result i32)
+  (func (;14;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 5
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;9;) (type 0) (result i32)
+  (func (;15;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 6
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;10;) (type 0) (result i32)
+  (func (;16;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 7
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;11;) (type 0) (result i32)
+  (func (;17;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 8
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;12;) (type 0) (result i32)
+  (func (;18;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 9
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;13;) (type 0) (result i32)
+  (func (;19;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 10
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;14;) (type 0) (result i32)
+  (func (;20;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 11
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;15;) (type 0) (result i32)
+  (func (;21;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 12
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;16;) (type 0) (result i32)
+  (func (;22;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 13
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;17;) (type 0) (result i32)
+  (func (;23;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 14
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;18;) (type 0) (result i32)
+  (func (;24;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 15
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;19;) (type 0) (result i32)
+  (func (;25;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 16
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;20;) (type 0) (result i32)
+  (func (;26;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 17
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;21;) (type 0) (result i32)
+  (func (;27;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 18
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;22;) (type 0) (result i32)
+  (func (;28;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 19
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;23;) (type 0) (result i32)
+  (func (;29;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 20
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;24;) (type 0) (result i32)
+  (func (;30;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 21
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;25;) (type 0) (result i32)
+  (func (;31;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 22
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;26;) (type 0) (result i32)
+  (func (;32;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 23
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;27;) (type 0) (result i32)
+  (func (;33;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 24
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;28;) (type 0) (result i32)
+  (func (;34;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 25
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;29;) (type 0) (result i32)
+  (func (;35;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 26
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;30;) (type 0) (result i32)
+  (func (;36;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 27
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;31;) (type 0) (result i32)
+  (func (;37;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 28
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;32;) (type 0) (result i32)
+  (func (;38;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 29
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;33;) (type 0) (result i32)
+  (func (;39;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 30
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;34;) (type 0) (result i32)
+  (func (;40;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 31
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;35;) (type 0) (result i32)
+  (func (;41;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 32
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;36;) (type 0) (result i32)
+  (func (;42;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 33
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;37;) (type 0) (result i32)
+  (func (;43;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 34
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;38;) (type 0) (result i32)
+  (func (;44;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 35
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;39;) (type 0) (result i32)
+  (func (;45;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 36
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;40;) (type 0) (result i32)
+  (func (;46;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 37
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;41;) (type 0) (result i32)
+  (func (;47;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 38
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;42;) (type 0) (result i32)
+  (func (;48;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 39
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;43;) (type 0) (result i32)
+  (func (;49;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 40
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;44;) (type 0) (result i32)
+  (func (;50;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 41
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;45;) (type 0) (result i32)
+  (func (;51;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 42
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;46;) (type 0) (result i32)
+  (func (;52;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 43
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;47;) (type 0) (result i32)
+  (func (;53;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 44
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;48;) (type 0) (result i32)
+  (func (;54;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 45
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;49;) (type 0) (result i32)
+  (func (;55;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 46
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;50;) (type 0) (result i32)
+  (func (;56;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 47
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;51;) (type 0) (result i32)
+  (func (;57;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 48
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;52;) (type 0) (result i32)
+  (func (;58;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 49
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;53;) (type 0) (result i32)
+  (func (;59;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 50
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;54;) (type 0) (result i32)
+  (func (;60;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 51
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;55;) (type 0) (result i32)
+  (func (;61;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 52
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;56;) (type 0) (result i32)
+  (func (;62;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 53
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;57;) (type 0) (result i32)
+  (func (;63;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 54
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;58;) (type 0) (result i32)
+  (func (;64;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 55
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;59;) (type 0) (result i32)
+  (func (;65;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 56
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;60;) (type 0) (result i32)
+  (func (;66;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 57
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;61;) (type 0) (result i32)
+  (func (;67;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 58
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;62;) (type 0) (result i32)
+  (func (;68;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 59
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;63;) (type 0) (result i32)
+  (func (;69;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 60
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;64;) (type 0) (result i32)
+  (func (;70;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 61
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;65;) (type 0) (result i32)
+  (func (;71;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 62
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;66;) (type 0) (result i32)
+  (func (;72;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 63
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;67;) (type 0) (result i32)
+  (func (;73;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 64
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;68;) (type 0) (result i32)
+  (func (;74;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 65
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;69;) (type 0) (result i32)
+  (func (;75;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 66
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;70;) (type 0) (result i32)
+  (func (;76;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 67
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;71;) (type 0) (result i32)
+  (func (;77;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 68
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;72;) (type 0) (result i32)
+  (func (;78;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 69
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;73;) (type 0) (result i32)
+  (func (;79;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 70
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;74;) (type 0) (result i32)
+  (func (;80;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 71
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;75;) (type 0) (result i32)
+  (func (;81;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 72
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;76;) (type 0) (result i32)
+  (func (;82;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 73
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;77;) (type 0) (result i32)
+  (func (;83;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 74
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;78;) (type 0) (result i32)
+  (func (;84;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 75
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;79;) (type 0) (result i32)
+  (func (;85;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 76
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;80;) (type 0) (result i32)
+  (func (;86;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 77
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;81;) (type 0) (result i32)
+  (func (;87;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 78
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;82;) (type 0) (result i32)
+  (func (;88;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 79
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;83;) (type 0) (result i32)
+  (func (;89;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 80
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;84;) (type 0) (result i32)
+  (func (;90;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 81
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;85;) (type 0) (result i32)
+  (func (;91;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 82
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;86;) (type 0) (result i32)
+  (func (;92;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 83
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;87;) (type 0) (result i32)
+  (func (;93;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 84
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;88;) (type 0) (result i32)
+  (func (;94;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 85
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;89;) (type 0) (result i32)
+  (func (;95;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 86
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;90;) (type 0) (result i32)
+  (func (;96;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 87
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;91;) (type 0) (result i32)
+  (func (;97;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 88
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;92;) (type 0) (result i32)
+  (func (;98;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 89
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;93;) (type 0) (result i32)
+  (func (;99;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 90
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;94;) (type 0) (result i32)
+  (func (;100;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 91
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;95;) (type 0) (result i32)
+  (func (;101;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 92
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;96;) (type 0) (result i32)
+  (func (;102;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 93
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;97;) (type 0) (result i32)
+  (func (;103;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 94
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;98;) (type 0) (result i32)
+  (func (;104;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 95
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;99;) (type 0) (result i32)
+  (func (;105;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 96
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;100;) (type 0) (result i32)
+  (func (;106;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 97
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;101;) (type 0) (result i32)
+  (func (;107;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 98
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;102;) (type 0) (result i32)
+  (func (;108;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 99
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;103;) (type 0) (result i32)
+  (func (;109;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 100
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;104;) (type 0) (result i32)
+  (func (;110;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 101
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;105;) (type 0) (result i32)
+  (func (;111;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 102
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;106;) (type 0) (result i32)
+  (func (;112;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 103
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;107;) (type 0) (result i32)
+  (func (;113;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 104
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;108;) (type 0) (result i32)
+  (func (;114;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 105
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;109;) (type 0) (result i32)
+  (func (;115;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 106
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;110;) (type 0) (result i32)
+  (func (;116;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 107
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;111;) (type 0) (result i32)
+  (func (;117;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 108
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;112;) (type 0) (result i32)
+  (func (;118;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 109
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;113;) (type 0) (result i32)
+  (func (;119;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 110
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;114;) (type 0) (result i32)
+  (func (;120;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 111
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;115;) (type 0) (result i32)
+  (func (;121;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 112
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;116;) (type 0) (result i32)
+  (func (;122;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 113
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;117;) (type 0) (result i32)
+  (func (;123;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 114
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;118;) (type 0) (result i32)
+  (func (;124;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 115
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;119;) (type 0) (result i32)
+  (func (;125;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 116
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;120;) (type 0) (result i32)
+  (func (;126;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 117
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;121;) (type 0) (result i32)
+  (func (;127;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 118
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;122;) (type 0) (result i32)
+  (func (;128;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 119
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;123;) (type 0) (result i32)
+  (func (;129;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 120
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;124;) (type 0) (result i32)
+  (func (;130;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 121
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;125;) (type 0) (result i32)
+  (func (;131;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 122
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;126;) (type 0) (result i32)
+  (func (;132;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 123
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;127;) (type 0) (result i32)
+  (func (;133;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 124
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;128;) (type 0) (result i32)
+  (func (;134;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 125
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;129;) (type 0) (result i32)
+  (func (;135;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 126
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;130;) (type 0) (result i32)
+  (func (;136;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 127
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;131;) (type 0) (result i32)
+  (func (;137;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 128
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;132;) (type 0) (result i32)
+  (func (;138;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 129
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;133;) (type 0) (result i32)
+  (func (;139;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 130
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;134;) (type 0) (result i32)
+  (func (;140;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 131
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;135;) (type 0) (result i32)
+  (func (;141;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 132
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;136;) (type 0) (result i32)
+  (func (;142;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 133
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;137;) (type 0) (result i32)
+  (func (;143;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 134
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;138;) (type 0) (result i32)
+  (func (;144;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 135
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;139;) (type 0) (result i32)
+  (func (;145;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 136
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;140;) (type 0) (result i32)
+  (func (;146;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 137
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;141;) (type 0) (result i32)
+  (func (;147;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 138
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;142;) (type 0) (result i32)
+  (func (;148;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 139
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;143;) (type 0) (result i32)
+  (func (;149;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 140
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;144;) (type 0) (result i32)
+  (func (;150;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 141
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;145;) (type 0) (result i32)
+  (func (;151;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 142
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;146;) (type 0) (result i32)
+  (func (;152;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 143
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;147;) (type 0) (result i32)
+  (func (;153;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 144
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;148;) (type 0) (result i32)
+  (func (;154;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 145
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;149;) (type 0) (result i32)
+  (func (;155;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 146
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;150;) (type 0) (result i32)
+  (func (;156;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 147
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;151;) (type 0) (result i32)
+  (func (;157;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 148
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;152;) (type 0) (result i32)
+  (func (;158;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 149
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;153;) (type 0) (result i32)
+  (func (;159;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 150
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;154;) (type 0) (result i32)
+  (func (;160;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 151
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;155;) (type 0) (result i32)
+  (func (;161;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 152
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;156;) (type 0) (result i32)
+  (func (;162;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 153
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;157;) (type 0) (result i32)
+  (func (;163;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 154
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;158;) (type 0) (result i32)
+  (func (;164;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 155
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;159;) (type 0) (result i32)
+  (func (;165;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 156
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;160;) (type 0) (result i32)
+  (func (;166;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 157
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;161;) (type 0) (result i32)
+  (func (;167;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 158
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;162;) (type 0) (result i32)
+  (func (;168;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 159
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;163;) (type 0) (result i32)
+  (func (;169;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 160
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;164;) (type 0) (result i32)
+  (func (;170;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 161
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;165;) (type 0) (result i32)
+  (func (;171;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 162
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;166;) (type 0) (result i32)
+  (func (;172;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 163
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;167;) (type 0) (result i32)
+  (func (;173;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 164
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;168;) (type 0) (result i32)
+  (func (;174;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 165
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;169;) (type 0) (result i32)
+  (func (;175;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 166
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;170;) (type 0) (result i32)
+  (func (;176;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 167
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;171;) (type 0) (result i32)
+  (func (;177;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 168
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;172;) (type 0) (result i32)
+  (func (;178;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 169
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;173;) (type 0) (result i32)
+  (func (;179;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 170
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;174;) (type 0) (result i32)
+  (func (;180;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 171
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;175;) (type 0) (result i32)
+  (func (;181;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 172
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;176;) (type 0) (result i32)
+  (func (;182;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 173
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;177;) (type 0) (result i32)
+  (func (;183;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 174
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;178;) (type 0) (result i32)
+  (func (;184;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 175
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;179;) (type 0) (result i32)
+  (func (;185;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 176
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;180;) (type 0) (result i32)
+  (func (;186;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 177
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;181;) (type 0) (result i32)
+  (func (;187;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 178
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;182;) (type 0) (result i32)
+  (func (;188;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 179
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;183;) (type 0) (result i32)
+  (func (;189;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 180
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;184;) (type 0) (result i32)
+  (func (;190;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 181
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;185;) (type 0) (result i32)
+  (func (;191;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 182
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;186;) (type 0) (result i32)
+  (func (;192;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 183
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;187;) (type 0) (result i32)
+  (func (;193;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 184
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;188;) (type 0) (result i32)
+  (func (;194;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 185
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;189;) (type 0) (result i32)
+  (func (;195;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 186
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;190;) (type 0) (result i32)
+  (func (;196;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 187
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;191;) (type 0) (result i32)
+  (func (;197;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 188
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;192;) (type 0) (result i32)
+  (func (;198;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 189
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;193;) (type 0) (result i32)
+  (func (;199;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 190
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;194;) (type 0) (result i32)
+  (func (;200;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 191
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;195;) (type 0) (result i32)
+  (func (;201;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 192
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;196;) (type 0) (result i32)
+  (func (;202;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 193
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;197;) (type 0) (result i32)
+  (func (;203;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 194
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;198;) (type 0) (result i32)
+  (func (;204;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 195
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;199;) (type 0) (result i32)
+  (func (;205;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 196
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;200;) (type 0) (result i32)
+  (func (;206;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 197
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;201;) (type 0) (result i32)
+  (func (;207;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 198
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;202;) (type 0) (result i32)
+  (func (;208;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 199
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;203;) (type 0) (result i32)
+  (func (;209;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 200
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;204;) (type 0) (result i32)
+  (func (;210;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 201
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;205;) (type 0) (result i32)
+  (func (;211;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 202
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;206;) (type 0) (result i32)
+  (func (;212;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 203
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;207;) (type 0) (result i32)
+  (func (;213;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 204
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;208;) (type 0) (result i32)
+  (func (;214;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 205
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;209;) (type 0) (result i32)
+  (func (;215;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 206
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;210;) (type 0) (result i32)
+  (func (;216;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 207
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;211;) (type 0) (result i32)
+  (func (;217;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 208
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;212;) (type 0) (result i32)
+  (func (;218;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 209
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;213;) (type 0) (result i32)
+  (func (;219;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 210
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;214;) (type 0) (result i32)
+  (func (;220;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 211
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;215;) (type 0) (result i32)
+  (func (;221;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 212
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;216;) (type 0) (result i32)
+  (func (;222;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 213
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;217;) (type 0) (result i32)
+  (func (;223;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 214
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;218;) (type 0) (result i32)
+  (func (;224;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 215
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;219;) (type 0) (result i32)
+  (func (;225;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 216
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;220;) (type 0) (result i32)
+  (func (;226;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 217
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;221;) (type 0) (result i32)
+  (func (;227;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 218
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;222;) (type 0) (result i32)
+  (func (;228;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 219
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;223;) (type 0) (result i32)
+  (func (;229;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 220
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;224;) (type 0) (result i32)
+  (func (;230;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 221
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;225;) (type 0) (result i32)
+  (func (;231;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 222
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;226;) (type 0) (result i32)
+  (func (;232;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 223
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;227;) (type 0) (result i32)
+  (func (;233;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 224
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;228;) (type 0) (result i32)
+  (func (;234;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 225
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;229;) (type 0) (result i32)
+  (func (;235;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 226
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;230;) (type 0) (result i32)
+  (func (;236;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 227
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;231;) (type 0) (result i32)
+  (func (;237;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 228
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;232;) (type 0) (result i32)
+  (func (;238;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 229
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;233;) (type 0) (result i32)
+  (func (;239;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 230
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;234;) (type 0) (result i32)
+  (func (;240;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 231
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;235;) (type 0) (result i32)
+  (func (;241;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 232
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;236;) (type 0) (result i32)
+  (func (;242;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 233
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;237;) (type 0) (result i32)
+  (func (;243;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 234
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;238;) (type 0) (result i32)
+  (func (;244;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 235
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;239;) (type 0) (result i32)
+  (func (;245;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 236
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;240;) (type 0) (result i32)
+  (func (;246;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 237
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;241;) (type 0) (result i32)
+  (func (;247;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 238
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;242;) (type 0) (result i32)
+  (func (;248;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 239
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;243;) (type 0) (result i32)
+  (func (;249;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 240
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;244;) (type 0) (result i32)
+  (func (;250;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 241
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;245;) (type 0) (result i32)
+  (func (;251;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 242
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;246;) (type 0) (result i32)
+  (func (;252;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 243
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;247;) (type 0) (result i32)
+  (func (;253;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 244
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;248;) (type 0) (result i32)
+  (func (;254;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 245
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;249;) (type 0) (result i32)
+  (func (;255;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 246
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;250;) (type 0) (result i32)
+  (func (;256;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 247
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;251;) (type 0) (result i32)
+  (func (;257;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 248
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;252;) (type 0) (result i32)
+  (func (;258;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 249
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;253;) (type 0) (result i32)
+  (func (;259;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 250
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;254;) (type 0) (result i32)
+  (func (;260;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 251
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;255;) (type 0) (result i32)
+  (func (;261;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 252
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;256;) (type 0) (result i32)
+  (func (;262;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 253
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;257;) (type 0) (result i32)
+  (func (;263;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 254
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;258;) (type 0) (result i32)
+  (func (;264;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 255
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;259;) (type 0) (result i32)
+  (func (;265;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 256
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;260;) (type 0) (result i32)
+  (func (;266;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 257
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;261;) (type 0) (result i32)
+  (func (;267;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 258
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;262;) (type 0) (result i32)
+  (func (;268;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 259
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;263;) (type 0) (result i32)
+  (func (;269;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 260
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;264;) (type 0) (result i32)
+  (func (;270;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 261
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;265;) (type 0) (result i32)
+  (func (;271;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 262
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;266;) (type 0) (result i32)
+  (func (;272;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 263
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;267;) (type 0) (result i32)
+  (func (;273;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 264
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;268;) (type 0) (result i32)
+  (func (;274;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 265
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;269;) (type 0) (result i32)
+  (func (;275;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 266
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;270;) (type 0) (result i32)
+  (func (;276;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 267
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;271;) (type 0) (result i32)
+  (func (;277;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 268
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;272;) (type 0) (result i32)
+  (func (;278;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 269
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;273;) (type 0) (result i32)
+  (func (;279;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 270
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;274;) (type 0) (result i32)
+  (func (;280;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 271
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;275;) (type 0) (result i32)
+  (func (;281;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 272
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;276;) (type 0) (result i32)
+  (func (;282;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 273
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;277;) (type 0) (result i32)
+  (func (;283;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 274
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;278;) (type 0) (result i32)
+  (func (;284;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 275
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;279;) (type 0) (result i32)
+  (func (;285;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 276
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;280;) (type 0) (result i32)
+  (func (;286;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 277
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;281;) (type 0) (result i32)
+  (func (;287;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 278
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;282;) (type 0) (result i32)
+  (func (;288;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 279
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;283;) (type 0) (result i32)
+  (func (;289;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 280
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;284;) (type 0) (result i32)
+  (func (;290;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 281
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;285;) (type 0) (result i32)
+  (func (;291;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 282
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;286;) (type 0) (result i32)
+  (func (;292;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 283
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;287;) (type 0) (result i32)
+  (func (;293;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 284
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;288;) (type 0) (result i32)
+  (func (;294;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 285
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;289;) (type 0) (result i32)
+  (func (;295;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 286
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;290;) (type 0) (result i32)
+  (func (;296;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 287
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;291;) (type 0) (result i32)
+  (func (;297;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 288
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;292;) (type 0) (result i32)
+  (func (;298;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 289
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;293;) (type 0) (result i32)
+  (func (;299;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 290
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;294;) (type 0) (result i32)
+  (func (;300;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 291
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;295;) (type 0) (result i32)
+  (func (;301;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 292
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;296;) (type 0) (result i32)
+  (func (;302;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 293
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;297;) (type 0) (result i32)
+  (func (;303;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 294
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;298;) (type 0) (result i32)
+  (func (;304;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 295
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;299;) (type 0) (result i32)
+  (func (;305;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 296
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;300;) (type 0) (result i32)
+  (func (;306;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 297
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;301;) (type 0) (result i32)
+  (func (;307;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 298
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;302;) (type 0) (result i32)
+  (func (;308;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 299
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;303;) (type 0) (result i32)
+  (func (;309;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 300
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;304;) (type 0) (result i32)
+  (func (;310;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 301
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;305;) (type 0) (result i32)
+  (func (;311;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 302
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;306;) (type 0) (result i32)
+  (func (;312;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 303
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;307;) (type 0) (result i32)
+  (func (;313;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 304
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;308;) (type 0) (result i32)
+  (func (;314;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 305
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;309;) (type 0) (result i32)
+  (func (;315;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 306
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;310;) (type 0) (result i32)
+  (func (;316;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 307
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;311;) (type 0) (result i32)
+  (func (;317;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 308
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;312;) (type 0) (result i32)
+  (func (;318;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 309
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;313;) (type 0) (result i32)
+  (func (;319;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 310
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;314;) (type 0) (result i32)
+  (func (;320;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 311
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;315;) (type 0) (result i32)
+  (func (;321;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 312
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;316;) (type 0) (result i32)
+  (func (;322;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 313
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;317;) (type 0) (result i32)
+  (func (;323;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 314
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;318;) (type 0) (result i32)
+  (func (;324;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 315
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;319;) (type 0) (result i32)
+  (func (;325;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 316
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;320;) (type 0) (result i32)
+  (func (;326;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 317
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;321;) (type 0) (result i32)
+  (func (;327;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 318
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;322;) (type 0) (result i32)
+  (func (;328;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 319
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;323;) (type 0) (result i32)
+  (func (;329;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 320
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;324;) (type 0) (result i32)
+  (func (;330;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 321
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;325;) (type 0) (result i32)
+  (func (;331;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 322
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;326;) (type 0) (result i32)
+  (func (;332;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 323
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;327;) (type 0) (result i32)
+  (func (;333;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 324
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;328;) (type 0) (result i32)
+  (func (;334;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 325
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;329;) (type 0) (result i32)
+  (func (;335;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 326
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;330;) (type 0) (result i32)
+  (func (;336;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 327
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;331;) (type 0) (result i32)
+  (func (;337;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 328
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;332;) (type 0) (result i32)
+  (func (;338;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 329
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;333;) (type 0) (result i32)
+  (func (;339;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 330
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;334;) (type 0) (result i32)
+  (func (;340;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 331
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;335;) (type 0) (result i32)
+  (func (;341;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 332
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;336;) (type 0) (result i32)
+  (func (;342;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 333
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;337;) (type 0) (result i32)
+  (func (;343;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 334
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;338;) (type 0) (result i32)
+  (func (;344;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 335
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;339;) (type 0) (result i32)
+  (func (;345;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 336
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;340;) (type 0) (result i32)
+  (func (;346;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 337
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;341;) (type 0) (result i32)
+  (func (;347;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 338
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;342;) (type 0) (result i32)
+  (func (;348;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 339
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;343;) (type 0) (result i32)
+  (func (;349;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 340
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;344;) (type 0) (result i32)
+  (func (;350;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 341
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;345;) (type 0) (result i32)
+  (func (;351;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 342
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;346;) (type 0) (result i32)
+  (func (;352;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 343
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;347;) (type 0) (result i32)
+  (func (;353;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 344
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;348;) (type 0) (result i32)
+  (func (;354;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 345
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;349;) (type 0) (result i32)
+  (func (;355;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 346
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;350;) (type 0) (result i32)
+  (func (;356;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 347
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;351;) (type 0) (result i32)
+  (func (;357;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 348
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;352;) (type 0) (result i32)
+  (func (;358;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 349
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;353;) (type 0) (result i32)
+  (func (;359;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 350
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;354;) (type 0) (result i32)
+  (func (;360;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 351
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;355;) (type 0) (result i32)
+  (func (;361;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 352
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;356;) (type 0) (result i32)
+  (func (;362;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 353
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;357;) (type 0) (result i32)
+  (func (;363;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 354
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;358;) (type 0) (result i32)
+  (func (;364;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 355
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;359;) (type 0) (result i32)
+  (func (;365;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 356
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;360;) (type 0) (result i32)
+  (func (;366;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 357
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;361;) (type 0) (result i32)
+  (func (;367;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 358
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;362;) (type 0) (result i32)
+  (func (;368;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 359
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;363;) (type 0) (result i32)
+  (func (;369;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 360
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;364;) (type 0) (result i32)
+  (func (;370;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 361
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;365;) (type 0) (result i32)
+  (func (;371;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 362
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;366;) (type 0) (result i32)
+  (func (;372;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 363
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;367;) (type 0) (result i32)
+  (func (;373;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 364
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;368;) (type 0) (result i32)
+  (func (;374;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 365
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;369;) (type 0) (result i32)
+  (func (;375;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 366
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;370;) (type 0) (result i32)
+  (func (;376;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 367
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;371;) (type 0) (result i32)
+  (func (;377;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 368
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;372;) (type 0) (result i32)
+  (func (;378;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 369
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;373;) (type 0) (result i32)
+  (func (;379;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 370
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;374;) (type 0) (result i32)
+  (func (;380;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 371
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;375;) (type 0) (result i32)
+  (func (;381;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 372
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;376;) (type 0) (result i32)
+  (func (;382;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 373
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;377;) (type 0) (result i32)
+  (func (;383;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 374
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;378;) (type 0) (result i32)
+  (func (;384;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 375
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;379;) (type 0) (result i32)
+  (func (;385;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 376
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;380;) (type 0) (result i32)
+  (func (;386;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 377
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;381;) (type 0) (result i32)
+  (func (;387;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 378
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;382;) (type 0) (result i32)
+  (func (;388;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 379
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;383;) (type 0) (result i32)
+  (func (;389;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 380
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;384;) (type 0) (result i32)
+  (func (;390;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 381
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;385;) (type 0) (result i32)
+  (func (;391;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 382
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;386;) (type 0) (result i32)
+  (func (;392;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 383
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;387;) (type 0) (result i32)
+  (func (;393;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 384
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;388;) (type 0) (result i32)
+  (func (;394;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 385
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;389;) (type 0) (result i32)
+  (func (;395;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 386
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;390;) (type 0) (result i32)
+  (func (;396;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 387
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;391;) (type 0) (result i32)
+  (func (;397;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 388
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;392;) (type 0) (result i32)
+  (func (;398;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 389
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;393;) (type 0) (result i32)
+  (func (;399;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 390
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;394;) (type 0) (result i32)
+  (func (;400;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 391
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;395;) (type 0) (result i32)
+  (func (;401;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 392
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;396;) (type 0) (result i32)
+  (func (;402;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 393
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;397;) (type 0) (result i32)
+  (func (;403;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 394
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;398;) (type 0) (result i32)
+  (func (;404;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 395
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;399;) (type 0) (result i32)
+  (func (;405;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 396
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;400;) (type 0) (result i32)
+  (func (;406;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 397
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;401;) (type 0) (result i32)
+  (func (;407;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 398
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;402;) (type 0) (result i32)
+  (func (;408;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 399
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;403;) (type 0) (result i32)
+  (func (;409;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 400
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;404;) (type 0) (result i32)
+  (func (;410;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 401
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;405;) (type 0) (result i32)
+  (func (;411;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 402
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;406;) (type 0) (result i32)
+  (func (;412;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 403
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;407;) (type 0) (result i32)
+  (func (;413;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 404
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;408;) (type 0) (result i32)
+  (func (;414;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 405
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;409;) (type 0) (result i32)
+  (func (;415;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 406
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;410;) (type 0) (result i32)
+  (func (;416;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 407
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;411;) (type 0) (result i32)
+  (func (;417;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 408
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;412;) (type 0) (result i32)
+  (func (;418;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 409
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;413;) (type 0) (result i32)
+  (func (;419;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 410
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;414;) (type 0) (result i32)
+  (func (;420;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 411
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;415;) (type 0) (result i32)
+  (func (;421;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 412
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;416;) (type 0) (result i32)
+  (func (;422;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 413
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;417;) (type 0) (result i32)
+  (func (;423;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 414
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;418;) (type 0) (result i32)
+  (func (;424;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 415
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;419;) (type 0) (result i32)
+  (func (;425;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 416
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;420;) (type 0) (result i32)
+  (func (;426;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 417
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;421;) (type 0) (result i32)
+  (func (;427;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 418
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;422;) (type 0) (result i32)
+  (func (;428;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 419
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;423;) (type 0) (result i32)
+  (func (;429;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 420
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;424;) (type 0) (result i32)
+  (func (;430;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 421
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;425;) (type 0) (result i32)
+  (func (;431;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 422
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;426;) (type 0) (result i32)
+  (func (;432;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 423
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;427;) (type 0) (result i32)
+  (func (;433;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 424
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;428;) (type 0) (result i32)
+  (func (;434;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 425
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;429;) (type 0) (result i32)
+  (func (;435;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 426
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;430;) (type 0) (result i32)
+  (func (;436;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 427
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;431;) (type 0) (result i32)
+  (func (;437;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 428
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;432;) (type 0) (result i32)
+  (func (;438;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 429
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;433;) (type 0) (result i32)
+  (func (;439;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 430
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;434;) (type 0) (result i32)
+  (func (;440;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 431
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;435;) (type 0) (result i32)
+  (func (;441;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 432
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;436;) (type 0) (result i32)
+  (func (;442;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 433
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;437;) (type 0) (result i32)
+  (func (;443;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 434
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;438;) (type 0) (result i32)
+  (func (;444;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 435
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;439;) (type 0) (result i32)
+  (func (;445;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 436
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;440;) (type 0) (result i32)
+  (func (;446;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 437
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;441;) (type 0) (result i32)
+  (func (;447;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 438
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;442;) (type 0) (result i32)
+  (func (;448;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 439
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;443;) (type 0) (result i32)
+  (func (;449;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 440
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;444;) (type 0) (result i32)
+  (func (;450;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 441
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;445;) (type 0) (result i32)
+  (func (;451;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 442
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;446;) (type 0) (result i32)
+  (func (;452;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 443
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;447;) (type 0) (result i32)
+  (func (;453;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 444
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;448;) (type 0) (result i32)
+  (func (;454;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 445
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;449;) (type 0) (result i32)
+  (func (;455;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 446
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;450;) (type 0) (result i32)
+  (func (;456;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 447
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;451;) (type 0) (result i32)
+  (func (;457;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 448
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;452;) (type 0) (result i32)
+  (func (;458;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 449
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;453;) (type 0) (result i32)
+  (func (;459;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 450
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;454;) (type 0) (result i32)
+  (func (;460;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 451
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;455;) (type 0) (result i32)
+  (func (;461;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 452
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;456;) (type 0) (result i32)
+  (func (;462;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 453
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;457;) (type 0) (result i32)
+  (func (;463;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 454
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;458;) (type 0) (result i32)
+  (func (;464;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 455
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;459;) (type 0) (result i32)
+  (func (;465;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 456
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;460;) (type 0) (result i32)
+  (func (;466;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 457
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;461;) (type 0) (result i32)
+  (func (;467;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 458
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;462;) (type 0) (result i32)
+  (func (;468;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 459
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;463;) (type 0) (result i32)
+  (func (;469;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 460
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;464;) (type 0) (result i32)
+  (func (;470;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 461
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;465;) (type 0) (result i32)
+  (func (;471;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 462
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;466;) (type 0) (result i32)
+  (func (;472;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 463
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;467;) (type 0) (result i32)
+  (func (;473;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 464
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;468;) (type 0) (result i32)
+  (func (;474;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 465
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;469;) (type 0) (result i32)
+  (func (;475;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 466
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;470;) (type 0) (result i32)
+  (func (;476;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 467
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;471;) (type 0) (result i32)
+  (func (;477;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 468
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;472;) (type 0) (result i32)
+  (func (;478;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 469
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;473;) (type 0) (result i32)
+  (func (;479;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 470
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;474;) (type 0) (result i32)
+  (func (;480;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 471
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;475;) (type 0) (result i32)
+  (func (;481;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 472
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;476;) (type 0) (result i32)
+  (func (;482;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 473
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;477;) (type 0) (result i32)
+  (func (;483;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 474
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;478;) (type 0) (result i32)
+  (func (;484;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 475
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;479;) (type 0) (result i32)
+  (func (;485;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 476
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;480;) (type 0) (result i32)
+  (func (;486;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 477
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;481;) (type 0) (result i32)
+  (func (;487;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       i32.const 478
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
 )
 
@@ -7251,29 +7272,36 @@
   (type (;1;) (func (param i32 i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
-  (import "spectest" "print_i32" (func (;3;) (type 0)))
-  (import "spectest" "print_i32" (func (;4;) (type 0)))
-  (export "print32" (func 5))
-  (func (;5;) (type 1) (param i32 i32)
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
+  (import "spectest" "print_i32" (func (;9;) (type 0)))
+  (import "spectest" "print_i32" (func (;10;) (type 0)))
+  (export "print32" (func 11))
+  (func (;11;) (type 1) (param i32 i32)
     block ;; label = @1
       i64.const 4
       i64.const 2
-      call 1
+      call 7
       i64.const 2
       call 0
       local.get 0
-      call 3
+      call 9
       i64.const 2
       call 0
       local.get 1
-      call 4
+      call 10
     end
     i64.const 4
     i64.const 2
-    call 2
+    call 8
   )
 )
 

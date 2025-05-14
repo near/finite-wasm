@@ -3,38 +3,45 @@
   (type (;1;) (func (result funcref)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
   (global (;0;) externref ref.null extern)
   (global (;1;) funcref ref.null func)
-  (export "externref" (func 3))
-  (export "funcref" (func 4))
-  (func (;3;) (type 0) (result externref)
+  (export "externref" (func 9))
+  (export "funcref" (func 10))
+  (func (;9;) (type 0) (result externref)
     block (result externref) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       ref.null extern
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;4;) (type 1) (result funcref)
+  (func (;10;) (type 1) (result funcref)
     block (result funcref) ;; label = @1
       i64.const 32
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       ref.null func
     end
     i64.const 32
     i64.const 0
-    call 2
+    call 8
   )
 )
 

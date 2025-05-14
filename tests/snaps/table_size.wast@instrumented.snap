@@ -3,78 +3,85 @@
   (type (;1;) (func (param i32)))
   (type (;2;) (func (param i64)))
   (type (;3;) (func (param i64 i64)))
+  (type (;4;) (func (param i32 i64 i64) (result i32)))
   (import "spectest" "finite_wasm_gas" (func (;0;) (type 2)))
-  (import "spectest" "finite_wasm_stack" (func (;1;) (type 3)))
-  (import "spectest" "finite_wasm_unstack" (func (;2;) (type 3)))
+  (import "spectest" "finite_wasm_memory_copy" (func (;1;) (type 4)))
+  (import "spectest" "finite_wasm_memory_fill" (func (;2;) (type 4)))
+  (import "spectest" "finite_wasm_memory_init" (func (;3;) (type 4)))
+  (import "spectest" "finite_wasm_table_copy" (func (;4;) (type 4)))
+  (import "spectest" "finite_wasm_table_fill" (func (;5;) (type 4)))
+  (import "spectest" "finite_wasm_table_init" (func (;6;) (type 4)))
+  (import "spectest" "finite_wasm_stack" (func (;7;) (type 3)))
+  (import "spectest" "finite_wasm_unstack" (func (;8;) (type 3)))
   (table $t0 (;0;) 0 externref)
   (table $t1 (;1;) 1 externref)
   (table $t2 (;2;) 0 2 externref)
   (table $t3 (;3;) 3 8 externref)
-  (export "size-t0" (func 3))
-  (export "size-t1" (func 4))
-  (export "size-t2" (func 5))
-  (export "size-t3" (func 6))
-  (export "grow-t0" (func 7))
-  (export "grow-t1" (func 8))
-  (export "grow-t2" (func 9))
-  (export "grow-t3" (func 10))
-  (func (;3;) (type 0) (result i32)
+  (export "size-t0" (func 9))
+  (export "size-t1" (func 10))
+  (export "size-t2" (func 11))
+  (export "size-t3" (func 12))
+  (export "grow-t0" (func 13))
+  (export "grow-t1" (func 14))
+  (export "grow-t2" (func 15))
+  (export "grow-t3" (func 16))
+  (func (;9;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       table.size $t0
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;4;) (type 0) (result i32)
+  (func (;10;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       table.size $t1
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;5;) (type 0) (result i32)
+  (func (;11;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       table.size $t2
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;6;) (type 0) (result i32)
+  (func (;12;) (type 0) (result i32)
     block (result i32) ;; label = @1
       i64.const 4
       i64.const 0
-      call 1
+      call 7
       i64.const 1
       call 0
       table.size $t3
     end
     i64.const 4
     i64.const 0
-    call 2
+    call 8
   )
-  (func (;7;) (type 1) (param $sz i32)
+  (func (;13;) (type 1) (param $sz i32)
     block ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null extern
@@ -88,13 +95,13 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;8;) (type 1) (param $sz i32)
+  (func (;14;) (type 1) (param $sz i32)
     block ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null extern
@@ -108,13 +115,13 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;9;) (type 1) (param $sz i32)
+  (func (;15;) (type 1) (param $sz i32)
     block ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null extern
@@ -128,13 +135,13 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
-  (func (;10;) (type 1) (param $sz i32)
+  (func (;16;) (type 1) (param $sz i32)
     block ;; label = @1
       i64.const 36
       i64.const 1
-      call 1
+      call 7
       i64.const 2
       call 0
       ref.null extern
@@ -148,7 +155,7 @@
     end
     i64.const 36
     i64.const 1
-    call 2
+    call 8
   )
 )
 
