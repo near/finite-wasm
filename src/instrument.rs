@@ -17,8 +17,15 @@ const PLACEHOLDER_FOR_NAMES: u8 = !0;
 /// all function indices)
 const GAS_INSTRUMENTATION_FN: u32 = 0;
 
+const MEMORY_COPY_INSTRUMENTATION_FN: u32 = GAS_INSTRUMENTATION_FN + 1;
+const MEMORY_FILL_INSTRUMENTATION_FN: u32 = MEMORY_COPY_INSTRUMENTATION_FN + 1;
+const MEMORY_INIT_INSTRUMENTATION_FN: u32 = MEMORY_FILL_INSTRUMENTATION_FN + 1;
+const TABLE_COPY_INSTRUMENTATION_FN: u32 = MEMORY_INIT_INSTRUMENTATION_FN + 1;
+const TABLE_FILL_INSTRUMENTATION_FN: u32 = TABLE_COPY_INSTRUMENTATION_FN + 1;
+const TABLE_INIT_INSTRUMENTATION_FN: u32 = TABLE_FILL_INSTRUMENTATION_FN + 1;
+
 /// See [`GAS_INSTRUMENTATION_FN`].
-const RESERVE_STACK_INSTRUMENTATION_FN: u32 = GAS_INSTRUMENTATION_FN + 1;
+const RESERVE_STACK_INSTRUMENTATION_FN: u32 = TABLE_INIT_INSTRUMENTATION_FN + 1;
 
 /// See [`RESERVE_STACK_INSTRUMENTATION_FN`].
 const RELEASE_STACK_INSTRUMENTATION_FN: u32 = RESERVE_STACK_INSTRUMENTATION_FN + 1;
@@ -397,7 +404,7 @@ impl<'a> InstrumentContext<'a> {
             while instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
                 let ((_, g), k) = instrumentation_points.next().expect("we just peeked");
                 if !matches!(k, InstrumentationKind::Unreachable) {
-                    call_gas_instrumentation(&mut new_function, *g)
+                    call_gas_instrumentation(&mut new_function, k, *g)
                 }
             }
             match op {
@@ -440,30 +447,84 @@ impl<'a> InstrumentContext<'a> {
 
     fn maybe_add_imports(&mut self) {
         if self.import_section.is_empty() {
-            let instrument_fn_ty = self.type_section.len();
             // By adding the type at the end of the type section we guarantee that any other
             // type references remain valid.
+            let gas_fnty = self.type_section.len();
             self.type_section.ty().function([we::ValType::I64], []);
+            let stack_fnty = self.type_section.len();
             self.type_section
                 .ty()
                 .function([we::ValType::I64, we::ValType::I64], []);
+            // FIXME: these operators actually take two additional arguments i.e. for memory [i32
+            // i32 i32] and for table [i32 ref i32]. It might be interesting for the
+            // instrumentation to modify fees based on the value being filled, but it would require
+            // a separate instrumentation for every single *ref type for tables as well as some
+            // knowledge in instrumentation as to what sort of references `table.fill` is operating
+            // on. For now we punt on this by only ever taking the last argument which for all of
+            // the bulk memory operations represents the number of elements to work on (i.e. the
+            // scale of the work.) This also makes these intrinsics compatible with non-multi-value
+            // VMs still.
+            let copy_init_fill_fnty = self.type_section.len();
+            self.type_section
+                .ty()
+                .function([we::ValType::I32, we::ValType::I64, we::ValType::I64], [we::ValType::I32]);
             // By inserting the imports at the beginning of the import section we make the new
             // function index mapping trivial (it is always just an increment by F)
+            debug_assert_eq!(self.import_section.len(), GAS_INSTRUMENTATION_FN);
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_gas",
-                we::EntityType::Function(instrument_fn_ty),
+                we::EntityType::Function(gas_fnty),
             );
+            debug_assert_eq!(self.import_section.len(), MEMORY_COPY_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_memory_copy",
+                we::EntityType::Function(copy_init_fill_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), MEMORY_FILL_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_memory_fill",
+                we::EntityType::Function(copy_init_fill_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), MEMORY_INIT_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_memory_init",
+                we::EntityType::Function(copy_init_fill_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), TABLE_COPY_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_table_copy",
+                we::EntityType::Function(copy_init_fill_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), TABLE_FILL_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_table_fill",
+                we::EntityType::Function(copy_init_fill_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), TABLE_INIT_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_table_init",
+                we::EntityType::Function(copy_init_fill_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), RESERVE_STACK_INSTRUMENTATION_FN);
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_stack",
-                we::EntityType::Function(instrument_fn_ty + 1),
+                we::EntityType::Function(stack_fnty),
             );
+            debug_assert_eq!(self.import_section.len(), RELEASE_STACK_INSTRUMENTATION_FN);
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_unstack",
-                we::EntityType::Function(instrument_fn_ty + 1),
+                we::EntityType::Function(stack_fnty),
             );
+            debug_assert_eq!(self.import_section.len(), F);
         }
     }
 
@@ -518,11 +579,49 @@ fn call_unstack_instrumentation(
     }
 }
 
-fn call_gas_instrumentation(func: &mut we::Function, gas: u64) {
-    if gas != 0 {
+fn call_gas_instrumentation(func: &mut we::Function, k: &InstrumentationKind, gas: crate::Fee) {
+    if matches!(gas, crate::Fee::ZERO) {
+        return;
+    } else if gas.linear == 0 {
         // The reinterpreting cast is intentional here. On the other side the host function is
         // expected to reinterpret the argument back to u64.
-        func.instruction(&we::Instruction::I64Const(gas as i64));
+        func.instruction(&we::Instruction::I64Const(gas.constant as i64));
         func.instruction(&we::Instruction::Call(GAS_INSTRUMENTATION_FN));
+    } else {
+        match k {
+            InstrumentationKind::TableInit => {
+                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
+                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
+                func.instruction(&we::Instruction::Call(TABLE_INIT_INSTRUMENTATION_FN));
+            }
+            InstrumentationKind::TableFill => {
+                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
+                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
+                func.instruction(&we::Instruction::Call(TABLE_FILL_INSTRUMENTATION_FN));
+            }
+            InstrumentationKind::TableCopy => {
+                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
+                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
+                func.instruction(&we::Instruction::Call(TABLE_COPY_INSTRUMENTATION_FN));
+            }
+            InstrumentationKind::MemoryInit => {
+                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
+                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
+                func.instruction(&we::Instruction::Call(MEMORY_INIT_INSTRUMENTATION_FN));
+            }
+            InstrumentationKind::MemoryFill => {
+                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
+                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
+                func.instruction(&we::Instruction::Call(MEMORY_FILL_INSTRUMENTATION_FN));
+            }
+            InstrumentationKind::MemoryCopy => {
+                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
+                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
+                func.instruction(&we::Instruction::Call(MEMORY_COPY_INSTRUMENTATION_FN));
+            }
+            _ => {
+                panic!("configuration error, linear gas fees are only applicable to aggregate operations");
+            }
+        }
     }
 }

@@ -6,6 +6,9 @@ and 'inst func =
   | AstFunc of func_type * 'inst * Ast.func
   | HostFunc of func_type * (value list -> value list)
   | GasIntrinsic
+  | CopyIntrinsic
+  | FillIntrinsic
+  | InitIntrinsic
   | StackIntrinsic
   | UnstackIntrinsic
 

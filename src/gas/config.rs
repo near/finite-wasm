@@ -30,7 +30,7 @@ impl<'b> Config<'b> for crate::NoConfig {
     fn save_outcomes(&self, _: &mut gas::FunctionState, _: &mut crate::AnalysisOutcome) {}
 }
 
-impl<'b, V: wasmparser::VisitSimdOperator<'b, Output = u64>> Config<'b> for V {
+impl<'b, V: wasmparser::VisitSimdOperator<'b, Output = crate::Fee>> Config<'b> for V {
     type GasVisitor<'s>
         = gas::Visitor<'s, V>
     where

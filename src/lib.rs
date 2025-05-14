@@ -230,6 +230,39 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
     }
 }
 
+/// The fee to charge at the instrumentation point.
+///
+/// Each fee follows the formula of `a + bx` where the `b * x` component allows to adjust the
+/// fee based on a single input argument. The specific interpretation of the input arguments
+/// depends on how the instrumentation is implemented. The instrumentation provided by the
+/// `instrument` module, for example, introduces separate imports of gas instrumentation functions
+/// for each aggregate instruction supported by this module.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub struct Fee {
+    /// Constant fee factor.
+    pub constant: u64,
+    /// Linear fee factor.
+    pub linear: u64,
+}
+
+impl Fee {
+    const ZERO: Fee = Fee {
+        constant: 0,
+        linear: 0,
+    };
+
+    pub fn constant(constant: u64) -> Self {
+        Self { constant, linear: 0 }
+    }
+
+    pub(crate) fn checked_add(self, other: Fee) -> Option<Self> {
+        Some(Self {
+            linear: (self.linear == 0 && other.linear == 0).then_some(other.linear)?,
+            constant: self.constant.checked_add(other.constant)?,
+        })
+    }
+}
+
 /// The results of parsing and analyzing the module.
 ///
 /// This analysis collects information necessary to implement all of the transformations in one go,
@@ -254,7 +287,7 @@ pub struct AnalysisOutcome {
     ///
     /// This vector is indexed by entries in the code section (that is, it is indexed by the
     /// function index, *excluding* imports).
-    pub gas_costs: Vec<Box<[u64]>>,
+    pub gas_costs: Vec<Box<[Fee]>>,
     /// The table of instrumentation kinds for gas instrumentation points.
     ///
     /// This vector is indexed by entries in the code section (that is, it is indexed by the
@@ -293,6 +326,8 @@ impl AnalysisOutcome {
 
 #[cfg(test)]
 pub(crate) mod tests {
+    use crate::Fee;
+
     pub(crate) struct SizeConfig {
         pub(crate) value_size: u8,
         pub(crate) local_size: u8,
@@ -324,14 +359,14 @@ pub(crate) mod tests {
     macro_rules! define_fee {
         ($( @$proposal:ident $op:ident $({ $($arg:ident: $argty:ty),* })? => $visit:ident ($($ann:tt)*))*) => {
             $(
-                fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { 1 }
+                fn $visit(&mut self $($(,$arg: $argty)*)?) -> Self::Output { Fee::constant(1) }
             )*
         }
     }
 
     struct GasConfig;
     impl<'a> wasmparser::VisitOperator<'a> for GasConfig {
-        type Output = u64;
+        type Output = Fee;
 
         fn simd_visitor(
             &mut self,
@@ -365,13 +400,13 @@ pub(crate) mod tests {
 
         let _ = crate::Analysis::new()
             .with_gas(
-                &mut dynamic_gas_config as &mut dyn wasmparser::VisitSimdOperator<Output = u64>,
+                &mut dynamic_gas_config as &mut dyn wasmparser::VisitSimdOperator<Output = Fee>,
             )
             .analyze(b"");
 
         let _ = crate::Analysis::new()
             .with_gas(Box::new(dynamic_gas_config)
-                as Box<dyn wasmparser::VisitSimdOperator<Output = u64>>)
+                as Box<dyn wasmparser::VisitSimdOperator<Output = Fee>>)
             .analyze(b"");
     }
 }
