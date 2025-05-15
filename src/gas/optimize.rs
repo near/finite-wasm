@@ -47,10 +47,15 @@ impl InstrumentationKind {
         Some(match (self, other) {
             (IK::Unreachable, _) => IK::Unreachable,
             (_, IK::Unreachable) => IK::Unreachable,
-            (IK::TableInit | IK::TableGrow | IK::TableFill | IK::TableCopy, _) => return None,
-            (_, IK::TableInit | IK::TableGrow | IK::TableFill | IK::TableCopy) => return None,
-            (IK::MemoryInit | IK::MemoryGrow | IK::MemoryCopy | IK::MemoryFill, _) => return None,
-            (_, IK::MemoryInit | IK::MemoryGrow | IK::MemoryCopy | IK::MemoryFill) => return None,
+            // The classification only allows for these kinds to appear *before* the bulk
+            // operation. In no instance this will be the 1st instrumentation kind (the one that
+            // comes after the "previous" instruction at the same point.
+            (IK::TableInit | IK::TableGrow | IK::TableFill | IK::TableCopy, _) => unreachable!(),
+            (IK::MemoryInit | IK::MemoryGrow | IK::MemoryCopy | IK::MemoryFill, _) => {
+                unreachable!()
+            }
+            (_, IK::TableInit | IK::TableGrow | IK::TableFill | IK::TableCopy) => other,
+            (_, IK::MemoryInit | IK::MemoryGrow | IK::MemoryCopy | IK::MemoryFill) => other,
             (
                 IK::Pure,
                 IK::Pure | IK::PreControlFlow | IK::PostControlFlow | IK::BetweenControlFlow,
