@@ -246,7 +246,7 @@ pub struct Fee {
 }
 
 impl Fee {
-    const ZERO: Fee = Fee {
+    pub const ZERO: Fee = Fee {
         constant: 0,
         linear: 0,
     };
