@@ -70,7 +70,7 @@ fn fuzz() {
                 }
                 Err(_) => return,
             };
-            match analysis_results.instrument("spectest", data) {
+            match analysis_results.instrument("spectest", data, 2, 100) {
                 // If the original input was valid, we want the instrumented module to be valid too!
                 Ok(res) if is_valid => {
                     if let Err(e) =

@@ -541,7 +541,7 @@ impl<'a> TestContext {
         .map_err(|e| Error::AnalyseModule(e, id.into(), self.test_path.clone()))?;
         self.analysis_duration += start.elapsed();
 
-        std::panic::catch_unwind(|| results.instrument("spectest", code))
+        std::panic::catch_unwind(|| results.instrument("spectest", code, 2, 100))
             .map_err(|_| Error::InstrumentModulePanic(id.into(), self.test_path.clone()))?
             .map_err(Error::Instrument)
     }

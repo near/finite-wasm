@@ -5,33 +5,38 @@ use crate::gas::InstrumentationKind;
 use crate::AnalysisOutcome;
 use std::convert::Infallible;
 use wasm_encoder::reencode::{Error as ReencodeError, Reencode};
-use wasm_encoder::{self as we, Section};
+use wasm_encoder::{self as we};
 use wasmparser as wp;
 
 const PLACEHOLDER_FOR_NAMES: u8 = !0;
+
+const GAS_GLOBAL: u32 = 0;
+const STACK_GLOBAL: u32 = GAS_GLOBAL + 1;
+
+/// Total number of injected globals in the instrumented module.
+const G: u32 = STACK_GLOBAL + 1;
 
 /// These function indices are known to be constant, as they are added at the beginning of the
 /// imports section.
 ///
 /// Doing so makes it much easier to transform references to other functions (basically add F to
 /// all function indices)
-const GAS_INSTRUMENTATION_FN: u32 = 0;
+const GAS_EXHAUSTED_FN: u32 = 0;
+const STACK_EXHAUSTED_FN: u32 = GAS_EXHAUSTED_FN + 1;
+const GAS_INSTRUMENTATION_FN: u32 = STACK_EXHAUSTED_FN + 1;
 
-const MEMORY_COPY_INSTRUMENTATION_FN: u32 = GAS_INSTRUMENTATION_FN + 1;
+/// Total number of injected function imports in the instrumented module.
+const F_IMPORTS: u32 = GAS_INSTRUMENTATION_FN + 1;
+
+const MEMORY_COPY_INSTRUMENTATION_FN: u32 = F_IMPORTS;
 const MEMORY_FILL_INSTRUMENTATION_FN: u32 = MEMORY_COPY_INSTRUMENTATION_FN + 1;
 const MEMORY_INIT_INSTRUMENTATION_FN: u32 = MEMORY_FILL_INSTRUMENTATION_FN + 1;
 const TABLE_COPY_INSTRUMENTATION_FN: u32 = MEMORY_INIT_INSTRUMENTATION_FN + 1;
 const TABLE_FILL_INSTRUMENTATION_FN: u32 = TABLE_COPY_INSTRUMENTATION_FN + 1;
 const TABLE_INIT_INSTRUMENTATION_FN: u32 = TABLE_FILL_INSTRUMENTATION_FN + 1;
 
-/// See [`GAS_INSTRUMENTATION_FN`].
-const RESERVE_STACK_INSTRUMENTATION_FN: u32 = TABLE_INIT_INSTRUMENTATION_FN + 1;
-
-/// See [`RESERVE_STACK_INSTRUMENTATION_FN`].
-const RELEASE_STACK_INSTRUMENTATION_FN: u32 = RESERVE_STACK_INSTRUMENTATION_FN + 1;
-
-/// By how many to adjust the references to functions in the instrumented module.
-const F: u32 = RELEASE_STACK_INSTRUMENTATION_FN + 1;
+/// Total number of injected functions in the instrumented module.
+const F_TOTAL: u32 = TABLE_INIT_INSTRUMENTATION_FN + 1;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -91,29 +96,48 @@ pub enum Error {
     CustomSectionRange(u8, usize),
     #[error("could not remap function index {0}")]
     RemapFunctionIndex(u32),
+    #[error("size for table section is out of input bounds")]
+    TableSectionRange(usize),
+    #[error("size for memory section is out of input bounds")]
+    MemorySectionRange(usize),
+    #[error("size for data count section is out of input bounds")]
+    DataCountSection(usize),
+    #[error("module contains too many imports")]
+    TooManyImports,
+    #[error("module contains too many globals")]
+    TooManyGlobals,
 }
 
 pub(crate) struct InstrumentContext<'a> {
     analysis: &'a AnalysisOutcome,
     wasm: &'a [u8],
     import_env: &'a str,
+    globals: u32,
+    imported_functions: u32,
+    op_cost: u32,
+    max_stack_height: u32,
 
-    function_section: we::FunctionSection,
     type_section: we::TypeSection,
     import_section: we::ImportSection,
-    code_section: we::CodeSection,
-    element_section: we::ElementSection,
-    export_section: we::ExportSection,
-    name_section: we::NameSection,
+    function_section: we::FunctionSection,
+    table_section: Option<we::RawSection<'a>>,
+    memory_section: Option<we::RawSection<'a>>,
     global_section: we::GlobalSection,
-    start_section: we::StartSection,
+    export_section: we::ExportSection,
+    start_section: Option<we::StartSection>,
+    element_section: we::ElementSection,
+    datacount_section: Option<we::RawSection<'a>>,
+    code_section: we::CodeSection,
+    name_section: we::NameSection,
     raw_sections: Vec<we::RawSection<'a>>,
 
     types: Vec<we::FuncType>,
     function_types: std::vec::IntoIter<u32>,
 }
 
-struct InstrumentationReencoder;
+struct InstrumentationReencoder {
+    imported_functions: u32,
+}
 
 impl InstrumentationReencoder {
     fn namemap(&mut self, p: wp::NameMap, is_function: bool) -> Result<we::NameMap, Error> {
@@ -149,28 +173,132 @@ impl<'a> Reencode for InstrumentationReencoder {
     type Error = Infallible; // FIXME
 
     fn function_index(&mut self, func: u32) -> u32 {
-        func.checked_add(F)
+        let offset = if func < self.imported_functions {
+            // this is an imported function
+            F_IMPORTS
+        } else {
+            // this function is defined in the module
+            F_TOTAL
+        };
+        func.checked_add(offset)
             .ok_or(Error::RemapFunctionIndex(func))
             .expect("TODO: update wasm-encoder")
     }
 }
 
+trait InstructionSinkExt {
+    /// ```wat
+    /// i64.add128
+    /// i64.eqz
+    /// if
+    /// else
+    ///     call $f
+    ///     unreachable
+    /// end
+    /// ```
+    fn checked_add(self, f: u32) -> Self;
+
+    /// ```wat
+    /// i64.const 0
+    /// local.get $n
+    /// i64.const 0
+    /// i64.add128
+    /// i64.eqz
+    /// if
+    /// else
+    ///     call $f
+    ///     unreachable
+    /// end
+    /// ```
+    fn checked_add_local_i64(self, n: u32, f: u32) -> Self;
+
+    /// ```wat
+    /// i64.sub128
+    /// i64.eqz
+    /// if
+    /// else
+    ///     call $f
+    ///     unreachable
+    /// end
+    /// ```
+    fn checked_sub(self, f: u32) -> Self;
+
+    /// ```wat
+    /// i64.mul_wide_u
+    /// i64.eqz
+    /// if
+    /// else
+    ///     call $f
+    ///     unreachable
+    /// end
+    /// ```
+    fn checked_mul(self, f: u32) -> Self;
+}
+impl InstructionSinkExt for &mut we::InstructionSink<'_> {
+    fn checked_add(self, f: u32) -> Self {
+        self.i64_add128()
+            .i64_eqz()
+            .if_(we::BlockType::Empty)
+            .else_()
+            .call(f)
+            .unreachable()
+            .end()
+    }
+
+    fn checked_add_local_i64(self, n: u32, f: u32) -> Self {
+        self.i64_const(0).local_get(n).i64_const(0).checked_add(f)
+    }
+
+    fn checked_sub(self, f: u32) -> Self {
+        self.i64_sub128()
+            .i64_eqz()
+            .if_(we::BlockType::Empty)
+            .else_()
+            .call(f)
+            .unreachable()
+            .end()
+    }
+
+    fn checked_mul(self, f: u32) -> Self {
+        self.i64_mul_wide_u()
+            .i64_eqz()
+            .if_(we::BlockType::Empty)
+            .else_()
+            .call(f)
+            .unreachable()
+            .end()
+    }
+}
+
 impl<'a> InstrumentContext<'a> {
-    pub(crate) fn new(wasm: &'a [u8], import_env: &'a str, analysis: &'a AnalysisOutcome) -> Self {
+    pub(crate) fn new(
+        wasm: &'a [u8],
+        import_env: &'a str,
+        analysis: &'a AnalysisOutcome,
+        op_cost: u32,
+        max_stack_height: u32,
+    ) -> Self {
         Self {
             analysis,
             wasm,
             import_env,
+            globals: 0,
+            imported_functions: 0,
+            op_cost,
+            max_stack_height,
 
-            function_section: we::FunctionSection::new(),
             type_section: we::TypeSection::new(),
             import_section: we::ImportSection::new(),
-            code_section: we::CodeSection::new(),
-            element_section: we::ElementSection::new(),
-            export_section: we::ExportSection::new(),
-            name_section: we::NameSection::new(),
+            function_section: we::FunctionSection::new(),
+            table_section: None,
+            memory_section: None,
             global_section: we::GlobalSection::new(),
-            start_section: we::StartSection { function_index: 0 },
+            export_section: we::ExportSection::new(),
+            start_section: None,
+            element_section: we::ElementSection::new(),
+            datacount_section: None,
+            code_section: we::CodeSection::new(),
+            name_section: we::NameSection::new(),
             raw_sections: vec![],
 
             types: vec![],
@@ -178,13 +306,11 @@ impl<'a> InstrumentContext<'a> {
         }
     }
 
-    fn schedule_section(&mut self, id: u8) {
-        self.raw_sections.push(we::RawSection { id, data: &[] });
-    }
-
     pub(crate) fn run(mut self) -> Result<Vec<u8>, Error> {
         let parser = wp::Parser::new(0);
-        let mut renc = InstrumentationReencoder;
+        let mut renc = InstrumentationReencoder {
+            imported_functions: 0,
+        };
         for payload in parser.parse_all(self.wasm) {
             let payload = payload.map_err(Error::ParseModuleSection)?;
             match payload {
@@ -202,29 +328,38 @@ impl<'a> InstrumentContext<'a> {
                     }
                 }
 
-                // We must manually reconstruct the imports section because we’re appending imports
+                // We must manually reconstruct the imports section because we’re prepending imports
                 // to it.
                 wp::Payload::ImportSection(imports) => {
                     self.maybe_add_imports();
                     for import in imports {
                         let import = import.map_err(Error::ParseImport)?;
+                        if let wp::TypeRef::Func(..) = import.ty {
+                            self.imported_functions = self
+                                .imported_functions
+                                .checked_add(1)
+                                .ok_or(Error::TooManyImports)?;
+                        }
                         renc.parse_import(&mut self.import_section, import)
                             .map_err(Error::ReencodeImports)?;
                     }
+                    if self.imported_functions.checked_add(F_TOTAL).is_none() {
+                        return Err(Error::TooManyImports);
+                    }
+                    renc.imported_functions = self.imported_functions;
                 }
                 wp::Payload::StartSection { func, .. } => {
-                    self.start_section = we::StartSection {
+                    self.start_section = Some(we::StartSection {
                         function_index: renc.start_section(func),
-                    };
-                    self.schedule_section(self.start_section.id());
+                    });
                 }
                 wp::Payload::ElementSection(reader) => {
                     renc.parse_element_section(&mut self.element_section, reader)
                         .map_err(Error::ElementSection)?;
-                    self.schedule_section(self.element_section.id());
                 }
                 wp::Payload::FunctionSection(reader) => {
-                    // We don’t want to modify this, but need to remember function type indices…
+                    self.maybe_add_functions();
+                    // We need to remember function type indices
                     let fn_types = reader
                         .into_iter()
                         .collect::<Result<Vec<u32>, _>>()
@@ -233,13 +368,27 @@ impl<'a> InstrumentContext<'a> {
                         self.function_section.function(*fnty);
                     }
                     self.function_types = fn_types.into_iter();
-                    self.schedule_section(self.function_section.id());
+                }
+                wp::Payload::TableSection(..) => {
+                    let (id, range) = payload.as_section().unwrap();
+                    let len = range.len();
+                    self.table_section = Some(we::RawSection {
+                        id,
+                        data: self.wasm.get(range).ok_or(Error::TableSectionRange(len))?,
+                    });
+                }
+                wp::Payload::MemorySection(..) => {
+                    let (id, range) = payload.as_section().unwrap();
+                    let len = range.len();
+                    self.memory_section = Some(we::RawSection {
+                        id,
+                        data: self.wasm.get(range).ok_or(Error::MemorySectionRange(len))?,
+                    });
                 }
                 wp::Payload::CodeSectionStart { .. } => {
-                    self.schedule_section(self.code_section.id());
+                    self.maybe_add_code();
                 }
                 wp::Payload::CodeSectionEntry(reader) => {
-                    self.maybe_add_imports();
                     let type_index = self
                         .function_types
                         .next()
@@ -260,15 +409,26 @@ impl<'a> InstrumentContext<'a> {
                         };
                         self.export_section.export(export.name, kind, index);
                     }
-                    self.schedule_section(self.export_section.id());
                 }
                 wp::Payload::GlobalSection(reader) => {
                     for global in reader {
                         let global = global.map_err(Error::ParseGlobal)?;
                         renc.parse_global(&mut self.global_section, global)
                             .map_err(Error::ReencodeGlobals)?;
+                        self.globals = self.globals.checked_add(1).ok_or(Error::TooManyGlobals)?;
                     }
-                    self.schedule_section(self.global_section.id());
+                    if self.globals.checked_add(G).is_none() {
+                        return Err(Error::TooManyGlobals);
+                    }
+                    self.add_globals();
+                }
+                wp::Payload::DataCountSection { .. } => {
+                    let (id, range) = payload.as_section().unwrap();
+                    let len = range.len();
+                    self.datacount_section = Some(we::RawSection {
+                        id,
+                        data: self.wasm.get(range).ok_or(Error::DataCountSection(len))?,
+                    });
                 }
                 wp::Payload::CustomSection(reader) if reader.name() == "name" => {
                     let wasmparser::KnownCustom::Name(names) = reader.as_known() else {
@@ -280,7 +440,10 @@ impl<'a> InstrumentContext<'a> {
                         // old section, or don't transform at all.
                         //
                         // (This is largely useful for fuzzing only)
-                        self.schedule_section(PLACEHOLDER_FOR_NAMES)
+                        self.raw_sections.push(we::RawSection {
+                            id: PLACEHOLDER_FOR_NAMES,
+                            data: &[],
+                        });
                     }
                 }
                 // All the other sections are transparently copied over (they cannot reference a
@@ -305,16 +468,41 @@ impl<'a> InstrumentContext<'a> {
         // preceded or interspersed by custom sections in the original module, so we’re just hoping
         // that the ordering doesn’t matter for tests…
         let mut output = wasm_encoder::Module::new();
-        output.section(&self.type_section);
-        output.section(&self.import_section);
+        if !self.type_section.is_empty() {
+            output.section(&self.type_section);
+        }
+        if !self.import_section.is_empty() {
+            output.section(&self.import_section);
+        }
+        if !self.function_section.is_empty() {
+            output.section(&self.function_section);
+        }
+        if let Some(section) = self.table_section {
+            output.section(&section);
+        }
+        if let Some(section) = self.memory_section {
+            output.section(&section);
+        }
+        if !self.global_section.is_empty() {
+            output.section(&self.global_section);
+        }
+        if !self.export_section.is_empty() {
+            output.section(&self.export_section);
+        }
+        if let Some(section) = self.start_section {
+            output.section(&section);
+        }
+        if !self.element_section.is_empty() {
+            output.section(&self.element_section);
+        }
+        if let Some(section) = self.datacount_section {
+            output.section(&section);
+        }
+        if !self.code_section.is_empty() {
+            output.section(&self.code_section);
+        }
         for section in self.raw_sections {
             match section.id {
-                id if id == self.code_section.id() => output.section(&self.code_section),
-                id if id == self.element_section.id() => output.section(&self.element_section),
-                id if id == self.export_section.id() => output.section(&self.export_section),
-                id if id == self.global_section.id() => output.section(&self.global_section),
-                id if id == self.start_section.id() => output.section(&self.start_section),
-                id if id == self.function_section.id() => output.section(&self.function_section),
                 PLACEHOLDER_FOR_NAMES => output.section(&self.name_section),
                 _ => output.section(&section),
             };
@@ -344,7 +532,7 @@ impl<'a> InstrumentContext<'a> {
             })
             .collect::<Result<Vec<_>, _>>()?;
         let mut new_function = we::Function::new(locals);
-        let code_idx = self.code_section.len() as usize;
+        let code_idx = self.code_section.len().saturating_sub(F_TOTAL - F_IMPORTS) as usize;
         macro_rules! get_idx {
             (analysis . $field: ident) => {{
                 let f = self.analysis.$field.get(code_idx);
@@ -392,10 +580,63 @@ impl<'a> InstrumentContext<'a> {
 
         let should_instrument_stack = stack_sz != 0 || frame_sz != 0;
         if should_instrument_stack {
-            new_function.instruction(&we::Instruction::Block(block_type));
-            new_function.instruction(&we::Instruction::I64Const(stack_sz as i64));
-            new_function.instruction(&we::Instruction::I64Const(frame_sz as i64));
-            new_function.instruction(&we::Instruction::Call(RESERVE_STACK_INSTRUMENTATION_FN));
+            new_function
+                .instructions()
+                .block(block_type)
+                .global_get(self.globals + STACK_GLOBAL)
+                // $stack
+                .i64_const(0)
+                .i64_const(stack_sz as i64)
+                .i64_const(0)
+                .checked_sub(STACK_EXHAUSTED_FN)
+                // $stack - $stack_size
+                .i64_const(0)
+                .i64_const(frame_sz as i64)
+                .i64_const(0)
+                .checked_sub(STACK_EXHAUSTED_FN)
+                // $stack - $stack_size - $frame_size
+                .global_set(self.globals + STACK_GLOBAL)
+                .global_get(self.globals + GAS_GLOBAL)
+                .i64_eqz()
+                .if_(we::BlockType::Empty)
+                .i64_const(frame_sz as i64)
+                .i64_const(0)
+                .i64_const(7)
+                .i64_const(0)
+                // $frame_size | 0 | 7 | 0
+                .checked_add(GAS_EXHAUSTED_FN)
+                // $frame_size + 7
+                .i64_const(8)
+                .i64_div_u()
+                // ($frame_size + 7) / 8
+                .i64_const(self.op_cost.into())
+                // ($frame_size + 7) / 8 | $op_cost
+                .checked_mul(GAS_EXHAUSTED_FN)
+                // ($frame_size + 7) / 8 * $op_cost
+                .call(GAS_INSTRUMENTATION_FN)
+                .else_()
+                .global_get(self.globals + GAS_GLOBAL)
+                .i64_const(0)
+                .i64_const(frame_sz as i64)
+                .i64_const(0)
+                .i64_const(7)
+                .i64_const(0)
+                // $gas | 0 | $frame_size | 0 | 7 | 0
+                .checked_add(GAS_EXHAUSTED_FN)
+                // $gas | 0 | $frame_size + 7
+                .i64_const(8)
+                .i64_div_u()
+                // $gas | 0 | ($frame_size + 7) / 8
+                .i64_const(self.op_cost.into())
+                // $gas | 0 | ($frame_size + 7) / 8 | $op_cost
+                .checked_mul(GAS_EXHAUSTED_FN)
+                // $gas | 0 | ($frame_size + 7) / 8 * $op_cost
+                .i64_const(0)
+                // $gas | 0 | ($frame_size + 7) / 8 * $op_cost | 0
+                .checked_sub(GAS_EXHAUSTED_FN)
+                // $gas - ($frame_size + 7) / 8 * $op_cost
+                .global_set(self.globals + GAS_GLOBAL)
+                .end();
         }
 
         while !operators.eof() {
@@ -404,7 +645,13 @@ impl<'a> InstrumentContext<'a> {
             while instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
                 let ((_, g), k) = instrumentation_points.next().expect("we just peeked");
                 if !matches!(k, InstrumentationKind::Unreachable) {
-                    call_gas_instrumentation(&mut new_function, k, *g)
+                    call_gas_instrumentation(
+                        &mut new_function,
+                        k,
+                        *g,
+                        self.globals,
+                        self.imported_functions,
+                    )
                 }
             }
             match op {
@@ -414,26 +661,46 @@ impl<'a> InstrumentContext<'a> {
                 wp::Operator::Call { function_index } => new_function
                     .instruction(&we::Instruction::Call(renc.function_index(function_index))),
                 wp::Operator::ReturnCall { function_index } => {
-                    call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
+                    call_unstack_instrumentation(
+                        &mut new_function,
+                        stack_sz,
+                        frame_sz,
+                        self.globals,
+                    );
                     new_function.instruction(&we::Instruction::ReturnCall(
                         renc.function_index(function_index),
                     ))
                 }
                 wp::Operator::ReturnCallIndirect { .. } => {
-                    call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
+                    call_unstack_instrumentation(
+                        &mut new_function,
+                        stack_sz,
+                        frame_sz,
+                        self.globals,
+                    );
                     new_function.raw(self.wasm[offset..end_offset].iter().copied())
                 }
                 wp::Operator::Return => {
                     // FIXME: we could replace these `return`s with `br $well_chosen_index`
                     // targetting the block we inserted around the function body.
-                    call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
+                    call_unstack_instrumentation(
+                        &mut new_function,
+                        stack_sz,
+                        frame_sz,
+                        self.globals,
+                    );
                     new_function.instruction(&we::Instruction::Return)
                 }
                 wp::Operator::End if operators.eof() => {
                     // This is the last function end…
                     if should_instrument_stack {
                         new_function.instruction(&we::Instruction::End);
-                        call_unstack_instrumentation(&mut new_function, stack_sz, frame_sz);
+                        call_unstack_instrumentation(
+                            &mut new_function,
+                            stack_sz,
+                            frame_sz,
+                            self.globals,
+                        );
                     }
                     new_function.instruction(&we::Instruction::End)
                 }
@@ -449,12 +716,39 @@ impl<'a> InstrumentContext<'a> {
         if self.import_section.is_empty() {
             // By adding the type at the end of the type section we guarantee that any other
             // type references remain valid.
+            let exhausted_fnty = self.type_section.len();
+            self.type_section.ty().function([], []);
             let gas_fnty = self.type_section.len();
             self.type_section.ty().function([we::ValType::I64], []);
-            let stack_fnty = self.type_section.len();
-            self.type_section
-                .ty()
-                .function([we::ValType::I64, we::ValType::I64], []);
+
+            // By inserting the imports at the beginning of the import section we make the new
+            // function index mapping trivial (it is always just an increment by `F_IMPORTS` for
+            // imported functions and increment by `imported_functions + F_TOTAL` otherwise)
+            debug_assert_eq!(self.import_section.len(), GAS_EXHAUSTED_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_gas_exhausted",
+                we::EntityType::Function(exhausted_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), STACK_EXHAUSTED_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_stack_exhausted",
+                we::EntityType::Function(exhausted_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), GAS_INSTRUMENTATION_FN);
+            self.import_section.import(
+                self.import_env,
+                "finite_wasm_gas",
+                we::EntityType::Function(gas_fnty),
+            );
+            debug_assert_eq!(self.import_section.len(), F_IMPORTS);
+        }
+    }
+
+    fn maybe_add_functions(&mut self) {
+        self.maybe_add_imports();
+        if self.function_section.is_empty() {
             // FIXME: these operators actually take two additional arguments i.e. for memory [i32
             // i32 i32] and for table [i32 ref i32]. It might be interesting for the
             // instrumentation to modify fees based on the value being filled, but it would require
@@ -465,66 +759,141 @@ impl<'a> InstrumentContext<'a> {
             // scale of the work.) This also makes these intrinsics compatible with non-multi-value
             // VMs still.
             let copy_init_fill_fnty = self.type_section.len();
-            self.type_section
-                .ty()
-                .function([we::ValType::I32, we::ValType::I64, we::ValType::I64], [we::ValType::I32]);
-            // By inserting the imports at the beginning of the import section we make the new
-            // function index mapping trivial (it is always just an increment by F)
-            debug_assert_eq!(self.import_section.len(), GAS_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_gas",
-                we::EntityType::Function(gas_fnty),
+            self.type_section.ty().function(
+                [we::ValType::I32, we::ValType::I64, we::ValType::I64],
+                [we::ValType::I32],
             );
-            debug_assert_eq!(self.import_section.len(), MEMORY_COPY_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_memory_copy",
-                we::EntityType::Function(copy_init_fill_fnty),
+
+            debug_assert_eq!(
+                self.function_section.len(),
+                MEMORY_COPY_INSTRUMENTATION_FN - F_IMPORTS
             );
-            debug_assert_eq!(self.import_section.len(), MEMORY_FILL_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_memory_fill",
-                we::EntityType::Function(copy_init_fill_fnty),
+            self.function_section.function(copy_init_fill_fnty);
+            debug_assert_eq!(
+                self.function_section.len(),
+                MEMORY_FILL_INSTRUMENTATION_FN - F_IMPORTS
             );
-            debug_assert_eq!(self.import_section.len(), MEMORY_INIT_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_memory_init",
-                we::EntityType::Function(copy_init_fill_fnty),
+            self.function_section.function(copy_init_fill_fnty);
+            debug_assert_eq!(
+                self.function_section.len(),
+                MEMORY_INIT_INSTRUMENTATION_FN - F_IMPORTS
             );
-            debug_assert_eq!(self.import_section.len(), TABLE_COPY_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_table_copy",
-                we::EntityType::Function(copy_init_fill_fnty),
+            self.function_section.function(copy_init_fill_fnty);
+            debug_assert_eq!(
+                self.function_section.len(),
+                TABLE_COPY_INSTRUMENTATION_FN - F_IMPORTS
             );
-            debug_assert_eq!(self.import_section.len(), TABLE_FILL_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_table_fill",
-                we::EntityType::Function(copy_init_fill_fnty),
+            self.function_section.function(copy_init_fill_fnty);
+            debug_assert_eq!(
+                self.function_section.len(),
+                TABLE_FILL_INSTRUMENTATION_FN - F_IMPORTS
             );
-            debug_assert_eq!(self.import_section.len(), TABLE_INIT_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_table_init",
-                we::EntityType::Function(copy_init_fill_fnty),
+            self.function_section.function(copy_init_fill_fnty);
+            debug_assert_eq!(
+                self.function_section.len(),
+                TABLE_INIT_INSTRUMENTATION_FN - F_IMPORTS
             );
-            debug_assert_eq!(self.import_section.len(), RESERVE_STACK_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_stack",
-                we::EntityType::Function(stack_fnty),
+            self.function_section.function(copy_init_fill_fnty);
+
+            debug_assert_eq!(self.function_section.len(), F_TOTAL - F_IMPORTS);
+        }
+    }
+
+    fn add_globals(&mut self) {
+        debug_assert_eq!(self.global_section.len(), self.globals + GAS_GLOBAL);
+        self.global_section.global(
+            we::GlobalType {
+                val_type: we::ValType::I64,
+                mutable: true,
+                shared: false,
+            },
+            &we::ConstExpr::i64_const(0),
+        );
+        debug_assert_eq!(self.global_section.len(), self.globals + STACK_GLOBAL);
+        self.global_section.global(
+            we::GlobalType {
+                val_type: we::ValType::I64,
+                mutable: true,
+                shared: false,
+            },
+            &we::ConstExpr::i64_const(self.max_stack_height.into()),
+        );
+        debug_assert_eq!(self.global_section.len(), self.globals + G);
+
+        self.export_section.export(
+            "\0finite_wasm_remaining_gas",
+            we::ExportKind::Global,
+            self.globals + GAS_GLOBAL,
+        );
+    }
+
+    fn maybe_add_code(&mut self) {
+        self.maybe_add_functions();
+        if self.global_section.is_empty() {
+            self.add_globals();
+        }
+        if self.code_section.is_empty() {
+            // (param $count i32) (param $linear i64) (param $constant i64) (result i32)
+            let mut linear_gas = we::Function::new([]);
+            linear_gas
+                .instructions()
+                .global_get(self.globals + GAS_GLOBAL)
+                .local_get(0)
+                .i64_extend_i32_u()
+                // $gas | $count
+                .local_get(1)
+                // $gas | $count | $linear
+                .checked_mul(GAS_EXHAUSTED_FN)
+                // $gas | $count * $linear
+                .checked_add_local_i64(2, GAS_EXHAUSTED_FN)
+                // $gas | $count * $linear + $constant
+                .local_tee(1)
+                .i64_lt_u()
+                // $gas < $count * $linear + $constant
+                .if_(we::BlockType::Empty)
+                .local_get(1)
+                .call(GAS_INSTRUMENTATION_FN)
+                .else_()
+                .global_get(self.globals + GAS_GLOBAL)
+                .local_get(1)
+                .i64_sub()
+                // $gas - $count * $linear + $constant
+                .global_set(self.globals + GAS_GLOBAL)
+                .end()
+                // $count
+                .local_get(0)
+                .end();
+            debug_assert_eq!(
+                self.code_section.len(),
+                MEMORY_COPY_INSTRUMENTATION_FN - F_IMPORTS,
             );
-            debug_assert_eq!(self.import_section.len(), RELEASE_STACK_INSTRUMENTATION_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_unstack",
-                we::EntityType::Function(stack_fnty),
+            self.code_section.function(&linear_gas);
+            debug_assert_eq!(
+                self.code_section.len(),
+                MEMORY_FILL_INSTRUMENTATION_FN - F_IMPORTS,
             );
-            debug_assert_eq!(self.import_section.len(), F);
+            self.code_section.function(&linear_gas);
+            debug_assert_eq!(
+                self.code_section.len(),
+                MEMORY_INIT_INSTRUMENTATION_FN - F_IMPORTS,
+            );
+            self.code_section.function(&linear_gas);
+            debug_assert_eq!(
+                self.code_section.len(),
+                TABLE_COPY_INSTRUMENTATION_FN - F_IMPORTS,
+            );
+            self.code_section.function(&linear_gas);
+            debug_assert_eq!(
+                self.code_section.len(),
+                TABLE_FILL_INSTRUMENTATION_FN - F_IMPORTS,
+            );
+            self.code_section.function(&linear_gas);
+            debug_assert_eq!(
+                self.code_section.len(),
+                TABLE_INIT_INSTRUMENTATION_FN - F_IMPORTS,
+            );
+            self.code_section.function(&linear_gas);
+            debug_assert_eq!(self.code_section.len(), F_TOTAL - F_IMPORTS);
         }
     }
 
@@ -539,9 +908,9 @@ impl<'a> InstrumentContext<'a> {
                 wp::Name::Module { name, .. } => self.name_section.module(name),
                 wp::Name::Function(map) => {
                     let mut new_name_map = we::NameMap::new();
+                    new_name_map.append(GAS_EXHAUSTED_FN, "finite_wasm_gas_exhausted");
+                    new_name_map.append(STACK_EXHAUSTED_FN, "finite_wasm_stack_exhausted");
                     new_name_map.append(GAS_INSTRUMENTATION_FN, "finite_wasm_gas");
-                    new_name_map.append(RESERVE_STACK_INSTRUMENTATION_FN, "finite_wasm_stack");
-                    new_name_map.append(RELEASE_STACK_INSTRUMENTATION_FN, "finite_wasm_unstack");
                     for naming in map {
                         let naming = naming.map_err(Error::ParseNameMapName)?;
                         new_name_map.append(renc.function_index(naming.index), naming.name);
@@ -569,55 +938,79 @@ fn call_unstack_instrumentation(
     func: &mut we::Function,
     max_operand_stack_size: u64,
     function_frame_size: u64,
+    globals: u32,
 ) {
     if max_operand_stack_size != 0 || function_frame_size != 0 {
         // These casts being able to wrap-around is intentional. The callee must reinterpret these
         // back to unsigned.
-        func.instruction(&we::Instruction::I64Const(max_operand_stack_size as i64));
-        func.instruction(&we::Instruction::I64Const(function_frame_size as i64));
-        func.instruction(&we::Instruction::Call(RELEASE_STACK_INSTRUMENTATION_FN));
+        func.instructions()
+            .global_get(globals + STACK_GLOBAL)
+            .i64_const(0)
+            .i64_const(max_operand_stack_size as i64)
+            .i64_const(0)
+            .checked_add(STACK_EXHAUSTED_FN)
+            // $stack + $operand_size
+            .i64_const(0)
+            .i64_const(function_frame_size as i64)
+            .i64_const(0)
+            .checked_add(STACK_EXHAUSTED_FN)
+            // $stack + $operand_size + $frame_size
+            .global_set(globals + STACK_GLOBAL);
     }
 }
 
-fn call_gas_instrumentation(func: &mut we::Function, k: &InstrumentationKind, gas: crate::Fee) {
+fn call_gas_instrumentation(
+    func: &mut we::Function,
+    k: &InstrumentationKind,
+    gas: crate::Fee,
+    globals: u32,
+    imported_functions: u32,
+) {
+    // NOTE: We have already verified that `imported_functions + F_TOTAL`  fits in u32
     if matches!(gas, crate::Fee::ZERO) {
         return;
     } else if gas.linear == 0 {
         // The reinterpreting cast is intentional here. On the other side the host function is
         // expected to reinterpret the argument back to u64.
-        func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-        func.instruction(&we::Instruction::Call(GAS_INSTRUMENTATION_FN));
+        func.instructions()
+            .global_get(globals + GAS_GLOBAL)
+            .i64_const(gas.constant as i64)
+            // $gas | $constant
+            .i64_lt_u()
+            // $gas < $constant
+            .if_(we::BlockType::Empty)
+            .i64_const(gas.constant as i64)
+            .call(GAS_INSTRUMENTATION_FN)
+            .else_()
+            .global_get(globals + GAS_GLOBAL)
+            .i64_const(gas.constant as i64)
+            .i64_sub()
+            // $gas - $constant
+            .global_set(globals + GAS_GLOBAL)
+            .end();
     } else {
+        let mut func = func.instructions();
+        let func = func
+            .i64_const(gas.linear as i64)
+            .i64_const(gas.constant as i64);
         match k {
             InstrumentationKind::TableInit => {
-                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
-                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-                func.instruction(&we::Instruction::Call(TABLE_INIT_INSTRUMENTATION_FN));
+                func.call(imported_functions + TABLE_INIT_INSTRUMENTATION_FN);
             }
             InstrumentationKind::TableFill => {
-                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
-                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-                func.instruction(&we::Instruction::Call(TABLE_FILL_INSTRUMENTATION_FN));
+                func.call(imported_functions + TABLE_FILL_INSTRUMENTATION_FN);
             }
             InstrumentationKind::TableCopy => {
-                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
-                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-                func.instruction(&we::Instruction::Call(TABLE_COPY_INSTRUMENTATION_FN));
+                func.call(imported_functions + TABLE_COPY_INSTRUMENTATION_FN);
             }
             InstrumentationKind::MemoryInit => {
-                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
-                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-                func.instruction(&we::Instruction::Call(MEMORY_INIT_INSTRUMENTATION_FN));
+                func.call(imported_functions + MEMORY_INIT_INSTRUMENTATION_FN);
             }
             InstrumentationKind::MemoryFill => {
-                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
-                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-                func.instruction(&we::Instruction::Call(MEMORY_FILL_INSTRUMENTATION_FN));
+                func.call(imported_functions + MEMORY_FILL_INSTRUMENTATION_FN);
             }
             InstrumentationKind::MemoryCopy => {
-                func.instruction(&we::Instruction::I64Const(gas.linear as i64));
-                func.instruction(&we::Instruction::I64Const(gas.constant as i64));
-                func.instruction(&we::Instruction::Call(MEMORY_COPY_INSTRUMENTATION_FN));
+                func.call(imported_functions + MEMORY_COPY_INSTRUMENTATION_FN);
             }
             _ => {
                 panic!("configuration error, linear gas fees are only applicable to aggregate operations");
