@@ -111,6 +111,8 @@ pub enum Error {
     TooManyGlobals,
     #[error("module contains too many functions")]
     TooManyFunctions,
+    #[error("function contains too many locals")]
+    TooManyLocals,
 }
 
 pub(crate) struct InstrumentContext<'a> {
@@ -560,21 +562,28 @@ impl<'a> InstrumentContext<'a> {
         func_type_idx: u32,
     ) -> Result<(), Error> {
         let func_type_idx_usize =
-            usize::try_from(func_type_idx).map_err(|_| Error::InvalidTypeIndex)?;
+            usize::try_from(func_type_idx).or(Err(Error::InvalidTypeIndex))?;
         let func_type = self
             .types
             .get(func_type_idx_usize)
             .ok_or(Error::InvalidTypeIndex)?;
-        let locals = reader
+
+        let local_idx: u32 = func_type
+            .params()
+            .len()
+            .try_into()
+            .or(Err(Error::TooManyLocals))?;
+        let (mut locals, local_idx) = reader
             .get_locals_reader()
             .map_err(Error::ParseLocals)?
             .into_iter()
-            .map(|v| {
-                v.map_err(Error::ParseLocal)
-                    .and_then(|(c, t)| Ok((c, renc.val_type(t).map_err(Error::ReencodeLocal)?)))
-            })
-            .collect::<Result<Vec<_>, _>>()?;
-        let mut new_function = we::Function::new(locals);
+            .try_fold((Vec::default(), local_idx), |(mut locals, local_idx), v| {
+                let (n, ty) = v.map_err(Error::ParseLocal)?;
+                let ty = renc.val_type(ty).map_err(Error::ReencodeLocal)?;
+                locals.push((n, ty));
+                let local_idx = local_idx.checked_add(n).ok_or(Error::TooManyLocals)?;
+                Ok((locals, local_idx))
+            })?;
         let code_idx = self.code_section.len().saturating_sub(F_TOTAL - F_IMPORTS) as usize;
         macro_rules! get_idx {
             (analysis . $field: ident) => {{
@@ -620,6 +629,10 @@ impl<'a> InstrumentContext<'a> {
                 we::BlockType::FunctionType(new_block_type_idx)
             }
         };
+
+        locals.push((1, we::ValType::I64));
+        locals.push((1, we::ValType::I32));
+        let mut new_function = we::Function::new(locals);
 
         let should_instrument_stack = stack_sz != 0 || frame_sz != 0;
         if should_instrument_stack {
@@ -688,13 +701,7 @@ impl<'a> InstrumentContext<'a> {
             while instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
                 let ((_, g), k) = instrumentation_points.next().expect("we just peeked");
                 if !matches!(k, InstrumentationKind::Unreachable) {
-                    call_gas_instrumentation(
-                        &mut new_function,
-                        k,
-                        *g,
-                        self.globals,
-                        self.imported_functions,
-                    )
+                    call_gas_instrumentation(&mut new_function, k, *g, self.globals, local_idx)?
                 }
             }
             match op {
@@ -1014,11 +1021,11 @@ fn call_gas_instrumentation(
     k: &InstrumentationKind,
     gas: crate::Fee,
     globals: u32,
-    imported_functions: u32,
-) {
+    local_idx: u32,
+) -> Result<(), Error> {
     // NOTE: We have already verified that `imported_functions + F_TOTAL`  fits in u32
     if matches!(gas, crate::Fee::ZERO) {
-        return;
+        return Ok(());
     } else if gas.linear == 0 {
         // The reinterpreting cast is intentional here. On the other side the host function is
         // expected to reinterpret the argument back to u64.
@@ -1038,33 +1045,52 @@ fn call_gas_instrumentation(
             // $gas - $constant
             .global_set(globals + GAS_GLOBAL)
             .end();
-    } else {
-        let mut func = func.instructions();
-        let func = func
-            .i64_const(gas.linear as i64)
-            .i64_const(gas.constant as i64);
-        match k {
-            InstrumentationKind::TableInit => {
-                func.call(imported_functions + TABLE_INIT_INSTRUMENTATION_FN);
-            }
-            InstrumentationKind::TableFill => {
-                func.call(imported_functions + TABLE_FILL_INSTRUMENTATION_FN);
-            }
-            InstrumentationKind::TableCopy => {
-                func.call(imported_functions + TABLE_COPY_INSTRUMENTATION_FN);
-            }
-            InstrumentationKind::MemoryInit => {
-                func.call(imported_functions + MEMORY_INIT_INSTRUMENTATION_FN);
-            }
-            InstrumentationKind::MemoryFill => {
-                func.call(imported_functions + MEMORY_FILL_INSTRUMENTATION_FN);
-            }
-            InstrumentationKind::MemoryCopy => {
-                func.call(imported_functions + MEMORY_COPY_INSTRUMENTATION_FN);
-            }
-            _ => {
-                panic!("configuration error, linear gas fees are only applicable to aggregate operations");
-            }
+        return Ok(());
+    }
+    match k {
+        InstrumentationKind::TableInit
+        | InstrumentationKind::TableFill
+        | InstrumentationKind::TableCopy
+        | InstrumentationKind::MemoryInit
+        | InstrumentationKind::MemoryFill
+        | InstrumentationKind::MemoryCopy => {
+            let count_idx = local_idx.checked_add(1).ok_or(Error::TooManyLocals)?;
+            func.instructions()
+                .local_tee(count_idx)
+                .i64_extend_i32_u()
+                // $count
+                .i64_const(gas.linear as i64)
+                // $count | $linear
+                .checked_mul(GAS_EXHAUSTED_FN)
+                // $count * $linear
+                .i64_const(0)
+                .i64_const(gas.constant as i64)
+                .i64_const(0)
+                // $count * $linear | 0 | $constant | 0
+                .checked_add(GAS_EXHAUSTED_FN)
+                // $count * $linear + $constant
+                .local_tee(local_idx)
+                .global_get(globals + GAS_GLOBAL)
+                .i64_gt_u()
+                // $count * $linear + $constant > $gas
+                .if_(we::BlockType::Empty)
+                .local_get(local_idx)
+                .call(GAS_INSTRUMENTATION_FN)
+                .else_()
+                .global_get(globals + GAS_GLOBAL)
+                .local_get(local_idx)
+                .i64_sub()
+                // $gas - $count * $linear + $constant
+                .global_set(globals + GAS_GLOBAL)
+                .end()
+                // $count
+                .local_get(count_idx);
+            Ok(())
+        }
+        _ => {
+            panic!(
+                "configuration error, linear gas fees are only applicable to aggregate operations"
+            );
         }
     }
 }
