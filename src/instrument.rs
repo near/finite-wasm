@@ -21,8 +21,7 @@ const G: u32 = STACK_GLOBAL + 1;
 ///
 /// Doing so makes it much easier to transform references to other functions (basically add F to
 /// all function indices)
-const INIT_FN: u32 = 0;
-const GAS_EXHAUSTED_FN: u32 = INIT_FN + 1;
+const GAS_EXHAUSTED_FN: u32 = 0;
 const STACK_EXHAUSTED_FN: u32 = GAS_EXHAUSTED_FN + 1;
 const GAS_INSTRUMENTATION_FN: u32 = STACK_EXHAUSTED_FN + 1;
 
@@ -81,8 +80,6 @@ pub enum Error {
     FunctionMissingInAnalysisOutcome(&'static str, usize),
     #[error("module contains fewer function types than definitions")]
     InsufficientFunctionTypes,
-    #[error("module contains a reference to an invalid function index")]
-    InvalidFunctionIndex,
     #[error("module contains a reference to an invalid type index")]
     InvalidTypeIndex,
     #[error("size for custom section {0} is out of input bounds")]
@@ -99,8 +96,6 @@ pub enum Error {
     TooManyImports,
     #[error("module contains too many globals")]
     TooManyGlobals,
-    #[error("module contains too many functions")]
-    TooManyFunctions,
     #[error("function contains too many locals")]
     TooManyLocals,
 }
@@ -129,8 +124,7 @@ pub(crate) struct InstrumentContext<'a> {
     raw_sections: Vec<we::RawSection<'a>>,
 
     types: Vec<we::FuncType>,
-    function_types: Vec<u32>,
-    function_type_iter: std::vec::IntoIter<u32>,
+    function_types: std::vec::IntoIter<u32>,
 }
 
 struct InstrumentationReencoder;
@@ -273,8 +267,7 @@ impl<'a> InstrumentContext<'a> {
             raw_sections: vec![],
 
             types: vec![],
-            function_types: vec![],
-            function_type_iter: vec![].into_iter(),
+            function_types: vec![].into_iter(),
         }
     }
 
@@ -318,10 +311,23 @@ impl<'a> InstrumentContext<'a> {
                     }
                 }
                 wp::Payload::StartSection { func, .. } => {
-                    // This will be remapped after parsing the whole module
-                    self.start_section = Some(we::StartSection {
-                        function_index: func,
-                    });
+                    let function_index = renc.function_index(func);
+                    if func < self.imported_functions {
+                        // Do not instrument calls to imported functions.
+                        self.start_section = Some(we::StartSection { function_index });
+                    } else {
+                        // The start function will require instrumentation, export it as a regular
+                        // function under well-known name, such that the runtime could:
+                        // 1. instantiate the module
+                        // 2. lookup the `\0finite_wasm_remaining_gas` global on the instance
+                        // 3. set the value of `\0finite_wasm_remaining_gas` global
+                        // 4. invoke `\0finite_wasm_start`
+                        self.export_section.export(
+                            "\0finite_wasm_start",
+                            we::ExportKind::Func,
+                            function_index,
+                        );
+                    }
                 }
                 wp::Payload::ElementSection(reader) => {
                     renc.parse_element_section(&mut self.element_section, reader)
@@ -336,8 +342,7 @@ impl<'a> InstrumentContext<'a> {
                     for fnty in &fn_types {
                         self.function_section.function(*fnty);
                     }
-                    self.function_types = fn_types.clone();
-                    self.function_type_iter = fn_types.into_iter();
+                    self.function_types = fn_types.into_iter();
                 }
                 wp::Payload::TableSection(..) => {
                     let (id, range) = payload.as_section().unwrap();
@@ -362,7 +367,7 @@ impl<'a> InstrumentContext<'a> {
                         self.add_globals();
                     }
                     let type_index = self
-                        .function_type_iter
+                        .function_types
                         .next()
                         .ok_or(Error::InsufficientFunctionTypes)?;
                     self.transform_code_section(&mut renc, reader, type_index)?;
@@ -435,41 +440,6 @@ impl<'a> InstrumentContext<'a> {
                 }
             }
         }
-        // NOTE: Start section comes after function section, but before code section.
-        // Parse the whole module first and only then inject the new start function if required
-        // to avoid having to recompute indexes
-        if let Some(we::StartSection { function_index }) = self.start_section {
-            let func = renc.function_index(function_index);
-            let function_index = function_index
-                .checked_sub(self.imported_functions)
-                .map(|idx| {
-                    let idx = usize::try_from(idx).or(Err(Error::InvalidFunctionIndex))?;
-                    let ty = self
-                        .function_types
-                        .get(idx)
-                        .ok_or(Error::InvalidTypeIndex)?;
-
-                    // NOTE: We have already verified that `imported_functions + F` fits in u32
-                    let function_index = self
-                        .function_section
-                        .len()
-                        .checked_add(self.imported_functions + F)
-                        .ok_or(Error::TooManyFunctions)?;
-                    self.function_section.function(*ty);
-
-                    let ty = usize::try_from(*ty).or(Err(Error::InvalidTypeIndex))?;
-                    let ty = self.types.get(ty).ok_or(Error::InvalidTypeIndex)?;
-                    let mut start = we::Function::new(ty.params().into_iter().map(|ty| (1, *ty)));
-                    start.instructions().call(INIT_FN).call(func).end();
-                    self.code_section.function(&start);
-                    Ok(function_index)
-                })
-                .transpose()?;
-            // no need to instrument calls to imported functions
-            let function_index = function_index.unwrap_or(func);
-            self.start_section = Some(we::StartSection { function_index });
-        }
-
         // The type and import sections always come first in a module. They may potentially be
         // preceded or interspersed by custom sections in the original module, so we’re just hoping
         // that the ordering doesn’t matter for tests…
@@ -715,30 +685,24 @@ impl<'a> InstrumentContext<'a> {
         if self.import_section.is_empty() {
             // By adding the type at the end of the type section we guarantee that any other
             // type references remain valid.
-            let void_fnty = self.type_section.len();
+            let exhausted_fnty = self.type_section.len();
             self.type_section.ty().function([], []);
             let gas_fnty = self.type_section.len();
             self.type_section.ty().function([we::ValType::I64], []);
 
             // By inserting the imports at the beginning of the import section we make the new
             // function index mapping trivial (it is always just an increment by `F`)
-            debug_assert_eq!(self.import_section.len(), INIT_FN);
-            self.import_section.import(
-                self.import_env,
-                "finite_wasm_init",
-                we::EntityType::Function(void_fnty),
-            );
             debug_assert_eq!(self.import_section.len(), GAS_EXHAUSTED_FN);
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_gas_exhausted",
-                we::EntityType::Function(void_fnty),
+                we::EntityType::Function(exhausted_fnty),
             );
             debug_assert_eq!(self.import_section.len(), STACK_EXHAUSTED_FN);
             self.import_section.import(
                 self.import_env,
                 "finite_wasm_stack_exhausted",
-                we::EntityType::Function(void_fnty),
+                we::EntityType::Function(exhausted_fnty),
             );
             debug_assert_eq!(self.import_section.len(), GAS_INSTRUMENTATION_FN);
             self.import_section.import(
@@ -789,7 +753,6 @@ impl<'a> InstrumentContext<'a> {
                 wp::Name::Module { name, .. } => self.name_section.module(name),
                 wp::Name::Function(map) => {
                     let mut new_name_map = we::NameMap::new();
-                    new_name_map.append(INIT_FN, "finite_wasm_init");
                     new_name_map.append(GAS_EXHAUSTED_FN, "finite_wasm_gas_exhausted");
                     new_name_map.append(STACK_EXHAUSTED_FN, "finite_wasm_stack_exhausted");
                     new_name_map.append(GAS_INSTRUMENTATION_FN, "finite_wasm_gas");
