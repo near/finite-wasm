@@ -2,7 +2,7 @@
 // manually implemented and half-way reliant on wasm_encoder::reencode...
 
 use crate::gas::InstrumentationKind;
-use crate::AnalysisOutcome;
+use crate::{AnalysisOutcome, REMAINING_GAS_EXPORT, START_EXPORT};
 use std::convert::Infallible;
 use wasm_encoder::reencode::{Error as ReencodeError, Reencode};
 use wasm_encoder::{self as we};
@@ -323,7 +323,7 @@ impl<'a> InstrumentContext<'a> {
                         // 3. set the value of `\0finite_wasm_remaining_gas` global
                         // 4. invoke `\0finite_wasm_start`
                         self.export_section.export(
-                            "\0finite_wasm_start",
+                            START_EXPORT,
                             we::ExportKind::Func,
                             function_index,
                         );
@@ -736,7 +736,7 @@ impl<'a> InstrumentContext<'a> {
         debug_assert_eq!(self.global_section.len(), self.globals + G);
 
         self.export_section.export(
-            "\0finite_wasm_remaining_gas",
+            REMAINING_GAS_EXPORT,
             we::ExportKind::Global,
             self.globals + GAS_GLOBAL,
         );
