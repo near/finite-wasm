@@ -26,18 +26,8 @@ const GAS_EXHAUSTED_FN: u32 = INIT_FN + 1;
 const STACK_EXHAUSTED_FN: u32 = GAS_EXHAUSTED_FN + 1;
 const GAS_INSTRUMENTATION_FN: u32 = STACK_EXHAUSTED_FN + 1;
 
-/// Total number of injected function imports in the instrumented module.
-const F_IMPORTS: u32 = GAS_INSTRUMENTATION_FN + 1;
-
-const MEMORY_COPY_INSTRUMENTATION_FN: u32 = F_IMPORTS;
-const MEMORY_FILL_INSTRUMENTATION_FN: u32 = MEMORY_COPY_INSTRUMENTATION_FN + 1;
-const MEMORY_INIT_INSTRUMENTATION_FN: u32 = MEMORY_FILL_INSTRUMENTATION_FN + 1;
-const TABLE_COPY_INSTRUMENTATION_FN: u32 = MEMORY_INIT_INSTRUMENTATION_FN + 1;
-const TABLE_FILL_INSTRUMENTATION_FN: u32 = TABLE_COPY_INSTRUMENTATION_FN + 1;
-const TABLE_INIT_INSTRUMENTATION_FN: u32 = TABLE_FILL_INSTRUMENTATION_FN + 1;
-
 /// Total number of injected functions in the instrumented module.
-const F_TOTAL: u32 = TABLE_INIT_INSTRUMENTATION_FN + 1;
+const F: u32 = GAS_INSTRUMENTATION_FN + 1;
 
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
@@ -143,9 +133,7 @@ pub(crate) struct InstrumentContext<'a> {
     function_type_iter: std::vec::IntoIter<u32>,
 }
 
-struct InstrumentationReencoder {
-    imported_functions: u32,
-}
+struct InstrumentationReencoder;
 
 impl InstrumentationReencoder {
     fn namemap(&mut self, p: wp::NameMap, is_function: bool) -> Result<we::NameMap, Error> {
@@ -181,14 +169,7 @@ impl<'a> Reencode for InstrumentationReencoder {
     type Error = Infallible; // FIXME
 
     fn function_index(&mut self, func: u32) -> u32 {
-        let offset = if func < self.imported_functions {
-            // this is an imported function
-            F_IMPORTS
-        } else {
-            // this function is defined in the module
-            F_TOTAL
-        };
-        func.checked_add(offset)
+        func.checked_add(F)
             .ok_or(Error::RemapFunctionIndex(func))
             .expect("TODO: update wasm-encoder")
     }
@@ -205,20 +186,6 @@ trait InstructionSinkExt {
     /// end
     /// ```
     fn checked_add(self, f: u32) -> Self;
-
-    /// ```wat
-    /// i64.const 0
-    /// local.get $n
-    /// i64.const 0
-    /// i64.add128
-    /// i64.eqz
-    /// if
-    /// else
-    ///     call $f
-    ///     unreachable
-    /// end
-    /// ```
-    fn checked_add_local_i64(self, n: u32, f: u32) -> Self;
 
     /// ```wat
     /// i64.sub128
@@ -251,10 +218,6 @@ impl InstructionSinkExt for &mut we::InstructionSink<'_> {
             .call(f)
             .unreachable()
             .end()
-    }
-
-    fn checked_add_local_i64(self, n: u32, f: u32) -> Self {
-        self.i64_const(0).local_get(n).i64_const(0).checked_add(f)
     }
 
     fn checked_sub(self, f: u32) -> Self {
@@ -317,9 +280,7 @@ impl<'a> InstrumentContext<'a> {
 
     pub(crate) fn run(mut self) -> Result<Vec<u8>, Error> {
         let parser = wp::Parser::new(0);
-        let mut renc = InstrumentationReencoder {
-            imported_functions: 0,
-        };
+        let mut renc = InstrumentationReencoder;
         for payload in parser.parse_all(self.wasm) {
             let payload = payload.map_err(Error::ParseModuleSection)?;
             match payload {
@@ -352,10 +313,9 @@ impl<'a> InstrumentContext<'a> {
                         renc.parse_import(&mut self.import_section, import)
                             .map_err(Error::ReencodeImports)?;
                     }
-                    if self.imported_functions.checked_add(F_TOTAL).is_none() {
+                    if self.imported_functions.checked_add(F).is_none() {
                         return Err(Error::TooManyImports);
                     }
-                    renc.imported_functions = self.imported_functions;
                 }
                 wp::Payload::StartSection { func, .. } => {
                     // This will be remapped after parsing the whole module
@@ -368,8 +328,7 @@ impl<'a> InstrumentContext<'a> {
                         .map_err(Error::ElementSection)?;
                 }
                 wp::Payload::FunctionSection(reader) => {
-                    self.maybe_add_functions();
-                    // We need to remember function type indices
+                    // We don’t want to modify this, but need to remember function type indices…
                     let fn_types = reader
                         .into_iter()
                         .collect::<Result<Vec<u32>, _>>()
@@ -396,10 +355,12 @@ impl<'a> InstrumentContext<'a> {
                         data: self.wasm.get(range).ok_or(Error::MemorySectionRange(len))?,
                     });
                 }
-                wp::Payload::CodeSectionStart { .. } => {
-                    self.maybe_add_code();
-                }
+                wp::Payload::CodeSectionStart { .. } => {}
                 wp::Payload::CodeSectionEntry(reader) => {
+                    self.maybe_add_imports();
+                    if self.global_section.is_empty() {
+                        self.add_globals();
+                    }
                     let type_index = self
                         .function_type_iter
                         .next()
@@ -488,11 +449,11 @@ impl<'a> InstrumentContext<'a> {
                         .get(idx)
                         .ok_or(Error::InvalidTypeIndex)?;
 
-                    // NOTE: We have already verified that `imported_functions + F_TOTAL` fits in u32
+                    // NOTE: We have already verified that `imported_functions + F` fits in u32
                     let function_index = self
                         .function_section
                         .len()
-                        .checked_add(self.imported_functions + F_IMPORTS)
+                        .checked_add(self.imported_functions + F)
                         .ok_or(Error::TooManyFunctions)?;
                     self.function_section.function(*ty);
 
@@ -584,7 +545,7 @@ impl<'a> InstrumentContext<'a> {
                 let local_idx = local_idx.checked_add(n).ok_or(Error::TooManyLocals)?;
                 Ok((locals, local_idx))
             })?;
-        let code_idx = self.code_section.len().saturating_sub(F_TOTAL - F_IMPORTS) as usize;
+        let code_idx = self.code_section.len() as usize;
         macro_rules! get_idx {
             (analysis . $field: ident) => {{
                 let f = self.analysis.$field.get(code_idx);
@@ -652,9 +613,6 @@ impl<'a> InstrumentContext<'a> {
                 .checked_sub(STACK_EXHAUSTED_FN)
                 // $stack - $stack_size - $frame_size
                 .global_set(self.globals + STACK_GLOBAL)
-                .global_get(self.globals + GAS_GLOBAL)
-                .i64_eqz()
-                .if_(we::BlockType::Empty)
                 .i64_const(frame_sz as i64)
                 .i64_const(0)
                 .i64_const(7)
@@ -669,27 +627,17 @@ impl<'a> InstrumentContext<'a> {
                 // ($frame_size + 7) / 8 | $op_cost
                 .checked_mul(GAS_EXHAUSTED_FN)
                 // ($frame_size + 7) / 8 * $op_cost
+                .local_tee(local_idx)
+                .global_get(self.globals + GAS_GLOBAL)
+                .i64_gt_u()
+                // ($frame_size + 7) / 8 * $op_cost > $gas
+                .if_(we::BlockType::Empty)
+                .local_get(local_idx)
                 .call(GAS_INSTRUMENTATION_FN)
                 .else_()
                 .global_get(self.globals + GAS_GLOBAL)
-                .i64_const(0)
-                .i64_const(frame_sz as i64)
-                .i64_const(0)
-                .i64_const(7)
-                .i64_const(0)
-                // $gas | 0 | $frame_size | 0 | 7 | 0
-                .checked_add(GAS_EXHAUSTED_FN)
-                // $gas | 0 | $frame_size + 7
-                .i64_const(8)
-                .i64_div_u()
-                // $gas | 0 | ($frame_size + 7) / 8
-                .i64_const(self.op_cost.into())
-                // $gas | 0 | ($frame_size + 7) / 8 | $op_cost
-                .checked_mul(GAS_EXHAUSTED_FN)
-                // $gas | 0 | ($frame_size + 7) / 8 * $op_cost
-                .i64_const(0)
-                // $gas | 0 | ($frame_size + 7) / 8 * $op_cost | 0
-                .checked_sub(GAS_EXHAUSTED_FN)
+                .local_get(local_idx)
+                .i64_sub()
                 // $gas - ($frame_size + 7) / 8 * $op_cost
                 .global_set(self.globals + GAS_GLOBAL)
                 .end();
@@ -701,7 +649,7 @@ impl<'a> InstrumentContext<'a> {
             while instrumentation_points.peek().map(|((o, _), _)| **o) == Some(offset) {
                 let ((_, g), k) = instrumentation_points.next().expect("we just peeked");
                 if !matches!(k, InstrumentationKind::Unreachable) {
-                    call_gas_instrumentation(&mut new_function, k, *g, self.globals, local_idx)?
+                    call_gas_instrumentation(&mut new_function, k, *g, self.globals, local_idx)?;
                 }
             }
             match op {
@@ -772,8 +720,7 @@ impl<'a> InstrumentContext<'a> {
             self.type_section.ty().function([we::ValType::I64], []);
 
             // By inserting the imports at the beginning of the import section we make the new
-            // function index mapping trivial (it is always just an increment by `F_IMPORTS` for
-            // imported functions and increment by `imported_functions + F_TOTAL` otherwise)
+            // function index mapping trivial (it is always just an increment by `F`)
             debug_assert_eq!(self.import_section.len(), INIT_FN);
             self.import_section.import(
                 self.import_env,
@@ -798,60 +745,7 @@ impl<'a> InstrumentContext<'a> {
                 "finite_wasm_gas",
                 we::EntityType::Function(gas_fnty),
             );
-            debug_assert_eq!(self.import_section.len(), F_IMPORTS);
-        }
-    }
-
-    fn maybe_add_functions(&mut self) {
-        self.maybe_add_imports();
-        if self.function_section.is_empty() {
-            // FIXME: these operators actually take two additional arguments i.e. for memory [i32
-            // i32 i32] and for table [i32 ref i32]. It might be interesting for the
-            // instrumentation to modify fees based on the value being filled, but it would require
-            // a separate instrumentation for every single *ref type for tables as well as some
-            // knowledge in instrumentation as to what sort of references `table.fill` is operating
-            // on. For now we punt on this by only ever taking the last argument which for all of
-            // the bulk memory operations represents the number of elements to work on (i.e. the
-            // scale of the work.) This also makes these intrinsics compatible with non-multi-value
-            // VMs still.
-            let copy_init_fill_fnty = self.type_section.len();
-            self.type_section.ty().function(
-                [we::ValType::I32, we::ValType::I64, we::ValType::I64],
-                [we::ValType::I32],
-            );
-
-            debug_assert_eq!(
-                self.function_section.len(),
-                MEMORY_COPY_INSTRUMENTATION_FN - F_IMPORTS
-            );
-            self.function_section.function(copy_init_fill_fnty);
-            debug_assert_eq!(
-                self.function_section.len(),
-                MEMORY_FILL_INSTRUMENTATION_FN - F_IMPORTS
-            );
-            self.function_section.function(copy_init_fill_fnty);
-            debug_assert_eq!(
-                self.function_section.len(),
-                MEMORY_INIT_INSTRUMENTATION_FN - F_IMPORTS
-            );
-            self.function_section.function(copy_init_fill_fnty);
-            debug_assert_eq!(
-                self.function_section.len(),
-                TABLE_COPY_INSTRUMENTATION_FN - F_IMPORTS
-            );
-            self.function_section.function(copy_init_fill_fnty);
-            debug_assert_eq!(
-                self.function_section.len(),
-                TABLE_FILL_INSTRUMENTATION_FN - F_IMPORTS
-            );
-            self.function_section.function(copy_init_fill_fnty);
-            debug_assert_eq!(
-                self.function_section.len(),
-                TABLE_INIT_INSTRUMENTATION_FN - F_IMPORTS
-            );
-            self.function_section.function(copy_init_fill_fnty);
-
-            debug_assert_eq!(self.function_section.len(), F_TOTAL - F_IMPORTS);
+            debug_assert_eq!(self.import_section.len(), F);
         }
     }
 
@@ -881,76 +775,6 @@ impl<'a> InstrumentContext<'a> {
             we::ExportKind::Global,
             self.globals + GAS_GLOBAL,
         );
-    }
-
-    fn maybe_add_code(&mut self) {
-        self.maybe_add_functions();
-        if self.global_section.is_empty() {
-            self.add_globals();
-        }
-        if self.code_section.is_empty() {
-            // (param $count i32) (param $linear i64) (param $constant i64) (result i32)
-            let mut linear_gas = we::Function::new([]);
-            linear_gas
-                .instructions()
-                .global_get(self.globals + GAS_GLOBAL)
-                .local_get(0)
-                .i64_extend_i32_u()
-                // $gas | $count
-                .local_get(1)
-                // $gas | $count | $linear
-                .checked_mul(GAS_EXHAUSTED_FN)
-                // $gas | $count * $linear
-                .checked_add_local_i64(2, GAS_EXHAUSTED_FN)
-                // $gas | $count * $linear + $constant
-                .local_tee(1)
-                .i64_lt_u()
-                // $gas < $count * $linear + $constant
-                .if_(we::BlockType::Empty)
-                .local_get(1)
-                .call(GAS_INSTRUMENTATION_FN)
-                .else_()
-                .global_get(self.globals + GAS_GLOBAL)
-                .local_get(1)
-                .i64_sub()
-                // $gas - $count * $linear + $constant
-                .global_set(self.globals + GAS_GLOBAL)
-                .end()
-                // $count
-                .local_get(0)
-                .end();
-            debug_assert_eq!(
-                self.code_section.len(),
-                MEMORY_COPY_INSTRUMENTATION_FN - F_IMPORTS,
-            );
-            self.code_section.function(&linear_gas);
-            debug_assert_eq!(
-                self.code_section.len(),
-                MEMORY_FILL_INSTRUMENTATION_FN - F_IMPORTS,
-            );
-            self.code_section.function(&linear_gas);
-            debug_assert_eq!(
-                self.code_section.len(),
-                MEMORY_INIT_INSTRUMENTATION_FN - F_IMPORTS,
-            );
-            self.code_section.function(&linear_gas);
-            debug_assert_eq!(
-                self.code_section.len(),
-                TABLE_COPY_INSTRUMENTATION_FN - F_IMPORTS,
-            );
-            self.code_section.function(&linear_gas);
-            debug_assert_eq!(
-                self.code_section.len(),
-                TABLE_FILL_INSTRUMENTATION_FN - F_IMPORTS,
-            );
-            self.code_section.function(&linear_gas);
-            debug_assert_eq!(
-                self.code_section.len(),
-                TABLE_INIT_INSTRUMENTATION_FN - F_IMPORTS,
-            );
-            self.code_section.function(&linear_gas);
-            debug_assert_eq!(self.code_section.len(), F_TOTAL - F_IMPORTS);
-        }
     }
 
     fn transform_name_section(
@@ -1023,7 +847,6 @@ fn call_gas_instrumentation(
     globals: u32,
     local_idx: u32,
 ) -> Result<(), Error> {
-    // NOTE: We have already verified that `imported_functions + F_TOTAL`  fits in u32
     if matches!(gas, crate::Fee::ZERO) {
         return Ok(());
     } else if gas.linear == 0 {
