@@ -2,7 +2,7 @@
 // manually implemented and half-way reliant on wasm_encoder::reencode...
 
 use crate::gas::InstrumentationKind;
-use crate::{AnalysisOutcome, REMAINING_GAS_EXPORT, START_EXPORT};
+use crate::{AnalysisOutcome, REMAINING_GAS_EXPORT};
 use std::convert::Infallible;
 use wasm_encoder::reencode::{Error as ReencodeError, Reencode};
 use wasm_encoder::{self as we};
@@ -293,6 +293,10 @@ impl<'a> InstrumentContext<'a> {
                     self.maybe_add_imports();
                     for import in imports {
                         let import = import.map_err(Error::ParseImport)?;
+                        if let wp::TypeRef::Global(..) = import.ty {
+                            self.globals =
+                                self.globals.checked_add(1).ok_or(Error::TooManyGlobals)?;
+                        }
                         renc.parse_import(&mut self.import_section, import)
                             .map_err(Error::ReencodeImports)?;
                     }
@@ -687,7 +691,7 @@ impl<'a> InstrumentContext<'a> {
     }
 
     fn add_globals(&mut self) {
-        debug_assert_eq!(self.global_section.len(), self.globals + GAS_GLOBAL);
+        debug_assert!(self.global_section.len() <= self.globals + GAS_GLOBAL);
         self.global_section.global(
             we::GlobalType {
                 val_type: we::ValType::I64,
@@ -696,7 +700,7 @@ impl<'a> InstrumentContext<'a> {
             },
             &we::ConstExpr::i64_const(0),
         );
-        debug_assert_eq!(self.global_section.len(), self.globals + STACK_GLOBAL);
+        debug_assert!(self.global_section.len() <= self.globals + STACK_GLOBAL);
         self.global_section.global(
             we::GlobalType {
                 val_type: we::ValType::I64,
@@ -705,7 +709,7 @@ impl<'a> InstrumentContext<'a> {
             },
             &we::ConstExpr::i64_const(self.max_stack_height.into()),
         );
-        debug_assert_eq!(self.global_section.len(), self.globals + G);
+        debug_assert!(self.global_section.len() <= self.globals + G);
 
         self.export_section.export(
             REMAINING_GAS_EXPORT,
