@@ -92,8 +92,6 @@ pub enum Error {
     MemorySectionRange(usize),
     #[error("size for data count section is out of input bounds")]
     DataCountSection(usize),
-    #[error("module contains too many imports")]
-    TooManyImports,
     #[error("module contains too many globals")]
     TooManyGlobals,
     #[error("function contains too many locals")]
@@ -105,7 +103,6 @@ pub(crate) struct InstrumentContext<'a> {
     wasm: &'a [u8],
     import_env: &'a str,
     globals: u32,
-    imported_functions: u32,
     op_cost: u32,
     max_stack_height: u32,
 
@@ -248,7 +245,6 @@ impl<'a> InstrumentContext<'a> {
             wasm,
             import_env,
             globals: 0,
-            imported_functions: 0,
             op_cost,
             max_stack_height,
 
@@ -297,37 +293,13 @@ impl<'a> InstrumentContext<'a> {
                     self.maybe_add_imports();
                     for import in imports {
                         let import = import.map_err(Error::ParseImport)?;
-                        if let wp::TypeRef::Func(..) = import.ty {
-                            self.imported_functions = self
-                                .imported_functions
-                                .checked_add(1)
-                                .ok_or(Error::TooManyImports)?;
-                        }
                         renc.parse_import(&mut self.import_section, import)
                             .map_err(Error::ReencodeImports)?;
-                    }
-                    if self.imported_functions.checked_add(F).is_none() {
-                        return Err(Error::TooManyImports);
                     }
                 }
                 wp::Payload::StartSection { func, .. } => {
                     let function_index = renc.function_index(func);
-                    if func < self.imported_functions {
-                        // Do not instrument calls to imported functions.
-                        self.start_section = Some(we::StartSection { function_index });
-                    } else {
-                        // The start function will require instrumentation, export it as a regular
-                        // function under well-known name, such that the runtime could:
-                        // 1. instantiate the module
-                        // 2. lookup the `\0finite_wasm_remaining_gas` global on the instance
-                        // 3. set the value of `\0finite_wasm_remaining_gas` global
-                        // 4. invoke `\0finite_wasm_start`
-                        self.export_section.export(
-                            START_EXPORT,
-                            we::ExportKind::Func,
-                            function_index,
-                        );
-                    }
+                    self.start_section = Some(we::StartSection { function_index });
                 }
                 wp::Payload::ElementSection(reader) => {
                     renc.parse_element_section(&mut self.element_section, reader)

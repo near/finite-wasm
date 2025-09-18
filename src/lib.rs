@@ -24,9 +24,6 @@ mod visitors;
 /// Name under which the gas global injected by instrumentation is exported
 pub const REMAINING_GAS_EXPORT: &str = "\0finite_wasm_remaining_gas";
 
-/// Name under which the original start function processed by instrumentation is exported
-pub const START_EXPORT: &str = "\0finite_wasm_start";
-
 #[doc(hidden)]
 #[cfg(feature = "wast-tests")]
 pub mod wast_tests {
