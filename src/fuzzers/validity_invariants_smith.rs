@@ -76,7 +76,8 @@ fn fuzz() {
         .for_each(|module| {
             let data = &module.data;
             let features = wasmparser::WasmFeatures::default()
-                & wasmparser::WasmFeatures::WIDE_ARITHMETIC
+                | wasmparser::WasmFeatures::MUTABLE_GLOBAL
+                | wasmparser::WasmFeatures::WIDE_ARITHMETIC
                 & !wasmparser::WasmFeatures::EXCEPTIONS
                 & !wasmparser::WasmFeatures::LEGACY_EXCEPTIONS;
             // First, try to validate the data.
