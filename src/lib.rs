@@ -105,7 +105,7 @@ impl<StackConfig, GasCostModel> Analysis<StackConfig, GasCostModel> {
     /// trait. This can be either by value, by reference or as a dynamic object of some sort.
     /// Though do keep in mind, that using a dynamic object may incur a significant performance
     /// penality, as the configuration provided here is accessed for each instruction in the
-    /// analyzed module.
+    /// analyzed Wasm binary.
     ///
     /// For more information see [`gas::Config`].
     pub fn with_gas<NewGC>(self, gas_cfg: NewGC) -> Analysis<StackConfig, NewGC> {
@@ -118,25 +118,25 @@ impl<StackConfig, GasCostModel> Analysis<StackConfig, GasCostModel> {
 }
 
 impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
-    /// Execute the analysis on the provided module.
-    pub fn analyze(&mut self, module: &'b [u8]) -> Result<AnalysisOutcome, Error> {
+    /// Execute the analysis on the provided Wasm binary.
+    pub fn analyze(&mut self, wasm: &'b [u8]) -> Result<AnalysisOutcome, Error> {
         let mut current_fn_id = 0u32;
-        let mut outcome = AnalysisOutcome {
-            function_frame_sizes: vec![],
-            function_operand_stack_sizes: vec![],
-            gas_offsets: vec![],
-            gas_costs: vec![],
-            gas_kinds: vec![],
-        };
+        let mut outcome = AnalysisOutcome::default();
         // Reused between functions for speeds.
         let mut gas_state = gas::FunctionState::new();
         let mut stack_state = max_stack::FunctionState::new();
         let mut module_state = max_stack::ModuleState::new();
 
+        let is_core_wasm = wasmparser::Parser::is_core_wasm(wasm);
         let parser = wasmparser::Parser::new(0);
-        for payload in parser.parse_all(module) {
+        for payload in parser.parse_all(wasm) {
             let payload = payload.map_err(Error::ParsePayload)?;
             match payload {
+                wasmparser::Payload::End(_) if !is_core_wasm => {
+                    // reset state every time we reach an end of a module or a component
+                    module_state = max_stack::ModuleState::new();
+                    current_fn_id = 0;
+                }
                 wasmparser::Payload::ImportSection(reader) => {
                     for import in reader.into_iter() {
                         let import = import.map_err(Error::ParseImports)?;
@@ -267,6 +267,7 @@ impl Fee {
 ///
 /// This analysis collects information necessary to implement all of the transformations in one go,
 /// so that re-parsing the module multiple times is not necessary.
+#[derive(Default)]
 pub struct AnalysisOutcome {
     /// The sizes of the stack frame for each function in the module, *excluding* imports.
     ///
