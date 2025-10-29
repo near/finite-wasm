@@ -43,7 +43,7 @@ mod error;
 mod optimize;
 
 /// The type of a particular instrumentation point (as denoted by its offset.)
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Eq, PartialEq, Debug)]
 pub enum InstrumentationKind {
     /// This instrumentation point precedes an instruction that is largely uninteresting for the
     /// purposes of gas analysis, besides its inherent cost.

@@ -465,9 +465,10 @@ impl<'a> InstrumentContext<'a> {
             // scale of the work.) This also makes these intrinsics compatible with non-multi-value
             // VMs still.
             let copy_init_fill_fnty = self.type_section.len();
-            self.type_section
-                .ty()
-                .function([we::ValType::I32, we::ValType::I64, we::ValType::I64], [we::ValType::I32]);
+            self.type_section.ty().function(
+                [we::ValType::I32, we::ValType::I64, we::ValType::I64],
+                [we::ValType::I32],
+            );
             // By inserting the imports at the beginning of the import section we make the new
             // function index mapping trivial (it is always just an increment by F)
             debug_assert_eq!(self.import_section.len(), GAS_INSTRUMENTATION_FN);
