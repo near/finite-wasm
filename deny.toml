@@ -12,6 +12,10 @@ targets = [
 multiple-versions = "deny"
 wildcards = "deny"
 
+skip = [
+    { name = "hashbrown", version = "0.15.5" },
+]
+
 [licenses]
 allow = [
     "Apache-2.0",
