@@ -237,7 +237,7 @@ impl<'b, SC: max_stack::Config<'b>, GC: gas::Config<'b>> Analysis<SC, GC> {
 /// depends on how the instrumentation is implemented. The instrumentation provided by the
 /// `instrument` module, for example, introduces separate imports of gas instrumentation functions
 /// for each aggregate instruction supported by this module.
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Fee {
     /// Constant fee factor.
     pub constant: u64,
@@ -252,7 +252,10 @@ impl Fee {
     };
 
     pub fn constant(constant: u64) -> Self {
-        Self { constant, linear: 0 }
+        Self {
+            constant,
+            linear: 0,
+        }
     }
 
     pub(crate) fn checked_add(self, other: Fee) -> Option<Self> {
@@ -267,7 +270,7 @@ impl Fee {
 ///
 /// This analysis collects information necessary to implement all of the transformations in one go,
 /// so that re-parsing the module multiple times is not necessary.
-#[derive(Default)]
+#[derive(Debug, Default, PartialEq)]
 pub struct AnalysisOutcome {
     /// The sizes of the stack frame for each function in the module, *excluding* imports.
     ///
