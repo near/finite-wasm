@@ -19,6 +19,8 @@ jobs:
       fail-fast: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: true
       - uses: ocaml/setup-ocaml@36465e9a68c360c87f287ad8e2305ca507e54be8
         with:
           ocaml-compiler: 4.13.1
