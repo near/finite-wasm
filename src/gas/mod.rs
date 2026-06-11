@@ -451,7 +451,7 @@ impl<'a, 'b, CostModel: VisitOperator<'b, Output = Fee> + VisitSimdOperator<'b, 
     gen::vternop!(pure_insn);
     gen::vbitmask!(pure_insn);
     gen::vinarrowop!(pure_insn);
-    gen::splat!(pure_insn);
+    gen::splatop!(pure_insn);
     gen::r#const!(pure_insn);
     gen::extractlane!(pure_insn);
     gen::replacelane!(pure_insn);
