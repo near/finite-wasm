@@ -391,7 +391,7 @@ macro_rules! vbitmask {
     };
 }
 
-macro_rules! splat {
+macro_rules! splatop {
     ($generator:ident) => {
         $generator! {
             V128.splat = visit_i8x16_splat | visit_i16x8_splat | visit_i32x4_splat
@@ -447,6 +447,6 @@ macro_rules! atomic_cmpxchg {
 
 pub(crate) use {
     atomic_cmpxchg, atomic_rmw, binop, binop_complete, binop_partial, cvtop, cvtop_complete,
-    cvtop_partial, extractlane, load, loadlane, r#const, relop, replacelane, splat, store,
+    cvtop_partial, extractlane, load, loadlane, r#const, relop, replacelane, splatop, store,
     storelane, testop, unop, vbitmask, vinarrowop, vishiftop, vrelop, vternop,
 };

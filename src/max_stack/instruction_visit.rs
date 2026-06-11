@@ -160,7 +160,7 @@ impl<'a, Cfg: SizeConfig + ?Sized> Visitor<'a, Cfg> {
     gen::vrelop!(instruction_category);
     gen::vinarrowop!(instruction_category);
     gen::vbitmask!(instruction_category);
-    gen::splat!(instruction_category);
+    gen::splatop!(instruction_category);
     gen::atomic_rmw!(instruction_category);
     gen::atomic_cmpxchg!(instruction_category);
 
